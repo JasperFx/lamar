@@ -1,0 +1,38 @@
+﻿using System;
+using System.Linq;
+using System.Reflection;
+
+namespace Lamar
+{
+    /// <summary>
+    /// Used to override the constructor of a class to be used by StructureMap to create
+    /// a Pluggable object
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Constructor)]
+    public class DefaultConstructorAttribute : Attribute
+    {
+        /// <summary>
+        /// Examines a System.Type object and determines the ConstructorInfo to use in creating
+        /// instances of the Type
+        /// </summary>
+        /// <param name="exportedType"></param>
+        /// <returns></returns>
+        public static ConstructorInfo GetConstructor(Type exportedType)
+        {
+            ConstructorInfo returnValue = null;
+
+            foreach (var constructor in exportedType.GetConstructors())
+            {
+                var atts = constructor.GetCustomAttributes(typeof (DefaultConstructorAttribute), true);
+
+                if (atts.Any())
+                {
+                    returnValue = constructor;
+                    break;
+                }
+            }
+
+            return returnValue;
+        }
+    }
+}

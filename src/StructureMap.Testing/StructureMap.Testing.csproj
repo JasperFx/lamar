@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+    <AssemblyName>StructureMap.Testing</AssemblyName>
+    <PackageId>StructureMap.Testing</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StructureMap\StructureMap.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget\StructureMap.Testing.Widget.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget3\StructureMap.Testing.Widget3.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget4\StructureMap.Testing.Widget4.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget5\StructureMap.Testing.Widget5.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.ExeWidget\StructureMap.Testing.ExeWidget.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.GenericWidgets\StructureMap.Testing.GenericWidgets.csproj" />
+    <ProjectReference Include="..\NestedLibrary\NestedLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.5" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.0.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.1.0" />
+  </ItemGroup>
+  
+</Project>

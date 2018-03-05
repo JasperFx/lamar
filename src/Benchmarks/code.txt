@@ -1,0 +1,5662 @@
+
+[Benchmark]
+public void Type_1_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment));
+}
+
+[Benchmark]
+public void Type_1_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment));
+}
+
+[Benchmark]
+public void Type_1_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment));
+}
+
+
+[Benchmark]
+public void Type_2_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.WebHostBuilderContext));
+}
+
+[Benchmark]
+public void Type_2_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.WebHostBuilderContext));
+}
+
+[Benchmark]
+public void Type_2_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.WebHostBuilderContext));
+}
+
+
+[Benchmark]
+public void Type_3_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Configuration.IConfiguration));
+}
+
+[Benchmark]
+public void Type_3_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Configuration.IConfiguration));
+}
+
+[Benchmark]
+public void Type_3_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Configuration.IConfiguration));
+}
+
+
+[Benchmark]
+public void Type_4_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.Builder.IApplicationBuilderFactory));
+}
+
+[Benchmark]
+public void Type_4_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.Builder.IApplicationBuilderFactory));
+}
+
+[Benchmark]
+public void Type_4_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.Builder.IApplicationBuilderFactory));
+}
+
+
+[Benchmark]
+public void Type_5_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextFactory));
+}
+
+[Benchmark]
+public void Type_5_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextFactory));
+}
+
+[Benchmark]
+public void Type_5_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextFactory));
+}
+
+
+[Benchmark]
+public void Type_6_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Http.IMiddlewareFactory));
+}
+
+[Benchmark]
+public void Type_6_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Http.IMiddlewareFactory));
+}
+
+[Benchmark]
+public void Type_6_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Http.IMiddlewareFactory));
+}
+
+
+[Benchmark]
+public void Type_7_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILoggerFactory));
+}
+
+[Benchmark]
+public void Type_7_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILoggerFactory));
+}
+
+[Benchmark]
+public void Type_7_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILoggerFactory));
+}
+
+
+[Benchmark]
+public void Type_8_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_8_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_8_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+
+[Benchmark]
+public void Type_9_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartupFilter));
+}
+
+[Benchmark]
+public void Type_9_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartupFilter));
+}
+
+[Benchmark]
+public void Type_9_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartupFilter));
+}
+
+
+[Benchmark]
+public void Type_10_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartupFilter));
+}
+
+[Benchmark]
+public void Type_10_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartupFilter));
+}
+
+[Benchmark]
+public void Type_10_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartupFilter));
+}
+
+
+[Benchmark]
+public void Type_11_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>));
+}
+
+[Benchmark]
+public void Type_11_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>));
+}
+
+[Benchmark]
+public void Type_11_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>));
+}
+
+
+[Benchmark]
+public void Type_12_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>));
+}
+
+[Benchmark]
+public void Type_12_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>));
+}
+
+[Benchmark]
+public void Type_12_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>));
+}
+
+
+[Benchmark]
+public void Type_13_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPoolProvider));
+}
+
+[Benchmark]
+public void Type_13_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPoolProvider));
+}
+
+[Benchmark]
+public void Type_13_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPoolProvider));
+}
+
+
+[Benchmark]
+public void Type_14_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.Server.IServer));
+}
+
+[Benchmark]
+public void Type_14_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.Server.IServer));
+}
+
+[Benchmark]
+public void Type_14_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.Server.IServer));
+}
+
+
+[Benchmark]
+public void Type_15_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartup));
+}
+
+[Benchmark]
+public void Type_15_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartup));
+}
+
+[Benchmark]
+public void Type_15_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.IStartup));
+}
+
+
+[Benchmark]
+public void Type_16_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Diagnostics.DiagnosticListener));
+}
+
+[Benchmark]
+public void Type_16_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Diagnostics.DiagnosticListener));
+}
+
+[Benchmark]
+public void Type_16_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Diagnostics.DiagnosticListener));
+}
+
+
+[Benchmark]
+public void Type_17_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Diagnostics.DiagnosticSource));
+}
+
+[Benchmark]
+public void Type_17_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Diagnostics.DiagnosticSource));
+}
+
+[Benchmark]
+public void Type_17_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Diagnostics.DiagnosticSource));
+}
+
+
+[Benchmark]
+public void Type_18_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.IApplicationLifetime));
+}
+
+[Benchmark]
+public void Type_18_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.IApplicationLifetime));
+}
+
+[Benchmark]
+public void Type_18_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.IApplicationLifetime));
+}
+
+
+[Benchmark]
+public void Type_19_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Hosting.Internal.HostedServiceExecutor));
+}
+
+[Benchmark]
+public void Type_19_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Hosting.Internal.HostedServiceExecutor));
+}
+
+[Benchmark]
+public void Type_19_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Hosting.Internal.HostedServiceExecutor));
+}
+
+
+[Benchmark]
+public void Type_20_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager));
+}
+
+[Benchmark]
+public void Type_20_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager));
+}
+
+[Benchmark]
+public void Type_20_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager));
+}
+
+
+[Benchmark]
+public void Type_21_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Routing.IInlineConstraintResolver));
+}
+
+[Benchmark]
+public void Type_21_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Routing.IInlineConstraintResolver));
+}
+
+[Benchmark]
+public void Type_21_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Routing.IInlineConstraintResolver));
+}
+
+
+[Benchmark]
+public void Type_22_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Text.Encodings.Web.UrlEncoder));
+}
+
+[Benchmark]
+public void Type_22_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Text.Encodings.Web.UrlEncoder));
+}
+
+[Benchmark]
+public void Type_22_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Text.Encodings.Web.UrlEncoder));
+}
+
+
+[Benchmark]
+public void Type_23_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPool<Microsoft.AspNetCore.Routing.Internal.UriBuildingContext>));
+}
+
+[Benchmark]
+public void Type_23_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPool<Microsoft.AspNetCore.Routing.Internal.UriBuildingContext>));
+}
+
+[Benchmark]
+public void Type_23_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPool<Microsoft.AspNetCore.Routing.Internal.UriBuildingContext>));
+}
+
+
+[Benchmark]
+public void Type_24_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Routing.Tree.TreeRouteBuilder));
+}
+
+[Benchmark]
+public void Type_24_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Routing.Tree.TreeRouteBuilder));
+}
+
+[Benchmark]
+public void Type_24_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Routing.Tree.TreeRouteBuilder));
+}
+
+
+[Benchmark]
+public void Type_25_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Routing.Internal.RoutingMarkerService));
+}
+
+[Benchmark]
+public void Type_25_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Routing.Internal.RoutingMarkerService));
+}
+
+[Benchmark]
+public void Type_25_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Routing.Internal.RoutingMarkerService));
+}
+
+
+[Benchmark]
+public void Type_26_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_26_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_26_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+
+[Benchmark]
+public void Type_27_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_27_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_27_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+
+[Benchmark]
+public void Type_28_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_28_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_28_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+
+[Benchmark]
+public void Type_29_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_29_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_29_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+
+[Benchmark]
+public void Type_30_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+[Benchmark]
+public void Type_30_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+[Benchmark]
+public void Type_30_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+
+[Benchmark]
+public void Type_31_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_31_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_31_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_32_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_32_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_32_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_33_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_33_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_33_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_34_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_34_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_34_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_35_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider));
+}
+
+[Benchmark]
+public void Type_35_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider));
+}
+
+[Benchmark]
+public void Type_35_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider));
+}
+
+
+[Benchmark]
+public void Type_36_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider));
+}
+
+[Benchmark]
+public void Type_36_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider));
+}
+
+[Benchmark]
+public void Type_36_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider));
+}
+
+
+[Benchmark]
+public void Type_37_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorCollectionProvider));
+}
+
+[Benchmark]
+public void Type_37_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorCollectionProvider));
+}
+
+[Benchmark]
+public void Type_37_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorCollectionProvider));
+}
+
+
+[Benchmark]
+public void Type_38_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionSelector));
+}
+
+[Benchmark]
+public void Type_38_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionSelector));
+}
+
+[Benchmark]
+public void Type_38_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionSelector));
+}
+
+
+[Benchmark]
+public void Type_39_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ActionConstraintCache));
+}
+
+[Benchmark]
+public void Type_39_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ActionConstraintCache));
+}
+
+[Benchmark]
+public void Type_39_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ActionConstraintCache));
+}
+
+
+[Benchmark]
+public void Type_40_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider));
+}
+
+[Benchmark]
+public void Type_40_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider));
+}
+
+[Benchmark]
+public void Type_40_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider));
+}
+
+
+[Benchmark]
+public void Type_41_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerFactory));
+}
+
+[Benchmark]
+public void Type_41_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerFactory));
+}
+
+[Benchmark]
+public void Type_41_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerFactory));
+}
+
+
+[Benchmark]
+public void Type_42_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerActivator));
+}
+
+[Benchmark]
+public void Type_42_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerActivator));
+}
+
+[Benchmark]
+public void Type_42_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerActivator));
+}
+
+
+[Benchmark]
+public void Type_43_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerFactoryProvider));
+}
+
+[Benchmark]
+public void Type_43_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerFactoryProvider));
+}
+
+[Benchmark]
+public void Type_43_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerFactoryProvider));
+}
+
+
+[Benchmark]
+public void Type_44_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerActivatorProvider));
+}
+
+[Benchmark]
+public void Type_44_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerActivatorProvider));
+}
+
+[Benchmark]
+public void Type_44_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Controllers.IControllerActivatorProvider));
+}
+
+
+[Benchmark]
+public void Type_45_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator));
+}
+
+[Benchmark]
+public void Type_45_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator));
+}
+
+[Benchmark]
+public void Type_45_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator));
+}
+
+
+[Benchmark]
+public void Type_46_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator));
+}
+
+[Benchmark]
+public void Type_46_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator));
+}
+
+[Benchmark]
+public void Type_46_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator));
+}
+
+
+[Benchmark]
+public void Type_47_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionInvokerFactory));
+}
+
+[Benchmark]
+public void Type_47_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionInvokerFactory));
+}
+
+[Benchmark]
+public void Type_47_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionInvokerFactory));
+}
+
+
+[Benchmark]
+public void Type_48_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider));
+}
+
+[Benchmark]
+public void Type_48_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider));
+}
+
+[Benchmark]
+public void Type_48_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider));
+}
+
+
+[Benchmark]
+public void Type_49_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider));
+}
+
+[Benchmark]
+public void Type_49_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider));
+}
+
+[Benchmark]
+public void Type_49_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider));
+}
+
+
+[Benchmark]
+public void Type_50_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvokerCache));
+}
+
+[Benchmark]
+public void Type_50_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvokerCache));
+}
+
+[Benchmark]
+public void Type_50_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvokerCache));
+}
+
+
+[Benchmark]
+public void Type_51_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Filters.IFilterProvider));
+}
+
+[Benchmark]
+public void Type_51_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Filters.IFilterProvider));
+}
+
+[Benchmark]
+public void Type_51_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Filters.IFilterProvider));
+}
+
+
+[Benchmark]
+public void Type_52_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RequestSizeLimitResourceFilter));
+}
+
+[Benchmark]
+public void Type_52_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RequestSizeLimitResourceFilter));
+}
+
+[Benchmark]
+public void Type_52_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RequestSizeLimitResourceFilter));
+}
+
+
+[Benchmark]
+public void Type_53_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.DisableRequestSizeLimitResourceFilter));
+}
+
+[Benchmark]
+public void Type_53_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.DisableRequestSizeLimitResourceFilter));
+}
+
+[Benchmark]
+public void Type_53_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.DisableRequestSizeLimitResourceFilter));
+}
+
+
+[Benchmark]
+public void Type_54_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider));
+}
+
+[Benchmark]
+public void Type_54_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider));
+}
+
+[Benchmark]
+public void Type_54_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider));
+}
+
+
+[Benchmark]
+public void Type_55_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ICompositeMetadataDetailsProvider));
+}
+
+[Benchmark]
+public void Type_55_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ICompositeMetadataDetailsProvider));
+}
+
+[Benchmark]
+public void Type_55_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ICompositeMetadataDetailsProvider));
+}
+
+
+[Benchmark]
+public void Type_56_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinderFactory));
+}
+
+[Benchmark]
+public void Type_56_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinderFactory));
+}
+
+[Benchmark]
+public void Type_56_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinderFactory));
+}
+
+
+[Benchmark]
+public void Type_57_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IObjectModelValidator));
+}
+
+[Benchmark]
+public void Type_57_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IObjectModelValidator));
+}
+
+[Benchmark]
+public void Type_57_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IObjectModelValidator));
+}
+
+
+[Benchmark]
+public void Type_58_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ClientValidatorCache));
+}
+
+[Benchmark]
+public void Type_58_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ClientValidatorCache));
+}
+
+[Benchmark]
+public void Type_58_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ClientValidatorCache));
+}
+
+
+[Benchmark]
+public void Type_59_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder));
+}
+
+[Benchmark]
+public void Type_59_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder));
+}
+
+[Benchmark]
+public void Type_59_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder));
+}
+
+
+[Benchmark]
+public void Type_60_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcMarkerService));
+}
+
+[Benchmark]
+public void Type_60_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcMarkerService));
+}
+
+[Benchmark]
+public void Type_60_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcMarkerService));
+}
+
+
+[Benchmark]
+public void Type_61_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ITypeActivatorCache));
+}
+
+[Benchmark]
+public void Type_61_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ITypeActivatorCache));
+}
+
+[Benchmark]
+public void Type_61_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ITypeActivatorCache));
+}
+
+
+[Benchmark]
+public void Type_62_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Routing.IUrlHelperFactory));
+}
+
+[Benchmark]
+public void Type_62_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Routing.IUrlHelperFactory));
+}
+
+[Benchmark]
+public void Type_62_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Routing.IUrlHelperFactory));
+}
+
+
+[Benchmark]
+public void Type_63_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IHttpRequestStreamReaderFactory));
+}
+
+[Benchmark]
+public void Type_63_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IHttpRequestStreamReaderFactory));
+}
+
+[Benchmark]
+public void Type_63_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IHttpRequestStreamReaderFactory));
+}
+
+
+[Benchmark]
+public void Type_64_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IHttpResponseStreamWriterFactory));
+}
+
+[Benchmark]
+public void Type_64_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IHttpResponseStreamWriterFactory));
+}
+
+[Benchmark]
+public void Type_64_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.IHttpResponseStreamWriterFactory));
+}
+
+
+[Benchmark]
+public void Type_65_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Buffers.ArrayPool<System.Byte>));
+}
+
+[Benchmark]
+public void Type_65_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Buffers.ArrayPool<System.Byte>));
+}
+
+[Benchmark]
+public void Type_65_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Buffers.ArrayPool<System.Byte>));
+}
+
+
+[Benchmark]
+public void Type_66_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Buffers.ArrayPool<System.Char>));
+}
+
+[Benchmark]
+public void Type_66_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Buffers.ArrayPool<System.Char>));
+}
+
+[Benchmark]
+public void Type_66_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Buffers.ArrayPool<System.Char>));
+}
+
+
+[Benchmark]
+public void Type_67_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ObjectResultExecutor));
+}
+
+[Benchmark]
+public void Type_67_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ObjectResultExecutor));
+}
+
+[Benchmark]
+public void Type_67_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ObjectResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_68_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.PhysicalFileResultExecutor));
+}
+
+[Benchmark]
+public void Type_68_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.PhysicalFileResultExecutor));
+}
+
+[Benchmark]
+public void Type_68_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.PhysicalFileResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_69_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.VirtualFileResultExecutor));
+}
+
+[Benchmark]
+public void Type_69_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.VirtualFileResultExecutor));
+}
+
+[Benchmark]
+public void Type_69_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.VirtualFileResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_70_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.FileStreamResultExecutor));
+}
+
+[Benchmark]
+public void Type_70_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.FileStreamResultExecutor));
+}
+
+[Benchmark]
+public void Type_70_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.FileStreamResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_71_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.FileContentResultExecutor));
+}
+
+[Benchmark]
+public void Type_71_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.FileContentResultExecutor));
+}
+
+[Benchmark]
+public void Type_71_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.FileContentResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_72_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectResultExecutor));
+}
+
+[Benchmark]
+public void Type_72_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectResultExecutor));
+}
+
+[Benchmark]
+public void Type_72_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_73_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.LocalRedirectResultExecutor));
+}
+
+[Benchmark]
+public void Type_73_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.LocalRedirectResultExecutor));
+}
+
+[Benchmark]
+public void Type_73_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.LocalRedirectResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_74_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToActionResultExecutor));
+}
+
+[Benchmark]
+public void Type_74_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToActionResultExecutor));
+}
+
+[Benchmark]
+public void Type_74_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToActionResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_75_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToRouteResultExecutor));
+}
+
+[Benchmark]
+public void Type_75_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToRouteResultExecutor));
+}
+
+[Benchmark]
+public void Type_75_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToRouteResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_76_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToPageResultExecutor));
+}
+
+[Benchmark]
+public void Type_76_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToPageResultExecutor));
+}
+
+[Benchmark]
+public void Type_76_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.RedirectToPageResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_77_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ContentResultExecutor));
+}
+
+[Benchmark]
+public void Type_77_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ContentResultExecutor));
+}
+
+[Benchmark]
+public void Type_77_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.ContentResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_78_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcRouteHandler));
+}
+
+[Benchmark]
+public void Type_78_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcRouteHandler));
+}
+
+[Benchmark]
+public void Type_78_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcRouteHandler));
+}
+
+
+[Benchmark]
+public void Type_79_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcAttributeRouteHandler));
+}
+
+[Benchmark]
+public void Type_79_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcAttributeRouteHandler));
+}
+
+[Benchmark]
+public void Type_79_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MvcAttributeRouteHandler));
+}
+
+
+[Benchmark]
+public void Type_80_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MiddlewareFilterConfigurationProvider));
+}
+
+[Benchmark]
+public void Type_80_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MiddlewareFilterConfigurationProvider));
+}
+
+[Benchmark]
+public void Type_80_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MiddlewareFilterConfigurationProvider));
+}
+
+
+[Benchmark]
+public void Type_81_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MiddlewareFilterBuilder));
+}
+
+[Benchmark]
+public void Type_81_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MiddlewareFilterBuilder));
+}
+
+[Benchmark]
+public void Type_81_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Internal.MiddlewareFilterBuilder));
+}
+
+
+[Benchmark]
+public void Type_82_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionGroupCollectionProvider));
+}
+
+[Benchmark]
+public void Type_82_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionGroupCollectionProvider));
+}
+
+[Benchmark]
+public void Type_82_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionGroupCollectionProvider));
+}
+
+
+[Benchmark]
+public void Type_83_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider));
+}
+
+[Benchmark]
+public void Type_83_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider));
+}
+
+[Benchmark]
+public void Type_83_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider));
+}
+
+
+[Benchmark]
+public void Type_84_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider));
+}
+
+[Benchmark]
+public void Type_84_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider));
+}
+
+[Benchmark]
+public void Type_84_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider));
+}
+
+
+[Benchmark]
+public void Type_85_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationService));
+}
+
+[Benchmark]
+public void Type_85_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationService));
+}
+
+[Benchmark]
+public void Type_85_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationService));
+}
+
+
+[Benchmark]
+public void Type_86_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authentication.IClaimsTransformation));
+}
+
+[Benchmark]
+public void Type_86_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authentication.IClaimsTransformation));
+}
+
+[Benchmark]
+public void Type_86_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authentication.IClaimsTransformation));
+}
+
+
+[Benchmark]
+public void Type_87_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationHandlerProvider));
+}
+
+[Benchmark]
+public void Type_87_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationHandlerProvider));
+}
+
+[Benchmark]
+public void Type_87_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationHandlerProvider));
+}
+
+
+[Benchmark]
+public void Type_88_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider));
+}
+
+[Benchmark]
+public void Type_88_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider));
+}
+
+[Benchmark]
+public void Type_88_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider));
+}
+
+
+[Benchmark]
+public void Type_89_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationService));
+}
+
+[Benchmark]
+public void Type_89_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationService));
+}
+
+[Benchmark]
+public void Type_89_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationService));
+}
+
+
+[Benchmark]
+public void Type_90_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider));
+}
+
+[Benchmark]
+public void Type_90_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider));
+}
+
+[Benchmark]
+public void Type_90_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationPolicyProvider));
+}
+
+
+[Benchmark]
+public void Type_91_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandlerProvider));
+}
+
+[Benchmark]
+public void Type_91_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandlerProvider));
+}
+
+[Benchmark]
+public void Type_91_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandlerProvider));
+}
+
+
+[Benchmark]
+public void Type_92_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator));
+}
+
+[Benchmark]
+public void Type_92_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator));
+}
+
+[Benchmark]
+public void Type_92_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator));
+}
+
+
+[Benchmark]
+public void Type_93_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory));
+}
+
+[Benchmark]
+public void Type_93_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory));
+}
+
+[Benchmark]
+public void Type_93_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory));
+}
+
+
+[Benchmark]
+public void Type_94_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandler));
+}
+
+[Benchmark]
+public void Type_94_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandler));
+}
+
+[Benchmark]
+public void Type_94_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.IAuthorizationHandler));
+}
+
+
+[Benchmark]
+public void Type_95_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Authorization.Policy.IPolicyEvaluator));
+}
+
+[Benchmark]
+public void Type_95_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Authorization.Policy.IPolicyEvaluator));
+}
+
+[Benchmark]
+public void Type_95_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Authorization.Policy.IPolicyEvaluator));
+}
+
+
+[Benchmark]
+public void Type_96_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.FormatFilter));
+}
+
+[Benchmark]
+public void Type_96_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.FormatFilter));
+}
+
+[Benchmark]
+public void Type_96_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.FormatFilter));
+}
+
+
+[Benchmark]
+public void Type_97_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider));
+}
+
+[Benchmark]
+public void Type_97_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider));
+}
+
+[Benchmark]
+public void Type_97_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider));
+}
+
+
+[Benchmark]
+public void Type_98_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.Internal.IActivator));
+}
+
+[Benchmark]
+public void Type_98_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.Internal.IActivator));
+}
+
+[Benchmark]
+public void Type_98_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.Internal.IActivator));
+}
+
+
+[Benchmark]
+public void Type_99_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+[Benchmark]
+public void Type_99_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+[Benchmark]
+public void Type_99_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+
+[Benchmark]
+public void Type_100_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+[Benchmark]
+public void Type_100_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+[Benchmark]
+public void Type_100_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+
+[Benchmark]
+public void Type_101_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager));
+}
+
+[Benchmark]
+public void Type_101_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager));
+}
+
+[Benchmark]
+public void Type_101_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager));
+}
+
+
+[Benchmark]
+public void Type_102_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.Infrastructure.IApplicationDiscriminator));
+}
+
+[Benchmark]
+public void Type_102_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.Infrastructure.IApplicationDiscriminator));
+}
+
+[Benchmark]
+public void Type_102_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.Infrastructure.IApplicationDiscriminator));
+}
+
+
+[Benchmark]
+public void Type_103_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IDefaultKeyResolver));
+}
+
+[Benchmark]
+public void Type_103_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IDefaultKeyResolver));
+}
+
+[Benchmark]
+public void Type_103_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IDefaultKeyResolver));
+}
+
+
+[Benchmark]
+public void Type_104_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IKeyRingProvider));
+}
+
+[Benchmark]
+public void Type_104_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IKeyRingProvider));
+}
+
+[Benchmark]
+public void Type_104_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IKeyRingProvider));
+}
+
+
+[Benchmark]
+public void Type_105_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.IDataProtectionProvider));
+}
+
+[Benchmark]
+public void Type_105_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.IDataProtectionProvider));
+}
+
+[Benchmark]
+public void Type_105_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.IDataProtectionProvider));
+}
+
+
+[Benchmark]
+public void Type_106_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.DataProtection.XmlEncryption.ICertificateResolver));
+}
+
+[Benchmark]
+public void Type_106_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.DataProtection.XmlEncryption.ICertificateResolver));
+}
+
+[Benchmark]
+public void Type_106_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.DataProtection.XmlEncryption.ICertificateResolver));
+}
+
+
+[Benchmark]
+public void Type_107_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+[Benchmark]
+public void Type_107_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+[Benchmark]
+public void Type_107_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+
+[Benchmark]
+public void Type_108_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Antiforgery.IAntiforgery));
+}
+
+[Benchmark]
+public void Type_108_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Antiforgery.IAntiforgery));
+}
+
+[Benchmark]
+public void Type_108_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Antiforgery.IAntiforgery));
+}
+
+
+[Benchmark]
+public void Type_109_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenGenerator));
+}
+
+[Benchmark]
+public void Type_109_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenGenerator));
+}
+
+[Benchmark]
+public void Type_109_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenGenerator));
+}
+
+
+[Benchmark]
+public void Type_110_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenSerializer));
+}
+
+[Benchmark]
+public void Type_110_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenSerializer));
+}
+
+[Benchmark]
+public void Type_110_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenSerializer));
+}
+
+
+[Benchmark]
+public void Type_111_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenStore));
+}
+
+[Benchmark]
+public void Type_111_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenStore));
+}
+
+[Benchmark]
+public void Type_111_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IAntiforgeryTokenStore));
+}
+
+
+[Benchmark]
+public void Type_112_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IClaimUidExtractor));
+}
+
+[Benchmark]
+public void Type_112_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IClaimUidExtractor));
+}
+
+[Benchmark]
+public void Type_112_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Antiforgery.Internal.IClaimUidExtractor));
+}
+
+
+[Benchmark]
+public void Type_113_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Antiforgery.IAntiforgeryAdditionalDataProvider));
+}
+
+[Benchmark]
+public void Type_113_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Antiforgery.IAntiforgeryAdditionalDataProvider));
+}
+
+[Benchmark]
+public void Type_113_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Antiforgery.IAntiforgeryAdditionalDataProvider));
+}
+
+
+[Benchmark]
+public void Type_114_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPool<Microsoft.AspNetCore.Antiforgery.Internal.AntiforgerySerializationContext>));
+}
+
+[Benchmark]
+public void Type_114_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPool<Microsoft.AspNetCore.Antiforgery.Internal.AntiforgerySerializationContext>));
+}
+
+[Benchmark]
+public void Type_114_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.ObjectPool.ObjectPool<Microsoft.AspNetCore.Antiforgery.Internal.AntiforgerySerializationContext>));
+}
+
+
+[Benchmark]
+public void Type_115_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Text.Encodings.Web.HtmlEncoder));
+}
+
+[Benchmark]
+public void Type_115_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Text.Encodings.Web.HtmlEncoder));
+}
+
+[Benchmark]
+public void Type_115_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Text.Encodings.Web.HtmlEncoder));
+}
+
+
+[Benchmark]
+public void Type_116_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Text.Encodings.Web.JavaScriptEncoder));
+}
+
+[Benchmark]
+public void Type_116_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Text.Encodings.Web.JavaScriptEncoder));
+}
+
+[Benchmark]
+public void Type_116_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Text.Encodings.Web.JavaScriptEncoder));
+}
+
+
+[Benchmark]
+public void Type_117_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_117_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_117_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+
+[Benchmark]
+public void Type_118_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_118_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_118_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+
+[Benchmark]
+public void Type_119_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine));
+}
+
+[Benchmark]
+public void Type_119_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine));
+}
+
+[Benchmark]
+public void Type_119_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine));
+}
+
+
+[Benchmark]
+public void Type_120_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewResultExecutor));
+}
+
+[Benchmark]
+public void Type_120_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewResultExecutor));
+}
+
+[Benchmark]
+public void Type_120_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_121_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.PartialViewResultExecutor));
+}
+
+[Benchmark]
+public void Type_121_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.PartialViewResultExecutor));
+}
+
+[Benchmark]
+public void Type_121_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.PartialViewResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_122_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper));
+}
+
+[Benchmark]
+public void Type_122_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper));
+}
+
+[Benchmark]
+public void Type_122_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper));
+}
+
+
+[Benchmark]
+public void Type_123_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator));
+}
+
+[Benchmark]
+public void Type_123_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator));
+}
+
+[Benchmark]
+public void Type_123_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator));
+}
+
+
+[Benchmark]
+public void Type_124_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ExpressionTextCache));
+}
+
+[Benchmark]
+public void Type_124_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ExpressionTextCache));
+}
+
+[Benchmark]
+public void Type_124_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ExpressionTextCache));
+}
+
+
+[Benchmark]
+public void Type_125_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider));
+}
+
+[Benchmark]
+public void Type_125_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider));
+}
+
+[Benchmark]
+public void Type_125_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider));
+}
+
+
+[Benchmark]
+public void Type_126_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ValidationHtmlAttributeProvider));
+}
+
+[Benchmark]
+public void Type_126_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ValidationHtmlAttributeProvider));
+}
+
+[Benchmark]
+public void Type_126_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ValidationHtmlAttributeProvider));
+}
+
+
+[Benchmark]
+public void Type_127_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper));
+}
+
+[Benchmark]
+public void Type_127_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper));
+}
+
+[Benchmark]
+public void Type_127_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper));
+}
+
+
+[Benchmark]
+public void Type_128_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.JsonOutputFormatter));
+}
+
+[Benchmark]
+public void Type_128_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.JsonOutputFormatter));
+}
+
+[Benchmark]
+public void Type_128_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.JsonOutputFormatter));
+}
+
+
+[Benchmark]
+public void Type_129_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentSelector));
+}
+
+[Benchmark]
+public void Type_129_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentSelector));
+}
+
+[Benchmark]
+public void Type_129_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentSelector));
+}
+
+
+[Benchmark]
+public void Type_130_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentFactory));
+}
+
+[Benchmark]
+public void Type_130_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentFactory));
+}
+
+[Benchmark]
+public void Type_130_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentFactory));
+}
+
+
+[Benchmark]
+public void Type_131_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentActivator));
+}
+
+[Benchmark]
+public void Type_131_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentActivator));
+}
+
+[Benchmark]
+public void Type_131_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentActivator));
+}
+
+
+[Benchmark]
+public void Type_132_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentDescriptorCollectionProvider));
+}
+
+[Benchmark]
+public void Type_132_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentDescriptorCollectionProvider));
+}
+
+[Benchmark]
+public void Type_132_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentDescriptorCollectionProvider));
+}
+
+
+[Benchmark]
+public void Type_133_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewComponentResultExecutor));
+}
+
+[Benchmark]
+public void Type_133_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewComponentResultExecutor));
+}
+
+[Benchmark]
+public void Type_133_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewComponentResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_134_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewComponentInvokerCache));
+}
+
+[Benchmark]
+public void Type_134_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewComponentInvokerCache));
+}
+
+[Benchmark]
+public void Type_134_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewComponentInvokerCache));
+}
+
+
+[Benchmark]
+public void Type_135_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentDescriptorProvider));
+}
+
+[Benchmark]
+public void Type_135_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentDescriptorProvider));
+}
+
+[Benchmark]
+public void Type_135_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentDescriptorProvider));
+}
+
+
+[Benchmark]
+public void Type_136_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentInvokerFactory));
+}
+
+[Benchmark]
+public void Type_136_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentInvokerFactory));
+}
+
+[Benchmark]
+public void Type_136_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewComponents.IViewComponentInvokerFactory));
+}
+
+
+[Benchmark]
+public void Type_137_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.IViewComponentHelper));
+}
+
+[Benchmark]
+public void Type_137_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.IViewComponentHelper));
+}
+
+[Benchmark]
+public void Type_137_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.IViewComponentHelper));
+}
+
+
+[Benchmark]
+public void Type_138_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.SaveTempDataFilter));
+}
+
+[Benchmark]
+public void Type_138_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.SaveTempDataFilter));
+}
+
+[Benchmark]
+public void Type_138_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.SaveTempDataFilter));
+}
+
+
+[Benchmark]
+public void Type_139_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ControllerSaveTempDataPropertyFilter));
+}
+
+[Benchmark]
+public void Type_139_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ControllerSaveTempDataPropertyFilter));
+}
+
+[Benchmark]
+public void Type_139_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ControllerSaveTempDataPropertyFilter));
+}
+
+
+[Benchmark]
+public void Type_140_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider));
+}
+
+[Benchmark]
+public void Type_140_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider));
+}
+
+[Benchmark]
+public void Type_140_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider));
+}
+
+
+[Benchmark]
+public void Type_141_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ValidateAntiforgeryTokenAuthorizationFilter));
+}
+
+[Benchmark]
+public void Type_141_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ValidateAntiforgeryTokenAuthorizationFilter));
+}
+
+[Benchmark]
+public void Type_141_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ValidateAntiforgeryTokenAuthorizationFilter));
+}
+
+
+[Benchmark]
+public void Type_142_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.AutoValidateAntiforgeryTokenAuthorizationFilter));
+}
+
+[Benchmark]
+public void Type_142_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.AutoValidateAntiforgeryTokenAuthorizationFilter));
+}
+
+[Benchmark]
+public void Type_142_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.AutoValidateAntiforgeryTokenAuthorizationFilter));
+}
+
+
+[Benchmark]
+public void Type_143_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionaryFactory));
+}
+
+[Benchmark]
+public void Type_143_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionaryFactory));
+}
+
+[Benchmark]
+public void Type_143_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionaryFactory));
+}
+
+
+[Benchmark]
+public void Type_144_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Buffers.ArrayPool<Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewBufferValue>));
+}
+
+[Benchmark]
+public void Type_144_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Buffers.ArrayPool<Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewBufferValue>));
+}
+
+[Benchmark]
+public void Type_144_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Buffers.ArrayPool<Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.ViewBufferValue>));
+}
+
+
+[Benchmark]
+public void Type_145_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.IViewBufferScope));
+}
+
+[Benchmark]
+public void Type_145_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.IViewBufferScope));
+}
+
+[Benchmark]
+public void Type_145_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ViewFeatures.Internal.IViewBufferScope));
+}
+
+
+[Benchmark]
+public void Type_146_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.CSharpCompiler));
+}
+
+[Benchmark]
+public void Type_146_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.CSharpCompiler));
+}
+
+[Benchmark]
+public void Type_146_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.CSharpCompiler));
+}
+
+
+[Benchmark]
+public void Type_147_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorReferenceManager));
+}
+
+[Benchmark]
+public void Type_147_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorReferenceManager));
+}
+
+[Benchmark]
+public void Type_147_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorReferenceManager));
+}
+
+
+[Benchmark]
+public void Type_148_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_148_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_148_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+
+[Benchmark]
+public void Type_149_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_149_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_149_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+
+[Benchmark]
+public void Type_150_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.IRazorViewEngineFileProviderAccessor));
+}
+
+[Benchmark]
+public void Type_150_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.IRazorViewEngineFileProviderAccessor));
+}
+
+[Benchmark]
+public void Type_150_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.IRazorViewEngineFileProviderAccessor));
+}
+
+
+[Benchmark]
+public void Type_151_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine));
+}
+
+[Benchmark]
+public void Type_151_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine));
+}
+
+[Benchmark]
+public void Type_151_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine));
+}
+
+
+[Benchmark]
+public void Type_152_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompilerProvider));
+}
+
+[Benchmark]
+public void Type_152_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompilerProvider));
+}
+
+[Benchmark]
+public void Type_152_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompilerProvider));
+}
+
+
+[Benchmark]
+public void Type_153_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorPageFactoryProvider));
+}
+
+[Benchmark]
+public void Type_153_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorPageFactoryProvider));
+}
+
+[Benchmark]
+public void Type_153_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorPageFactoryProvider));
+}
+
+
+[Benchmark]
+public void Type_154_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorProject));
+}
+
+[Benchmark]
+public void Type_154_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorProject));
+}
+
+[Benchmark]
+public void Type_154_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorProject));
+}
+
+
+[Benchmark]
+public void Type_155_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorTemplateEngine));
+}
+
+[Benchmark]
+public void Type_155_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorTemplateEngine));
+}
+
+[Benchmark]
+public void Type_155_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorTemplateEngine));
+}
+
+
+[Benchmark]
+public void Type_156_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.LazyMetadataReferenceFeature));
+}
+
+[Benchmark]
+public void Type_156_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.LazyMetadataReferenceFeature));
+}
+
+[Benchmark]
+public void Type_156_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.Internal.LazyMetadataReferenceFeature));
+}
+
+
+[Benchmark]
+public void Type_157_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorEngine));
+}
+
+[Benchmark]
+public void Type_157_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorEngine));
+}
+
+[Benchmark]
+public void Type_157_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Razor.Language.RazorEngine));
+}
+
+
+[Benchmark]
+public void Type_158_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorPageActivator));
+}
+
+[Benchmark]
+public void Type_158_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorPageActivator));
+}
+
+[Benchmark]
+public void Type_158_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.IRazorPageActivator));
+}
+
+
+[Benchmark]
+public void Type_159_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.ITagHelperActivator));
+}
+
+[Benchmark]
+public void Type_159_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.ITagHelperActivator));
+}
+
+[Benchmark]
+public void Type_159_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.ITagHelperActivator));
+}
+
+
+[Benchmark]
+public void Type_160_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.ITagHelperFactory));
+}
+
+[Benchmark]
+public void Type_160_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.ITagHelperFactory));
+}
+
+[Benchmark]
+public void Type_160_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.ITagHelperFactory));
+}
+
+
+[Benchmark]
+public void Type_161_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager));
+}
+
+[Benchmark]
+public void Type_161_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager));
+}
+
+[Benchmark]
+public void Type_161_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager));
+}
+
+
+[Benchmark]
+public void Type_162_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Caching.Memory.IMemoryCache));
+}
+
+[Benchmark]
+public void Type_162_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Caching.Memory.IMemoryCache));
+}
+
+[Benchmark]
+public void Type_162_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Caching.Memory.IMemoryCache));
+}
+
+
+[Benchmark]
+public void Type_163_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorChangeProvider));
+}
+
+[Benchmark]
+public void Type_163_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorChangeProvider));
+}
+
+[Benchmark]
+public void Type_163_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorChangeProvider));
+}
+
+
+[Benchmark]
+public void Type_164_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider));
+}
+
+[Benchmark]
+public void Type_164_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider));
+}
+
+[Benchmark]
+public void Type_164_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider));
+}
+
+
+[Benchmark]
+public void Type_165_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider));
+}
+
+[Benchmark]
+public void Type_165_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider));
+}
+
+[Benchmark]
+public void Type_165_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider));
+}
+
+
+[Benchmark]
+public void Type_166_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_166_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_166_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_167_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_167_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_167_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_168_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_168_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_168_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_169_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_169_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+[Benchmark]
+public void Type_169_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider));
+}
+
+
+[Benchmark]
+public void Type_170_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageModelActivatorProvider));
+}
+
+[Benchmark]
+public void Type_170_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageModelActivatorProvider));
+}
+
+[Benchmark]
+public void Type_170_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageModelActivatorProvider));
+}
+
+
+[Benchmark]
+public void Type_171_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageModelFactoryProvider));
+}
+
+[Benchmark]
+public void Type_171_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageModelFactoryProvider));
+}
+
+[Benchmark]
+public void Type_171_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageModelFactoryProvider));
+}
+
+
+[Benchmark]
+public void Type_172_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageActivatorProvider));
+}
+
+[Benchmark]
+public void Type_172_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageActivatorProvider));
+}
+
+[Benchmark]
+public void Type_172_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageActivatorProvider));
+}
+
+
+[Benchmark]
+public void Type_173_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageFactoryProvider));
+}
+
+[Benchmark]
+public void Type_173_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageFactoryProvider));
+}
+
+[Benchmark]
+public void Type_173_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.IPageFactoryProvider));
+}
+
+
+[Benchmark]
+public void Type_174_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageLoader));
+}
+
+[Benchmark]
+public void Type_174_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageLoader));
+}
+
+[Benchmark]
+public void Type_174_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageLoader));
+}
+
+
+[Benchmark]
+public void Type_175_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageHandlerMethodSelector));
+}
+
+[Benchmark]
+public void Type_175_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageHandlerMethodSelector));
+}
+
+[Benchmark]
+public void Type_175_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.IPageHandlerMethodSelector));
+}
+
+
+[Benchmark]
+public void Type_176_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageArgumentBinder));
+}
+
+[Benchmark]
+public void Type_176_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageArgumentBinder));
+}
+
+[Benchmark]
+public void Type_176_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageArgumentBinder));
+}
+
+
+[Benchmark]
+public void Type_177_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageResultExecutor));
+}
+
+[Benchmark]
+public void Type_177_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageResultExecutor));
+}
+
+[Benchmark]
+public void Type_177_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_178_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageSaveTempDataPropertyFilter));
+}
+
+[Benchmark]
+public void Type_178_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageSaveTempDataPropertyFilter));
+}
+
+[Benchmark]
+public void Type_178_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.RazorPages.Internal.PageSaveTempDataPropertyFilter));
+}
+
+
+[Benchmark]
+public void Type_179_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperStorage));
+}
+
+[Benchmark]
+public void Type_179_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperStorage));
+}
+
+[Benchmark]
+public void Type_179_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperStorage));
+}
+
+
+[Benchmark]
+public void Type_180_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperFormatter));
+}
+
+[Benchmark]
+public void Type_180_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperFormatter));
+}
+
+[Benchmark]
+public void Type_180_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperFormatter));
+}
+
+
+[Benchmark]
+public void Type_181_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperService));
+}
+
+[Benchmark]
+public void Type_181_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperService));
+}
+
+[Benchmark]
+public void Type_181_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperService));
+}
+
+
+[Benchmark]
+public void Type_182_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Caching.Distributed.IDistributedCache));
+}
+
+[Benchmark]
+public void Type_182_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Caching.Distributed.IDistributedCache));
+}
+
+[Benchmark]
+public void Type_182_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Caching.Distributed.IDistributedCache));
+}
+
+
+[Benchmark]
+public void Type_183_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Internal.CacheTagHelperMemoryCacheFactory));
+}
+
+[Benchmark]
+public void Type_183_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Internal.CacheTagHelperMemoryCacheFactory));
+}
+
+[Benchmark]
+public void Type_183_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.TagHelpers.Internal.CacheTagHelperMemoryCacheFactory));
+}
+
+
+[Benchmark]
+public void Type_184_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.Json.Internal.JsonResultExecutor));
+}
+
+[Benchmark]
+public void Type_184_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.Json.Internal.JsonResultExecutor));
+}
+
+[Benchmark]
+public void Type_184_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Formatters.Json.Internal.JsonResultExecutor));
+}
+
+
+[Benchmark]
+public void Type_185_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Cors.Infrastructure.ICorsService));
+}
+
+[Benchmark]
+public void Type_185_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Cors.Infrastructure.ICorsService));
+}
+
+[Benchmark]
+public void Type_185_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Cors.Infrastructure.ICorsService));
+}
+
+
+[Benchmark]
+public void Type_186_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Cors.Infrastructure.ICorsPolicyProvider));
+}
+
+[Benchmark]
+public void Type_186_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Cors.Infrastructure.ICorsPolicyProvider));
+}
+
+[Benchmark]
+public void Type_186_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Cors.Infrastructure.ICorsPolicyProvider));
+}
+
+
+[Benchmark]
+public void Type_187_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.AspNetCore.Mvc.Cors.CorsAuthorizationFilter));
+}
+
+[Benchmark]
+public void Type_187_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.AspNetCore.Mvc.Cors.CorsAuthorizationFilter));
+}
+
+[Benchmark]
+public void Type_187_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.AspNetCore.Mvc.Cors.CorsAuthorizationFilter));
+}
+
+
+[Benchmark]
+public void Type_188_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.IServiceProvider));
+}
+
+[Benchmark]
+public void Type_188_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.IServiceProvider));
+}
+
+[Benchmark]
+public void Type_188_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.IServiceProvider));
+}
+
+
+[Benchmark]
+public void Type_189_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory));
+}
+
+[Benchmark]
+public void Type_189_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory));
+}
+
+[Benchmark]
+public void Type_189_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory));
+}
+
+
+[Benchmark]
+public void Type_190_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Features.FormOptions>));
+}
+
+[Benchmark]
+public void Type_190_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Features.FormOptions>));
+}
+
+[Benchmark]
+public void Type_190_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Features.FormOptions>));
+}
+
+
+[Benchmark]
+public void Type_191_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Http.Features.FormOptions>));
+}
+
+[Benchmark]
+public void Type_191_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Http.Features.FormOptions>));
+}
+
+[Benchmark]
+public void Type_191_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Http.Features.FormOptions>));
+}
+
+
+[Benchmark]
+public void Type_192_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Http.Features.FormOptions>>));
+}
+
+[Benchmark]
+public void Type_192_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Http.Features.FormOptions>>));
+}
+
+[Benchmark]
+public void Type_192_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Http.Features.FormOptions>>));
+}
+
+
+[Benchmark]
+public void Type_193_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Http.Features.FormOptions>>));
+}
+
+[Benchmark]
+public void Type_193_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Http.Features.FormOptions>>));
+}
+
+[Benchmark]
+public void Type_193_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Http.Features.FormOptions>>));
+}
+
+
+[Benchmark]
+public void Type_194_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>));
+}
+
+[Benchmark]
+public void Type_194_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>));
+}
+
+[Benchmark]
+public void Type_194_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>));
+}
+
+
+[Benchmark]
+public void Type_195_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.LoggerFilterOptions));
+}
+
+[Benchmark]
+public void Type_195_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.LoggerFilterOptions));
+}
+
+[Benchmark]
+public void Type_195_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.LoggerFilterOptions));
+}
+
+
+[Benchmark]
+public void Type_196_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_196_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_196_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+
+[Benchmark]
+public void Type_197_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+[Benchmark]
+public void Type_197_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+[Benchmark]
+public void Type_197_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+
+[Benchmark]
+public void Type_198_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+[Benchmark]
+public void Type_198_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+[Benchmark]
+public void Type_198_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>));
+}
+
+
+[Benchmark]
+public void Type_199_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>>));
+}
+
+[Benchmark]
+public void Type_199_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>>));
+}
+
+[Benchmark]
+public void Type_199_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>>));
+}
+
+
+[Benchmark]
+public void Type_200_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>>));
+}
+
+[Benchmark]
+public void Type_200_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>>));
+}
+
+[Benchmark]
+public void Type_200_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.DataProtection.KeyManagement.KeyManagementOptions>>));
+}
+
+
+[Benchmark]
+public void Type_201_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.DependencyInjection.ServiceProviderOptions));
+}
+
+[Benchmark]
+public void Type_201_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.DependencyInjection.ServiceProviderOptions));
+}
+
+[Benchmark]
+public void Type_201_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.DependencyInjection.ServiceProviderOptions));
+}
+
+
+[Benchmark]
+public void Type_202_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.ApplicationLifetime>));
+}
+
+[Benchmark]
+public void Type_202_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.ApplicationLifetime>));
+}
+
+[Benchmark]
+public void Type_202_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.ApplicationLifetime>));
+}
+
+
+[Benchmark]
+public void Type_203_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.HostedServiceExecutor>));
+}
+
+[Benchmark]
+public void Type_203_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.HostedServiceExecutor>));
+}
+
+[Benchmark]
+public void Type_203_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.HostedServiceExecutor>));
+}
+
+
+[Benchmark]
+public void Type_204_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Hosting.IHostedService>));
+}
+
+[Benchmark]
+public void Type_204_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Hosting.IHostedService>));
+}
+
+[Benchmark]
+public void Type_204_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Hosting.IHostedService>));
+}
+
+
+[Benchmark]
+public void Type_205_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+[Benchmark]
+public void Type_205_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+[Benchmark]
+public void Type_205_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+
+[Benchmark]
+public void Type_206_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+[Benchmark]
+public void Type_206_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+[Benchmark]
+public void Type_206_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Routing.RouteOptions>));
+}
+
+
+[Benchmark]
+public void Type_207_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>>));
+}
+
+[Benchmark]
+public void Type_207_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>>));
+}
+
+[Benchmark]
+public void Type_207_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>>));
+}
+
+
+[Benchmark]
+public void Type_208_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>>));
+}
+
+[Benchmark]
+public void Type_208_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>>));
+}
+
+[Benchmark]
+public void Type_208_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Routing.RouteOptions>>));
+}
+
+
+[Benchmark]
+public void Type_209_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>));
+}
+
+[Benchmark]
+public void Type_209_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>));
+}
+
+[Benchmark]
+public void Type_209_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>));
+}
+
+
+[Benchmark]
+public void Type_210_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>));
+}
+
+[Benchmark]
+public void Type_210_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>));
+}
+
+[Benchmark]
+public void Type_210_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>));
+}
+
+
+[Benchmark]
+public void Type_211_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>>));
+}
+
+[Benchmark]
+public void Type_211_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>>));
+}
+
+[Benchmark]
+public void Type_211_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>>));
+}
+
+
+[Benchmark]
+public void Type_212_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>>));
+}
+
+[Benchmark]
+public void Type_212_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>>));
+}
+
+[Benchmark]
+public void Type_212_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions>>));
+}
+
+
+[Benchmark]
+public void Type_213_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>));
+}
+
+[Benchmark]
+public void Type_213_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>));
+}
+
+[Benchmark]
+public void Type_213_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>));
+}
+
+
+[Benchmark]
+public void Type_214_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcJsonOptions>));
+}
+
+[Benchmark]
+public void Type_214_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcJsonOptions>));
+}
+
+[Benchmark]
+public void Type_214_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcJsonOptions>));
+}
+
+
+[Benchmark]
+public void Type_215_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>>));
+}
+
+[Benchmark]
+public void Type_215_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>>));
+}
+
+[Benchmark]
+public void Type_215_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>>));
+}
+
+
+[Benchmark]
+public void Type_216_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>>));
+}
+
+[Benchmark]
+public void Type_216_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>>));
+}
+
+[Benchmark]
+public void Type_216_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcJsonOptions>>));
+}
+
+
+[Benchmark]
+public void Type_217_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_217_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_217_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+
+[Benchmark]
+public void Type_218_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_218_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+[Benchmark]
+public void Type_218_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcOptions>));
+}
+
+
+[Benchmark]
+public void Type_219_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>));
+}
+
+[Benchmark]
+public void Type_219_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>));
+}
+
+[Benchmark]
+public void Type_219_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>));
+}
+
+
+[Benchmark]
+public void Type_220_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>));
+}
+
+[Benchmark]
+public void Type_220_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>));
+}
+
+[Benchmark]
+public void Type_220_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>));
+}
+
+
+[Benchmark]
+public void Type_221_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>));
+}
+
+[Benchmark]
+public void Type_221_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>));
+}
+
+[Benchmark]
+public void Type_221_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>));
+}
+
+
+[Benchmark]
+public void Type_222_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Authorization.AuthorizationOptions>));
+}
+
+[Benchmark]
+public void Type_222_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Authorization.AuthorizationOptions>));
+}
+
+[Benchmark]
+public void Type_222_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Authorization.AuthorizationOptions>));
+}
+
+
+[Benchmark]
+public void Type_223_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>));
+}
+
+[Benchmark]
+public void Type_223_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>));
+}
+
+[Benchmark]
+public void Type_223_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>));
+}
+
+
+[Benchmark]
+public void Type_224_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>));
+}
+
+[Benchmark]
+public void Type_224_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>));
+}
+
+[Benchmark]
+public void Type_224_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authorization.AuthorizationOptions>>));
+}
+
+
+[Benchmark]
+public void Type_225_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider>));
+}
+
+[Benchmark]
+public void Type_225_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider>));
+}
+
+[Benchmark]
+public void Type_225_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IApplicationModelProvider>));
+}
+
+
+[Benchmark]
+public void Type_226_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider>));
+}
+
+[Benchmark]
+public void Type_226_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider>));
+}
+
+[Benchmark]
+public void Type_226_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelProvider>));
+}
+
+
+[Benchmark]
+public void Type_227_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>));
+}
+
+[Benchmark]
+public void Type_227_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>));
+}
+
+[Benchmark]
+public void Type_227_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>));
+}
+
+
+[Benchmark]
+public void Type_228_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>));
+}
+
+[Benchmark]
+public void Type_228_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>));
+}
+
+[Benchmark]
+public void Type_228_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>));
+}
+
+
+[Benchmark]
+public void Type_229_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>>));
+}
+
+[Benchmark]
+public void Type_229_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>>));
+}
+
+[Benchmark]
+public void Type_229_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>>));
+}
+
+
+[Benchmark]
+public void Type_230_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>>));
+}
+
+[Benchmark]
+public void Type_230_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>>));
+}
+
+[Benchmark]
+public void Type_230_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>>));
+}
+
+
+[Benchmark]
+public void Type_231_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider>));
+}
+
+[Benchmark]
+public void Type_231_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider>));
+}
+
+[Benchmark]
+public void Type_231_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider>));
+}
+
+
+[Benchmark]
+public void Type_232_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorChangeProvider>));
+}
+
+[Benchmark]
+public void Type_232_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorChangeProvider>));
+}
+
+[Benchmark]
+public void Type_232_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorChangeProvider>));
+}
+
+
+[Benchmark]
+public void Type_233_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider>));
+}
+
+[Benchmark]
+public void Type_233_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider>));
+}
+
+[Benchmark]
+public void Type_233_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider>));
+}
+
+
+[Benchmark]
+public void Type_234_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator>));
+}
+
+[Benchmark]
+public void Type_234_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator>));
+}
+
+[Benchmark]
+public void Type_234_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Internal.IControllerPropertyActivator>));
+}
+
+
+[Benchmark]
+public void Type_235_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider>));
+}
+
+[Benchmark]
+public void Type_235_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider>));
+}
+
+[Benchmark]
+public void Type_235_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider>));
+}
+
+
+[Benchmark]
+public void Type_236_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Filters.IFilterProvider>));
+}
+
+[Benchmark]
+public void Type_236_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Filters.IFilterProvider>));
+}
+
+[Benchmark]
+public void Type_236_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Filters.IFilterProvider>));
+}
+
+
+[Benchmark]
+public void Type_237_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>));
+}
+
+[Benchmark]
+public void Type_237_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>));
+}
+
+[Benchmark]
+public void Type_237_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>));
+}
+
+
+[Benchmark]
+public void Type_238_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider>));
+}
+
+[Benchmark]
+public void Type_238_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider>));
+}
+
+[Benchmark]
+public void Type_238_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationModels.IPageApplicationModelProvider>));
+}
+
+
+[Benchmark]
+public void Type_239_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_239_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_239_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+
+[Benchmark]
+public void Type_240_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_240_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+[Benchmark]
+public void Type_240_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>));
+}
+
+
+[Benchmark]
+public void Type_241_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>>));
+}
+
+[Benchmark]
+public void Type_241_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>>));
+}
+
+[Benchmark]
+public void Type_241_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>>));
+}
+
+
+[Benchmark]
+public void Type_242_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>>));
+}
+
+[Benchmark]
+public void Type_242_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>>));
+}
+
+[Benchmark]
+public void Type_242_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>>));
+}
+
+
+[Benchmark]
+public void Type_243_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>));
+}
+
+[Benchmark]
+public void Type_243_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>));
+}
+
+[Benchmark]
+public void Type_243_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>));
+}
+
+
+[Benchmark]
+public void Type_244_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>));
+}
+
+[Benchmark]
+public void Type_244_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>));
+}
+
+[Benchmark]
+public void Type_244_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>));
+}
+
+
+[Benchmark]
+public void Type_245_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>>));
+}
+
+[Benchmark]
+public void Type_245_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>>));
+}
+
+[Benchmark]
+public void Type_245_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>>));
+}
+
+
+[Benchmark]
+public void Type_246_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>>));
+}
+
+[Benchmark]
+public void Type_246_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>>));
+}
+
+[Benchmark]
+public void Type_246_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>>));
+}
+
+
+[Benchmark]
+public void Type_247_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>));
+}
+
+[Benchmark]
+public void Type_247_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>));
+}
+
+[Benchmark]
+public void Type_247_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>));
+}
+
+
+[Benchmark]
+public void Type_248_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_248_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_248_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>>));
+}
+
+
+[Benchmark]
+public void Type_249_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_249_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_249_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions>>));
+}
+
+
+[Benchmark]
+public void Type_250_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Mvc.Internal.ContentResultExecutor>));
+}
+
+[Benchmark]
+public void Type_250_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Mvc.Internal.ContentResultExecutor>));
+}
+
+[Benchmark]
+public void Type_250_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Mvc.Internal.ContentResultExecutor>));
+}
+
+
+[Benchmark]
+public void Type_251_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider>));
+}
+
+[Benchmark]
+public void Type_251_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider>));
+}
+
+[Benchmark]
+public void Type_251_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider>));
+}
+
+
+[Benchmark]
+public void Type_252_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>));
+}
+
+[Benchmark]
+public void Type_252_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>));
+}
+
+[Benchmark]
+public void Type_252_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>));
+}
+
+
+[Benchmark]
+public void Type_253_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Authentication.AuthenticationOptions>));
+}
+
+[Benchmark]
+public void Type_253_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Authentication.AuthenticationOptions>));
+}
+
+[Benchmark]
+public void Type_253_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Authentication.AuthenticationOptions>));
+}
+
+
+[Benchmark]
+public void Type_254_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>>));
+}
+
+[Benchmark]
+public void Type_254_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>>));
+}
+
+[Benchmark]
+public void Type_254_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>>));
+}
+
+
+[Benchmark]
+public void Type_255_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>>));
+}
+
+[Benchmark]
+public void Type_255_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>>));
+}
+
+[Benchmark]
+public void Type_255_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Authentication.AuthenticationOptions>>));
+}
+
+
+[Benchmark]
+public void Type_256_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>));
+}
+
+[Benchmark]
+public void Type_256_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>));
+}
+
+[Benchmark]
+public void Type_256_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>));
+}
+
+
+[Benchmark]
+public void Type_257_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizationHandler>));
+}
+
+[Benchmark]
+public void Type_257_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizationHandler>));
+}
+
+[Benchmark]
+public void Type_257_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizationHandler>));
+}
+
+
+[Benchmark]
+public void Type_258_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+[Benchmark]
+public void Type_258_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+[Benchmark]
+public void Type_258_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+
+[Benchmark]
+public void Type_259_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+[Benchmark]
+public void Type_259_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+[Benchmark]
+public void Type_259_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>));
+}
+
+
+[Benchmark]
+public void Type_260_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>>));
+}
+
+[Benchmark]
+public void Type_260_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>>));
+}
+
+[Benchmark]
+public void Type_260_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>>));
+}
+
+
+[Benchmark]
+public void Type_261_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>>));
+}
+
+[Benchmark]
+public void Type_261_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>>));
+}
+
+[Benchmark]
+public void Type_261_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.DataProtection.DataProtectionOptions>>));
+}
+
+
+[Benchmark]
+public void Type_262_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+[Benchmark]
+public void Type_262_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+[Benchmark]
+public void Type_262_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+
+[Benchmark]
+public void Type_263_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+[Benchmark]
+public void Type_263_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+[Benchmark]
+public void Type_263_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>));
+}
+
+
+[Benchmark]
+public void Type_264_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>>));
+}
+
+[Benchmark]
+public void Type_264_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>>));
+}
+
+[Benchmark]
+public void Type_264_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>>));
+}
+
+
+[Benchmark]
+public void Type_265_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>>));
+}
+
+[Benchmark]
+public void Type_265_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>>));
+}
+
+[Benchmark]
+public void Type_265_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>>));
+}
+
+
+[Benchmark]
+public void Type_266_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_266_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_266_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+
+[Benchmark]
+public void Type_267_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_267_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+[Benchmark]
+public void Type_267_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.MvcViewOptions>));
+}
+
+
+[Benchmark]
+public void Type_268_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>>));
+}
+
+[Benchmark]
+public void Type_268_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>>));
+}
+
+[Benchmark]
+public void Type_268_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>>));
+}
+
+
+[Benchmark]
+public void Type_269_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>>));
+}
+
+[Benchmark]
+public void Type_269_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>>));
+}
+
+[Benchmark]
+public void Type_269_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions>>));
+}
+
+
+[Benchmark]
+public void Type_270_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent>));
+}
+
+[Benchmark]
+public void Type_270_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent>));
+}
+
+[Benchmark]
+public void Type_270_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent>));
+}
+
+
+[Benchmark]
+public void Type_271_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>));
+}
+
+[Benchmark]
+public void Type_271_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>));
+}
+
+[Benchmark]
+public void Type_271_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>));
+}
+
+
+[Benchmark]
+public void Type_272_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>));
+}
+
+[Benchmark]
+public void Type_272_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>));
+}
+
+[Benchmark]
+public void Type_272_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>));
+}
+
+
+[Benchmark]
+public void Type_273_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_273_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_273_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>>));
+}
+
+
+[Benchmark]
+public void Type_274_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_274_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_274_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>>));
+}
+
+
+[Benchmark]
+public void Type_275_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>));
+}
+
+[Benchmark]
+public void Type_275_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>));
+}
+
+[Benchmark]
+public void Type_275_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>));
+}
+
+
+[Benchmark]
+public void Type_276_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>));
+}
+
+[Benchmark]
+public void Type_276_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>));
+}
+
+[Benchmark]
+public void Type_276_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>));
+}
+
+
+[Benchmark]
+public void Type_277_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_277_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_277_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>>));
+}
+
+
+[Benchmark]
+public void Type_278_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_278_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>>));
+}
+
+[Benchmark]
+public void Type_278_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions>>));
+}
+
+
+[Benchmark]
+public void Type_279_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>));
+}
+
+[Benchmark]
+public void Type_279_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>));
+}
+
+[Benchmark]
+public void Type_279_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>));
+}
+
+
+[Benchmark]
+public void Type_280_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>));
+}
+
+[Benchmark]
+public void Type_280_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>));
+}
+
+[Benchmark]
+public void Type_280_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>));
+}
+
+
+[Benchmark]
+public void Type_281_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_281_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_281_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>>));
+}
+
+
+[Benchmark]
+public void Type_282_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_282_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>>));
+}
+
+[Benchmark]
+public void Type_282_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions>>));
+}
+
+
+[Benchmark]
+public void Type_283_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Mvc.Formatters.Json.Internal.JsonResultExecutor>));
+}
+
+[Benchmark]
+public void Type_283_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Mvc.Formatters.Json.Internal.JsonResultExecutor>));
+}
+
+[Benchmark]
+public void Type_283_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Mvc.Formatters.Json.Internal.JsonResultExecutor>));
+}
+
+
+[Benchmark]
+public void Type_284_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>));
+}
+
+[Benchmark]
+public void Type_284_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>));
+}
+
+[Benchmark]
+public void Type_284_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>));
+}
+
+
+[Benchmark]
+public void Type_285_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>));
+}
+
+[Benchmark]
+public void Type_285_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>));
+}
+
+[Benchmark]
+public void Type_285_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>));
+}
+
+
+[Benchmark]
+public void Type_286_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>>));
+}
+
+[Benchmark]
+public void Type_286_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>>));
+}
+
+[Benchmark]
+public void Type_286_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>>));
+}
+
+
+[Benchmark]
+public void Type_287_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>>));
+}
+
+[Benchmark]
+public void Type_287_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>>));
+}
+
+[Benchmark]
+public void Type_287_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions>>));
+}
+
+
+[Benchmark]
+public void Type_288_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_288_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_288_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+
+[Benchmark]
+public void Type_289_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IOptionsChangeTokenSource<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+[Benchmark]
+public void Type_289_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IOptionsChangeTokenSource<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+[Benchmark]
+public void Type_289_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IOptionsChangeTokenSource<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+
+[Benchmark]
+public void Type_290_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsMonitorCache<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_290_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsMonitorCache<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+[Benchmark]
+public void Type_290_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsMonitorCache<Microsoft.Extensions.Logging.LoggerFilterOptions>));
+}
+
+
+[Benchmark]
+public void Type_291_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+[Benchmark]
+public void Type_291_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+[Benchmark]
+public void Type_291_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+
+[Benchmark]
+public void Type_292_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+[Benchmark]
+public void Type_292_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+[Benchmark]
+public void Type_292_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.Logging.LoggerFilterOptions>>));
+}
+
+
+[Benchmark]
+public void Type_293_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>));
+}
+
+[Benchmark]
+public void Type_293_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>));
+}
+
+[Benchmark]
+public void Type_293_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>));
+}
+
+
+[Benchmark]
+public void Type_294_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.WebEncoders.WebEncoderOptions>));
+}
+
+[Benchmark]
+public void Type_294_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.WebEncoders.WebEncoderOptions>));
+}
+
+[Benchmark]
+public void Type_294_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Options.IOptionsFactory<Microsoft.Extensions.WebEncoders.WebEncoderOptions>));
+}
+
+
+[Benchmark]
+public void Type_295_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>>));
+}
+
+[Benchmark]
+public void Type_295_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>>));
+}
+
+[Benchmark]
+public void Type_295_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>>));
+}
+
+
+[Benchmark]
+public void Type_296_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>>));
+}
+
+[Benchmark]
+public void Type_296_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>>));
+}
+
+[Benchmark]
+public void Type_296_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IPostConfigureOptions<Microsoft.Extensions.WebEncoders.WebEncoderOptions>>));
+}
+
+
+[Benchmark]
+public void Type_297_Lamar()
+{
+    var value = Providers[0].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Hosting.IStartupFilter>));
+}
+
+[Benchmark]
+public void Type_297_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Hosting.IStartupFilter>));
+}
+
+[Benchmark]
+public void Type_297_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Hosting.IStartupFilter>));
+}
+
+
+[Benchmark]
+public void Type_298_Lamar()
+{
+    var value = Providers[0].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.WebHost>));
+}
+
+[Benchmark]
+public void Type_298_StructureMap()
+{
+    var value = Providers[1].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.WebHost>));
+}
+
+[Benchmark]
+public void Type_298_AspNetCore()
+{
+    var value = Providers[2].GetService(typeof(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Hosting.Internal.WebHost>));
+}
+

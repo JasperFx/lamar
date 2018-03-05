@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Baseline" Version="1.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="Shouldly" Version="2.8.3" />
+    <PackageReference Include="NSubstitute" Version="3.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Lamar\Lamar.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.GenericWidgets\StructureMap.Testing.GenericWidgets.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget3\StructureMap.Testing.Widget3.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget4\StructureMap.Testing.Widget4.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget5\StructureMap.Testing.Widget5.csproj" />
+    <ProjectReference Include="..\StructureMap.Testing.Widget\StructureMap.Testing.Widget.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Codegen\StubGeneratedMethod.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="IoC\Acceptance\generated_code.cs" />
+  </ItemGroup>
+</Project>

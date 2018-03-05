@@ -1,0 +1,4 @@
+﻿using Lamar;
+
+[assembly:IgnoreAssembly]
+
