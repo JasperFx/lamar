@@ -167,7 +167,7 @@ namespace Lamar
         {
             if (!ServiceType.IsGenericType) throw new InvalidOperationException($"{ServiceType.FullNameInCode()} is not an open generic type");
 
-            var instances = _instances.Values.Select(x => {
+            var instances = _instances.Values.ToArray().Select(x => {
                 var clone = x.CloseType(serviceType, templateTypes);
                 if (clone == null) return null;
 
