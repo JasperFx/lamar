@@ -490,33 +490,36 @@ namespace Lamar
 
         public void AppendServices(IServiceCollection services)
         {
-            applyScanners(services).Wait(TimeSpan.FromSeconds(2));
+            lock (_familyLock)
+            {
+                applyScanners(services).Wait(TimeSpan.FromSeconds(2));
 
-            services
-                .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
+                services
+                    .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
 
-                .GroupBy(x => x.ServiceType)
-                .Each(group =>
-                {
-                    if (_families.ContainsKey(group.Key))
+                    .GroupBy(x => x.ServiceType)
+                    .Each(group =>
                     {
-                        var family = _families[group.Key];
-                        if (family.Append(group) == AppendState.NewDefault)
+                        if (_families.ContainsKey(group.Key))
                         {
-                            _byType = _byType.Remove(group.Key);
-                        }
+                            var family = _families[group.Key];
+                            if (family.Append(group) == AppendState.NewDefault)
+                            {
+                                _byType = _byType.Remove(group.Key);
+                            }
                         
-                    }
-                    else
-                    {
-                        var family = buildFamilyForInstanceGroup(services, @group);
-                        _families.Add(@group.Key, family);
-                    }
-                });
+                        }
+                        else
+                        {
+                            var family = buildFamilyForInstanceGroup(services, @group);
+                            _families.Add(@group.Key, family);
+                        }
+                    });
 
-            buildOutMissingResolvers();
+                buildOutMissingResolvers();
             
-            rebuildReferencedAssemblyArray();
+                rebuildReferencedAssemblyArray();
+            }
 
         }
 
