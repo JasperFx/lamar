@@ -191,6 +191,7 @@ namespace Lamar
             public LambdaInstance<IServiceContext, T> Add(Func<IServiceContext, T> func) 
             {
                 var instance = LambdaInstance.For(func);
+                instance.Lifetime = _lifetime;
 
                 _parent.Add(instance);
 

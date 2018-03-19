@@ -22,5 +22,14 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<IWidget>().ShouldBeSameAs(original);
             container.GetInstance<IWidget>().ShouldBeSameAs(original);
         }    
+        
+        [Fact]
+        public void specify_lifetime_in_fluent_interface()
+        {
+            new ServiceRegistry().ForSingletonOf<IFoo>().Use(ctx => new Foo()).Lifetime.ShouldBe(ServiceLifetime.Singleton);
+        }
+        
+        public interface IFoo{}
+        public class Foo : IFoo{}
     }
 }
