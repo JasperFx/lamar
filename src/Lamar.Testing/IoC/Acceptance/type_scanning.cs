@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
@@ -30,6 +31,24 @@ namespace Lamar.Testing.IoC.Acceptance
         public void open_generic_scanning()
         {
             var container = new Container(i => i.Scan(s =>
+            {
+                s.AssemblyContainingType<type_scanning>();
+                //s.WithDefaultConventions();
+                s.AddAllTypesOf(typeof(ISomeInterface<>));
+            }));
+
+            container.GetInstance<ISomeInterface<Base>>()
+                .ShouldNotBeNull();
+
+            container.GetInstance<ISomeInterface<Derived>>()
+                .ShouldBeOfType<Foo>()
+                .ShouldNotBeNull();
+        }
+        
+        [Fact]
+        public async Task open_generic_scanning_async()
+        {
+            var container = await Container.BuildAsync(i => i.Scan(s =>
             {
                 s.AssemblyContainingType<type_scanning>();
                 //s.WithDefaultConventions();

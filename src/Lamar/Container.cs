@@ -10,6 +10,7 @@ using Lamar.IoC.Instances;
 using Lamar.Scanning;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Lamar
 {
@@ -57,6 +58,37 @@ namespace Lamar
             return new Container(registry);
         }
 
+        public static Task<Container> BuildAsync(Action<ServiceRegistry> configure)
+        {
+            var services = new ServiceRegistry();
+            configure(services);
+
+            return BuildAsync(services);
+        }
+
+        public static async Task<Container> BuildAsync(IServiceCollection services)
+        {
+            var container = new Container();
+            var graph = await ServiceGraph.BuildAsync(services, container);
+
+            container.Root = container;
+            container.ServiceGraph = graph;
+
+            var timer = new PerfTimer();
+            container.Bootstrapping = timer;
+            timer.Start("Bootstrapping Container");
+            
+            graph.Initialize(timer);
+
+            timer.Stop();
+
+            return container;
+        }
+
+        private Container() : base()
+        {
+            
+        }
 
         public Container(IServiceCollection services) : base(services)
         {

@@ -27,10 +27,30 @@ namespace Lamar
         private ImHashMap<Type, Func<Scope, object>> _byType = ImHashMap<Type, Func<Scope, object>>.Empty;
 
 
+        public static async Task<ServiceGraph> BuildAsync(IServiceCollection services, Scope rootScope)
+        {
+            var scanners = services.Select(x => x.ImplementationInstance).OfType<AssemblyScanner>().ToArray();
+            services.RemoveAll(x => x.ServiceType == typeof(AssemblyScanner));
+
+            foreach (var scanner in scanners)
+            {
+                await scanner.ApplyRegistrations(services);
+            }
+            
+            return new ServiceGraph(services, rootScope, scanners);
+        }
+        
+        
+        private ServiceGraph(IServiceCollection services, Scope rootScope, AssemblyScanner[] scanners)
+        {
+            Services = services;
+            _scanners = scanners;
+            _rootScope = rootScope;
+            organize(services);
+        }
+
         public ServiceGraph(IServiceCollection services, Scope rootScope)
         {
-            
-            
             Services = services;
 
 
@@ -40,6 +60,11 @@ namespace Lamar
             _rootScope = rootScope;
 
 
+            organize(services);
+        }
+
+        private void organize(IServiceCollection services)
+        {
             FamilyPolicies = services
                 .Where(x => x.ServiceType == typeof(IFamilyPolicy))
                 .Select(x => x.ImplementationInstance.As<IFamilyPolicy>())
@@ -53,7 +78,8 @@ namespace Lamar
                 })
                 .ToArray();
 
-            InstancePolicies = services.Where(x => x.ServiceType == typeof(IInstancePolicy) && x.ImplementationInstance is IInstancePolicy)
+            InstancePolicies = services.Where(x =>
+                    x.ServiceType == typeof(IInstancePolicy) && x.ImplementationInstance is IInstancePolicy)
                 .Select(x => x.ImplementationInstance.As<IInstancePolicy>()).ToArray();
 
 
@@ -64,7 +90,6 @@ namespace Lamar
             addScopeResolver<IServiceProvider>(services);
             addScopeResolver<IContainer>(services);
             addScopeResolver<IServiceScopeFactory>(services);
-
         }
 
         internal void Inject(Type serviceType, object @object)
@@ -86,7 +111,7 @@ namespace Lamar
 
         }
 
-        public IFamilyPolicy[] FamilyPolicies { get; }
+        public IFamilyPolicy[] FamilyPolicies { get; private set; }
 
         private void addScopeResolver<T>(IServiceCollection services)
         {

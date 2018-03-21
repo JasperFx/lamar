@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Lamar.Util;
 
 namespace Lamar.Scanning
 {
     // Really only tested in integration with other things
     public static class TypeRepository
     {
-        private static readonly ConcurrentDictionary<Assembly, Task<AssemblyTypes>> _assemblies = new ConcurrentDictionary<Assembly, Task<AssemblyTypes>>();
-        private static readonly object _locker = new object();
+        private static ImHashMap<Assembly, Task<AssemblyTypes>> _assemblies = ImHashMap<Assembly, Task<AssemblyTypes>>.Empty;
         
         public static void ClearAll()
         {
-            _assemblies.Clear();
+            _assemblies = ImHashMap<Assembly, Task<AssemblyTypes>>.Empty;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Lamar.Scanning
 
         public static IEnumerable<AssemblyTypes> FailedAssemblies()
         {
-            var tasks = _assemblies.Select(x => x.Value).ToArray();
+            var tasks = _assemblies.Enumerate().Select(x => x.Value).ToArray();
             Task.WaitAll(tasks);
 
             return tasks.Where(x => x.Result.Record.LoadException != null).Select(x => x.Result);
@@ -44,23 +44,15 @@ namespace Lamar.Scanning
 
         public static Task<AssemblyTypes> ForAssembly(Assembly assembly)
         {
-            if (!_assemblies.ContainsKey(assembly))
+            if (_assemblies.TryFind(assembly, out var types))
             {
-                lock (_locker)
-                {
-                    if (!_assemblies.ContainsKey(assembly))
-                    {
-                        var task = Task.Factory.StartNew(() => new AssemblyTypes(assembly));
-                        _assemblies[assembly] = task;
-
-                        return task;
-                    }
-                }
-
-                
+                return types;
             }
-            
-            return _assemblies[assembly];
+
+            types = Task.Factory.StartNew(() => new AssemblyTypes(assembly));
+            _assemblies = _assemblies.AddOrUpdate(assembly, types);
+
+            return types;
         }
 
         public static Task<TypeSet> FindTypes(IEnumerable<Assembly> assemblies, Func<Type, bool> filter = null)

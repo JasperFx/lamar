@@ -22,7 +22,7 @@ namespace Lamar.IoC
             return new Scope(new ServiceRegistry());
         }
 
-        public PerfTimer Bootstrapping { get; }
+        public PerfTimer Bootstrapping { get; protected set; }
 
         public Scope(IServiceCollection services, PerfTimer timer = null)
         {
@@ -60,7 +60,11 @@ namespace Lamar.IoC
 
         }
 
-        public Scope Root { get; }
+        protected Scope(){}
+        
+        public Scope Root { get; protected set; }
+
+        
 
         public Scope(ServiceGraph serviceGraph, Scope root)
         {
@@ -85,7 +89,7 @@ namespace Lamar.IoC
 
         public IModel Model => ServiceGraph;
 
-        internal ServiceGraph ServiceGraph { get; }
+        internal ServiceGraph ServiceGraph { get; set;}
 
 
         // TODO -- hide this from the public class?
