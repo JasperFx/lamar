@@ -59,7 +59,7 @@ namespace Lamar.IoC.Instances
 
         public override string ToString()
         {
-            return $"{nameof(Service)}: {Service} ('{Name}')";
+            return "User Supplied Object";
         }
     }
 }

@@ -53,5 +53,10 @@ namespace Lamar.IoC.Enumerables
         {
             return _elements.Select(x => x.QuickResolve(scope).As<T>()).ToList();
         }
+
+        public override string ToString()
+        {
+            return $"List of all {typeof(T).NameInCode()}";
+        }
     }
 }

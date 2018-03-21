@@ -244,12 +244,14 @@ namespace Lamar.IoC.Instances
 
         public override string ToString()
         {
+            string text = $"new {ImplementationType.ShortNameInCode()}()";
+            
             if (Constructor != null)
             {
-                return $"new {ImplementationType.NameInCode()}({Constructor.GetParameters().Select(x => x.ParameterType.NameInCode()).Join(", ")})";
+                text = $"new {ImplementationType.ShortNameInCode()}({Constructor.GetParameters().Select(x => x.Name).Join(", ")})";
             }
 
-            return $"new {ImplementationType.NameInCode()}()";
+            return text;
         }
 
         private static ConstructorInfo[] findConstructors(Type implementationType)

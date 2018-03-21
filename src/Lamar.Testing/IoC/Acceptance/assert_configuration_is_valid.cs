@@ -63,7 +63,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 container.AssertConfigurationIsValid(AssertMode.Full);
             });
             
-            ex.Message.ShouldContain("Error in new ThingThatBlowsUp(IWidget)");
+            ex.Message.ShouldContain("Error in new ThingThatBlowsUp(widget)");
             ex.Message.ShouldContain("DivideByZeroException");
         }
         

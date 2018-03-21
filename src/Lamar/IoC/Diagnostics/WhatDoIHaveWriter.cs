@@ -92,14 +92,28 @@ namespace Lamar.IoC.Diagnostics
         private void writeServiceType(IServiceFamilyConfiguration serviceType)
         {
             _writer.AddDivider('-');
+
+            var name = serviceType.ServiceType.ShortNameInCode();
+            var ns = serviceType.ServiceType.Namespace;
+
             var contents = new[]
             {
-                "{0}".ToFormat(serviceType.ServiceType.NameInCode()),
-                serviceType.ServiceType.Namespace,
+                name,
+                ns,
                 string.Empty,
                 string.Empty,
                 string.Empty
             };
+            
+            if (name.Length > 75)
+            {
+                contents[0] = contents[1] = string.Empty;
+                _writer.AddContent("ServiceType: " + name);
+                _writer.AddContent("  Namespace: " + ns);
+            }
+            
+            
+
 
             var instances = serviceType.Instances.ToArray();
             
@@ -133,26 +147,10 @@ namespace Lamar.IoC.Diagnostics
         {
             contents[2] = instance.Lifetime.ToString();
 
-            contents[3] = instance.ToString();
+            contents[3] = instance.ToString().Elid(75);
 
-            contents[4] = instance.Name;
 
-            if (isDefault)
-            {
-                if (contents[4].IsEmpty())
-                {
-                    contents[4] = "(Default)";
-                }
-                else
-                {
-                    contents[4] += " (Default)";
-                }
-            }
-
-            if (contents[4].Length > 30)
-            {
-                contents[4] = contents[4].Substring(0, 27) + "...";
-            }
+            contents[4] = instance.Name.Elid(25);
 
 
             _instances.Add(instance);

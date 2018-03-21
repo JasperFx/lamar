@@ -12,6 +12,18 @@ namespace Lamar.Util
 {
     internal static class StringExtensions
     {
+
+        public static string Elid(this string longString, int length)
+        {
+            if (longString.Length > length)
+            {
+                return longString.Substring(0, length - 3) + "...";
+            }
+
+            return longString;
+        }
+        
+        
         /// <summary>
         /// If the path is rooted, just returns the path.  Otherwise,
         /// combines root & path
