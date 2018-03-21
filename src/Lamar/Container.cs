@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Lamar.Codegen;
+using Lamar.Compilation;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
 using Lamar.Scanning;
@@ -13,6 +15,28 @@ namespace Lamar
 {
     public class Container : Scope, IContainer, IServiceScopeFactory
     {
+        private static Task _warmup;
+        
+        public static Task Warmup()
+        {
+            if (_warmup == null)
+            {
+                _warmup = Task.Factory.StartNew(() =>
+                {
+                    var generatedAssembly = new GeneratedAssembly(new GenerationRules("Lamar.Generated"));
+                    generatedAssembly.AddType("Tracer", typeof(IStub));
+                    
+                    
+                    generatedAssembly.CompileAll();
+
+                    _warmup = Task.CompletedTask;
+                });
+            }
+
+            return _warmup;
+        }
+        
+        
         private bool _isDisposing;
 
         public new static Container Empty()
@@ -224,6 +248,14 @@ namespace Lamar
 
             Configure(services);
         }
+    }
+
+    /// <summary>
+    /// Use internally by Lamar 
+    /// </summary>
+    public interface IStub
+    {
+        
     }
 
 }
