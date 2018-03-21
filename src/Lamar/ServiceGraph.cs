@@ -136,7 +136,7 @@ namespace Lamar
             
             var generatedSingletons = AllInstances()
                 .OfType<GeneratedInstance>()
-                .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric())
+                .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && x.IsDefault)
                 .TopologicalSort(x => x.Dependencies.OfType<GeneratedInstance>())
                 .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric()) // to get rid of things that get injected in again
                 .Distinct()
