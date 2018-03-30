@@ -36,11 +36,6 @@ namespace Lamar.Compilation
 
             if (_assemblies.Contains(assembly)) return;
 
-            if (assembly.FullName.Contains("Jasper.Testing"))
-            {
-                Debug.WriteLine("Somethig");
-            }
-
             _assemblies.Add(assembly);
 
             try
@@ -75,6 +70,8 @@ namespace Lamar.Compilation
 
         private static string createAssemblyReference(Assembly assembly)
         {
+            if (assembly.IsDynamic) return null;
+            
             return string.IsNullOrEmpty(assembly.Location)
                 ? GetPath(assembly)
                 : assembly.Location;
