@@ -89,7 +89,7 @@ namespace Lamar.IoC.Instances
             return new ConstructorInstance<TConcrete>(typeof(T), lifetime);
         }
 
-        IList<Instance> IConfiguredInstance.InlineDependencies => _inlines;
+        public IList<Instance> InlineDependencies => _inlines;
 
         public override object QuickResolve(Scope scope)
         {
@@ -353,6 +353,10 @@ namespace Lamar.IoC.Instances
         
         private readonly IList<Instance> _inlines = new List<Instance>();
 
+        /// <summary>
+        /// Adds an inline dependency
+        /// </summary>
+        /// <param name="instance"></param>
         internal void AddInline(Instance instance)
         {
             instance.Parent = this;
