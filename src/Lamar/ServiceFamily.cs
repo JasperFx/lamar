@@ -16,8 +16,11 @@ namespace Lamar
 
         public Type ServiceType { get; }
 
-        public ServiceFamily(Type serviceType, params Instance[] instances)
+        public ServiceFamily(Type serviceType, IDecoratorPolicy[] decoratorPolicies, params Instance[] instances)
         {
+            // First pass, see if you need to apply any decorators first
+            instances = applyDecorators(decoratorPolicies, instances).ToArray();
+            
             foreach (var instance in instances)
             {
                 instance.IsDefault = false;
@@ -49,6 +52,35 @@ namespace Lamar
             All = instances;
 
             FullNameInCode = serviceType.FullNameInCode();
+        }
+
+        private IEnumerable<Instance> applyDecorators(IDecoratorPolicy[] decoratorPolicies, Instance[] instances)
+        {
+            foreach (var instance in instances)
+            {
+                Instance current = instance;
+                
+                foreach (var decoratorPolicy in decoratorPolicies)
+                {
+                    if (decoratorPolicy.TryWrap(instance, out var wrapped))
+                    {
+                        wrapped.Name = instance.Name;
+                        instance.Name += "_Inner";
+
+                        
+                        
+                        // Pull it from the top one
+                        wrapped.Lifetime = instance.Lifetime;
+                        
+                        instance.Lifetime = ServiceLifetime.Transient;
+                        
+                        current = wrapped;
+                        
+                    }
+                }
+
+                yield return current;
+            }
         }
 
         public string FullNameInCode { get; }
@@ -160,10 +192,12 @@ namespace Lamar
         /// If the ServiceType is an open generic type, this method will create a
         /// closed type copy of this PluginFamily
         /// </summary>
-        /// <param name="types"></param>
+        /// <param name="serviceType"></param>
+        /// <param name="decoration"></param>
         /// <param name="templateTypes"></param>
+        /// <param name="types"></param>
         /// <returns></returns>
-        public ServiceFamily CreateTemplatedClone(Type serviceType, Type[] templateTypes)
+        public ServiceFamily CreateTemplatedClone(Type serviceType, IDecoratorPolicy[] decoration, Type[] templateTypes)
         {
             if (!ServiceType.IsGenericType) throw new InvalidOperationException($"{ServiceType.FullNameInCode()} is not an open generic type");
 
@@ -175,7 +209,7 @@ namespace Lamar
                 return clone;
             }).Where(x => x != null).ToArray();
 
-            return new ServiceFamily(serviceType, instances);
+            return new ServiceFamily(serviceType, decoration, instances);
         }
 
 

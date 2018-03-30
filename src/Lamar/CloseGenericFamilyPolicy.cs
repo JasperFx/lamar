@@ -22,7 +22,7 @@ namespace Lamar
                 var basicFamily = graph.ResolveFamily(basicType);
                 var templatedParameterTypes = type.GetGenericArguments();
 
-                return basicFamily.CreateTemplatedClone(type, templatedParameterTypes.ToArray());
+                return basicFamily.CreateTemplatedClone(type, graph.DecoratorPolicies, templatedParameterTypes.ToArray());
             }
             
             try
@@ -48,7 +48,7 @@ namespace Lamar
             {
                 var instances = connectingTypes.Select(x => new ConstructorInstance(type, x, ServiceLifetime.Transient)).ToArray();
 
-                return new ServiceFamily(type, instances);
+                return new ServiceFamily(type, new IDecoratorPolicy[0], instances);
             }
 
             // This is a problem right here. Need this to be exposed

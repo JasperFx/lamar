@@ -65,6 +65,11 @@ namespace Lamar
 
         private void organize(IServiceCollection services)
         {
+            DecoratorPolicies = services
+                .Where(x => x.ServiceType == typeof(IDecoratorPolicy))
+                .Select(x => x.ImplementationInstance.As<IDecoratorPolicy>())
+                .ToArray();
+            
             FamilyPolicies = services
                 .Where(x => x.ServiceType == typeof(IFamilyPolicy))
                 .Select(x => x.ImplementationInstance.As<IFamilyPolicy>())
@@ -85,12 +90,15 @@ namespace Lamar
 
             services.RemoveAll(x => x.ServiceType == typeof(IFamilyPolicy));
             services.RemoveAll(x => x.ServiceType == typeof(IInstancePolicy));
+            services.RemoveAll(x => x.ServiceType == typeof(IDecoratorPolicy));
 
             addScopeResolver<Scope>(services);
             addScopeResolver<IServiceProvider>(services);
             addScopeResolver<IContainer>(services);
             addScopeResolver<IServiceScopeFactory>(services);
         }
+
+        public IDecoratorPolicy[] DecoratorPolicies { get; private set; } = new IDecoratorPolicy[0];
 
         internal void Inject(Type serviceType, object @object)
         {
@@ -244,8 +252,11 @@ namespace Lamar
                 return buildClosedGenericType(@group.Key, services);
             }
 
-            var instances = @group.Select(Instance.For).ToArray();
-            return new ServiceFamily(@group.Key, instances);
+            var instances = @group
+                .Select(Instance.For)
+                .ToArray();
+            
+            return new ServiceFamily(@group.Key, DecoratorPolicies, instances);
         }
 
         private ServiceFamily buildClosedGenericType(Type serviceType, IServiceCollection services)
@@ -274,7 +285,7 @@ namespace Lamar
 
             var instances = templated.Concat(closed).ToArray();
 
-            return new ServiceFamily(serviceType, instances);
+            return new ServiceFamily(serviceType, DecoratorPolicies, instances);
         }
 
         public IServiceCollection Services { get; }
@@ -441,7 +452,7 @@ namespace Lamar
         public ServiceFamily TryToCreateMissingFamily(Type serviceType)
         {
             // TODO -- will need to make this more formal somehow
-            if (serviceType.IsSimple() || serviceType.IsDateTime() || serviceType == typeof(TimeSpan) || serviceType.IsValueType || serviceType == typeof(DateTimeOffset)) return new ServiceFamily(serviceType);
+            if (serviceType.IsSimple() || serviceType.IsDateTime() || serviceType == typeof(TimeSpan) || serviceType.IsValueType || serviceType == typeof(DateTimeOffset)) return new ServiceFamily(serviceType, DecoratorPolicies);
 
 
             return FamilyPolicies.FirstValue(x => x.Build(serviceType, this));
@@ -559,7 +570,7 @@ namespace Lamar
             }
             else
             {
-                var family = new ServiceFamily(instance.ServiceType, instance);
+                var family = new ServiceFamily(instance.ServiceType, DecoratorPolicies, instance);
                 _families.Add(instance.ServiceType, family);
             }
         }

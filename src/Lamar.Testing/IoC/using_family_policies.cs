@@ -165,7 +165,7 @@ namespace Lamar.Testing.IoC
         {
             if (type != typeof(Color)) return null;
             
-            return new ServiceFamily(type, 
+            return new ServiceFamily(type, serviceGraph.DecoratorPolicies, 
                 ObjectInstance.For(new Color{Name = "Red"}).Named("Red"),
                 ObjectInstance.For(new Color{Name = "Blue"}).Named("Blue"),
                 ObjectInstance.For(new Color{Name = "Green"}).Named("Green")
@@ -187,7 +187,7 @@ namespace Lamar.Testing.IoC
             if (type == typeof(FakeThing))
             {
                 var @default = new ObjectInstance(type, new FakeThing{CreatedBy = "CustomMissingFamily"});
-                return new ServiceFamily(type, @default);
+                return new ServiceFamily(type, serviceGraph.DecoratorPolicies, @default);
             }
 
             return null;

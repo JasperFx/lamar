@@ -39,7 +39,7 @@ namespace Lamar.IoC.Enumerables
             {
                 var instanceType = typeof(ArrayInstance<>).MakeGenericType(type.GetElementType());
                 var instance = Activator.CreateInstance(instanceType, type).As<Instance>();
-                return new ServiceFamily(type, instance);
+                return new ServiceFamily(type, new IDecoratorPolicy[0], instance);
             }
 
             if (type.IsGenericType && _enumerableTypes.Contains(type.GetGenericTypeDefinition()))
@@ -50,7 +50,7 @@ namespace Lamar.IoC.Enumerables
                 var ctor = instanceType.GetConstructors().Single();
                 var instance = ctor.Invoke(new object[]{type}).As<Instance>();
                 
-                return new ServiceFamily(type, instance);
+                return new ServiceFamily(type, new IDecoratorPolicy[0], instance);
             }
 
             return null;

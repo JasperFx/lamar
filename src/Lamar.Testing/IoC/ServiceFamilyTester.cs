@@ -12,7 +12,7 @@ namespace Lamar.Testing.IoC
         [Fact]
         public void the_last_instance_is_the_default()
         {
-            var family = new ServiceFamily(typeof(IWidget), new Instance[]{
+            var family = new ServiceFamily(typeof(IWidget),new IDecoratorPolicy[0], new Instance[]{
                 ConstructorInstance.For<IWidget, AWidget>(),
                 ConstructorInstance.For<IWidget, ColorWidget>(), 
             });
@@ -23,7 +23,7 @@ namespace Lamar.Testing.IoC
         [Fact]
         public void make_all_the_names_unique()
         {
-            var family = new ServiceFamily(typeof(IWidget), new Instance[]{
+            var family = new ServiceFamily(typeof(IWidget),new IDecoratorPolicy[0], new Instance[]{
                 ConstructorInstance.For<IWidget, AWidget>(),
                 ConstructorInstance.For<IWidget, AWidget>(),
                 ConstructorInstance.For<IWidget, AWidget>(),
@@ -49,7 +49,7 @@ namespace Lamar.Testing.IoC
                 ConstructorInstance.For<IWidget, ColorWidget>(), 
                 ConstructorInstance.For<IWidget, MoneyWidget>(), 
             };
-            var family = new ServiceFamily(typeof(IWidget), allInstances);
+            var family = new ServiceFamily(typeof(IWidget),new IDecoratorPolicy[0], allInstances);
             
             family.All.ShouldBe(allInstances);
         }
@@ -57,7 +57,7 @@ namespace Lamar.Testing.IoC
         [Fact]
         public void setting_the_is_default_property_on_instance()
         {
-            var family = new ServiceFamily(typeof(IWidget), new Instance[]{
+            var family = new ServiceFamily(typeof(IWidget),new IDecoratorPolicy[0], new Instance[]{
                 ConstructorInstance.For<IWidget, AWidget>(),
                 ConstructorInstance.For<IWidget, AWidget>(),
                 ConstructorInstance.For<IWidget, AWidget>(),

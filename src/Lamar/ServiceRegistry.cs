@@ -205,6 +205,16 @@ namespace Lamar
 
             }
 
+            /// <summary>
+            /// Decorates all instances of T with the concrete type TDecorator
+            /// </summary>
+            /// <typeparam name="TDecorator"></typeparam>
+            /// <exception cref="NotImplementedException"></exception>
+            public void DecorateAllWith<TDecorator>() where TDecorator : T
+            {
+                var policy = new DecoratorPolicy<T, TDecorator>();
+                _parent.AddSingleton<IDecoratorPolicy>(policy);
+            }
         }
 
         public InstanceExpression<T> ForSingletonOf<T>() where T : class

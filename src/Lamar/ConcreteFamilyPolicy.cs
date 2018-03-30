@@ -30,7 +30,7 @@ namespace Lamar
 
             if (serviceGraph.CouldBuild(type))
             {
-                return new ServiceFamily(type, new ConstructorInstance(type, type, ServiceLifetime.Transient));
+                return new ServiceFamily(type, serviceGraph.DecoratorPolicies, new ConstructorInstance(type, type, ServiceLifetime.Transient));
             }
 
             return null;

@@ -11,17 +11,17 @@ namespace Lamar.IoC.Lazy
         {
             if (type.Closes(typeof(Func<>)))
             {
-                return new ServiceFamily(type, typeof(FuncInstance<>).CloseAndBuildAs<Instance>(type.GetGenericArguments().Single()));
+                return new ServiceFamily(type, new IDecoratorPolicy[0], typeof(FuncInstance<>).CloseAndBuildAs<Instance>(type.GetGenericArguments().Single()));
             }
             
             if (type.Closes(typeof(Lazy<>)))
             {
-                return new ServiceFamily(type, typeof(LazyInstance<>).CloseAndBuildAs<Instance>(type.GetGenericArguments().Single()));
+                return new ServiceFamily(type, new IDecoratorPolicy[0], typeof(LazyInstance<>).CloseAndBuildAs<Instance>(type.GetGenericArguments().Single()));
             }
             
             if (type.Closes(typeof(Func<,>)) && type.GenericTypeArguments.First() == typeof(string))
             {
-                return new ServiceFamily(type, typeof(FuncByNameInstance<>).CloseAndBuildAs<Instance>(type.GetGenericArguments().Last()));
+                return new ServiceFamily(type, new IDecoratorPolicy[0], typeof(FuncByNameInstance<>).CloseAndBuildAs<Instance>(type.GetGenericArguments().Last()));
             }
 
             return null;

@@ -83,7 +83,7 @@ namespace Lamar.Testing.IoC.Acceptance
         {
             if (type != typeof(IFancy)) return null;
 
-            return new ServiceFamily(type, ConstructorInstance.For<IFancy, Very>());
+            return new ServiceFamily(type, new IDecoratorPolicy[0], ConstructorInstance.For<IFancy, Very>());
         }
     }
 }
