@@ -539,7 +539,7 @@ namespace Lamar
                         if (_families.ContainsKey(group.Key))
                         {
                             var family = _families[group.Key];
-                            if (family.Append(group) == AppendState.NewDefault)
+                            if (family.Append(@group, DecoratorPolicies) == AppendState.NewDefault)
                             {
                                 _byType = _byType.Remove(group.Key);
                             }
@@ -563,7 +563,7 @@ namespace Lamar
         {
             if (_families.ContainsKey(instance.ServiceType))
             {
-                if (_families[instance.ServiceType].Append(instance) == AppendState.NewDefault)
+                if (_families[instance.ServiceType].Append(instance, DecoratorPolicies) == AppendState.NewDefault)
                 {
                     _byType = _byType.Remove(instance.ServiceType);
                 }

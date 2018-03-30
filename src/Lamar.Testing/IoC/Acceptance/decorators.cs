@@ -3,6 +3,7 @@ using System.Linq;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using StructureMap.Testing.Acceptance;
 using StructureMap.Testing.Widget;
 using Xunit;
 
@@ -29,15 +30,80 @@ namespace Lamar.Testing.IoC.Acceptance
         }
         
         [Fact]
-        public void multiple_decorators()
+        public void decorator_example_alternative_registration()
         {
-            throw new NotImplementedException("I hate people that do this");
+            var container = new Container(_ =>
+            {
+                // This usage adds the WidgetHolder as a decorator
+                // on all IWidget registrations and makes AWidget
+                // the default
+                _.Policies.DecorateWith<DecoratorPolicy<IWidget, WidgetHolder>>();
+                _.For<IWidget>().Use<AWidget>();
+                _.For<IThing>().Use<Thing>();
+            });
+
+            container.GetInstance<IWidget>()
+                .ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<AWidget>();
         }
         
         [Fact]
-        public void decorator_is_applied_on_configure_too()
+        public void multiple_decorators()
         {
-            throw new NotImplementedException("I hate people that do this");
+            var container = new Container(_ =>
+            {
+                // This usage adds the WidgetHolder as a decorator
+                // on all IWidget registrations and makes AWidget
+                // the default
+                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<OtherWidgetHolder>();
+                _.For<IWidget>().Use<AWidget>();
+                _.For<IThing>().Use<Thing>();
+            });
+
+            container.GetInstance<IWidget>()
+                .ShouldBeOfType<OtherWidgetHolder>()
+                .Inner.ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<AWidget>();
+        }
+        
+        [Fact]
+        public void decorator_is_applied_on_configure_when_it_is_a_new_family()
+        {
+            var container = new Container(_ =>
+            {
+                // This usage adds the WidgetHolder as a decorator
+                // on all IWidget registrations and makes AWidget
+                // the default
+                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IThing>().Use<Thing>();
+            });
+            
+            container.Configure(x => x.AddTransient<IWidget, BWidget>());
+            
+            container.GetInstance<IWidget>()
+                .ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<BWidget>();
+        }
+        
+        [Fact]
+        public void decorator_is_applied_on_configure_when_it_is_an_existing_family()
+        {
+            var container = new Container(_ =>
+            {
+                // This usage adds the WidgetHolder as a decorator
+                // on all IWidget registrations and makes AWidget
+                // the default
+                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IThing>().Use<Thing>();
+                _.For<IWidget>().Use<AWidget>();
+            });
+            
+            container.Configure(x => x.AddTransient<IWidget, BWidget>());
+            
+            container.GetInstance<IWidget>()
+                .ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<BWidget>();
         }
         
         [Fact]
@@ -106,7 +172,6 @@ namespace Lamar.Testing.IoC.Acceptance
             @default.Lifetime.ShouldBe(ServiceLifetime.Scoped);
         }
         
-        // TODO -- check the name and lifetime too!
         
         public class WidgetHolder : IWidget
         {
@@ -120,6 +185,13 @@ namespace Lamar.Testing.IoC.Acceptance
             public void DoSomething()
             {
                 
+            }
+        }
+
+        public class OtherWidgetHolder : WidgetHolder
+        {
+            public OtherWidgetHolder(IThing thing, IWidget inner2) : base(thing, inner2)
+            {
             }
         }
 

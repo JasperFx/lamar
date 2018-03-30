@@ -302,6 +302,20 @@ namespace Lamar
                 OnMissingFamily(new T());
             }
 
+            /// <summary>
+            /// Register a strategy for applying decorators on existing registrations
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            public void DecorateWith<T>() where T : IDecoratorPolicy, new()
+            {
+                DecorateWith(new T());
+            }
+
+            public void DecorateWith(IDecoratorPolicy policy)
+            {
+                _parent.AddSingleton(policy);
+            }
+
 
         }
 

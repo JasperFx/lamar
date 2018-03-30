@@ -62,7 +62,7 @@ namespace Lamar
                 
                 foreach (var decoratorPolicy in decoratorPolicies)
                 {
-                    if (decoratorPolicy.TryWrap(instance, out var wrapped))
+                    if (decoratorPolicy.TryWrap(current, out var wrapped))
                     {
                         wrapped.Name = instance.Name;
                         instance.Name += "_Inner";
@@ -86,21 +86,22 @@ namespace Lamar
         public string FullNameInCode { get; }
 
 
-        public AppendState Append(ObjectInstance instance)
+        public AppendState Append(ObjectInstance instance, IDecoratorPolicy[] decoration)
         {
-            return Append(new Instance[]{instance});
+            return Append(new Instance[]{instance}, decoration);
         }
 
-        public AppendState Append(IEnumerable<ServiceDescriptor> services)
+        public AppendState Append(IEnumerable<ServiceDescriptor> services, IDecoratorPolicy[] decoration)
         {
             var instances = services.Select(Instance.For).ToArray();
-
-
-            return Append(instances);
+            
+            return Append(instances, decoration);
         }
 
-        public AppendState Append(Instance[] instances)
+        public AppendState Append(Instance[] instances, IDecoratorPolicy[] decoration)
         {
+            instances = applyDecorators(decoration, instances).ToArray();
+            
             var currentDefault = Default;
             
             foreach (var instance in instances)
