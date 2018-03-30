@@ -111,6 +111,15 @@ namespace Lamar
         object QuickBuild(Type objectType);
 
         /// <summary>
+        /// Suitable for building concrete types that will be resolved only a few times
+        /// to avoid the cost of having to register or build out a pre-compiled "build plan"
+        /// internally
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        IReadOnlyList<T> QuickBuildAll<T>();
+
+        /// <summary>
         /// Creates or resolves all registered instances of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type which instances are to be created or resolved.</typeparam>

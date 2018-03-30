@@ -206,6 +206,11 @@ namespace Lamar.IoC
             return ctor.Invoke(dependencies);
         }
 
+        public IReadOnlyList<T> QuickBuildAll<T>()
+        {
+            assertNotDisposed();
+            return ServiceGraph.FindAll(typeof(T)).Select(x => x.QuickResolve(this)).OfType<T>().ToList();
+        }
 
 
         public IReadOnlyList<T> GetAllInstances<T>()

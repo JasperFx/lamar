@@ -94,6 +94,10 @@ namespace Lamar.Testing.IoC.Acceptance
                 x.For<IWidget>().Add<BWidget>().Named("B");
                 x.For<IWidget>().Add<CWidget>().Named("C");
             });
+            
+            container.QuickBuildAll<IWidget>()
+                .Select(x => x.GetType())
+                .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
 
             container.GetAllInstances<IWidget>()
                 .Select(x => x.GetType())
