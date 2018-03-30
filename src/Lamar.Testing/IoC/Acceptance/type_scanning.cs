@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
@@ -55,6 +56,31 @@ namespace Lamar.Testing.IoC.Acceptance
                 s.AddAllTypesOf(typeof(ISomeInterface<>));
             }));
 
+            container.GetInstance<ISomeInterface<Base>>()
+                .ShouldNotBeNull();
+
+            container.GetInstance<ISomeInterface<Derived>>()
+                .ShouldBeOfType<Foo>()
+                .ShouldNotBeNull();
+        }
+        
+        [Fact]
+        public async Task open_generic_scanning_async_with_externally_supplied_timer()
+        {
+            var timer = new PerfTimer();
+            timer.Start("Doing stuff");
+            
+            var container = await Container.BuildAsync(i => i.Scan(s =>
+            {
+                s.AssemblyContainingType<type_scanning>();
+                //s.WithDefaultConventions();
+                s.AddAllTypesOf(typeof(ISomeInterface<>));
+            }), timer);
+
+            timer.Stop();
+            
+            timer.TimedSteps().Any().ShouldBeTrue();
+            
             container.GetInstance<ISomeInterface<Base>>()
                 .ShouldNotBeNull();
 
