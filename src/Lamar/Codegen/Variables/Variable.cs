@@ -68,6 +68,11 @@ namespace Lamar.Codegen.Variables
         public virtual string Usage { get; protected set; }
 
         public virtual string ArgumentDeclaration => Usage;
+        
+        /// <summary>
+        /// Used to smuggle additional information about a variable
+        /// </summary>
+        public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
         /// <summary>
         /// On rare occasions you may need to override the variable name
