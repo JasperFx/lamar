@@ -23,6 +23,8 @@ namespace Lamar.Codegen.Frames
 
         public Type HandlerType { get; }
         public MethodInfo Method { get; }
+        
+        
         public Variable ReturnVariable { get; private set; }
 
         public static MethodCall For<T>(Expression<Action<T>> expression)

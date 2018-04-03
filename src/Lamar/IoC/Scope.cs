@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Lamar.Codegen;
 using Lamar.Compilation;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Instances;
@@ -198,7 +199,7 @@ namespace Lamar.IoC
             {
                 var instance = ServiceGraph.FindInstance(x);
 
-
+                if (instance == null) throw new InvalidOperationException($"Cannot QuickBuild type {objectType.GetFullName()} because Lamar cannot determine how to build required dependency {x.ParameterType.FullNameInCode()}");
 
                 return instance.QuickResolve(this);
             }).ToArray();

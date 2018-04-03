@@ -17,13 +17,17 @@ namespace Lamar.Testing.IoC.Acceptance
             var container = new Container(_ =>
             {
                 // This usage adds the WidgetHolder as a decorator
-                // on all IWidget registrations and makes AWidget
-                // the default
+                // on all IWidget registrations
                 _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                
+                // The AWidget type will be decorated w/ 
+                // WidgetHolder when you resolve it from the container
                 _.For<IWidget>().Use<AWidget>();
+                
                 _.For<IThing>().Use<Thing>();
             });
 
+            // Just proving that it actually works;)
             container.GetInstance<IWidget>()
                 .ShouldBeOfType<WidgetHolder>()
                 .Inner.ShouldBeOfType<AWidget>();
