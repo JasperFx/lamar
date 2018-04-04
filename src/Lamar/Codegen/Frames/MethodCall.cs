@@ -198,7 +198,7 @@ namespace Lamar.Codegen.Frames
             var isDisposable = false;
             if (shouldAssignVariableToReturnValue(method))
             {
-                returnValue = $"var {ReturnVariable.Usage} = {returnValue}";
+                returnValue = ReturnVariable.VariableType.IsValueTuple() ? $"{ReturnVariable.Usage} = {returnValue}" : $"var {ReturnVariable.Usage} = {returnValue}";
                 isDisposable = ReturnVariable.VariableType.CanBeCastTo<IDisposable>();
             }
 

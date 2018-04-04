@@ -185,16 +185,20 @@ namespace Lamar.Testing.Codegen
         [Fact]
         public void generate_code_for_a_method_that_returns_a_tuple()
         {
-            WriteMethod(x => x.ReturnTuple())
-                .First().ShouldContain("(var red, var blue, var green) = target.ReturnTuple();");
+            var usage = WriteMethod(x => x.ReturnTuple())
+                .First();
+            usage.ShouldContain("(var red, var blue, var green) = target.ReturnTuple();");
+            usage.ShouldNotContain("var (var red, var blue, var green) = target.ReturnTuple();");
         }
         
         [Fact]
         public void generate_code_for_a_method_that_returns_a_task_of_tuple_as_await()
         {
             theMethod.AsyncMode = AsyncMode.AsyncTask;
-            WriteMethod(x => x.AsyncReturnTuple())
-                .First().ShouldContain("(var red, var blue, var green) = await target.AsyncReturnTuple();");
+            var usage = WriteMethod(x => x.AsyncReturnTuple())
+                .First();
+            usage.ShouldContain("(var red, var blue, var green) = await target.AsyncReturnTuple();");
+            usage.ShouldNotContain("var (var red, var blue, var green) = await target.AsyncReturnTuple();");
         }
         
 
