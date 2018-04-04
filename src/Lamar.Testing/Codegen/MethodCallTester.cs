@@ -253,6 +253,8 @@ namespace Lamar.Testing.Codegen
             
             writer.Code().Trim().ShouldBe("var result_of_ReturnAndOuts = ReturnAndOuts(input, out var string, out var int32);");
         }
+        
+
     }
 
     public class Ball

@@ -45,18 +45,27 @@ namespace Lamar.Codegen.Frames
             HandlerType = handlerType;
             Method = method;
 
-            if (method.ReturnType != typeof(void) && method.ReturnType != typeof(Task))
+            Type returnType = correctedReturnType(method.ReturnType);
+            if (returnType != null)
             {
-                var variableType = method.ReturnType.CanBeCastTo<Task>()
-                    ? method.ReturnType.GetTypeInfo().GetGenericArguments().First()
-                    : method.ReturnType;
-
-                var name = variableType.IsSimple() || variableType == typeof(object) || variableType == typeof(object[])
-                    ? "result_of_" + method.Name
-                    : Variable.DefaultArgName(variableType);
-
-                ReturnVariable = new Variable(variableType, name, this);
+                if (returnType.IsValueTuple())
+                {
+                    var values = returnType.GetGenericArguments().Select(x => new Variable(x, this)).ToArray();
+                    var usage = "(" + values.Select(x => $"var {x.Usage}").Join(", ") + ")";
+                
+                    ReturnVariable = new Variable(returnType, usage);
+                }
+                else
+                {
+                    var name = returnType.IsSimple() || returnType == typeof(object) || returnType == typeof(object[])
+                        ? "result_of_" + method.Name
+                        : Variable.DefaultArgName(returnType);
+                    
+                    ReturnVariable = new Variable(returnType, name, this); 
+                }
             }
+            
+
 
             var parameters = method.GetParameters();
             Arguments = new Variable[parameters.Length];
@@ -71,7 +80,15 @@ namespace Lamar.Codegen.Frames
             }
             
         }
-        
+
+        private Type correctedReturnType(Type type)
+        {
+            if (type == typeof(Task) || type == typeof(void)) return null;
+
+            if (type.CanBeCastTo<Task>()) return type.GetGenericArguments().First();
+
+            return type;
+        }
         
 
         /// <summary>

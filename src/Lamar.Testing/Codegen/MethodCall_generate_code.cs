@@ -27,18 +27,7 @@ namespace Lamar.Testing.Codegen
             return writer.Code().ReadLines().ToArray();
         }
         
-        protected string[] WriteMethod(string methodName, Action<MethodCall> configure = null)
-        {
-            var @call = new MethodCall(typeof(MethodTarget), methodName);
-            @call.Target = Variable.For<MethodTarget>("target");
-            configure?.Invoke(@call);
 
-            var writer = new SourceWriter();
-            @call.GenerateCode(theMethod, writer);
-
-            return writer.Code().ReadLines().ToArray();
-        }
-        
         [Fact]
         public void no_return_values_no_arguments()
         {
@@ -192,12 +181,41 @@ namespace Lamar.Testing.Codegen
                 .ShouldBe("var disposableThing = await target.AsyncDisposable();");
 
         }
-
         
+        [Fact]
+        public void generate_code_for_a_method_that_returns_a_tuple()
+        {
+            WriteMethod(x => x.ReturnTuple())
+                .First().ShouldContain("(var red, var blue, var green) = target.ReturnTuple();");
+        }
+        
+        [Fact]
+        public void generate_code_for_a_method_that_returns_a_task_of_tuple_as_await()
+        {
+            theMethod.AsyncMode = AsyncMode.AsyncTask;
+            WriteMethod(x => x.AsyncReturnTuple())
+                .First().ShouldContain("(var red, var blue, var green) = await target.AsyncReturnTuple();");
+        }
+        
+
     }
+    
+    public class Blue{}
+    public class Green{}
+    public class Red{}
 
     public class MethodTarget
     {
+        public (Red, Blue, Green) ReturnTuple()
+        {
+            return (new Red(), new Blue(), new Green());
+        }
+        
+        public Task<(Red, Blue, Green)> AsyncReturnTuple()
+        {
+            return Task.FromResult((new Red(), new Blue(), new Green()));
+        }
+        
         public Task<DisposableThing> AsyncDisposable()
         {
             return Task.FromResult(new DisposableThing());

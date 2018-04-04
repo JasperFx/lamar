@@ -433,5 +433,23 @@ namespace Lamar.Util
         {
             return type.GetTypeInfo().GetCustomAttributes<T>().FirstOrDefault();
         }
+        
+        private static readonly Type[] _tupleTypes = new Type[]
+        {
+            typeof(ValueTuple<>),
+            typeof(ValueTuple<,>),
+            typeof(ValueTuple<,,>),
+            typeof(ValueTuple<,,,>),
+            typeof(ValueTuple<,,,,>),
+            typeof(ValueTuple<,,,,,>),
+            typeof(ValueTuple<,,,,,,>),
+            typeof(ValueTuple<,,,,,,,>)
+
+        };
+
+        public static bool IsValueTuple(this Type type)
+        {
+            return (type != null && type.IsGenericType) && _tupleTypes.Contains(type.GetGenericTypeDefinition());
+        }
     }
 }
