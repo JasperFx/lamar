@@ -133,6 +133,13 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .AddInMemoryClients(Config.GetClients());
             services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
             
+            
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "something";
+                facebookOptions.AppSecret = "else";
+            });
+            
         }
 
         public void Configure(IApplicationBuilder app)
