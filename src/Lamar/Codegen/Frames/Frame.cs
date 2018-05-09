@@ -76,7 +76,9 @@ namespace Lamar.Codegen.Frames
             // This has to be idempotent
             if (_hasResolved) return;
 
-            var variables = FindVariables(method).ToArray();
+            // Filter out created variables because bad, bad Stackoverflow things happen
+            // when you don't 
+            var variables = FindVariables(method).Where(x => !Creates.Contains(x)).ToArray();
             if (variables.Any(x => x == null))
                 throw new InvalidOperationException($"Frame {this} could not resolve one of its variables");
 
