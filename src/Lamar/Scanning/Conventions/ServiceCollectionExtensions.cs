@@ -30,6 +30,11 @@ namespace Lamar.Scanning.Conventions
             return concretions;
         }
         
+        /// <summary>
+        /// Add a registration via Lamar's intrinsic Instance type
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="instance"></param>
         public static void Add(this IServiceCollection services, Instance instance)
         {
             services.Add(new ServiceDescriptor(instance.ServiceType, instance));

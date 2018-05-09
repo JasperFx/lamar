@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
+using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
@@ -117,9 +118,9 @@ namespace Lamar
         public class InstanceExpression<T> where T : class
         {
             private readonly ServiceRegistry _parent;
-            private readonly ServiceLifetime _lifetime;
+            private readonly ServiceLifetime? _lifetime;
 
-            public InstanceExpression(ServiceRegistry parent, ServiceLifetime lifetime)
+            public InstanceExpression(ServiceRegistry parent, ServiceLifetime? lifetime)
             {
                 _parent = parent;
                 _lifetime = lifetime;
@@ -130,11 +131,25 @@ namespace Lamar
             public ConstructorInstance<TConcrete> Use<TConcrete>() where TConcrete : class, T
             {
                 var instance = ConstructorInstance.For<T, TConcrete>();
-                instance.Lifetime = _lifetime;
+                if (_lifetime != null) instance.Lifetime = _lifetime.Value;
 
                 _parent.Add(instance);
 
                 return instance;
+            }
+
+            /// <summary>
+            /// Register a custom instance
+            /// </summary>
+            /// <param name="instance"></param>
+            public void Use(Instance instance)
+            {
+                if (_lifetime != null)
+                {
+                    instance.Lifetime = _lifetime.Value;
+                }
+                
+                _parent.Add(instance);
             }
 
             /// <summary>
@@ -187,11 +202,10 @@ namespace Lamar
                 return Use(instance);
             }
 
-
             public LambdaInstance<IServiceContext, T> Add(Func<IServiceContext, T> func) 
             {
                 var instance = LambdaInstance.For(func);
-                instance.Lifetime = _lifetime;
+                if (_lifetime != null) instance.Lifetime = _lifetime.Value;
 
                 _parent.Add(instance);
 
