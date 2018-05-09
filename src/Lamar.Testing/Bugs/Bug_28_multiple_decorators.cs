@@ -20,6 +20,36 @@ namespace Lamar.Testing.Bugs
                 .ShouldBeOfType<FancyLogger>().Inner
                 .ShouldBeOfType<BasicLogger>();
         }
+        
+        [Fact]
+        public void one_deep_singletons()
+        {
+            var container = Container.For(_ =>
+            {
+                _.ForSingletonOf<ILogger>().Use<BasicLogger>();
+                _.For<ILogger>().DecorateAllWith<FancyLogger>();
+            });
+
+            var logger = container.GetInstance<ILogger>();
+            logger.ShouldBeOfType<FancyLogger>().Inner
+                .ShouldBeOfType<BasicLogger>();
+        }
+        
+        [Fact]
+        public void now_try_if_they_are_singletons()
+        {
+            var container = Container.For(_ =>
+            {
+                _.ForSingletonOf<ILogger>().Use<BasicLogger>();
+                _.For<ILogger>().DecorateAllWith<FancyLogger>();
+                _.For<ILogger>().DecorateAllWith<OtherLogger>();
+            });
+
+            var logger = container.GetInstance<ILogger>();
+            logger.ShouldBeOfType<OtherLogger>().Inner
+                .ShouldBeOfType<FancyLogger>().Inner
+                .ShouldBeOfType<BasicLogger>();
+        }
     }
 
     public interface ILogger

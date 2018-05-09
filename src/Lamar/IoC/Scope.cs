@@ -201,7 +201,15 @@ namespace Lamar.IoC
 
                 if (instance == null) throw new InvalidOperationException($"Cannot QuickBuild type {objectType.GetFullName()} because Lamar cannot determine how to build required dependency {x.ParameterType.FullNameInCode()}");
 
-                return instance.QuickResolve(this);
+                try
+                {
+                    return instance.QuickResolve(this);
+                }
+                catch (Exception)
+                {
+                    // #sadtrombone, do it the heavy way instead
+                    return instance.Resolve(this);
+                }
             }).ToArray();
 
             return ctor.Invoke(dependencies);

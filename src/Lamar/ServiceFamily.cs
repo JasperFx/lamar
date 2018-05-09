@@ -11,6 +11,7 @@ namespace Lamar
 {
     public class ServiceFamily : IServiceFamilyConfiguration
     {
+        
         private readonly Dictionary<string, Instance> _instances = new Dictionary<string, Instance>();
 
 
@@ -59,20 +60,19 @@ namespace Lamar
             foreach (var instance in instances)
             {
                 Instance current = instance;
+
+                var originalName = instance.Name;
+                var originalLifetime = instance.Lifetime;
+                
                 
                 foreach (var decoratorPolicy in decoratorPolicies)
                 {
                     if (decoratorPolicy.TryWrap(current, out var wrapped))
                     {
-                        wrapped.Name = instance.Name;
-                        instance.Name += "_Inner";
+                        wrapped.Lifetime = originalLifetime;
+                        wrapped.Name = originalName;
 
-                        
-                        
-                        // Pull it from the top one
-                        wrapped.Lifetime = instance.Lifetime;
-                        
-                        instance.Lifetime = ServiceLifetime.Transient;
+                        current.Lifetime = ServiceLifetime.Transient;
                         
                         current = wrapped;
                         
