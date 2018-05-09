@@ -1,4 +1,5 @@
-﻿using Lamar.Codegen.Frames;
+﻿using System.Linq;
+using Lamar.Codegen.Frames;
 using Lamar.Codegen.Variables;
 using Shouldly;
 using Xunit;
@@ -9,6 +10,14 @@ namespace Lamar.Testing.Codegen
     {
         private readonly MethodCall theCall= MethodCall.For<MethodTarget>(x => x.ReturnTuple());
 
+        
+        [Fact]
+        public void override_variable_name_of_one_of_the_inners()
+        {
+            theCall.Creates.ElementAt(0).OverrideName("mauve");
+            theCall.ReturnVariable.Usage.ShouldBe("(var mauve, var blue, var green)");
+        }
+        
 
         [Fact]
         public void return_variable_usage()

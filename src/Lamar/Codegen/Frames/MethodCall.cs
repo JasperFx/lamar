@@ -51,9 +51,8 @@ namespace Lamar.Codegen.Frames
                 if (returnType.IsValueTuple())
                 {
                     var values = returnType.GetGenericArguments().Select(x => new Variable(x, this)).ToArray();
-                    var usage = "(" + values.Select(x => $"var {x.Usage}").Join(", ") + ")";
                 
-                    ReturnVariable = new Variable(returnType, usage);
+                    ReturnVariable = new ValueTypeReturnVariable(returnType, values);
                 }
                 else
                 {
