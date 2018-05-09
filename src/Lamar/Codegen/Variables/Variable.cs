@@ -78,7 +78,7 @@ namespace Lamar.Codegen.Variables
         /// On rare occasions you may need to override the variable name
         /// </summary>
         /// <param name="variableName"></param>
-        public void OverrideName(string variableName)
+        public virtual void OverrideName(string variableName)
         {
             Usage = variableName;
         }

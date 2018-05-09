@@ -26,7 +26,19 @@ namespace Lamar.IoC.Instances
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
         {
-            return new Variable(ServiceType, "null");
+            return new NullVariable(ServiceType);
+        }
+    }
+
+    public class NullVariable : Variable
+    {
+        public NullVariable(Type variableType) : base(variableType, "null")
+        {
+        }
+
+        public override void OverrideName(string variableName)
+        {
+            // nothing
         }
     }
 }
