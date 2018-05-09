@@ -14,7 +14,17 @@ namespace Lamar.Scanning.Conventions
 
             if (type.IsGenericType && type.GetGenericArguments().Any(x => x.MustBeBuiltWithFunc())) return true;
 
-            return false;
+	        bool IsNestedWithinNonPublic(Type typeToCheck)
+	        {
+				if (typeToCheck.IsNotPublic || typeToCheck.IsNested && !typeToCheck.IsNestedPublic)
+				{
+			        return true;
+		        }
+
+		        return typeToCheck.DeclaringType != null && IsNestedWithinNonPublic(typeToCheck.DeclaringType);
+	        }			
+
+            return IsNestedWithinNonPublic(type);
         }
 
         public static bool CanBeCreated(this Type type)

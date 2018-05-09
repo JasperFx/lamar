@@ -34,9 +34,28 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<PrivateGadgetHolder>()
                 .ShouldNotBeNull();
         }
-    }
 
-    public interface IGadget
+	    [Fact]
+	    public void can_build_public_nested_in_internal()
+	    {		    
+		    var container = new Container(_ => { _.For<Outer.Inner.InnerMost>().Use<Outer.Inner.InnerMost>(); });
+
+		    Assert.NotNull(container.GetInstance<Outer.Inner.InnerMost>());
+	    }
+	}
+
+	public class Outer
+	{
+		internal class Inner
+		{
+			public class InnerMost
+			{
+
+			}
+		}
+	}
+
+	public interface IGadget
     {
         
     }
