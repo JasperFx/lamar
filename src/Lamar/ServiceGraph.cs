@@ -153,16 +153,13 @@ namespace Lamar
 
             if (generatedSingletons.Any())
             {
-                var assembly = ToGeneratedAssembly();
                 foreach (var instance in generatedSingletons)
                 {
+                    if (instance.Resolver != null) continue;
+                    
+                    var assembly = ToGeneratedAssembly();
                     instance.GenerateResolver(assembly);
-                }
-
-                assembly.CompileAll();
-
-                foreach (var instance in generatedSingletons)
-                {
+                    assembly.CompileAll();
                     instance.AttachResolver(_rootScope);
                 }
             }

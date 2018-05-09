@@ -91,6 +91,8 @@ namespace Lamar.IoC.Instances
         private readonly object _locker = new object();
         protected IResolver _resolver;
 
+        internal IResolver Resolver => _resolver;
+
         public override Func<Scope, object> ToResolver(Scope topScope)
         {
             if (_resolver == null)
