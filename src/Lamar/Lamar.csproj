@@ -3,7 +3,7 @@
     <Description>Runtime Roslyn Chicanery and Fast IoC Tool, Successor to StructureMap</Description>
     <VersionPrefix>0.9.5</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar</AssemblyName>
     <PackageId>Lamar</PackageId>
@@ -19,9 +19,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.7.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.7.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="2.7.0" />
-    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
-    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="2.7.0" />    
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />    
   </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+	<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+	<PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <DefineConstants>$(DefineConstants);NET461</DefineConstants>
+  </PropertyGroup>  
 </Project>

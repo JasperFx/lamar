@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Lamar.Compilation;
 
 namespace Lamar.Scanning.Conventions
 {
-    public static class AssemblyFinder
+	internal static class LamarAssemblyContext
+	{
+#if NET461
+		public static readonly ILamarAssemblyLoadContext Loader = new CustomAssemblyLoadContext();
+#else
+		public static readonly ILamarAssemblyLoadContext Loader = new AssemblyLoadContextWrapper(System.Runtime.Loader.AssemblyLoadContext.Default);
+#endif
+	}
+
+		public static class AssemblyFinder
     {
         public static IEnumerable<Assembly> FindAssemblies(Action<string> logFailure, bool includeExeFiles)
         {
@@ -39,13 +49,13 @@ namespace Lamar.Scanning.Conventions
 
                 try
                 {
-                    assembly = System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(name));
+                    assembly = LamarAssemblyContext.Loader.LoadFromAssemblyName(new AssemblyName(name));
                 }
                 catch (Exception)
                 {
                     try
                     {
-                        assembly = System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+                        assembly = LamarAssemblyContext.Loader.LoadFromAssemblyPath(file);
                     }
                     catch (Exception)
                     {
