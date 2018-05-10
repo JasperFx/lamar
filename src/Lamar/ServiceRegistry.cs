@@ -258,6 +258,11 @@ namespace Lamar
         /// </summary>
         public PoliciesExpression Policies => new PoliciesExpression(this);
 
+        public class SharingSettings
+        {
+            public DynamicAssemblySharing Sharing { get; set; }
+        }
+        
         public class PoliciesExpression
         {
             private readonly ServiceRegistry _parent;
@@ -266,6 +271,18 @@ namespace Lamar
             public PoliciesExpression(ServiceRegistry parent)
             {
                 _parent = parent;
+            }
+
+            /// <summary>
+            /// *If* you have an ill-behaved set of dependencies that somehow manage
+            /// to have multiple types with the exact same full name, but in separate
+            /// assemblies, you can tell Lamar to build each dynamic in a separate assembly to
+            /// get around type references. If you're using mixed ASP.Net Core 2.0 and 2.1 assemblies,
+            /// you'll want this
+            /// </summary>
+            public DynamicAssemblySharing DynamicAssemblySharing
+            {
+                set => _parent.AddSingleton(new SharingSettings {Sharing = value});
             }
 
             
@@ -333,5 +350,11 @@ namespace Lamar
 
         }
 
+    }
+
+    public enum DynamicAssemblySharing
+    {
+        Shared,
+        Individual
     }
 }

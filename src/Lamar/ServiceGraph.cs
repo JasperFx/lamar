@@ -140,7 +140,10 @@ namespace Lamar
 
             
             rebuildReferencedAssemblyArray();
+
             
+            var settings = FindDefault(typeof(ServiceRegistry.SharingSettings)) as ObjectInstance;
+            var sharing = settings?.Service.As<ServiceRegistry.SharingSettings>().Sharing ?? DynamicAssemblySharing.Shared;
             
             var generatedSingletons = AllInstances()
                 .OfType<GeneratedInstance>()
@@ -151,19 +154,47 @@ namespace Lamar
                 .ToArray();
 
 
+
+            
             if (generatedSingletons.Any())
             {
-                foreach (var instance in generatedSingletons)
+                if (sharing == DynamicAssemblySharing.Individual)
                 {
-                    if (instance.Resolver != null) continue;
-                    
-                    var assembly = ToGeneratedAssembly();
-                    instance.GenerateResolver(assembly);
-                    assembly.CompileAll();
-                    instance.AttachResolver(_rootScope);
+                    buildSingletonsInIndividualAssemblies(generatedSingletons);
                 }
-            }
+                else
+                {
+                    var assembly = ToGeneratedAssembly();
+                    
+                    foreach (var instance in generatedSingletons)
+                    {
+                        instance.GenerateResolver(assembly);
+                    }
+                    
+                    assembly.CompileAll();
+                    
+                    foreach (var instance in generatedSingletons)
+                    {
+                        instance.AttachResolver(_rootScope);
+                    }
+                }
 
+            }
+            
+
+        }
+
+        private void buildSingletonsInIndividualAssemblies(GeneratedInstance[] generatedSingletons)
+        {
+            foreach (var instance in generatedSingletons)
+            {
+                if (instance.Resolver != null) continue;
+
+                var assembly = ToGeneratedAssembly();
+                instance.GenerateResolver(assembly);
+                assembly.CompileAll();
+                instance.AttachResolver(_rootScope);
+            }
         }
 
         private void rebuildReferencedAssemblyArray()

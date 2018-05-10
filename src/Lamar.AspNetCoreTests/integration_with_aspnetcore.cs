@@ -51,7 +51,57 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
             container.GetInstance<IOptions<KestrelServerOptions>>();
         }
+        
+        
 
+        [Fact]
+        public void use_in_app()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+            
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+            var failures = new List<Type>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+
+
+                var errors = container.Model.AllInstances.Where(x => x.ErrorMessages.Any())
+                    .SelectMany(x => x.ErrorMessages).ToArray();
+
+                if (errors.Any()) throw new Exception(errors.Join(", "));
+
+
+
+
+                foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
+                {
+                    instance.Resolve(container).ShouldNotBeNull();
+                    
+//                    try
+//                    {
+//                        
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        failures.Add(instance.ServiceType);
+//                    }
+                }
+            }
+
+            if (failures.Any())
+            {
+                throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
+            }
+        }
+        
         [Fact]
         public void use_in_app()
         {
