@@ -3,7 +3,7 @@
     <Description>Lamar Adapter for ASP.Net Core</Description>
     <VersionPrefix>0.9.6</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFramework>netstandard2;net461</TargetFramework>
+    <TargetFrameworks>netstandard2;net461</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
     <PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
