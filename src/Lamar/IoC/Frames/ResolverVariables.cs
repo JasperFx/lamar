@@ -10,6 +10,8 @@ namespace Lamar.IoC.Frames
 {
     public class ResolverVariables : IEnumerable<Variable>
     {
+        public int VariableSequence { get; set; }
+        
         private readonly IList<Variable> _cached = new List<Variable>();
         private readonly IList<Variable> _all = new List<Variable>();
 

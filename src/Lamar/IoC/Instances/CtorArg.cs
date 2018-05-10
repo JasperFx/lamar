@@ -6,8 +6,6 @@ namespace Lamar.IoC.Instances
 {
     public class CtorArg
     {
-        private static int _count;
-        
         public ParameterInfo Parameter { get; }
         public Instance Instance { get; }
 
@@ -28,12 +26,14 @@ namespace Lamar.IoC.Instances
             {
                 var variable = Instance.CreateInlineVariable(variables);
 
+                
                 // HOKEY. Might need some smarter way of doing this. Helps to disambiguate
                 // between ctor args of nested decorators
                 if (!(variable is Setter))
                 {
-                    variable.OverrideName(variable.Usage + "_inline_" + ++_count);
+                    variable.OverrideName(variable.Usage + "_inline_" + ++variables.VariableSequence);
                 }
+                
 
                 return variable;
             }
