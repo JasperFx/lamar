@@ -28,8 +28,7 @@ namespace Lamar.IoC.Instances
 
             if (ErrorMessages.Any() || Dependencies.SelectMany(x => x.ErrorMessages).Any()) return;
 
-            var typeName = (ServiceType.FullNameInCode() + "_" + Name).Replace('<', '_').Replace('>', '_').Replace(" ", "")
-                .Replace(',', '_').Replace('.', '_').Replace("[", "").Replace("]", "");
+            var typeName = (ServiceType.FullNameInCode() + "_" + Name).Sanitize();
 
 
             var buildType = ServiceType.MustBeBuiltWithFunc() || ImplementationType.MustBeBuiltWithFunc()

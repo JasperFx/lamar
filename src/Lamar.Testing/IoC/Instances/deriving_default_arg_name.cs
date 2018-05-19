@@ -25,5 +25,17 @@ namespace Lamar.Testing.IoC.Instances
             
             instance.DefaultArgName().ShouldBe("service_of_IWidget");
         }
+
+        [Fact]
+        public void name_for_big_generic_type()
+        {
+            ConstructorInstance.For<BigGenericThing<IWidget, Rule, IThing>>()
+                .DefaultArgName().ShouldStartWith("bigGenericThing_of_IWidget_Rule_IThing");
+        }
+    }
+
+    public class BigGenericThing<T1, T2, T3>
+    {
+        
     }
 }
