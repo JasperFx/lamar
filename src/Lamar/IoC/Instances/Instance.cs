@@ -172,6 +172,11 @@ namespace Lamar.IoC.Instances
                 
                 var dependencies = createPlan(services) ?? Enumerable.Empty<Instance>();
 
+                if (dependencies.Any(x => x.Dependencies.Contains(this)))
+                {
+                    throw new InvalidOperationException("Bi-directional dependencies detected to " + ToString());
+                }
+
                 Dependencies = dependencies.Concat(dependencies.SelectMany(x => x.Dependencies)).Distinct().ToArray();
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Lamar.IoC;
 using Xunit;
 
@@ -6,28 +7,23 @@ namespace Lamar.Testing.IoC.Acceptance
 {
     public class do_not_blow_up_with_bi_directional_dependencies
     {
-        public do_not_blow_up_with_bi_directional_dependencies()
-        {
-            container = new Container(x =>
-            {
-                x.For<IBiView>().Use<BiView>();
-                x.For<IBiPresenter>().Use<BiPresenter>();
-
-                x.For<IBiGrandparent>().Use<BiGrandparent>();
-                x.For<IBiHolder>().Use<BiHolder>();
-                x.For<IBiLeaf>().Use<BiLeaf>();
-            });
-        }
-
-        private readonly Container container;
-
         [Fact]
         public void do_not_blow_up_with_a_stack_overflow_problem()
         {
+
+            
             var ex =
-                Exception<LamarException>.ShouldBeThrownBy(() =>
+                Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
                 {
-                    container.GetInstance<IBiPresenter>();
+                    var container = new Container(x =>
+                    {
+                        x.For<IBiView>().Use<BiView>();
+                        x.For<IBiPresenter>().Use<BiPresenter>();
+
+                        x.For<IBiGrandparent>().Use<BiGrandparent>();
+                        x.For<IBiHolder>().Use<BiHolder>();
+                        x.For<IBiLeaf>().Use<BiLeaf>();
+                    });
                 });
 
             ex.Message.ShouldContain("Bi-directional dependencies detected");
@@ -36,8 +32,23 @@ namespace Lamar.Testing.IoC.Acceptance
         [Fact]
         public void do_not_blow_up_with_a_stack_overflow_problem_2()
         {
+
+            
             var ex =
-                Exception<LamarException>.ShouldBeThrownBy(() => { container.GetInstance<IBiHolder>(); });
+                Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
+                {
+                    var container = new Container(x =>
+                    {
+                        x.For<IBiView>().Use<BiView>();
+                        x.For<IBiPresenter>().Use<BiPresenter>();
+
+                        x.For<IBiGrandparent>().Use<BiGrandparent>();
+                        x.For<IBiHolder>().Use<BiHolder>();
+                        x.For<IBiLeaf>().Use<BiLeaf>();
+                    });
+                    
+                    container.GetInstance<IBiHolder>();
+                });
 
             ex.Message.ShouldContain("Bi-directional dependencies detected");
         }
@@ -55,6 +66,7 @@ namespace Lamar.Testing.IoC.Acceptance
     {
     }
 
+    [LamarIgnore]
     public class BiHolder : IBiHolder
     {
         public BiHolder(IBiGrandparent grandparent)
@@ -62,6 +74,7 @@ namespace Lamar.Testing.IoC.Acceptance
         }
     }
 
+    [LamarIgnore]
     public class BiGrandparent : IBiGrandparent
     {
         public BiGrandparent(IBiLeaf leaf)
@@ -84,6 +97,7 @@ namespace Lamar.Testing.IoC.Acceptance
     {
     }
 
+    [LamarIgnore]
     public class BiView : IBiView
     {
         private readonly IBiPresenter _presenter;
