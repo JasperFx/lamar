@@ -49,7 +49,7 @@ end
 
 "Launches the documentation project in editable mode"
 task :docs do
-	sh "dotnet restore"
+	sh "dotnet restore docs.csproj"
 	sh "dotnet stdocs run -v #{BUILD_VERSION}"
 end
 
@@ -68,8 +68,8 @@ task :publish do
 		end
 	end
 
-	sh "dotnet restore"
-	sh "dotnet stdocs export doc-target ProjectWebsite --version #{BUILD_VERSION} --project alba"
+	sh "dotnet restore docs.csproj"
+	sh "dotnet stdocs export doc-target ProjectWebsite --version #{BUILD_VERSION} --project lamar"
 
 	Dir.chdir "doc-target" do
 		sh "git add --all"

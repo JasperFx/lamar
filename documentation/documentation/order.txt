@@ -1,0 +1,9 @@
+bootstrapping
+urls
+headers
+json
+xml
+text
+formdata
+statuscode
+assertions
