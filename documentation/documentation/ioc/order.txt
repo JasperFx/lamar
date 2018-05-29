@@ -6,4 +6,5 @@ resolving
 policies
 generics
 decorators
+diagnostics
 best-practices
