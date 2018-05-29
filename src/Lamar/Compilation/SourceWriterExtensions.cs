@@ -51,6 +51,11 @@ namespace Lamar.Compilation
                 : returnFromResult.ToFormat(variable.Usage));
         }
 
+        public static void WriteComment(this ISourceWriter writer, string comment)
+        {
+            writer.Write("// " + comment);
+        }
+
 
     }
 }

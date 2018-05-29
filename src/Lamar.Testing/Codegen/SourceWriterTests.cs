@@ -92,5 +92,16 @@ END
             lines[2].ShouldBe("    var x = 0;");
             lines[3].ShouldBe("}");
         }
+
+        [Fact]
+        public void write_comment()
+        {
+            var writer = new SourceWriter();
+            writer.Write("BLOCK:public void Go()");
+            writer.WriteComment("Some Comment");
+            
+            var lines = writer.Code().ReadLines().ToArray();
+            lines.Last().ShouldBe("    // Some Comment");
+        }
     }
 }
