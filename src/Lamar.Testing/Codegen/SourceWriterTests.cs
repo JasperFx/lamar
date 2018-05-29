@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Baseline;
 using Lamar.Compilation;
 using Shouldly;
@@ -74,6 +75,33 @@ namespace Lamar.Testing.Codegen
 
             lines[0].ShouldBe("public void Go()");
             lines[1].ShouldBe("{");
+        }
+
+        [Fact]
+        public void write_using_by_type()
+        {
+            var writer = new SourceWriter();
+            writer.UsingNamespace<ISourceWriter>();
+            var lines = writer.Code().ReadLines().ToArray();
+
+            lines[0].ShouldBe($"using {typeof(ISourceWriter).Namespace};");
+        }
+
+        [Fact]
+        public void write_else()
+        {
+            var writer = new SourceWriter();
+            writer.Write(@"
+BLOCK:public void Go()
+var x = 0;
+");
+            
+            writer.WriteElse();
+            var lines = writer.Code().Trim().ReadLines().ToArray();
+            
+            
+            lines[3].ShouldBe("    else");
+            lines[4].ShouldBe("    {");
         }
 
         [Fact]

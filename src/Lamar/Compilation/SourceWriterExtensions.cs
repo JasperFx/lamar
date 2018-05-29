@@ -57,5 +57,13 @@ namespace Lamar.Compilation
         }
 
 
+        /// <summary>
+        /// Starts an else block in code with the opening brace and indention for following lines
+        /// </summary>
+        /// <param name="writer"></param>
+        public static void WriteElse(this ISourceWriter writer)
+        {
+            writer.Write("BLOCK:else");
+        }
     }
 }
