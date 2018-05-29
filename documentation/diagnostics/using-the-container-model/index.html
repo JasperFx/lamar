@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Using the Container Model</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/diagnostics/build-plans" title="Build Plans">Previous</a></li>
+            <li><a href="/lamar/documentation/diagnostics/type-scanning" title="Type Scanning Diagnostics">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/diagnostics">Diagnostics</a></li><li class="active">Using the Container Model</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.5</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/diagnostics/type-scanning">Type Scanning Diagnostics</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/diagnostics/build-plans">Build Plans</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Using the Container Model</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: Using the Container Model-->
+<!--Url: using-the-container-model-->
+<p>The queryable <code>Container.Model</code> is a power facility to look into your StructureMap <code>Container</code> and even to eject previously built services from the Container. The <code>Container.Model</code> represents a <strong>static view of what a <code>Container</code> already has</strong>, and does not account for policies that may allow StructureMap to validly discover types that it may encounter later at runtime.</p>
+<h2 id="querying-for-plugin-types">Querying for Plugin Types</h2>
+<p>The <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/whatdoihave'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> mechanism works by just iterating over the <code>Container.Model.PluginTypes</code> collection as shown below:</p>
+<pre><code class="language-csharp">&#xA;container.Model.PluginTypes.Where(x =&gt; x.PluginType.Assembly == Assembly.GetExecutingAssembly())&#xA;    .Each(pluginType =&gt; Debug.WriteLine(pluginType.PluginType));&#xA;</code></pre>
+<h2 id="working-with-a-plugin-type">Working with a Plugin Type</h2>
+<p>The <code>IPluginTypeConfiguration</code> interface allows you to query and manipulate all the configured Instance's for a given plugin type.</p>
+<p>See the entire <a href="https://github.com/structuremap/structuremap/blob/master/src/StructureMap/Query/IPluginTypeConfiguration.cs">IPluginTypeConfiguration interface here</a>.</p>
+<h2 id="finding-the-default-for-a-plugin-type">Finding the Default for a Plugin Type</h2>
+<p>To simply find out what the default concrete type would be for a requested plugin type, use one of these two methods:</p>
+<pre><code class="language-csharp">&#xA;// Finding the concrete type of the default&#xA;// IDevice service&#xA;container.Model.DefaultTypeFor&lt;IDevice&gt;()&#xA;    .ShouldBe(typeof(DefaultDevice));&#xA;&#xA;// Find the configuration model for the default&#xA;// IDevice service&#xA;container.Model.For&lt;IDevice&gt;().Default&#xA;    .ReturnedType.ShouldBe(typeof(DefaultDevice));&#xA;</code></pre>
+<h2 id="finding-an-instance-by-type-and-name">Finding an Instance by Type and Name</h2>
+<p>Use this syntax to find information about an Instance in a given plugin type and name:</p>
+<pre><code class="language-csharp">&#xA;var redRule = container.Model.Find&lt;Rule&gt;(&quot;Red&quot;);&#xA;</code></pre>
+<h2 id="all-instances-for-a-plugin-type">All Instances for a Plugin Type</h2>
+<p>This sample shows how you could iterate or query over all the registered instances for a single plugin type:</p>
+<pre><code class="language-csharp">&#xA;container.Model.For&lt;Rule&gt;().Instances.Each(i =&gt;&#xA;{&#xA;    Debug.WriteLine(i.Instance.Description);&#xA;});&#xA;</code></pre>
+<h2 id="ejecting-services-andor-configuration">Ejecting Services and/or Configuration</h2>
+<p>It's possible to remove singleton scoped objects from a running Container to force a new one to be built or even to completely remove configured instance objects and configuration permanently from a Container. This is typically only used in automated testing to flush static state between tests.</p>
+<p>To remove and dispose previously built singleton scoped objects from a Container, use this code:</p>
+<pre><code class="language-csharp">&#xA;// ONLY ejects any built object for this Instance from the SingletonThing&#xA;// cache&#xA;container.Model.For&lt;IDevice&gt;().Default.EjectObject();&#xA;</code></pre>
+<p>To completely eject any singletons and permanently remove all related configuration, use this code:</p>
+<pre><code class="language-csharp">&#xA;// Removes all configurations and objects already built as singletons&#xA;// related to types in the current Assembly&#xA;container.Model.EjectAndRemoveTypes(type =&gt; type.Assembly == Assembly.GetExecutingAssembly());&#xA;&#xA;// Removes all configurations and objects already built as singletons&#xA;// that were registered to IDevice&#xA;container.Model.EjectAndRemove(typeof(IDevice));&#xA;</code></pre>
+<h2 id="testing-for-registrations">Testing for Registrations</h2>
+<p>To troubleshoot or automate testing of Container configuration, you can use code like the sample below to
+test for the presence of expected configurations:</p>
+<pre><code class="language-csharp">&#xA;// Is there a default instance for IDevice?&#xA;container.Model.HasDefaultImplementationFor&lt;IDevice&gt;().ShouldBeTrue();&#xA;&#xA;// Are there any configured instances for IDevice?&#xA;container.Model.HasImplementationsFor&lt;IDevice&gt;().ShouldBeTrue();&#xA;</code></pre>
+<h2 id="finding-all-possible-implementors-of-an-interface">Finding all Possible Implementors of an Interface</h2>
+<p>Forget about what types are registered for whatever plugin types and consider this, what if you have an interface called
+<code>IStartable</code> that just denotes objects that will need to be activated after the container is bootstrapped?</p>
+<p>If our interface is this below:</p>
+<pre><code class="language-csharp">&#xA;public interface IStartable&#xA;{&#xA;    bool WasStarted { get; }&#xA;&#xA;    void Start();&#xA;}&#xA;&#xA;</code></pre>
+<p>We could walk through the entire StructureMap model and find every registered instance that implements this interface, create each, and call the <code>Start()</code> method like in this code below:</p>
+<pre><code class="language-csharp">&#xA;var allStartables = container.Model.GetAllPossible&lt;IStartable&gt;();&#xA;allStartables.ToArray()&#xA;    .Each(x =&gt; x.Start());&#xA;</code></pre>
+<p>I've also used this mechanism in automated testing to reach out to all singleton services that may have state to clear out their data between tests.</p>
+<h2 id="working-with-individual-instances">Working with Individual Instances</h2>
+<p>You can manipulate an individual instance in several ways:</p>
+<pre><code class="language-csharp">&#xA;// First, find the model for a single Instance&#xA;var instance = container.Model.For&lt;IDevice&gt;().Default;&#xA;&#xA;// build or resolve an object for this Instance cast to&#xA;// the type specified to the Get() method&#xA;instance.Get&lt;IDevice&gt;().ShouldBeOfType&lt;DefaultDevice&gt;();&#xA;&#xA;// if the instance is configured as a SingletonThing, test&#xA;// if the SingletonThing object has already been created&#xA;var hasSingletonBeenCreated = instance.ObjectHasBeenCreated();&#xA;&#xA;if (hasSingletonBeenCreated)&#xA;{&#xA;    // remove the SingletonThing object from the cache so that&#xA;    // StructureMap will be forced to rebuild this object&#xA;    instance.EjectObject();&#xA;}&#xA;&#xA;// test the lifecycle of this instance&#xA;instance.Lifecycle.ShouldBeOfType&lt;SingletonLifecycle&gt;();&#xA;&#xA;// Visualize the build plan no more than 3 levels deep&#xA;Debug.WriteLine(instance.DescribeBuildPlan(3));&#xA;&#xA;// Get at the underlying Instance model that StructureMap itself&#xA;// uses. Be cautious using this.&#xA;var rawModel = instance.Instance;&#xA;&#xA;</code></pre>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/diagnostics/build-plans">Build Plans</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/diagnostics/type-scanning">Type Scanning Diagnostics</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

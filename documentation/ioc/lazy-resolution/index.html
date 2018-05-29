@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Lazy Resolution</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/lambdas" title="Building Objects with Lambdas">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/nested-containers" title="Nested Containers (Per Request/Transaction)">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li class="active">Lazy Resolution</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.5</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Lazy Resolution</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title:Lazy Resolution-->
+<p>StructureMap has some built in functionality for &quot;lazy&quot; resolved dependencies, so that instead of your
+application service taking a direct dependency on <code>IExpensiveToBuildService</code> that might not be necessary,
+you could instead have StructureMap fulfil a dependency on <code>Lazy&lt;IExpensiveToBuildService&gt;</code> or <code>Func&lt;IExpensiveToBuildService&gt;</code>
+that could be used to retrieve that expensive service only when it is needed from whatever <code>Container</code> originally created
+the parent object.</p>
+<p>Do note that the <code>Lazy&lt;T&gt;</code> and <code>Func&lt;T&gt;</code> approaches respect the lifecycle of the underlying registration rather than
+automatically building a unique object instance.</p>
+<p>Also note that <code>Lazy&lt;T&gt;</code> or <code>Func&lt;T&gt;</code> is your best (only) viable approach if you wish to have StructureMap inject bi-directional
+relationships.</p>
+<h2 id="lazyt">Lazy&lt;T&gt;</h2>
+<p>Assuming that StructureMap either has an existing configuration for <code>T</code> or can
+derive a way to build <code>T</code>, you can just declare a dependency on <code>Lazy&lt;T&gt;</code> like this sample:</p>
+<pre><code class="language-csharp">&#xA;public class WidgetLazyUser&#xA;{&#xA;    private readonly Lazy&lt;IWidget&gt; _widget;&#xA;&#xA;    public WidgetLazyUser(Lazy&lt;IWidget&gt; widget)&#xA;    {&#xA;        _widget = widget;&#xA;    }&#xA;&#xA;    public IWidget Widget&#xA;    {&#xA;        get { return _widget.Value; }&#xA;    }&#xA;}&#xA;&#xA;[Fact]&#xA;public void lazy_resolution_in_action()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IWidget&gt;().Use&lt;AWidget&gt;();&#xA;    });&#xA;&#xA;    container.GetInstance&lt;WidgetLazyUser&gt;()&#xA;        .Widget.ShouldBeOfType&lt;AWidget&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="funct">Func&lt;T&gt;</h2>
+<p>Likewise, you can also declare a dependency on <code>Func&lt;T&gt;</code> with very similar mechanics:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void build_a_func_that_returns_a_singleton()&#xA;{&#xA;    var container = new Container(x =&gt;&#xA;    {&#xA;        x.ForSingletonOf&lt;IWidget&gt;().Use&lt;AWidget&gt;();&#xA;    });&#xA;&#xA;    var func = container.GetInstance&lt;Func&lt;IWidget&gt;&gt;();&#xA;    var w1 = func();&#xA;    var w2 = func();&#xA;    var w3 = func();&#xA;&#xA;    w1.ShouldBeOfType&lt;AWidget&gt;();&#xA;&#xA;    w1.ShouldBeSameAs(w2);&#xA;    w1.ShouldBeSameAs(w3);&#xA;    w2.ShouldBeSameAs(w3);&#xA;}&#xA;&#xA;</code></pre>
+<p><em>This functionality predates the introduction of the Lazy type to .Net</em></p>
+<h2 id="funcstring-t">Func&lt;string, T&gt;</h2>
+<p>Finally, you can also declare a dependency on <code>Func&lt;string, T&gt;</code> that will allow you to lazily
+resolve a dependency of <code>T</code> by name:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void build_a_func_by_string()&#xA;{&#xA;    var container = new Container(x =&gt;&#xA;    {&#xA;        x.For&lt;IWidget&gt;().Add&lt;GreenWidget&gt;().Named(&quot;green&quot;);&#xA;        x.For&lt;IWidget&gt;().Add&lt;BlueWidget&gt;().Named(&quot;blue&quot;);&#xA;        x.For&lt;IWidget&gt;().Add&lt;RedWidget&gt;().Named(&quot;red&quot;);&#xA;    });&#xA;&#xA;    var func = container.GetInstance&lt;Func&lt;string, IWidget&gt;&gt;();&#xA;    func(&quot;green&quot;).ShouldBeOfType&lt;GreenWidget&gt;();&#xA;    func(&quot;blue&quot;).ShouldBeOfType&lt;BlueWidget&gt;();&#xA;    func(&quot;red&quot;).ShouldBeOfType&lt;RedWidget&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="bi-relational-dependency-workaround">Bi-relational Dependency Workaround</h2>
+<p><strong>StructureMap does not directly support bi-directional dependency relationships</strong> -- but will happily tell you in an exception when
+you accidentally manage to create one without cratering your AppDomain with a <code>StackOverflowException</code>.</p>
+<p>Either <code>Func&lt;T&gt;</code> or <code>Lazy&lt;T&gt;</code> can be used as a workaround for purposeful bi-directional dependencies between types. The
+following is an example of using this strategy:</p>
+<pre><code class="language-csharp">&#xA;&#xA;public class Thing1&#xA;{&#xA;    private readonly Lazy&lt;Thing2&gt; _thing2;&#xA;&#xA;    public Thing1(Lazy&lt;Thing2&gt; thing2)&#xA;    {&#xA;        _thing2 = thing2;&#xA;    }&#xA;&#xA;    public Thing2 Thing2&#xA;    {&#xA;        get { return _thing2.Value; }&#xA;    }&#xA;}&#xA;&#xA;public class Thing2&#xA;{&#xA;    public Thing1 Thing1 { get; set; }&#xA;&#xA;    public Thing2(Thing1 thing1)&#xA;    {&#xA;        Thing1 = thing1;&#xA;    }&#xA;}&#xA;&#xA;[Fact]&#xA;public void use_lazy_as_workaround_for_bi_directional_dependency()&#xA;{&#xA;    var container = Container.For(_ =&gt;&#xA;    {&#xA;        _.AddSingleton&lt;Thing1&gt;();&#xA;        _.AddSingleton&lt;Thing2&gt;();&#xA;    });&#xA;    var thing1 = container.GetInstance&lt;Thing1&gt;();&#xA;    var thing2 = container.GetInstance&lt;Thing2&gt;();&#xA;&#xA;    thing1.Thing2.ShouldBeSameAs(thing2);&#xA;    thing2.Thing1.ShouldBeSameAs(thing1);&#xA;}&#xA;&#xA;</code></pre>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

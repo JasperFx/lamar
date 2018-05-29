@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Auto Resolving Concrete Types</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/resolving/try-geting-an-optional-service-by-plugin-type-and-name" title="Try Geting an Optional Service by Plugin Type and Name">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/policies" title="IoC Construction Policies">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/resolving">Resolving Services</a></li><li class="active">Auto Resolving Concrete Types</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.5</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/policies">IoC Construction Policies</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/resolving/try-geting-an-optional-service-by-plugin-type-and-name">Try Geting an Optional Service by Plugin Type and Name</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Auto Resolving Concrete Types</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: Auto Resolving Concrete Types-->
+<!--Url: requesting-a-concrete-type-->
+<p>Lamar allows you to resolve instances of concrete classes without configuring that concrete type with a few provisos:</p>
+<ul>
+<li>The concrete type must have at least one public constructor</li>
+<li>Lamar can build all the arguments in the constructor, either because Lamar has explicit configuration for that dependency or can auto resolve the type</li>
+<li>The constructor does not contain any <em>primitive</em> arguments like strings, numbers, or dates because Lamar assumes those elements are configuration items and not <em>auto resolvable</em>.</li>
+</ul>
+<p>Let's say we have the following object model, which represents the weather condition for a certain location.</p>
+<pre><code class="language-csharp">&#xA;public class Weather&#xA;{&#xA;    public Location Location { get; set; }&#xA;    public Atmosphere Atmosphere { get; set; }&#xA;    public Wind Wind { get; set; }&#xA;    public Condition Condition { get; set; }&#xA;&#xA;    public Weather(Location location, Atmosphere atmosphere, Wind wind, Condition condition)&#xA;    {&#xA;        Location = location;&#xA;        Atmosphere = atmosphere;&#xA;        Wind = wind;&#xA;        Condition = condition;&#xA;    }&#xA;}&#xA;&#xA;public class Location&#xA;{&#xA;    //some properties&#xA;}&#xA;&#xA;public class Atmosphere&#xA;{&#xA;    //some properties&#xA;}&#xA;&#xA;public class Wind&#xA;{&#xA;    //some properties        &#xA;}&#xA;&#xA;public class Condition&#xA;{&#xA;    //some properties        &#xA;}&#xA;&#xA;</code></pre>
+<p>Before we can resolve the concrete <code>Weather</code> type, we need an instance of an <code>Container</code> object. As mentioned earlier, these objects defines a generic <code>GetInstance</code> method which can build us an instance of the <code>Weather</code> type.</p>
+<p>You can create a container yourself or use the statically accessed container.</p>
+<pre><code class="language-csharp">&#xA;var container = new Container();&#xA;var weather1 = container.GetInstance&lt;Weather&gt;();&#xA;&#xA;var weather2 = container.GetInstance&lt;Weather&gt;();&#xA;weather2 = container.GetInstance&lt;Weather&gt;(); //short version for above.&#xA;</code></pre>
+<p>The reason why we don't need to supply any configuration is because Lamar supports a concept called <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'the-container/auto-wiring'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p>. It's basically a smart way of building instances of types by looking to the constructors of the requested and all the needed underlaying types. During this inspection Lamar also uses any provided configuration to help building the requested service or dependency.</p>
+<p>In our example, where there isn't any configuration available, Lamar looks at the constructor of the requested <code>Weather</code> type. It sees that it depends on four concrete types which all have a default constructor. Lamar is therefore able to create an instance for all of them and inject them into the <code>Weather</code> constructor. After that the <code>Weather</code> instance is returned to the caller.</p>
+<p>Most of the time you will be mapping abstractions to concrete types, but as you have seen Lamar supports other use cases as well.</p>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/resolving/try-geting-an-optional-service-by-plugin-type-and-name">Try Geting an Optional Service by Plugin Type and Name</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/policies">IoC Construction Policies</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

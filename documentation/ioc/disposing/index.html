@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - StructureMap and IDisposable</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/nested-containers" title="Nested Containers (Per Request/Transaction)">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/working-with-enumerable-types" title="Working with Enumerable Types">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li class="active">StructureMap and IDisposable</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.5</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/working-with-enumerable-types">Working with Enumerable Types</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>StructureMap and IDisposable</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title:StructureMap and IDisposable-->
+<h2 id="singletons">Singletons</h2>
+<p>This one is easy, any object marked as the <em>Singleton</em> lifecycle that implements <code>IDisposable</code> is disposed when the root container is
+disposed:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void singletons_are_disposed_when_the_container_is_disposed()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.ForSingletonOf&lt;DisposableSingleton&gt;();&#xA;    });&#xA;&#xA;    // As a singleton-scoped object, every request for DisposableSingleton&#xA;    // will return the same object&#xA;    var singleton = container.GetInstance&lt;DisposableSingleton&gt;();&#xA;    singleton.ShouldBeSameAs(container.GetInstance&lt;DisposableSingleton&gt;());&#xA;    singleton.ShouldBeSameAs(container.GetInstance&lt;DisposableSingleton&gt;());&#xA;    singleton.ShouldBeSameAs(container.GetInstance&lt;DisposableSingleton&gt;());&#xA;    singleton.ShouldBeSameAs(container.GetInstance&lt;DisposableSingleton&gt;());&#xA;&#xA;    singleton.WasDisposed.ShouldBeFalse();&#xA;&#xA;    // now, dispose the Container&#xA;    container.Dispose();&#xA;&#xA;    // the SingletonThing scoped object should be disposed&#xA;    singleton.WasDisposed.ShouldBeTrue();&#xA;}&#xA;&#xA;</code></pre>
+<p><em>Ejecting</em> a singleton-scoped object will also force it to be disposed. See <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/using-the-container-model'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for more information on how to eject singletons
+from a running <code>Container</code>.</p>
+<h2 id="nested-containers">Nested Containers</h2>
+<p>As discussed in <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'the-container/nested-containers'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p>, any transient, <em>AlwaysUnique</em> (as of 4.0), or container-scoped object that implements <code>IDisposable</code> and is created
+by a nested container will be disposed as the nested container is disposed:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void nested_container_disposal()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        // A SingletonThing scoped service&#xA;        _.ForSingletonOf&lt;IColorCache&gt;().Use&lt;ColorCache&gt;();&#xA;&#xA;        // A transient scoped service&#xA;        _.For&lt;IColor&gt;().Use&lt;Green&gt;();&#xA;&#xA;        &#xA;        &#xA;        // An AlwaysUnique scoped service&#xA;        _.AddTransient&lt;Purple&gt;();&#xA;&#xA;        _.AddTransient&lt;Blue&gt;();&#xA;    });&#xA;&#xA;    ColorCache singleton = null;&#xA;    Green nestedGreen = null;&#xA;    Blue nestedBlue = null;&#xA;    Purple nestedPurple = null;&#xA;&#xA;    using (var nested = container.GetNestedContainer())&#xA;    {&#xA;        // SingletonThing&#x27;s are really built by the parent&#xA;        singleton = nested.GetInstance&lt;IColorCache&gt;()&#xA;            .ShouldBeOfType&lt;ColorCache&gt;();&#xA;&#xA;        nestedGreen = nested.GetInstance&lt;IColor&gt;()&#xA;            .ShouldBeOfType&lt;Green&gt;();&#xA;&#xA;        nestedBlue = nested.GetInstance&lt;Blue&gt;();&#xA;&#xA;        nestedPurple = nested.GetInstance&lt;Purple&gt;();&#xA;    }&#xA;&#xA;    // Transients created by the Nested Container&#xA;    // are disposed&#xA;    nestedGreen.WasDisposed.ShouldBeTrue();&#xA;    nestedBlue.WasDisposed.ShouldBeTrue();&#xA;&#xA;    // Unique&#x27;s created by the Nested Container&#xA;    // are disposed&#xA;    nestedPurple.WasDisposed.ShouldBeTrue();&#xA;&#xA;    // NOT disposed because it&#x27;s owned by&#xA;    // the parent container&#xA;    singleton.WasDisposed.ShouldBeFalse();&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="transients">Transients</h2>
+<p><strong>Regardless of the new tracking/release mode, the StructureMap team still strongly recommends using a nested container per HTTP request or service
+bus message handling session or logical transaction to deal with disposing transient objects.</strong></p>
+<p>By default, StructureMap will <strong>not</strong> hang on to any transient-scoped objects created by the root or child containers. Dealing with
+<code>IDisposable</code> is completely up to the user in this case. The StructureMap team has long believed that trying to track transient disposables with
+an explicit <code>Release(object)</code> mode as other IoC containers behave would do more harm than good (memory leaks from forgetting to call Release(), more work on the user).</p>
+<p>That all being said, in order to comply with the new ASP.Net vNext compliance behavior, StructureMap 4.0 introduces a new opt-in transient tracking mode with the prerequisite <code>Release(object)</code> method:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void release_transient_created_by_root_container()&#xA;{&#xA;    var container = new Container(_ =&gt; _.TransientTracking = TransientTracking.ExplicitReleaseMode);&#xA;&#xA;    container.TransientTracking.ShouldBeOfType&lt;TrackingTransientCache&gt;();&#xA;&#xA;    var transient1 = container.GetInstance&lt;DisposableGuy&gt;();&#xA;    var transient2 = container.GetInstance&lt;DisposableGuy&gt;();&#xA;&#xA;    transient1.WasDisposed.ShouldBeFalse();&#xA;    transient2.WasDisposed.ShouldBeFalse();&#xA;&#xA;    // release ONLY transient2&#xA;    container.Release(transient2);&#xA;&#xA;    transient1.WasDisposed.ShouldBeFalse();&#xA;    transient2.WasDisposed.ShouldBeTrue();&#xA;&#xA;    // transient2 should no longer be&#xA;    // tracked by the container&#xA;    container.TransientTracking.Tracked&#xA;        .Single()&#xA;        .ShouldBeTheSameAs(transient1);&#xA;}&#xA;&#xA;[Fact]&#xA;public void disposing_the_container_disposes_tracked_transients()&#xA;{&#xA;    var container = new Container(_ =&gt; _.TransientTracking = TransientTracking.ExplicitReleaseMode);&#xA;&#xA;    var transient1 = container.GetInstance&lt;DisposableGuy&gt;();&#xA;    var transient2 = container.GetInstance&lt;DisposableGuy&gt;();&#xA;&#xA;    transient1.WasDisposed.ShouldBeFalse();&#xA;    transient2.WasDisposed.ShouldBeFalse();&#xA;&#xA;    container.Dispose();&#xA;&#xA;    transient1.WasDisposed.ShouldBeTrue();&#xA;    transient2.WasDisposed.ShouldBeTrue();&#xA;}&#xA;&#xA;</code></pre>
+<p><strong>As of right now, StructureMap will only track the top level object requested from a <code>Container</code> and not all the other <code>IDisposable</code> objects that may
+have been created as part of the main object graph.</strong></p>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/working-with-enumerable-types">Working with Enumerable Types</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

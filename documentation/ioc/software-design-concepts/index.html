@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Software Design Concepts</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc" title="Lamar as IoC Container">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/bootstrapping" title="Bootstrapping a Container">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li class="active">Software Design Concepts</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.5</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/bootstrapping">Bootstrapping a Container</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Software Design Concepts</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: Software Design Concepts-->
+<!--Url: software-design-concepts-->
+<h2 id="inversion-of-control">Inversion of Control</h2>
+<p>Years ago I consulted for a company that had developed a successful software engine for pricing and analyzing potential energy trades. The next step for them was to adapt their pricing engine so that it could be embedded in other software packages or even a simple spreadsheet so that analysts could quickly try out &quot;what if&quot; scenarios before making any kind of deal. The immediate problem this firm had was that their pricing engine was architected such that the pricing engine business logic directly invoked their proprietary database schema and configuration files. The strategic pricing engine logic was effectively useless without all the rest of their system, so forget embedding the logic into spreadsheet logic.</p>
+<p>With the benefit of hindsight, if we were to build an energy trading pricing engine from scratch, we would probably opt to use the software design concept of <em><a href="https://en.wikipedia.org/wiki/Inversion_of_control">Inversion of Control</a></em> such that the actual pricing logic code would be handed all the pricing metadata it needed to perform its work instead of making the pricing logic reach out to get it. In its most general usage, <em>Inversion of Control</em> simply means that a component is given some sort of dependent data or service or configuration instead of that component having to &quot;know&quot; how to fetch or find that resource.</p>
+<p>An IoC container like StructureMap uses the <em>Inversion of Control</em> concept to simplify your internal services by freeing them from having to know how to find, build, or clean up their dependencies.</p>
+<h2 id="dependency-injection">Dependency Injection</h2>
+<p><em><a href="https://en.wikipedia.org/wiki/Dependency_injection">Dependency Injection</a></em> is nothing more than pushing dependencies of an object into constructor functions or setter properties instead of that object doing everything for itself. If you are strictly using <em>Dependency Injection</em> to fill the dependencies of your classes, your code should have no coupling to StructureMap itself.</p>
+<pre><code class="language-csharp">&#xA;public interface IDatabase { }&#xA;&#xA;public class DatabaseUser&#xA;{&#xA;    // Using Constructor Injection&#xA;    public DatabaseUser(IDatabase database)&#xA;    {&#xA;    }&#xA;}&#xA;&#xA;public class OtherDatabaseUser&#xA;{&#xA;    // Setter Injection&#xA;    public IDatabase Database { get; set; }&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="service-locator">Service Locator</h2>
+<p>StructureMap also fills the role of a <em><a href="https://en.wikipedia.org/wiki/Service_locator_pattern">service locator</a></em>. In this usage, your code would directly access StructureMap's <code>Container</code> class to build or resolve services upon demand like this sample:</p>
+<pre><code class="language-csharp">&#xA;public class ThirdDatabaseUser&#xA;{&#xA;    private IDatabase _database;&#xA;&#xA;    public ThirdDatabaseUser(IContainer container)&#xA;    {&#xA;        // This is service location&#xA;        _database = container.GetInstance&lt;IDatabase&gt;();&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<p>Since IoC tools like StructureMap have come onto the software scene, many developers have very badly overused the service locator pattern and many other developers have become very vocal in their distaste for service location. The StructureMap team simply recommends that you favor Dependency Injection wherever possible, but that <em>some</em> service location in your system where you may need more advanced building options or lazy resolution of services is probably just fine.</p>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc">Lamar as IoC Container</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/bootstrapping">Bootstrapping a Container</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>
