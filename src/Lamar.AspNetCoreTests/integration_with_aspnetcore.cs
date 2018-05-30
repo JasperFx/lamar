@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
 using Baseline;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lamar.Testing.AspNetCoreIntegration
 {
@@ -51,7 +52,17 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
             container.GetInstance<IOptions<KestrelServerOptions>>();
         }
-        
+
+        [Fact]
+        public void integration_with_ef()
+        {
+            var container = new Container(_ =>
+            {
+                _.AddDbContext<AppDbContext>(opts => { opts.UseSqlServer("connection string"); });
+            });
+
+            container.GetInstance<AppDbContext>().ShouldNotBeNull();
+        }
         
 
 
@@ -105,6 +116,17 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
     }
 
+    public class AppDbContext : DbContext
+    {
+        protected AppDbContext()
+        {
+        }
+
+        public AppDbContext(DbContextOptions options) : base(options)
+        {
+        }
+    }
+    
     public class NulloServer : IServer
     {
         public void Dispose()
