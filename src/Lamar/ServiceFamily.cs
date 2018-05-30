@@ -159,7 +159,7 @@ namespace Lamar
 
         public Instance InstanceFor(string name)
         {
-            return Instances.ContainsKey(name) ? Instances[name] : null;
+            return Instances.ContainsKey(name) ? Instances[name] : _instances.Values.ToArray().FirstOrDefault(x => x.Name == name);
         }
 
         private void makeNamesUnique(IEnumerable<Instance> instances)

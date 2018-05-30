@@ -62,6 +62,18 @@ namespace Lamar.Testing.AspNetCoreIntegration
             });
 
             container.GetInstance<AppDbContext>().ShouldNotBeNull();
+            
+            container.GetInstance<Foo>().Context.ShouldNotBeNull();
+        }
+
+        public class Foo
+        {
+            public AppDbContext Context { get; }
+
+            public Foo(AppDbContext context)
+            {
+                Context = context;
+            }
         }
         
 
