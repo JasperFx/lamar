@@ -1,17 +1,13 @@
 <!--Title:Lamar-->
 
-
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel=icon href=/content/images/favicon.ico>
     <title>Lamar</title>
 
     <!-- Bootstrap Core CSS -->
@@ -19,76 +15,75 @@
 
     <!-- Custom CSS -->
     <[css:content/stylish-portfolio.css]>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    </head>
+    <body>
+
+<a href="https://github.com/JasperFx/lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
 
 
-    <!-- Custom Fonts -->
-    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" >
-
-</head>
-
-<body>
-<a href="https://github.com/jasperfx/lamar"><img style="z-index: 5000; position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_007200.png"></a>
-
-
-
-    <!-- Navigation -->
-    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
-    <nav id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-            <li class="sidebar-brand">
-                <a href="getting_started"  onclick = $("#menu-close").click(); >Getting Started</a>
+        <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="<[RootUrl]>" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <[linkto:getting_started]>
             </li>
             <li>
-                <a href="documentation" onclick = $("#menu-close").click(); >Documentation</a>
+              <[linkto:documentation]>
             </li>
             <li>
-                <a href="https://github.com/JasperFx/Lamar" onclick = $("#menu-close").click(); >Lamar on GitHub</a>
-            </li>
-             <li>
-                <a href="https://gitter.im/JasperFx/Lamar?utm_source=share-link&utm_medium=link&utm_campaign=share-link" onclick = $("#menu-close").click(); >Gitter Room</a>
+<a href="https://gitter.im/JasperFx/lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/JasperFx/https://github.com/JasperFx/jasper" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
             <li>
-                <a href="https://ci.appveyor.com/project/jasper-ci/lamar/history" onclick = $("#menu-close").click(); >AppVeyor Page</a>
+              <a href="https://github.com/JasperFx/lamar/blob/master/documentation/<[FilePath]>"  class="text-muted"><i class="fa fa-github"></i> Edit on GitHub</a>
             </li>
-            <li>
-                <a href="https://www.nuget.org/packages/lamar/" onclick = $("#menu-close").click(); >Nuget Downloads</a>
-            </li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+        </nav>
 
-        </ul>
+      </div>
     </nav>
 
-    <!-- Header -->
+        <!-- Header -->
     <header id="top" class="header">
-        <div class="text-vertical-center">
-            <h1 style="color:black">Lamar</h1>
-            <h3 style="color:black;font-weight:bold">Fast Inversion of Control Tool and Sundry Items of Roslyn Chicanery</h3>
+        <div class="title">
+        <[img:content/images/lamar.jpg]>
+      </div>
+
+            <div style="text-align: center">
+                    <h1 style="margin-top:25px">Lamar</h1>
+                    <h2>Fast Inversion of Control Tool and Sundry Items of Roslyn Chicanery</h2>
+                    <p class="lead">
+                        <a href="https://ci.appveyor.com/project/jasper-ci/lamar"><img src="https://ci.appveyor.com/api/projects/status/o23fp3diks7024x9?svg=true"></img></a>
+                        <a href="https://gitter.im/jasperfx/lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/jasper" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+                    </p>
+            </div>
             <br>
-            <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
-            <a href="getting_started" class="btn btn-dark btn-lg">Get started!</a>
-            <br />
-            <br />
-            <p class="lead center-block">
-                <a href="https://ci.appveyor.com/project/jasper-ci/lamar/history"><img src="https://img.shields.io/appveyor/ci/jasper-ci/lamar.svg"></img></a>
-                <a href="https://www.nuget.org/packages/Lamar/"><img src="https://img.shields.io/nuget/v/Lamar.svg"></img></a>
-
-
-<a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
-            </p>
-            <i class="subtitle">The Barton County courthouse on the city square in Lamar, MO</i>
-        </div>
     </header>
 
 
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    </div> <!-- /container -->
+
+        <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <[script:content/embed.js]>
+
+
 <script>
 $('#search').keyup(function(e){
   if(e.keyCode == 13) {
     var search = $('#search').val();
 
-    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    var url = 'https://www.google.com/#q=site:http://jasperfx.github.io/lamar ' + search;
     url = encodeURI(url);
 
     window.location.href = url;
@@ -97,42 +92,14 @@ $('#search').keyup(function(e){
     if (e.cancelBubble!=null) e.cancelBubble = true;
     return false;
   }
+
+
+
 });
 
 </script>
 
-    <!-- Custom Theme JavaScript -->
-    <script>
-    // Closes the sidebar menu
-    $("#menu-close").click(function(e) {
-        e.preventDefault();
-        $("#sidebar-wrapper").toggleClass("active");
-    });
 
-    // Opens the sidebar menu
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#sidebar-wrapper").toggleClass("active");
-    });
+    </body>
 
-    // Scrolls to the selected menu item on the page
-    $(function() {
-        $('a[href*=#]:not([href=#])').click(function() {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
-
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                    return false;
-                }
-            }
-        });
-    });
-    </script>
-
-</body>
-
-</html>
+ </html>

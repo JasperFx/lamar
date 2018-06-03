@@ -1,5 +1,4 @@
 <!--Title: Software Design Concepts-->
-<!--Url: software-design-concepts-->
 
 ## Inversion of Control
 

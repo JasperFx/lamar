@@ -169,27 +169,27 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients());
             services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
-            
-            
+
+
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = "something";
                 facebookOptions.AppSecret = "else";
             });
-            
+
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseIdentityServer();
-            
+
             app.Run(c =>
             {
                 var maker = c.RequestServices.GetService<IMessageMaker>();
                 return c.Response.WriteAsync(maker.ToString());
             });
         }
-    }
+    })
     
     public class Config {
         public static IEnumerable<ApiResource> GetApiResources() => new List<ApiResource> {
