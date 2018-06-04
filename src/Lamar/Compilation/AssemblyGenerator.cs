@@ -12,6 +12,9 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Lamar.Compilation
 {
+	/// <summary>
+	/// Use to compile C# code to in memory assemblies using the Roslyn compiler
+	/// </summary>
 	public class AssemblyGenerator
 	{
 		private static readonly ILamarAssemblyLoadContext _context = new CustomAssemblyLoadContext();
@@ -27,6 +30,11 @@ namespace Lamar.Compilation
 			ReferenceAssembly(typeof(Enumerable).GetTypeInfo().Assembly);
 		}
 
+		/// <summary>
+		/// Tells Roslyn to reference the given assembly and any of its dependencies
+		/// when compiling code
+		/// </summary>
+		/// <param name="assembly"></param>
 		public void ReferenceAssembly(Assembly assembly)
 		{
 			if (assembly == null) return;
@@ -70,18 +78,18 @@ namespace Lamar.Compilation
 			if (assembly.IsDynamic) return null;
 
 			return string.IsNullOrEmpty(assembly.Location)
-				? GetPath(assembly)
+				? getPath(assembly)
 				: assembly.Location;
 		}
 
-		private static string GetPath(Assembly assembly)
+		private static string getPath(Assembly assembly)
 		{
 			return HintPaths?
-				.Select(FindFile(assembly))
+				.Select(findFile(assembly))
 				.FirstOrDefault(file => StringExtensions.IsNotEmpty(file));
 		}
 
-		private static Func<string, string> FindFile(Assembly assembly)
+		private static Func<string, string> findFile(Assembly assembly)
 		{
 			return hintPath =>
 			{
@@ -98,11 +106,34 @@ namespace Lamar.Compilation
 			};
 		}
 
+		/// <summary>
+		/// Reference the assembly containing the type "T"
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
 		public void ReferenceAssemblyContainingType<T>()
 		{
 			ReferenceAssembly(typeof(T).GetTypeInfo().Assembly);
 		}
 
+		/// <summary>
+		/// Compile code built up by using an ISourceWriter to a new assembly in memory
+		/// </summary>
+		/// <param name="write"></param>
+		/// <returns></returns>
+		public Assembly Generate(Action<ISourceWriter> write)
+		{
+			var writer = new SourceWriter();
+			write(writer);
+
+			return Generate(writer.Code());
+		}
+
+		/// <summary>
+		/// Compile the code passed into this method to a new assembly in memory
+		/// </summary>
+		/// <param name="code"></param>
+		/// <returns></returns>
+		/// <exception cref="InvalidOperationException"></exception>
 		public Assembly Generate(string code)
 		{
 			var assemblyName = Path.GetRandomFileName();

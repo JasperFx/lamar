@@ -189,7 +189,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 return c.Response.WriteAsync(maker.ToString());
             });
         }
-    })
+    }
     
     public class Config {
         public static IEnumerable<ApiResource> GetApiResources() => new List<ApiResource> {
