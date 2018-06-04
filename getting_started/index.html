@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 0.9.5</h3>
+            <h3>Lamar 0.9.10</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -81,7 +81,30 @@
               <div id="main-pane">
                 <!--Title:Getting Started-->
 <!--Url:getting_started-->
-<p>Let's talk about Lamar here</p>
+<p>This page does assume that you are already familiar with IoC containers. For more background on the concepts
+and usage of an IoC container within your application, see <a href="/lamar/documentation/ioc/concepts">Software Design Concepts</a></p>
+<p>Lamar is a .Net library that provides two pieces of functionality:</p>
+<ol>
+<li>A fast <a href="https://www.martinfowler.com/articles/injection.html">Inversion of Control Container</a> that natively supports the <a href="https://code.msdn.microsoft.com/Dependency-injection-in-f789ceaa">ASP.Net Core DI abstractions</a> and a subset of the older <a href="https://structuremap.github.io">StructureMap library</a></li>
+<li>The dynamic code generation and compilation features used underneath the IoC implementation</li>
+</ol>
+<h2 id="lamar-as-ioc-container">Lamar as IoC Container</h2>
+<p>To get started, just add <a href="https://www.nuget.org/packages/Lamar/">Lamar</a> to your project through Nuget.</p>
+<p>Most of the time you use an IoC container these days, it's probably mostly hidden inside of some kind of application framework. However, if you wanted to use Lamar all by itself you would first <a href="/lamar/documentation/ioc/bootstrapping">bootstrap a Lamar container</a> with all its service registrations something like this:</p>
+<pre><code class="language-csharp">&#xA;var container = new Container(x =&gt;&#xA;{&#xA;    // Using StructureMap style registrations&#xA;    x.For&lt;IClock&gt;().Use&lt;Clock&gt;();&#xA;    &#xA;    // Using ASP.Net Core DI style registrations&#xA;    x.AddTransient&lt;IClock, Clock&gt;();&#xA;    &#xA;    // and lots more services in all likelihood&#xA;});&#xA;</code></pre>
+<p>Now, to resolve services from your container:</p>
+<pre><code class="language-csharp">&#xA;// StructureMap style&#xA;var clock = container.GetInstance&lt;IClock&gt;();&#xA;&#xA;// ASP.Net Core style&#xA;var clock2 = container.GetService&lt;IClock&gt;();&#xA;</code></pre>
+<h2 id="lamar-within-asp.net-core-applications">Lamar within ASP.Net Core Applications</h2>
+<p>To use Lamar within ASP.Net Core applications, also install the <a href="https://www.nuget.org/packages/Lamar.Microsoft.DependencyInjection/">Lamar.Microsoft.DependencyInjection</a> library from Nuget to your ASP.Net Core project (and you can thank Microsoft for the clumsy naming convention, thank you).</p>
+<p>With that Nuget installed, your normal ASP.Net Core bootstrapping changes just slightly. When you bootstrap your <code>IWebHostBuilder</code> object
+that configures ASP.Net Core, you also need to call the <code>UseLamar()</code> method as shown below:</p>
+<pre><code class="language-csharp">&#xA;public static void Main(string[] args)&#xA;{&#xA;    var builder = new WebHostBuilder();&#xA;    builder&#xA;        // Replaces the built in DI container&#xA;        // with Lamar&#xA;        .UseLamar()&#xA;        &#xA;        // Normal ASP.Net Core bootstrapping&#xA;        .UseUrls(&quot;http://localhost:5002&quot;)&#xA;        .UseKestrel()&#xA;        .UseStartup&lt;Startup&gt;();&#xA;&#xA;    builder.Start();&#xA;&#xA;}&#xA;</code></pre>
+<p>If you use a <code>StartUp</code> class for extra configuration, your <code>ConfigureContainer()</code> method should take in a <code>ServiceRegistry</code> object from Lamar for service registrations in place of the ASP.Net Core <code>IServiceCollection</code> interface as shown below:</p>
+<pre><code class="language-csharp">&#xA;public class Startup&#xA;{&#xA;    // Take in Lamar&#x27;s ServiceRegistry instead of IServiceCollection&#xA;    // as your argument, but fear not, it implements IServiceCollection&#xA;    // as well&#xA;    public void ConfigureContainer(ServiceRegistry services)&#xA;    {&#xA;        // Supports ASP.Net Core DI abstractions&#xA;        services.AddMvc();&#xA;        services.AddLogging();&#xA;        &#xA;        // Also exposes Lamar specific registrations&#xA;        // and functionality&#xA;        services.Scan(s =&gt;&#xA;        {&#xA;            s.TheCallingAssembly();&#xA;            s.WithDefaultConventions();&#xA;        });&#xA;    }&#xA;&#xA;    public void Configure(IApplicationBuilder app)&#xA;    {&#xA;        app.UseMvc();&#xA;    }&#xA;}&#xA;</code></pre>
+<p>And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
+HTTP requests.</p>
+<h2 id="lamar-for-runtime-code-generation-compilation">Lamar for Runtime Code Generation &amp; Compilation</h2>
+<p>Please see <a href="/lamar/documentation/compilation">Dynamic Code Generation and Compilation</a> for more information.</p>
 
               </div>
 

@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - Try Geting an Optional Service by Plugin Type and Name</title>
+        <title>Lamar - Environment Tests</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -37,8 +37,8 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/ioc/resolving/try-getting-an-optional-service-by-plugin-type" title="Try Getting an Optional Service by Plugin Type">Previous</a></li>
-            <li><a href="/lamar/documentation/ioc/resolving/requesting-a-concrete-type" title="Auto Resolving Concrete Types">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration" title="Validating Container Configuration">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/diagnostics/build-plans" title="Build Plans">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/resolving">Resolving Services</a></li><li class="active">Try Geting an Optional Service by Plugin Type and Name</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a></li><li class="active">Environment Tests</li></ol>
       </nav>
     </div>
 
@@ -68,21 +68,29 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/resolving/requesting-a-concrete-type">Auto Resolving Concrete Types</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/resolving/try-getting-an-optional-service-by-plugin-type">Try Getting an Optional Service by Plugin Type</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/diagnostics/build-plans">Build Plans</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration">Validating Container Configuration</a></p>
           </div><!--/left-->
 
           <!--right-->
           <div class="col-md-9">
-              <h1>Try Geting an Optional Service by Plugin Type and Name</h1>
+              <h1>Environment Tests</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--Title: Try Geting an Optional Service by Plugin Type and Name-->
-<!--Url: try-geting-an-optional-service-by-plugin-type-and-name-->
-<p>Just use the <code>IContainer.TryGetInstance&lt;T&gt;(name)</code> or <code>IContainer.TryGetInstance(Type pluginType, string name)</code> method as shown below:</p>
-<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void TryGetInstanceViaNameAndGeneric_ReturnsInstance_WhenTypeFound()&#xA;{&#xA;    addColorInstance(&quot;Red&quot;);&#xA;    addColorInstance(&quot;Orange&quot;);&#xA;    addColorInstance(&quot;Blue&quot;);&#xA;&#xA;    // &quot;Orange&quot; exists, so an object should be returned&#xA;    var instance = _container.TryGetInstance&lt;Rule&gt;(&quot;Orange&quot;);&#xA;    instance.ShouldBeOfType(typeof(ColorRule));&#xA;}&#xA;&#xA;</code></pre>
+                <!--Title: Environment Tests-->
+<!--Url: environment-tests-->
+<p>Years ago I worked with a legacy system that was particularly fragile in its deployment. While my team at the time and I made some serious improvements in the reliability of the automated deployment, the best thing we did was to add a set of <em>environment tests</em> to the deployment that verified that basic elements of the system were working like:</p>
+<ul>
+<li>Could our code access the configured database?</li>
+<li>Was a certain COM object registered on the server? (I hated COM then and the years haven't changed my mind)</li>
+<li>Could we connect via remoting to another deployed application?</li>
+</ul>
+<p>The deployments still frequently failed, but we were able to spot <strong>and diagnose</strong> the underlying problems much faster with our new environment tests than we could before by trying to run and debug the not-quite-valid application.</p>
+<p>One of the mechanisms we used for these environment tests was StructureMap's ability to mark methods on configured types as environment tests with the <code>[ValidationMethod]</code> attribute as shown below:</p>
+<pre><code class="language-csharp">&#xA;public class Database : IDatabase&#xA;{&#xA;    [ValidationMethod]&#xA;    public void TryToConnect()&#xA;    {&#xA;        // try to open a connection to the configured&#xA;        // database connection string&#xA;&#xA;        // throw an exception if the database cannot&#xA;        // be reached&#xA;    }&#xA;}&#xA;</code></pre>
+<p>Used in conjunction with <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/validating-container-configuration'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p>, you can use this technique to quickly support environment tests embedded into your system code.</p>
 
               </div>
 
@@ -90,12 +98,12 @@
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/resolving/try-getting-an-optional-service-by-plugin-type">Try Getting an Optional Service by Plugin Type</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration">Validating Container Configuration</a>
 
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/ioc/resolving/requesting-a-concrete-type">Auto Resolving Concrete Types</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/diagnostics/build-plans">Build Plans</a>
 
                 </span>
               </nav>

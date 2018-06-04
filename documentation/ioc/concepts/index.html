@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 0.9.5</h3>
+            <h3>Lamar 0.9.10</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -80,7 +80,6 @@
 
               <div id="main-pane">
                 <!--Title: Software Design Concepts-->
-<!--Url: software-design-concepts-->
 <h2 id="inversion-of-control">Inversion of Control</h2>
 <p>Years ago I consulted for a company that had developed a successful software engine for pricing and analyzing potential energy trades. The next step for them was to adapt their pricing engine so that it could be embedded in other software packages or even a simple spreadsheet so that analysts could quickly try out &quot;what if&quot; scenarios before making any kind of deal. The immediate problem this firm had was that their pricing engine was architected such that the pricing engine business logic directly invoked their proprietary database schema and configuration files. The strategic pricing engine logic was effectively useless without all the rest of their system, so forget embedding the logic into spreadsheet logic.</p>
 <p>With the benefit of hindsight, if we were to build an energy trading pricing engine from scratch, we would probably opt to use the software design concept of <em><a href="https://en.wikipedia.org/wiki/Inversion_of_control">Inversion of Control</a></em> such that the actual pricing logic code would be handed all the pricing metadata it needed to perform its work instead of making the pricing logic reach out to get it. In its most general usage, <em>Inversion of Control</em> simply means that a component is given some sort of dependent data or service or configuration instead of that component having to &quot;know&quot; how to fetch or find that resource.</p>

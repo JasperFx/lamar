@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - Diagnostics</title>
+        <title>Lamar - Build Plans</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -37,8 +37,8 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation" title="Documentation">Previous</a></li>
-            <li><a href="/lamar/documentation/diagnostics/whatdoihave" title="WhatDoIHave()">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/diagnostics/environment-tests" title="Environment Tests">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/diagnostics/using-the-container-model" title="Using the Container Model">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li class="active">Diagnostics</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a></li><li class="active">Build Plans</li></ol>
       </nav>
     </div>
 
@@ -62,27 +62,54 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 0.9.5</h3>
+            <h3>Lamar 0.9.10</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/diagnostics/whatdoihave">WhatDoIHave()</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation">Documentation</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/diagnostics/using-the-container-model">Using the Container Model</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a></p>
           </div><!--/left-->
 
           <!--right-->
           <div class="col-md-9">
-              <h1>Diagnostics</h1>
+              <h1>Build Plans</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--Title: Diagnostics-->
-<p>Improving StructureMap's ability to diagnose and explain both configuration and runtime problems was a very big goal
-for the big 3.0 release and improved with additional type scanning diagnostics for 4.0.</p>
-<ul class="table-of-contents"><li><a href="/lamar/documentation/diagnostics/whatdoihave">WhatDoIHave()</a></li><li><a href="/lamar/documentation/diagnostics/validating-container-configuration">Validating Container Configuration</a></li><li><a href="/lamar/documentation/diagnostics/environment-tests">Environment Tests</a></li><li><a href="/lamar/documentation/diagnostics/build-plans">Build Plans</a></li><li><a href="/lamar/documentation/diagnostics/using-the-container-model">Using the Container Model</a></li><li><a href="/lamar/documentation/diagnostics/type-scanning">Type Scanning Diagnostics</a></li></ul>
+                <!--Title: Build Plans-->
+<!--Url: build-plans-->
+<p>StructureMap 3.0 introduced the concept of the &quot;Build Plan.&quot; The build plan is a textual representation of exactly how StructureMap will build a given Instance, including:</p>
+<ol>
+<li>What constructor function, if any, StructureMap is going to use for a concrete type</li>
+<li>How it is resolving the constructor dependencies in a recursive fashion</li>
+<li>Which setter properties for a concrete type receive dependencies and how those setter dependencies are built</li>
+<li>The lifecycle used for the Instance</li>
+<li>All interceptors applied to the Instance</li>
+<li>Explicitly configured inline dependencies</li>
+<li>Description of any Lambda or <code>Func&lt;T&gt;</code> that is used to construct the Instance object</li>
+</ol>
+<p>To retrieve the build plan for a configured Instance, use the queryable <code>Container.Model</code> to find the configured Instance and call <code>DescribeBuildPlan(int maxDepth)</code> to get the textual report as shown in this sample below:</p>
+<pre><code class="language-csharp">&#xA;var container = Container.For&lt;VisualizationRegistry&gt;();&#xA;&#xA;var description = container.Model.For&lt;IDevice&gt;().Default&#xA;    .DescribeBuildPlan();&#xA;&#xA;Debug.WriteLine(description);&#xA;</code></pre>
+<p>The result of the code above is this textual representation of how StructureMap will build and/or resolve the default of the <code>IDevice</code> plugin type:</p>
+<pre>
+PluginType: StructureMap.Testing.Diagnostics.IDevice
+Lifecycle: Transient
+Decorator --> FuncInterceptor of StructureMap.Testing.Diagnostics.IDevice: new DeviceDecorator(IDevice)
+Decorator --> Decorator of type StructureMap.Testing.Diagnostics.CrazyDecorator
+    new CrazyDecorator(IDevice, IEngine, IFoo)
+      ┣ IDevice = The inner IDevice
+      ┃ ┗ new DefaultDevice()
+      ┣ IEngine = **Default**
+      ┗ IFoo = **Default**
+      
+</pre>
+<p>For another example, you can retrieve the build plan for a named instance of a certain build plan with this code:</p>
+<pre><code class="language-csharp">&#xA;var description = theContainer.Model.For&lt;IDevice&gt;()&#xA;    .Find(&quot;A&quot;)&#xA;    .DescribeBuildPlan();&#xA;</code></pre>
+<p>See <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/using-the-container-model'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for more information on using <code>Container.Model</code>.</p>
+<p>You can find many more examples of finding the build plan description from <code>Container.Model</code> from the <a href="https://github.com/structuremap/structuremap/blob/master/src/StructureMap.Testing/Diagnostics/BuildPlanVisualizationSmokeTester.cs">unit tests in the StructureMap codebase</a>.</p>
 
               </div>
 
@@ -90,12 +117,12 @@ for the big 3.0 release and improved with additional type scanning diagnostics f
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation">Documentation</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a>
 
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/diagnostics/whatdoihave">WhatDoIHave()</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/diagnostics/using-the-container-model">Using the Container Model</a>
 
                 </span>
               </nav>
