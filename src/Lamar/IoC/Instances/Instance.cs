@@ -250,7 +250,7 @@ namespace Lamar.IoC.Instances
                 parent = parent.Parent;
             }
 
-            return "func_" + name;
+            return "func_" + name.Sanitize();
         }
     }
 }
