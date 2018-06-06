@@ -100,7 +100,7 @@ in code:</p>
 <li>Use the new <code>IOperation</code></li>
 </ol>
 <p>If you're not perfectly keen on doing brute force string manipulation to generate your code, you can
-also use Lamar's built in <a href="/lamar/documentation/compilation/sourcewriter">ISouceWriter</a> to generate some of the code for you with
+also use Lamar's built in <a href="/lamar/documentation/compilation/sourcewriter">ISourceWriter</a> to generate some of the code for you with
 all its code generation utilities:</p>
 <pre><code class="language-csharp">&#xA;var generator = new AssemblyGenerator();&#xA;&#xA;// This is necessary for the compilation to succeed&#xA;// It&#x27;s exactly the equivalent of adding references&#xA;// to your project&#xA;generator.ReferenceAssembly(typeof(Console).Assembly);&#xA;generator.ReferenceAssembly(typeof(IOperation).Assembly);&#xA;&#xA;&#xA;var assembly = generator.Generate(x =&gt;&#xA;{&#xA;    x.Namespace(&quot;Generated&quot;);&#xA;    x.StartClass(&quot;AddOperator&quot;, typeof(IOperation));&#xA;    &#xA;    x.Write(&quot;BLOCK:public int Calculate(int one, int two)&quot;);&#xA;    x.Write(&quot;return one &#x2B; two;&quot;);&#xA;    x.FinishBlock();  // Finish the method&#xA;    &#xA;    x.FinishBlock();  // Finish the class&#xA;    x.FinishBlock();  // Finish the namespace&#xA;});&#xA;&#xA;&#xA;&#xA;var type = assembly.GetExportedTypes().Single();&#xA;var operation = (IOperation)Activator.CreateInstance(type);&#xA;&#xA;var result = operation.Calculate(1, 2);&#xA;&#xA;</code></pre>
 

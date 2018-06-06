@@ -38,7 +38,7 @@
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
             <li><a href="/lamar/documentation/compilation/sourcewriter" title="Generating Code with ISourceWriter">Previous</a></li>
-            <li><a href="/lamar/documentation/ioc" title="Lamar as IoC Container">Next</a></li>
+            <li><a href="/lamar/documentation/compilation/frames/variables" title="Working with Variables">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -68,7 +68,7 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames/variables">Working with Variables</a></p>
             <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/sourcewriter">Generating Code with ISourceWriter</a></p>
           </div><!--/left-->
 
@@ -80,11 +80,68 @@
 
               <div id="main-pane">
                 <!--title:Lamar's "Frame" Model-->
-<p>Talk about stuff here</p>
+<p>The purpose of the &quot;frames&quot; model is to be able to generate dynamic methods by declaring a list of logical operations in generated code via Frame objects, then let Lamar handle:</p>
 <ul>
-<li>Show generated assembly, generated type, generated method</li>
-<li>sample frame?</li>
+<li>Finding any missing dependencies of those frames</li>
+<li>Determine what the necessary variable inputs are</li>
+<li>Ordering all the frames based on dependency order just prior to generating the code</li>
 </ul>
+<p>Before diving into an example, here's a little class diagram of the main types:</p>
+<p><h5><strong>The Code Generation Model</strong></h5><img src="/lamar/content/images/LamarCodeGenClassDiagram.png" style="max-width:100%" /></p>
+<p>The various types represent:</p>
+<ul>
+<li><code>Frame</code> - Named after the StackFrame objects within stack traces in .Net. Models a logical action done in the generated code. Concrete examples in Lamar or Jasper would be calling a method on an object, calling a constructor function, or specific frame objects to create wrapped transaction boundaries or exception handling boundaries.</li>
+<li><code>Variable</code> - pretty well what it sounds like. This type models a variable within the generated method, but also includes information about what Frame created it to help order the dependencies</li>
+<li><code>IVariableSource</code> - mechanism to &quot;find&quot; or create variables. Examples in Lamar include resolving a service from an IoC container, passing along a method argument, or the example below that tells you the current time</li>
+<li><code>IMethodVariables</code> - interface that is used by Frame classes to go find their necessary Variable dependencies.</li>
+</ul>
+<p>Alrighty then, let's make this concrete. Let's say that we want to generate and use dynamic instances of this interface:</p>
+<pre><code class="language-csharp">&#xA;public interface ISaySomething&#xA;{&#xA;    void Speak();&#xA;}&#xA;</code></pre>
+<p>Moreover, I want a version of <code>ISaySomething</code> that will call the following method and write the current time to the console:</p>
+<pre><code class="language-csharp">&#xA;public static class NowSpeaker&#xA;{&#xA;    public static void Speak(DateTime now)&#xA;    {&#xA;        Console.WriteLine(now.ToString(&quot;o&quot;));&#xA;    }&#xA;}&#xA;</code></pre>
+<p>Our dynamic class for ISaySomething will need to pass the current time to the now parameter of that method. To help out here, there's some built in helpers in Lamar specifically to write in the right code to get the current time to a variable of DateTime or DateTimeOffset that is named &quot;now.&quot;</p>
+<p>To skip ahead a little bit, let's generate a new class and object with the following code:</p>
+<pre><code class="language-csharp">&#xA;// Configures the code generation rules&#xA;// and policies&#xA;var rules = new GenerationRules(&quot;GeneratedNamespace&quot;);&#xA;&#xA;// Adds the &quot;now : DateTime&quot; variable rule to &#xA;// our generated code&#xA;rules.Sources.Add(new NowTimeVariableSource());&#xA;&#xA;// Start the definition for a new generated assembly&#xA;var assembly = new GeneratedAssembly(rules);&#xA;&#xA;// Add a new generated type called &quot;WhatTimeIsIt&quot; that will&#xA;// implement the &#xA;var type = assembly.AddType(&quot;WhatTimeIsIt&quot;, typeof(ISaySomething));&#xA;&#xA;// Getting the definition for the method named &quot;Speak&quot;&#xA;var method = type.MethodFor(nameof(ISaySomething.Speak));&#xA;&#xA;// Adding a frame that calls the NowSpeaker.Speak() method and&#xA;// adding it to the generated method&#xA;var @call = new MethodCall(typeof(NowSpeaker), nameof(NowSpeaker.Speak));&#xA;method.Frames.Add(@call);&#xA;&#xA;// Compile the new code!&#xA;assembly.CompileAll();&#xA;</code></pre>
+<p>After all that, if we interrogate the source code for the generated type above (type.SourceCode), we'd see this ugly generated code:</p>
+<pre><code>    public class WhatTimeIsIt : Lamar.Testing.Samples.ISaySomething
+    {
+
+
+        public void Speak()
+        {
+            var now = System.DateTime.UtcNow;
+            Lamar.Testing.Samples.NowSpeaker.Speak(now);
+        }
+
+    }
+</code></pre>
+<p>Some notes about the generated code:</p>
+<ul>
+<li>Lamar was able to stick in some additional code to pass the current time into a new variable, and call the Speak(DateTime now) method with that value.</li>
+<li>Lamar is smart enough to put that code before the call to the method (that kind of matters here)</li>
+<li>The generated code uses full type names in almost all cases to avoid type collisions rather than trying to get smart with using statements in the generated code</li>
+</ul>
+<p>So now let's look at how Lamar was able to add the code to pass along DateTime.UtcNow. First off, let's look at the code that just writes out the date variable:</p>
+<pre><code class="language-csharp">&#xA;public class NowFetchFrame : SyncFrame&#xA;{&#xA;    public NowFetchFrame(Type variableType)&#xA;    {&#xA;        // Notice how &quot;this&quot; frame is passed into the variable&#xA;        // class constructor as the creator&#xA;        Variable = new Variable(variableType, &quot;now&quot;, this);&#xA;    }&#xA;    &#xA;    public Variable Variable { get; }&#xA;    &#xA;    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)&#xA;    {&#xA;        writer.WriteLine($&quot;var {Variable.Usage} = {Variable.VariableType.FullName}.{nameof(DateTime.UtcNow)};&quot;);&#xA;        Next?.GenerateCode(method, writer);&#xA;    }&#xA;}&#xA;</code></pre>
+<p>In the frame above, you'll see that the <code>GenerateCode()</code> method writes its code into the source, then immediately turns around and tells the next Frame - if there is one - to generated its code. As the last step to write out the new source code, Lamar:</p>
+<ol>
+<li>Goes through an effort to find any missing frames and variables</li>
+<li>Sorts them with a topological sort (what frames depend on what other frames or variables, what variables are used or created by what frames)</li>
+<li>Organizes the frames into a single linked list</li>
+<li>Calls <code>GenerateCode()</code> on the first frame</li>
+</ol>
+<p>In the generated method up above, the call to <code>NowSpeaker.Speak(now)</code> depends on the now variable which is in turn created by the <code>NowFetchFrame</code>, and that's enough information for Lamar to order things and generate the final code.</p>
+<p>Lastly, we had to use a custom <code>IVariableSource</code> to teach Lamar how to resolve the now variable. That code looks like this:</p>
+<pre><code class="language-csharp">&#xA;public class NowTimeVariableSource : IVariableSource&#xA;{&#xA;    public bool Matches(Type type)&#xA;    {&#xA;        return type == typeof(DateTime) || type == typeof(DateTimeOffset);&#xA;    }&#xA;&#xA;    public Variable Create(Type type)&#xA;    {&#xA;        if (type == typeof(DateTime))&#xA;        {&#xA;            return new NowFetchFrame(typeof(DateTime)).Variable;&#xA;        }&#xA;&#xA;        if (type == typeof(DateTimeOffset))&#xA;        {&#xA;            return new NowFetchFrame(typeof(DateTimeOffset)).Variable;&#xA;        }&#xA;&#xA;        throw new ArgumentOutOfRangeException(nameof(type), &quot;Only DateTime and DateTimeOffset are supported&quot;);&#xA;    }&#xA;}&#xA;</code></pre>
+<p>Out of the box, the Lamar + <a href="https://jasperfx.github.io">Jasper</a> combination uses variable sources for:</p>
+<ul>
+<li>Services from the internal IoC container of the application</li>
+<li>Method arguments</li>
+<li>Variables that can be derived from a method argument like <code>HttpContext.Request : HttpRequest</code></li>
+<li>The &quot;now&quot; convention shown here</li>
+</ul>
+<p>For more information, see:</p>
+<ul class="table-of-contents"><li><a href="/lamar/documentation/compilation/frames/variables">Working with Variables</a></li><li><a href="/lamar/documentation/compilation/frames/frame">Building Custom Frames</a></li><li><a href="/lamar/documentation/compilation/frames/assembly">The GeneratedAssembly Model</a></li><li><a href="/lamar/documentation/compilation/frames/sources">Working with IVariableSource</a></li><li><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a></li><li><a href="/lamar/documentation/compilation/frames/injected-fields">Injected Fields</a></li></ul>
 
               </div>
 
@@ -97,7 +154,7 @@
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/ioc">Lamar as IoC Container</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames/variables">Working with Variables</a>
 
                 </span>
               </nav>
