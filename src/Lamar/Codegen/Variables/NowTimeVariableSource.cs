@@ -4,6 +4,7 @@ using Lamar.Compilation;
 
 namespace Lamar.Codegen.Variables
 {
+    // SAMPLE: NowTimeVariableSource
     public class NowTimeVariableSource : IVariableSource
     {
         public bool Matches(Type type)
@@ -26,8 +27,9 @@ namespace Lamar.Codegen.Variables
             throw new ArgumentOutOfRangeException(nameof(type), "Only DateTime and DateTimeOffset are supported");
         }
     }
+    // ENDSAMPLE
 
-
+    // SAMPLE: NowFetchFrame
     public class NowFetchFrame : SyncFrame
     {
         public NowFetchFrame(Type variableType)
@@ -43,5 +45,6 @@ namespace Lamar.Codegen.Variables
             Next?.GenerateCode(method, writer);
         }
     }
+    // ENDSAMPLE
 
 }
