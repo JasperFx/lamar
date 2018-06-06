@@ -15,61 +15,33 @@ namespace Lamar.Codegen.Variables
         {
             if (type == typeof(DateTime))
             {
-                return new NowVariable();
+                return new NowFetchFrame(typeof(DateTime)).Variable;
             }
 
             if (type == typeof(DateTimeOffset))
             {
-                return new NowOffsetVariable();
+                return new NowFetchFrame(typeof(DateTimeOffset)).Variable;
             }
 
             throw new ArgumentOutOfRangeException(nameof(type), "Only DateTime and DateTimeOffset are supported");
         }
     }
 
-    public class NowVariable : Variable
+
+    public class NowFetchFrame : SyncFrame
     {
-        public static readonly string Now = "now";
-
-        public NowVariable() : base(typeof(DateTime), Now)
+        public NowFetchFrame(Type variableType)
         {
-            Creator = new NowFetchFrame();
+            Variable = new Variable(variableType, "now", this);
         }
-    }
-
-    public class NowFetchFrame : Frame
-    {
-        public NowFetchFrame() : base(false)
-        {
-        }
-
+        
+        public Variable Variable { get; }
+        
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            writer.WriteLine($"var {NowVariable.Now} = {typeof(DateTime).FullName}.{nameof(DateTime.UtcNow)};");
+            writer.WriteLine($"var {Variable.Usage} = {Variable.VariableType.FullName}.{nameof(DateTime.UtcNow)};");
             Next?.GenerateCode(method, writer);
         }
     }
 
-    public class NowOffsetVariable : Variable
-    {
-        public static readonly string Now = "now";
-
-        public NowOffsetVariable() : base(typeof(DateTimeOffset), Now)
-        {
-            Creator = new NowOffsetFetchFrame();
-        }
-    }
-
-    public class NowOffsetFetchFrame : Frame
-    {
-        public NowOffsetFetchFrame() : base(false)
-        {
-        }
-
-        public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
-        {
-            writer.WriteLine($"var {NowVariable.Now} = {typeof(DateTimeOffset).FullName}.{nameof(DateTimeOffset.UtcNow)};");
-            Next?.GenerateCode(method, writer);
-        }
-    }
 }

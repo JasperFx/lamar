@@ -1,7 +1,7 @@
 <!--title:Compiling Code with AssemblyGenerator-->
 
 <[info]>
-The Lamar team thinks most users will use the <[linkto:;"Frame" model]> to generate and compile code, but you
+The Lamar team thinks most users will use the <[linkto:documentation/compilation/frames;title="Frames" model]> to generate and compile code, but you
 might very well wish to bypass that admittedly complicated model and just use the inner utility classes
 that are shown in this page.
 <[/info]>
@@ -26,7 +26,7 @@ There's only a couple things going on in the code above:
 1. Use the new `IOperation`
 
 If you're not perfectly keen on doing brute force string manipulation to generate your code, you can
-also use Lamar's built in <[linkto:documentation/compilation/sourcewriter;title=ISouceWriter]> to generate some of the code for you with 
+also use Lamar's built in <[linkto:documentation/compilation/sourcewriter;title=ISourceWriter]> to generate some of the code for you with 
 all its code generation utilities:
 
 <[sample:using-AssemblyGenerator-with-source-writer]>
