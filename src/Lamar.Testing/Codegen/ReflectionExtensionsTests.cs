@@ -34,6 +34,7 @@ namespace Lamar.Testing.Codegen
                 .ShouldBe("ReflectionExtensionsTests.ISomeInterface<string>");
         }
         
+        // SAMPLE: get-the-type-name-in-code
         [Theory]
         [InlineData(typeof(void), "void")]
         [InlineData(typeof(int), "int")]
@@ -47,9 +48,12 @@ namespace Lamar.Testing.Codegen
         [InlineData(typeof(Handler<string>), "Handler<string>")]
         public void alias_name_of_task(Type type, string name)
         {
+            // Gets the type name
             type.NameInCode().ShouldBe(name);
         }
+        // ENDSAMPLE
         
+        // SAMPLE: get-the-full-type-name-in-code
         [Theory]
         [InlineData(typeof(void), "void")]
         [InlineData(typeof(int), "int")]
@@ -65,6 +69,7 @@ namespace Lamar.Testing.Codegen
         {
             type.FullNameInCode().ShouldBe(name);
         }
+        // ENDSAMPLE
         
         [Fact]
         public void name_in_code_of_inner_type()

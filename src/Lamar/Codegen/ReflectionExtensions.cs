@@ -42,7 +42,11 @@ namespace Lamar.Codegen
             return false;
         }
         
-
+        /// <summary>
+        /// Derives the full type name *as it would appear in C# code*
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static string FullNameInCode(this Type type)
         {
             if (Aliases.ContainsKey(type)) return Aliases[type];
@@ -68,6 +72,11 @@ namespace Lamar.Codegen
             return type.FullName.Replace("+", ".");
         }
 
+        /// <summary>
+        /// Derives the type name *as it would appear in C# code*
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static string NameInCode(this Type type)
         {
             if (Aliases.ContainsKey(type)) return Aliases[type];
