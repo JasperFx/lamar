@@ -131,5 +131,16 @@ namespace Lamar.Compilation
                 type.SourceCode = parser.CodeFor(type.TypeName);
             }
         }
+
+        /// <summary>
+        /// Creates a new GeneratedAssembly with default generation
+        /// rules and using the namespace "LamarGenerated"
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static GeneratedAssembly Empty()
+        {
+            return new GeneratedAssembly(new GenerationRules("LamarGenerated"));
+        }
     }
 }
