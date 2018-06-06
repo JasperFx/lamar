@@ -92,6 +92,9 @@ namespace Lamar.Codegen.Variables
             
         }
 
+        /// <summary>
+        /// Marks other variables that this variable depends on
+        /// </summary>
         public IList<Variable> Dependencies { get; } = new List<Variable>();
 
         public Variable(Type variableType) : this(variableType, DefaultArgName(variableType))

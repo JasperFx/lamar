@@ -34,6 +34,8 @@ namespace Lamar.Codegen.Variables
     {
         public NowFetchFrame(Type variableType)
         {
+            // Notice how "this" frame is passed into the variable
+            // class constructor as the creator
             Variable = new Variable(variableType, "now", this);
         }
         
