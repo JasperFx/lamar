@@ -23,6 +23,8 @@ Now, to resolve services from your container:
 
 <[sample:resolving-services-quickstart]>
 
+Definitely note that the old StructureMap style of service resolution is semantically different than ASP.Net Core's DI resolution methods. That's been the cause of much user aggravation over the years.
+
 ## Lamar within ASP.Net Core Applications
 
 To use Lamar within ASP.Net Core applications, also install the [Lamar.Microsoft.DependencyInjection](https://www.nuget.org/packages/Lamar.Microsoft.DependencyInjection/) library from Nuget to your ASP.Net Core project (and you can thank Microsoft for the clumsy naming convention, thank you).

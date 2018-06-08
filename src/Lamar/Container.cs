@@ -14,7 +14,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Lamar
 {
-    public class Container : Scope, IContainer, IServiceScopeFactory
+    // SAMPLE: Container-Declaration
+    public class Container : Scope, IContainer
+    // ENDSAMPLE
     {
         private static Task _warmup;
         

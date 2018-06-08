@@ -20,7 +20,7 @@ You can create a container yourself or use the statically accessed container.
 <[sample:quickstart-resolve-concrete-types]>
 
 
-The reason why we don't need to supply any configuration is because Lamar supports a concept called <[linkto:the-container/auto-wiring]>. It's basically a smart way of building instances of types by looking to the constructors of the requested and all the needed underlaying types. During this inspection Lamar also uses any provided configuration to help building the requested service or dependency.
+The reason why we don't need to supply any configuration is because Lamar supports a concept called <[linkto:documentation/ioc/auto-wiring]>. It's basically a smart way of building instances of types by looking to the constructors of the requested and all the needed underlaying types. During this inspection Lamar also uses any provided configuration to help building the requested service or dependency.
 
 In our example, where there isn't any configuration available, Lamar looks at the constructor of the requested `Weather` type. It sees that it depends on four concrete types which all have a default constructor. Lamar is therefore able to create an instance for all of them and inject them into the `Weather` constructor. After that the `Weather` instance is returned to the caller.
 

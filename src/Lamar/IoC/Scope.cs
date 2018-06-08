@@ -14,7 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC
 {
+    // SAMPLE: Scope-Declarations
     public class Scope : IServiceScope, ISupportRequiredService, IServiceScopeFactory, IServiceContext
+    // ENDSAMPLE
     {
         protected bool _hasDisposed;
 

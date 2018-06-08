@@ -106,6 +106,7 @@ namespace StructureMap.Testing.Examples.Resolving
             // I'll build it myself
             var foo = container.TryGetInstance<IFoo>()
                       ?? new MyFoo();
+
         }
 
         // ENDSAMPLE

@@ -1,15 +1,20 @@
 <!--Title: Try Getting an Optional Service by Plugin Type-->
 <!--Url: try-getting-an-optional-service-by-plugin-type-->
 
-
-<div class="alert alert-info" role="alert">The Lamar team does not recommend using "optional" dependencies as shown in this topic, but
+<[info]>
+The Lamar team does not recommend using "optional" dependencies as shown in this topic, but
 external frameworks like ASP.Net MVC and Web API use this concept in their IoC container integration, so here it is. The Lamar team
-prefers the usage of the <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Nullo pattern</a> instead.</div>
-
+prefers the usage of the [Nullo pattern](http://en.wikipedia.org/wiki/Null_Object_pattern) instead.</div>
+<[/info]>
 
 In normal usage, if you ask Lamar for a service and Lamar doesn't recognize the requested type, the requested name, or know what the default should be for that type, Lamar will fail fast by throwing an exception rather than returning a null. Sometimes though, you may want to
 retrieve an _optional_ service from Lamar that may or may not be registered in the Container. If that particular registration doesn't exist, you
 just want a null value. Lamar provides first class support for _optional_ dependencies through the usage of the `IContainer.TryGetInstance()` methods.
+
+<[info]>
+In Lamar, the ASP.Net Core `IServiceProvider.GetService()` method has the same functionality and meaning as the `TryGetInstance()` method. If you
+were wondering how Lamar's StructureMap-flavored `GetInstance()` method is different, that's how.
+<[/info]>
 
 Say you have a simple interface `IFoo` that may or may not be registered in the Container:
 

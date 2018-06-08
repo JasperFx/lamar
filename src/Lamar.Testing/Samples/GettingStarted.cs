@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using StructureMap.Testing.Widget3;
 
 namespace Lamar.Testing.Samples
 {
@@ -21,10 +23,21 @@ namespace Lamar.Testing.Samples
 
             // SAMPLE: resolving-services-quickstart
             // StructureMap style
+            
+            // Get a required service
             var clock = container.GetInstance<IClock>();
+            
+            // Try to resolve a service if it's registered
+            var service = container.TryGetInstance<IService>();
 
             // ASP.Net Core style
-            var clock2 = container.GetService<IClock>();
+            var provider = (IServiceProvider)container;
+            
+            // Get a required service
+            var clock2 = provider.GetRequiredService<IClock>();
+            
+            // Try to resolve a service if it's registered
+            var service2 = provider.GetService<IService>();
             // ENDSAMPLE
         }
     }

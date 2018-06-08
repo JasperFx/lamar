@@ -4,4 +4,4 @@ This will be the easy part of interacting with Lamar. During application executi
 
 While in many systems you will probably only resolve the default service of a type or a named instance of a service, there are far more ways to resolve services exposed by StructureMap. The `IContainer` interface acts as a [Service Locator](http://en.wikipedia.org/wiki/Service_locator_pattern) to build and resolve configured services on demand.
 
-<TableOfContents />
+<[TableOfContents]>
