@@ -3,6 +3,7 @@ using Lamar.IoC.Instances;
 
 namespace Lamar
 {
+    // SAMPLE: LamarAttribute
     /// <summary>
     /// Base class for custom configuration attributes
     /// </summary>
@@ -25,4 +26,5 @@ namespace Lamar
             
         }
     }
+    // ENDSAMPLE
 }

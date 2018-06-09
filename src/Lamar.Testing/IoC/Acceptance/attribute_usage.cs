@@ -55,6 +55,7 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
         
+        // SAMPLE: [Singleton]-usage
         [Singleton]
         public class SingleWidget : IWidget
         {
@@ -63,6 +64,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 throw new System.NotImplementedException();
             }
         }
+        // ENDSAMPLE
 
         [Scoped]
         public class ScopedWidget : IWidget
