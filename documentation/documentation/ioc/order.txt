@@ -1,6 +1,7 @@
 concepts
 bootstrapping
-registrations
+aspnetcore
+registration
 lifetime
 resolving
 policies

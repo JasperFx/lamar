@@ -34,9 +34,12 @@ that configures ASP.Net Core, you also need to call the `UseLamar()` method as s
 
 <[sample:getting-started-main]>
 
-If you use a `StartUp` class for extra configuration, your `ConfigureContainer()` method should take in a `ServiceRegistry` object from Lamar for service registrations in place of the ASP.Net Core `IServiceCollection` interface as shown below:
+If you use a `StartUp` class for extra configuration, your `ConfigureContainer()` method *can* take in a `ServiceRegistry` object from Lamar for service registrations in place of the ASP.Net Core `IServiceCollection` interface as shown below:
 
 <[sample:getting-started-startup]>
+
+You can also still write `ConfigureServices(IServiceCollection)`, but you'd miss out on most of Lamar's extra functionality beyond what that abstraction
+provides.
 
 And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.

@@ -2,11 +2,13 @@
 
 namespace Lamar
 {
+    
     /// <summary>
     ///     Allows Lamar to fill in missing registrations by unknown plugin types
     ///     at runtime
     /// </summary>
     [LamarIgnore]
+    // SAMPLE: IFamilyPolicy
     public interface IFamilyPolicy
     {
         /// <summary>
@@ -16,6 +18,7 @@ namespace Lamar
         /// </summary>
         ServiceFamily Build(Type type, ServiceGraph serviceGraph);
     }
+    // ENDSAMPLE
 
 
 }

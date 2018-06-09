@@ -352,12 +352,13 @@ namespace Lamar.IoC.Instances
         }
         
         private readonly IList<Instance> _inlines = new List<Instance>();
+        private IReadOnlyList<Instance> _inlineDependencies;
 
         /// <summary>
         /// Adds an inline dependency
         /// </summary>
         /// <param name="instance"></param>
-        internal void AddInline(Instance instance)
+        public void AddInline(Instance instance)
         {
             instance.Parent = this;
             _inlines.Add(instance);
@@ -376,7 +377,7 @@ namespace Lamar.IoC.Instances
             return new DependencyExpression<T>(this, constructorArg);
         }
 
-
+        IReadOnlyList<Instance> IConfiguredInstance.InlineDependencies => _inlineDependencies;
     }
     
     

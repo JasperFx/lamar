@@ -66,6 +66,8 @@ namespace Lamar.Testing.IoC.Acceptance
     {
     }
 
+    // SAMPLE: using-LamarIgnore
+    // This attribute causes the type scanning to ignore this type
     [LamarIgnore]
     public class BiHolder : IBiHolder
     {
@@ -73,6 +75,7 @@ namespace Lamar.Testing.IoC.Acceptance
         {
         }
     }
+    // ENDSAMPLE
 
     [LamarIgnore]
     public class BiGrandparent : IBiGrandparent

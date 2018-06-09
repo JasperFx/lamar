@@ -1,21 +1,63 @@
-<!--title:IoC Construction Policies-->
-<!--Title: Construction Policies-->
+<!--Title: Policies-->
 
-StructureMap has long supported <[linkto:registration/auto-registration-and-conventions;title=conventional policies for registration based on type scanning]>
-and 3.0 introduced cleaner mechanisms for <[linkto:interception-and-decorators;title=interception policies]>.
-The 4.0 release extends StructureMap's support for conventional build policies with a new mechanism for altering
+Lamar offers some mechanisms to conventionally determine missing registrations at runtime or apply some fine-grained control over how 
+services are constructed. All of these mechanisms are available under the `ServiceRegistry.Policies` property when configuring a Lamar
+container.
+
+For more information on type scanning conventions, see <[linkto:documentation/ioc/registration/auto-registration-and-conventions]>
+
+## Auto Resolve Missing Services
+
+<[info]>
+These policies are only evaluated the first time that a particular service type is requested through the container.
+<[/info]>
+
+Lamar has a feature to create missing service registrations at runtime based on pluggable rules using the new `IFamilyPolicy`
+interface:
+
+<[sample:IFamilyPolicy]>
+
+Internally, if you make a request to `IContainer.GetInstance(type)` for a type that the active `Container` does not recognize, StructureMap will next
+try to apply all the registered `IFamilyPolicy` policies to create a `ServiceFamily` object for that plugin type that models the registrations for that plugin type, including the default, additional named instances, interceptors or decorators, and lifecycle rules. 
+
+The simplest built in example is the `EnumerablePolicy` shown below that can fill in requests for `IList<T>`, `ICollection<T>`, and `T[]` with a collection of all the known registrations of the type `T`:
+
+<[sample:EnumerablePolicy]>
+
+The result of `EnumerablePolicy` in action is shown by the acceptance test below:
+
+<[sample:EnumerableFamilyPolicy_in_action]>
+
+For another example, consider this example from the Lamar unit tests. Say you have a service that looks like this:
+
+<[sample:Color]>
+
+And you build a policy that auto-resolves registrations for the `Color` service if none previously exist:
+
+<[sample:ColorPolicy]>
+
+You can register the new `ColorPolicy` shown above like this:
+
+<[sample:register-ColorPolicy]>
+
+Internally, Lamar uses this `IFamilyPolicy` feature for its <[linkto:documentation/ioc/generics;title=generic type support]>, the <[linkto:documentation/ioc/working-with-enumerable-types;title=enumerable type support described a above]>, and the <[linkto:documentation/ioc/resolving/requesting-a-concrete-type;title=auto registration of concrete types]>.
+
+
+## Instance Construction Policies
+
+Lamar allows you to create conventional build policies with a mechanism for altering
 _how_ object instances are built based on user created _meta-conventions_ using the `IInstancePolicy` shown below:
 
 <[sample:IInstancePolicy]>
 
-These policies are registered as part of the <[linkto:registration/registry-dsl;title=registry dsl]> with
+These policies are registered as part of the <[linkto:documentation/ioc/registration/registry-dsl]> with
 the `Policies.Add()` method:
 
 <[sample:policies.add]>
 
 The `IInstancePolicy` mechanism probably works differently than other IoC containers in that the policy
 is applied to the container's underlying configuration model instead of at runtime. Internally, StructureMap lazily creates
-a "<[linkto:diagnostics/build-plans;title=build plan]>" for each configured Instance at the first time
+a "<[linkto:documentation/ioc/diagnostics/build-plans;title=build plan]>" for each configured Instance at the first time
 that that Instance is built or resolved. As part of creating that build plan, StructureMap runs
 all the registered `IInstancePolicy` objects against the Instance in question to capture any
 potential changes before "baking" the build plan into a .Net `Expression` that is then compiled into a `Func`
@@ -31,9 +73,9 @@ to use the `ConfiguredInstancePolicy` base class as a convenience:
 
 For more information, see:
 
-* <[linkto:diagnostics/build-plans]>
-* <[linkto:registration/configured-instance]>
-* <[linkto:object-lifecycle]>
+* <[linkto:documentation/ioc/diagnostics/build-plans]>
+* <[linkto:documentation/ioc/registration/configured-instance]>
+* <[linkto:documentation/ioc/lifetime]>
 
 
 

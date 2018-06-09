@@ -289,6 +289,11 @@ namespace Lamar
             return true;
         }
 
+        /// <summary>
+        /// Add additional configurations to this container. NOT RECOMMENDED.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <exception cref="InvalidOperationException"></exception>
         public void Configure(IServiceCollection services)
         {
             if (services.Any(x => x.ServiceType == typeof(IFamilyPolicy))) throw new InvalidOperationException("Cannot register any IFamilyPolicy objects in Configure()");
@@ -297,6 +302,10 @@ namespace Lamar
             ServiceGraph.AppendServices(services);
         }
 
+        /// <summary>
+        /// Add additional configurations to this container. NOT RECOMMENDED.
+        /// </summary>
+        /// <param name="configure"></param>
         public void Configure(Action<IServiceCollection> configure)
         {
             var services = new ServiceRegistry();

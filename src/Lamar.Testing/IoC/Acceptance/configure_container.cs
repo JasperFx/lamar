@@ -11,6 +11,7 @@ namespace Lamar.Testing.IoC.Acceptance
 {
     public class configure_container
     {
+        // SAMPLE: add_all_new_services
         [Fact]
         public void add_all_new_services()
         {
@@ -21,6 +22,7 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<IService>()
                 .ShouldBeOfType<WhateverService>();
         }
+        // ENDSAMPLE
         
         [Fact]
         public void add_to_existing_family()

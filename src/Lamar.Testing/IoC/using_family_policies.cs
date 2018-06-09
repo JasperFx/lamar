@@ -127,23 +127,30 @@ namespace Lamar.Testing.IoC
         [Fact]
         public void recursive_family_creation()
         {
-            var container = Container.For(_ => { _.Policies.OnMissingFamily<ColorPolicy>(); });
+            // SAMPLE: register-ColorPolicy
+            var container = Container.For(_ =>
+            {
+                _.Policies.OnMissingFamily<ColorPolicy>();
+            });
+            // ENDSAMPLE
             
             container.GetInstance<ColorUser>()
                 .Color.ShouldNotBeNull();
         }
 
         
-        /* TODO
-         1. Concrete type
-         2. Misses, and do it at least twice
-         3. Recursive family finding, so have it find something that depends on a concrete type
-         
-         
-         
-         */
+
     }
 
+    
+    // SAMPLE: Color
+    public class Color
+    {
+        public string Name { get; set; }
+    }
+    // ENDSAMPLE
+    
+    
     public class ColorUser
     {
         public Color Color { get; }
@@ -154,11 +161,8 @@ namespace Lamar.Testing.IoC
         }
     }
 
-    public class Color
-    {
-        public string Name { get; set; }
-    }
 
+    // SAMPLE: ColorPolicy
     public class ColorPolicy : IFamilyPolicy
     {
         public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
@@ -174,6 +178,7 @@ namespace Lamar.Testing.IoC
                 );
         }
     }
+    // ENDSAMPLE
 
     public class FakeThing
     {

@@ -6,6 +6,7 @@ using Lamar.Util;
 
 namespace Lamar.IoC.Enumerables
 {
+    // SAMPLE: EnumerablePolicy
     public class EnumerablePolicy : IFamilyPolicy
     {
         public static bool IsEnumerable(Type type)
@@ -56,4 +57,5 @@ namespace Lamar.IoC.Enumerables
             return null;
         }
     }
+    // ENDSAMPLE
 }

@@ -21,7 +21,7 @@ namespace Lamar
     }
     // ENDSAMPLE
 
-
+    // SAMPLE: ConfiguredInstancePolicy
     /// <summary>
     /// Base class for using policies against IConfiguredInstance registrations
     /// </summary>
@@ -37,4 +37,5 @@ namespace Lamar
 
         protected abstract void apply(IConfiguredInstance instance);
     }
+    // ENDSAMPLE
 }
