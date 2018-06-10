@@ -8,7 +8,7 @@ using Lamar.IoC.Instances;
 namespace Lamar.IoC.Frames
 {
     
-    
+    // SAMPLE: GetInstanceFrame
     public class GetInstanceFrame : SyncFrame
     {
         private Variable _scope;
@@ -35,4 +35,5 @@ namespace Lamar.IoC.Frames
         
         public ServiceVariable Variable { get; }
     }
+    // ENDSAMPLE
 }

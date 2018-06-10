@@ -78,6 +78,13 @@ Out of the box, the Lamar + [Jasper](https://jasperfx.github.io) combination use
 * Variables that can be derived from a method argument like `HttpContext.Request : HttpRequest`
 * The "now" convention shown here
 
+## GeneratedAssembly/Type/Method
+
+Getting a little deeper into the parts of the "frames" model, see this class diagram:
+
+<[img:content/images/GeneratedAssemblyModel.png;GeneratedAssembly Model]>
+
+
 For more information, see:
 
 <[TableOfContents]>

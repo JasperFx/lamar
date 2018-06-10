@@ -5,6 +5,7 @@ using Lamar.Codegen.Frames;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using StructureMap.Testing.Widget3;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -74,5 +75,6 @@ namespace Lamar.Testing.Samples
     }
     // ENDSAMPLE
 
-    
+
+
 }

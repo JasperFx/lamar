@@ -6,40 +6,63 @@ using Lamar.Util;
 
 namespace Lamar.Codegen
 {
-    public class NoArgCreationVariable : Variable
+    // SAMPLE: NoArgCreationFrame
+    public class NoArgCreationFrame : SyncFrame
     {
-        public NoArgCreationVariable(Type variableType) : base(variableType)
+        public NoArgCreationFrame(Type concreteType) 
         {
-            Creator = new NoArgCreationFrame(this);
-        }
-    }
-
-    public class NoArgCreationFrame : Frame
-    {
-        private readonly Variable _output;
-
-        public NoArgCreationFrame(Variable variable) : base(false)
-        {
-            _output = variable;
-
-            creates.Fill(_output);
+            // By creating the variable this way, we're
+            // marking the variable as having been created
+            // by this frame
+            Output = new Variable(concreteType, this);
         }
 
+        public Variable Output { get; }
+
+        // You have to override this method
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            var creation = $"var {_output.Usage} = new {_output.VariableType.FullName.Replace("+", ".")}()";
+            var creation = $"var {Output.Usage} = new {Output.VariableType.FullNameInCode()}()";
 
-            if (_output.VariableType.CanBeCastTo<IDisposable>())
+            if (Output.VariableType.CanBeCastTo<IDisposable>())
             {
-                writer.UsingBlock(creation, w => Next?.GenerateCode(method, w));
+                // there is an ISourceWriter shortcut for this, but this makes
+                // a better code demo;)
+                writer.Write($"BLOCK:using ({creation})");
+                Next?.GenerateCode(method, writer);
+                writer.FinishBlock();
             }
             else
             {
                 writer.WriteLine(creation + ";");
                 Next?.GenerateCode(method, writer);
             }
-
-
         }
     }
+    // ENDSAMPLE
+    
+    
+    /*
+     
+        // SAMPLE: NoArgCreationFrameCtor
+        public NoArgCreationFrame(Type concreteType) 
+        {
+            // By creating the variable this way, we're
+            // marking the variable as having been created
+            // by this frame
+            Output = new Variable(concreteType, this);
+        }
+        // ENDSAMPLE
+     
+     
+        // SAMPLE: NoArgCreationFrameCtor2
+        public NoArgCreationFrame(Type concreteType) 
+        {
+            // By creating the variable this way, we're
+            // marking the variable as having been created
+            // by this frame
+            Output = Create(concreteType);
+        }
+        // ENDSAMPLE
+     */
 }

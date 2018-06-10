@@ -45,10 +45,22 @@ namespace Lamar.Codegen
             MethodName = methodName;
         }
 
+        /// <summary>
+        /// The return type of the method being generated
+        /// </summary>
         public Type ReturnType { get; }
+        
+        /// <summary>
+        /// The name of the method being generated
+        /// </summary>
         public string MethodName { get; }
+        
+        
         public bool Overrides { get; set; }
 
+        /// <summary>
+        /// Is the method synchronous, returning a Task, or an async method
+        /// </summary>
         public AsyncMode AsyncMode
         {
             get => _asyncMode;

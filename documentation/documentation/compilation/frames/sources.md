@@ -1,1 +1,0 @@
-<!--title:Working with IVariableSource-->

@@ -14,6 +14,27 @@ namespace Lamar.Codegen.Frames
         }
     }
 
+    // SAMPLE: CommentFrame
+    public class CommentFrame : SyncFrame
+    {
+        private readonly string _commentText;
+
+        public CommentFrame(string commentText)
+        {
+            _commentText = commentText;
+        }
+
+        public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
+        {
+            writer.WriteComment(_commentText);
+            
+            // It's on you to call through to a possible next
+            // frame to let it generate its code
+            Next?.GenerateCode(method, writer);
+        }
+    }
+    // ENDSAMPLE
+
     public abstract class AsyncFrame : Frame
     {
         protected AsyncFrame() : base(true)
@@ -54,11 +75,23 @@ namespace Lamar.Codegen.Frames
 
         public Frame[] Dependencies => dependencies.ToArray();
 
+        /// <summary>
+        /// Creates a new variable that is marked as being
+        /// "created" by this Frame
+        /// </summary>
+        /// <param name="variableType"></param>
+        /// <returns></returns>
         public Variable Create(Type variableType)
         {
             return new Variable(variableType, this);
         }
 
+        /// <summary>
+        /// Creates a new variable that is marked as being
+        /// "created" by this Frame
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public Variable Create<T>()
         {
             return new Variable(typeof(T), this);
