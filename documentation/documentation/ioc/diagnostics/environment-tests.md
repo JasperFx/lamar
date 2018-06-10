@@ -9,10 +9,10 @@ Years ago I worked with a legacy system that was particularly fragile in its dep
 
 The deployments still frequently failed, but we were able to spot **and diagnose** the underlying problems much faster with our new environment tests than we could before by trying to run and debug the not-quite-valid application.
 
-One of the mechanisms we used for these environment tests was StructureMap's ability to mark methods on configured types as environment tests with the `[ValidationMethod]` attribute as shown below:
+One of the mechanisms we used for these environment tests was Lamar's ability to mark methods on configured types as environment tests with the `[ValidationMethod]` attribute as shown below:
 
 <[sample:validation-method-usage]>
 
-Used in conjunction with <[linkto:diagnostics/validating-container-configuration;title=StructureMap's ability to validate a container]>, you can use this technique to quickly support environment tests embedded into your system code.
+Used in conjunction with <[linkto:documentation/ioc/diagnostics/validating-container-configuration;title=Lamar's ability to validate a container]>, you can use this technique to quickly support environment tests embedded into your system code.
 
 

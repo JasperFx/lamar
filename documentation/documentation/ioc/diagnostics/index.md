@@ -1,7 +1,6 @@
 <!--Title: Diagnostics-->
 
-Improving StructureMap's ability to diagnose and explain both configuration and runtime problems was a very big goal
-for the big 3.0 release and improved with additional type scanning diagnostics for 4.0.
+Like StructureMap before it, one of Lamar's big differentiators from other IoC tools is its strong support for built in diagnostic tools:
 
 <[TableOfContents]>
 

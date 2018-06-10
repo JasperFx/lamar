@@ -3,11 +3,19 @@ using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.Widget;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Lamar.Testing.IoC.Diagnostics
 {
     public class WhatDoIHave_Smoke_Tester
     {
+        private readonly ITestOutputHelper _output;
+
+        public WhatDoIHave_Smoke_Tester(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void empty_container()
         {
@@ -43,6 +51,8 @@ namespace Lamar.Testing.IoC.Diagnostics
             // SAMPLE: whatdoihave_everything
             Console.WriteLine(container.WhatDoIHave());
             // ENDSAMPLE
+            
+            _output.WriteLine(container.WhatDoIHave());
         }
 
 

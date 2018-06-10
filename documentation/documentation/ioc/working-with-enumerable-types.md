@@ -4,7 +4,7 @@
 
 
 While you can certainly use *any* `IEnumerable` type as a plugin type with your own explicit configuration, 
-StructureMap has *some* built in support for these specific enumerable types:
+Lamar has *some* built in support for these specific enumerable types:
 
 1. `IEnumerable<T>`
 1. `IList<T>`
@@ -14,12 +14,12 @@ StructureMap has *some* built in support for these specific enumerable types:
 
 Specifically, if you request one of these types either directly with `GetInstance<IList<IWidget>>()` or as a declared
 dependency in a constructor or setter (`new WidgetUser(IList<IWidgets> widgets)` for example) and you have no
-specific registration for the enumerable types, StructureMap has a built in policy to return all the registered instances
-of `IWidget` **in the exact order that the registrations were made to StructureMap**. 
+specific registration for the enumerable types, Lamar has a built in policy to return all the registered instances
+of `IWidget` **in the exact order that the registrations were made to Lamar**. 
 
 Note, if there are not any registrations for whatever `T` is, you'll get an empty enumeration.
 
-Here's an acceptance test from the StructureMap codebase that demonstrates this:
+Here's an acceptance test from the Lamar codebase that demonstrates this:
 
 <[sample:EnumerableFamilyPolicy_in_action]>
 
@@ -40,7 +40,7 @@ We *could* simply configure all of the `IWidgetValidator` rules in one place wit
 but what if we need to have an extensibility to add more validation rules later? What if we want to add these additional rules in addon packages? Or we 
 just don't want to continuously break into the centralized `Registry` class every single time we add a new validation rule? 
 
-By relying on StructureMap's `IEnumerable` behavior, we're able to split our `IWidgetValidatior` registration across multiple `Registry` classes and that's not infrequently useful to do.
+By relying on Lamar's `IEnumerable` behavior, we're able to split our `IWidgetValidatior` registration across multiple `Registry` classes and that's not infrequently useful to do.
 
 
 

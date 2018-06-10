@@ -3,11 +3,19 @@ using Lamar.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.Widget;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Lamar.Testing.IoC.Acceptance
 {
     public class assert_configuration_is_valid
     {
+        private readonly ITestOutputHelper _output;
+
+        public assert_configuration_is_valid(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void happy_path()
         {
@@ -30,10 +38,15 @@ namespace Lamar.Testing.IoC.Acceptance
                 _.AddTransient<WidgetUser>();
             });
             
-            Exception<ContainerValidationException>.ShouldBeThrownBy(() =>
+            var ex = Exception<ContainerValidationException>.ShouldBeThrownBy(() =>
             {
                 container.AssertConfigurationIsValid();
-            }).Message.ShouldContain("IWidget is not registered");
+            });
+                
+                ex.Message.ShouldContain("IWidget is not registered");
+            
+            
+            _output.WriteLine(ex.Message);
             
         }
         
