@@ -2,6 +2,7 @@
 using System.Linq;
 using Lamar.Codegen;
 using Lamar.IoC.Instances;
+using Lamar.Util;
 
 namespace Lamar
 {
@@ -14,42 +15,95 @@ namespace Lamar
         bool TryWrap(Instance inner, out Instance wrapped);
     }
 
-    public class DecoratorPolicy<TService, TDecorator> : IDecoratorPolicy
-        where TDecorator : TService
+    [LamarIgnore]
+    public class DecoratorPolicy<TService, TDecorator> : DecoratorPolicy where TDecorator : TService
     {
-        public DecoratorPolicy()
+        public DecoratorPolicy() : base(typeof(TService), typeof(TDecorator))
         {
-            if (typeof(TDecorator).IsAbstract || typeof(TDecorator).IsInterface)
+        }
+    }
+
+    [LamarIgnore]
+    public class DecoratorPolicy : IDecoratorPolicy
+    {
+        private readonly Type _serviceType;
+        private readonly Type _decoratorType;
+
+        public DecoratorPolicy(Type serviceType, Type decoratorType)
+        {
+            if (decoratorType.IsAbstract || decoratorType.IsInterface)
             {
                 throw new InvalidOperationException("The decorating type (the 2nd type argument) must be a concrete type");
             }
-            
-            var hasCtorArg = typeof(TDecorator).GetConstructors().SelectMany(x => x.GetParameters())
-                .Any(x => x.ParameterType == typeof(TService));
 
-            if (!hasCtorArg)
+            if (serviceType.IsOpenGeneric())
             {
-                throw new InvalidOperationException($"There must be a constructor argument for the inner {typeof(TService).FullNameInCode()} argument");
+                if (!decoratorType.IsOpenGeneric() || !GenericsPluginGraph.CanBeCast(serviceType, decoratorType))
+                {
+                    throw new InvalidOperationException($"{decoratorType.FullNameInCode()} cannot be cast to {serviceType.FullNameInCode()}");
+                }
+            }
+
+            _serviceType = serviceType;
+            _decoratorType = decoratorType;
+
+            if (!serviceType.IsOpenGeneric())
+            {
+                var hasCtorArg = decoratorType.GetConstructors().SelectMany(x => x.GetParameters())
+                    .Any(x =>
+                    {
+                        return x.ParameterType == serviceType;
+                    });
+
+                if (!hasCtorArg)
+                {
+                    throw new InvalidOperationException($"There must be a constructor argument for the inner {serviceType.FullNameInCode()} argument");
+                }
             }
         }
 
         public bool TryWrap(Instance instance, out Instance wrapped)
         {
-            
-            if (instance.ServiceType == typeof(TService))
+            if (_serviceType.IsOpenGeneric())
             {
-                var decorator = new ConstructorInstance(typeof(TService), typeof(TDecorator), instance.Lifetime);
-                decorator.AddInline(instance);
+                if (instance.ServiceType.Closes(_serviceType))
+                {
+                    var args = instance.ServiceType.GetGenericArguments();
+                    var concreteType = _decoratorType.MakeGenericType(args);
+                
+                    var decorator = new ConstructorInstance(instance.ServiceType, concreteType, instance.Lifetime);
+                    decorator.AddInline(instance);
 
-                wrapped = decorator;
+                    wrapped = decorator;
 
-                return true;
+                    return true;
+                }
+                else
+                {
+                    wrapped = null;
+                    return false;
+                }
             }
             else
             {
-                wrapped = null;
-                return false;
+                if (instance.ServiceType == _serviceType)
+                {
+                    var decorator = new ConstructorInstance(_serviceType, _decoratorType, instance.Lifetime);
+                    decorator.AddInline(instance);
+
+                    wrapped = decorator;
+
+                    return true;
+                }
+                else
+                {
+                    wrapped = null;
+                    return false;
+                }
             }
+            
+            
+
         }
     }
 }

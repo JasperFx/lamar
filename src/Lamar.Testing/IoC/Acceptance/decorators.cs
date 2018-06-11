@@ -32,6 +32,13 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<WidgetHolder>()
                 .Inner.ShouldBeOfType<AWidget>();
         }
+
+        public class WidgetHolderDecoratorPolicy : DecoratorPolicy
+        {
+            public WidgetHolderDecoratorPolicy() : base(typeof(IWidget), typeof(WidgetHolder))
+            {
+            }
+        }
         
         [Fact]
         public void decorator_example_alternative_registration()
@@ -41,7 +48,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.Policies.DecorateWith<DecoratorPolicy<IWidget, WidgetHolder>>();
+                _.Policies.DecorateWith<WidgetHolderDecoratorPolicy>();
                 _.For<IWidget>().Use<AWidget>();
                 _.For<IThing>().Use<Thing>();
             });
@@ -61,6 +68,27 @@ namespace Lamar.Testing.IoC.Acceptance
                 // the default
                 _.For<IWidget>().DecorateAllWith<WidgetHolder>();
                 _.For<IWidget>().DecorateAllWith<OtherWidgetHolder>();
+                _.For<IWidget>().Use<AWidget>();
+                _.For<IThing>().Use<Thing>();
+            });
+
+            container.GetInstance<IWidget>()
+                .ShouldBeOfType<OtherWidgetHolder>()
+                .Inner.ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<AWidget>();
+        }
+        
+        [Fact]
+        public void multiple_decorators_with_type_registrations()
+        {
+            var container = new Container(_ =>
+            {
+                // This usage adds the WidgetHolder as a decorator
+                // on all IWidget registrations and makes AWidget
+                // the default
+                _.For(typeof(IWidget)).DecorateAllWith(typeof(WidgetHolder));
+                _.For(typeof(IWidget)).DecorateAllWith(typeof(OtherWidgetHolder));
+                
                 _.For<IWidget>().Use<AWidget>();
                 _.For<IThing>().Use<Thing>();
             });
@@ -176,6 +204,30 @@ namespace Lamar.Testing.IoC.Acceptance
             @default.Lifetime.ShouldBe(ServiceLifetime.Scoped);
         }
         
+        [Fact]
+        public void decorate_with_open_generics()
+        {
+            typeof(DecoratedFoo<,>).MakeGenericType(typeof(IWidget), typeof(IService))
+                .ShouldNotBeNull();
+            
+            var container = new Container(x =>
+            {
+                x.For<IWidget>().Use<AWidget>();
+                x.For<IService>().Use<AService>();
+
+                x.For(typeof(IFoo<,>)).DecorateAllWith(typeof(DecoratedFoo<,>));
+
+                x.For(typeof(IFoo<,>)).Use(typeof(Foo<,>));
+            });
+
+            var decorator = container.GetInstance<IFoo<IWidget, IService>>()
+                .ShouldBeOfType<DecoratedFoo<IWidget, IService>>();
+
+            decorator.One.ShouldBeOfType<AWidget>();
+            decorator.Two.ShouldBeOfType<AService>();
+        }
+
+        
         
         public class WidgetHolder : IWidget
         {
@@ -198,6 +250,67 @@ namespace Lamar.Testing.IoC.Acceptance
             {
             }
         }
+        
+        public interface IFoo<T1, T2>
+        {
+            T1 One { get; }
+            T2 Two { get; }
+        }
+
+        public class Foo<T1, T2> : IFoo<T1, T2>
+        {
+            private readonly T1 _one;
+            private readonly T2 _two;
+
+            public Foo(T1 one, T2 two)
+            {
+                _one = one;
+                _two = two;
+            }
+
+            public T1 One
+            {
+                get { return _one; }
+            }
+
+            public T2 Two
+            {
+                get { return _two; }
+            }
+        }
+
+        public class DecoratedFoo<T1, T2> : IFoo<T1, T2>
+        {
+            private readonly IFoo<T1, T2> _inner;
+
+            public DecoratedFoo(IFoo<T1, T2> inner)
+            {
+                _inner = inner;
+            }
+
+            public T1 One
+            {
+                get { return _inner.One; }
+            }
+
+            public T2 Two
+            {
+                get { return _inner.Two; }
+            }
+        }
+
+        public interface IService
+        {
+        }
+
+        public class AService : IService
+        {
+        }
+
+        public class BService : IService
+        {
+        }
+
 
     }
 }

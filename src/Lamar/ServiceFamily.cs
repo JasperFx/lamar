@@ -19,8 +19,11 @@ namespace Lamar
 
         public ServiceFamily(Type serviceType, IDecoratorPolicy[] decoratorPolicies, params Instance[] instances)
         {
-            // First pass, see if you need to apply any decorators first
-            instances = applyDecorators(decoratorPolicies, instances).ToArray();
+            if (!serviceType.IsOpenGeneric())
+            {
+                // First pass, see if you need to apply any decorators first
+                instances = applyDecorators(decoratorPolicies, instances).ToArray();
+            }
             
             foreach (var instance in instances)
             {

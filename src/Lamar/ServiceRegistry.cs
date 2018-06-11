@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lamar.Codegen;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
@@ -112,6 +113,16 @@ namespace Lamar
                 var instance = new ConstructorInstance(_serviceType, implementationType, ServiceLifetime.Transient);
                 _parent.Add(instance);
                 return instance;
+            }
+
+            /// <summary>
+            /// Decorate all registrations to the service type with the supplied decorator type
+            /// </summary>
+            /// <param name="decoratorType"></param>
+            public void DecorateAllWith(Type decoratorType)
+            {
+                var policy = new DecoratorPolicy(_serviceType, decoratorType);
+                _parent.Policies.DecorateWith(policy);
             }
         }
 
@@ -226,7 +237,7 @@ namespace Lamar
             /// <exception cref="NotImplementedException"></exception>
             public void DecorateAllWith<TDecorator>() where TDecorator : T
             {
-                var policy = new DecoratorPolicy<T, TDecorator>();
+                var policy = new DecoratorPolicy(typeof(T), typeof(TDecorator));
                 _parent.AddSingleton<IDecoratorPolicy>(policy);
             }
         }

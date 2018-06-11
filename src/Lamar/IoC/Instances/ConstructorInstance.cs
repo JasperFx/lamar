@@ -117,10 +117,18 @@ namespace Lamar.IoC.Instances
             }
 
             var closedInstance = new ConstructorInstance(serviceType, closedType, Lifetime);
-
-            // TODO' -- later!
-            //Dependencies.Each(arg => closedInstance.Dependencies.Add(arg.CloseType(types)));
-
+            foreach (var instance in InlineDependencies)
+            {
+                if (instance.ServiceType.IsOpenGeneric())
+                {
+                    var closed = instance.CloseType(instance.ServiceType.MakeGenericType(templateTypes), templateTypes);
+                    closedInstance.AddInline(closed);
+                }
+                else
+                {
+                    closedInstance.AddInline(instance);
+                }
+            }
 
             return closedInstance;
         }
