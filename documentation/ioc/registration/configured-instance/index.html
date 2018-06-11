@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Working with IConfiguredInstance</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/registration/auto-registration-and-conventions" title="Auto-Registration and Conventions">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration/policies" title="Policies">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/registration">Registration</a></li><li class="active">Working with IConfiguredInstance</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.10</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration/policies">Policies</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/registration/auto-registration-and-conventions">Auto-Registration and Conventions</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Working with IConfiguredInstance</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title:Working with IConfiguredInstance-->
+<p>The most common way for StructureMap to build or resolve a requested object is to build a concrete type directly by calling a
+public constructor function and optionally filling values in public setter properties. For this type of object construction,
+StructureMap exposes the <code>IConfiguredInstance</code> interface as a means of querying and modifying how a concrete type will be
+created or resolved. While the <a href="/lamar/documentation/ioc/registration/registry-dsl">ServiceRegistry DSL</a> fluent interface provides the main way of explicitly configuring concrete type creation,
+the <code>IConfiguredInstance</code> interface is meant to support <a href="/lamar/documentation/ioc/registration/auto-registration-and-conventions">conventional registration</a>,
+<a href="/lamar/documentation/ioc/registration/attributes">configuration attributes</a>, and <a href="/lamar/documentation/ioc/registration/policies">construction policies</a>.</p>
+<pre><code class="language-csharp">&#xA;public interface IConfiguredInstance&#xA;{&#xA;    ConstructorInfo Constructor { get; set; }&#xA;    &#xA;    Type ServiceType { get; }&#xA;    &#xA;    Type ImplementationType { get; }&#xA;    &#xA;    &#xA;    ServiceLifetime Lifetime { get; set; }&#xA;    &#xA;    string Name { get; set; }&#xA;&#xA;    DependencyExpression&lt;T&gt; Ctor&lt;T&gt;(string constructorArg = null);&#xA;    &#xA;    IReadOnlyList&lt;Instance&gt; InlineDependencies { get; }&#xA;&#xA;    void AddInline(Instance instance);&#xA;}&#xA;</code></pre>
+<h2 id="changing-the-instance-lifecycle">Changing the Instance Lifecycle</h2>
+<p>You can override the lifecycle of a single <code>IConfiguredInstance</code> by calling the <code>LifecycleIs()</code> methods and either supplying a
+type of <code>ILifecycle</code> or an <code>ILifecycle</code> object. As a quick helper, there are also extension methods for common lifecycles:</p>
+<pre><code class="language-csharp">&#xA;IConfiguredInstance instance&#xA;    = new ConfiguredInstance(typeof(WidgetHolder));&#xA;&#xA;// Use the SingletonThing lifecycle&#xA;instance.Singleton();&#xA;&#xA;// or supply an ILifecycle type&#xA;instance.SetLifecycleTo&lt;ThreadLocalStorageLifecycle&gt;();&#xA;&#xA;// or supply an ILifecycle object&#xA;instance.SetLifecycleTo(new Lifecycles_Samples.MyCustomLifecycle());&#xA;&#xA;// or override to the default &quot;transient&quot; lifecycle&#xA;instance.DefaultLifecycle();&#xA;</code></pre>
+<h2 id="reflecting-over-constructor-parameters">Reflecting over Constructor Parameters</h2>
+<p>To find the constructor function parameters of an <code>IConfiguredInstance</code>, just use this syntax (it's just .Net Reflection):</p>
+<pre><code class="language-csharp">&#xA;public class GuyWithArguments&#xA;{&#xA;    public GuyWithArguments(IWidget widget, Rule rule)&#xA;    {&#xA;    }&#xA;}&#xA;&#xA;[Fact]&#xA;public void reflecting_over_constructor_args()&#xA;{&#xA;    IConfiguredInstance instance = new SmartInstance&lt;GuyWithArguments&gt;()&#xA;        // I&#x27;m just forcing it to assign the constructor function&#xA;        .SelectConstructor(() =&gt; new GuyWithArguments(null, null));&#xA;&#xA;    instance.Constructor.GetParameters().Select(x =&gt; x.Name)&#xA;        .ShouldHaveTheSameElementsAs(&quot;widget&quot;, &quot;rule&quot;);&#xA;}&#xA;&#xA;</code></pre>
+<p><strong>The <a href="/lamar/documentation/ioc/registration/constructor-selection">constructor function selection</a> process takes place as the very first step in creating a <a href="/lamar/documentation/ioc/diagnostics/build-plans">build plan</a> and will be
+available in any kind of <a href="/lamar/documentation/ioc/registration/policies">construction policy</a> or <a href="/lamar/documentation/ioc/registration/attributes">configuration attribute</a> on
+parameters or properties.</strong></p>
+<h2 id="working-with-inline-dependencies">Working with Inline Dependencies</h2>
+<p>The <code>IConfiguredInstance.InlineDependencies</code> property is a collection of <code>Instance</code> objects that model inline dependencies. A
+single <em>Instance</em> refers to a parameter in a constructor function:</p>
+<p>When Lamar determines a <a href="/lamar/documentation/ioc/diagnostics/build-plans">build plan</a> for a concrete type, it reflects over all the
+parameters in the chosen constructor function and then the settable properties looking for any explicitly configured
+dependencies by searching in order for:</p>
+<ol>
+<li>An exact match by dependency type and name</li>
+<li>A partial match by dependency type only</li>
+<li>A partial match by name only</li>
+</ol>
+<p>For primitive arguments like strings or numbers, the logic is to search first by name, then by type. All searching is done in
+the order that the inline <code>Instance</code> objects are registered, so do watch the order in which you add arguments. There is a method to
+insert new arguments at the front of the list if you need to do any kind of overrides of previous behavior.</p>
+<p>See <a href="/lamar/documentation/ioc/registration/inline-dependencies">Inline Dependencies</a> for more information about working with inline dependencies.</p>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/registration/auto-registration-and-conventions">Auto-Registration and Conventions</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration/policies">Policies</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

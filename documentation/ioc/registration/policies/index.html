@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Policies</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/registration/configured-instance" title="Working with IConfiguredInstance">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration/changing-configuration-at-runtime" title="Changing Configuration at Runtime">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/registration">Registration</a></li><li class="active">Policies</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.10</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration/changing-configuration-at-runtime">Changing Configuration at Runtime</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/registration/configured-instance">Working with IConfiguredInstance</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Policies</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: Policies-->
+<p>Lamar offers some mechanisms to conventionally determine missing registrations at runtime or apply some fine-grained control over how
+services are constructed. All of these mechanisms are available under the <code>ServiceRegistry.Policies</code> property when configuring a Lamar
+container.</p>
+<p>For more information on type scanning conventions, see <a href="/lamar/documentation/ioc/registration/auto-registration-and-conventions">Auto-Registration and Conventions</a></p>
+<h2 id="auto-resolve-missing-services">Auto Resolve Missing Services</h2>
+<div class="alert-info alert"><p><strong>Note!</strong>
+These policies are only evaluated the first time that a particular service type is requested through the container.</p>
+</div>
+<p>Lamar has a feature to create missing service registrations at runtime based on pluggable rules using the new <code>IFamilyPolicy</code>
+interface:</p>
+<pre><code class="language-csharp">&#xA;public interface IFamilyPolicy&#xA;{&#xA;    ServiceFamily Build(Type type, ServiceGraph serviceGraph);&#xA;}&#xA;</code></pre>
+<p>Internally, if you make a request to <code>IContainer.GetInstance(type)</code> for a type that the active <code>Container</code> does not recognize, StructureMap will next
+try to apply all the registered <code>IFamilyPolicy</code> policies to create a <code>ServiceFamily</code> object for that plugin type that models the registrations for that plugin type, including the default, additional named instances, interceptors or decorators, and lifecycle rules.</p>
+<p>The simplest built in example is the <code>EnumerablePolicy</code> shown below that can fill in requests for <code>IList&lt;T&gt;</code>, <code>ICollection&lt;T&gt;</code>, and <code>T[]</code> with a collection of all the known registrations of the type <code>T</code>:</p>
+<pre><code class="language-csharp">&#xA;public class EnumerablePolicy : IFamilyPolicy&#xA;{&#xA;    public static bool IsEnumerable(Type type)&#xA;    {&#xA;        if (type.IsArray) return true;&#xA;&#xA;        return type.IsGenericType &amp;&amp; _enumerableTypes.Contains(type.GetGenericTypeDefinition());&#xA;    }&#xA;&#xA;    public static Type DetermineElementType(Type serviceType)&#xA;    {&#xA;        if (serviceType.IsArray)&#xA;        {&#xA;            return serviceType.GetElementType();&#xA;        }&#xA;&#xA;        return serviceType.GetGenericArguments().First();&#xA;    }&#xA;    &#xA;    private static readonly List&lt;Type&gt; _enumerableTypes = new List&lt;Type&gt;&#xA;    {&#xA;        typeof (IEnumerable&lt;&gt;),&#xA;        typeof (IList&lt;&gt;),&#xA;        typeof (IReadOnlyList&lt;&gt;),&#xA;        typeof (List&lt;&gt;)&#xA;    };&#xA;    &#xA;    public ServiceFamily Build(Type type, ServiceGraph serviceGraph)&#xA;    {&#xA;        if (type.IsArray)&#xA;        {&#xA;            var instanceType = typeof(ArrayInstance&lt;&gt;).MakeGenericType(type.GetElementType());&#xA;            var instance = Activator.CreateInstance(instanceType, type).As&lt;Instance&gt;();&#xA;            return new ServiceFamily(type, new IDecoratorPolicy[0], instance);&#xA;        }&#xA;&#xA;        if (type.IsGenericType &amp;&amp; _enumerableTypes.Contains(type.GetGenericTypeDefinition()))&#xA;        {&#xA;            var elementType = type.GetGenericArguments().First();&#xA;            &#xA;            var instanceType = typeof(ListInstance&lt;&gt;).MakeGenericType(elementType);&#xA;            var ctor = instanceType.GetConstructors().Single();&#xA;            var instance = ctor.Invoke(new object[]{type}).As&lt;Instance&gt;();&#xA;            &#xA;            return new ServiceFamily(type, new IDecoratorPolicy[0], instance);&#xA;        }&#xA;&#xA;        return null;&#xA;    }&#xA;}&#xA;</code></pre>
+<p>The result of <code>EnumerablePolicy</code> in action is shown by the acceptance test below:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void collection_types_are_all_possible_by_default()&#xA;{&#xA;    // NOTE that we do NOT make any explicit registration of&#xA;    // IList&lt;IWidget&gt;, IEnumerable&lt;IWidget&gt;, ICollection&lt;IWidget&gt;, or IWidget[]&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IWidget&gt;().Add&lt;AWidget&gt;();&#xA;        _.For&lt;IWidget&gt;().Add&lt;BWidget&gt;();&#xA;        _.For&lt;IWidget&gt;().Add&lt;CWidget&gt;();&#xA;    });&#xA;&#xA;    // IList&lt;T&gt;&#xA;    container.GetInstance&lt;IList&lt;IWidget&gt;&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;&#xA;    // ICollection&lt;T&gt;&#xA;    container.GetInstance&lt;ICollection&lt;IWidget&gt;&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;&#xA;    // Array of T&#xA;    container.GetInstance&lt;IWidget[]&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;}&#xA;&#xA;</code></pre>
+<p>For another example, consider this example from the Lamar unit tests. Say you have a service that looks like this:</p>
+<pre><code class="language-csharp">&#xA;public class Color&#xA;{&#xA;    public string Name { get; set; }&#xA;}&#xA;</code></pre>
+<p>And you build a policy that auto-resolves registrations for the <code>Color</code> service if none previously exist:</p>
+<pre><code class="language-csharp">&#xA;public class ColorPolicy : IFamilyPolicy&#xA;{&#xA;    public ServiceFamily Build(Type type, ServiceGraph serviceGraph)&#xA;    {&#xA;        if (type != typeof(Color)) return null;&#xA;        &#xA;        return new ServiceFamily(type, serviceGraph.DecoratorPolicies, &#xA;            ObjectInstance.For(new Color{Name = &quot;Red&quot;}).Named(&quot;Red&quot;),&#xA;            ObjectInstance.For(new Color{Name = &quot;Blue&quot;}).Named(&quot;Blue&quot;),&#xA;            ObjectInstance.For(new Color{Name = &quot;Green&quot;}).Named(&quot;Green&quot;)&#xA;            &#xA;            &#xA;            );&#xA;    }&#xA;}&#xA;</code></pre>
+<p>You can register the new <code>ColorPolicy</code> shown above like this:</p>
+<pre><code class="language-csharp">&#xA;var container = Container.For(_ =&gt;&#xA;{&#xA;    _.Policies.OnMissingFamily&lt;ColorPolicy&gt;();&#xA;});&#xA;</code></pre>
+<p>Internally, Lamar uses this <code>IFamilyPolicy</code> feature for its <a href="/lamar/documentation/ioc/generics">generic type support</a>, the <a href="/lamar/documentation/ioc/working-with-enumerable-types">enumerable type support described a above</a>, and the <a href="/lamar/documentation/ioc/resolving/requesting-a-concrete-type">auto registration of concrete types</a>.</p>
+<h2 id="instance-construction-policies">Instance Construction Policies</h2>
+<p>Lamar allows you to create conventional build policies with a mechanism for altering
+<em>how</em> object instances are built based on user created <em>meta-conventions</em> using the <code>IInstancePolicy</code> shown below:</p>
+<pre><code class="language-csharp">&#xA;&#xA;public interface IInstancePolicy&#xA;{&#xA;    void Apply(Instance instance);&#xA;}&#xA;</code></pre>
+<p>These policies are registered as part of the <a href="/lamar/documentation/ioc/registration/registry-dsl">ServiceRegistry DSL</a> with
+the <code>Policies.Add()</code> method:</p>
+<pre><code class="language-csharp">&#xA;var container = new Container(_ =&gt;&#xA;{&#xA;    _.Policies.Add&lt;MyCustomPolicy&gt;();&#xA;    // or&#xA;    _.Policies.Add(new MyCustomPolicy());&#xA;});&#xA;</code></pre>
+<p>The <code>IInstancePolicy</code> mechanism probably works differently than other IoC containers in that the policy
+is applied to the container's underlying configuration model instead of at runtime. Internally, StructureMap lazily creates
+a &quot;<a href="/lamar/documentation/ioc/diagnostics/build-plans">build plan</a>&quot; for each configured Instance at the first time
+that that Instance is built or resolved. As part of creating that build plan, StructureMap runs
+all the registered <code>IInstancePolicy</code> objects against the Instance in question to capture any
+potential changes before &quot;baking&quot; the build plan into a .Net <code>Expression</code> that is then compiled into a <code>Func</code>
+for actual construction.</p>
+<p>The <code>Instance</code> objects will give you access to the types being created, the configured name of the Instance (if any),
+the ability to add interceptors and to modify the lifecycle. If you wish to add inline dependencies to
+Instances that are built by calling constructor function and setter properties, you may find it easier
+to use the <code>ConfiguredInstancePolicy</code> base class as a convenience:</p>
+<pre><code class="language-csharp">&#xA;public abstract class ConfiguredInstancePolicy : IInstancePolicy&#xA;{&#xA;    public void Apply(Instance instance)&#xA;    {&#xA;        if (instance is IConfiguredInstance)&#xA;        {&#xA;            apply(instance.As&lt;IConfiguredInstance&gt;());&#xA;        }&#xA;    }&#xA;&#xA;    protected abstract void apply(IConfiguredInstance instance);&#xA;}&#xA;</code></pre>
+<p>For more information, see:</p>
+<ul>
+<li><a href="/lamar/documentation/ioc/diagnostics/build-plans">Build Plans</a></li>
+<li><a href="/lamar/documentation/ioc/registration/configured-instance">Working with IConfiguredInstance</a></li>
+<li><a href="/lamar/documentation/ioc/lifetime">Service Lifetimes</a></li>
+</ul>
+<h2 id="example-1-constructor-arguments">Example 1: Constructor arguments</h2>
+<p>So let me say upfront that I don't like this approach, but other folks have asked for this ability
+over the years. Say that you have some legacy code where many concrete classes have a constructor argument
+called &quot;connectionString&quot; that needs to be the connection string to the application database like these classes:</p>
+<pre><code class="language-csharp">&#xA;public class DatabaseUser&#xA;{&#xA;    public string ConnectionString { get; set; }&#xA;&#xA;    public DatabaseUser(string connectionString)&#xA;    {&#xA;        ConnectionString = connectionString;&#xA;    }&#xA;}&#xA;&#xA;public class ConnectedThing&#xA;{&#xA;    public string ConnectionString { get; set; }&#xA;&#xA;    public ConnectedThing(string connectionString)&#xA;    {&#xA;        ConnectionString = connectionString;&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<p>Instead
+of explicitly configuring every single concrete class in StructureMap with that inline constructor argument,
+we can make a policy to do that in one place:</p>
+<pre><code class="language-csharp">&#xA;public class ConnectionStringPolicy : ConfiguredInstancePolicy&#xA;{&#xA;    protected override void apply(IConfiguredInstance instance)&#xA;    {&#xA;        var parameter = instance.ImplementationType&#xA;            .GetConstructors()&#xA;            .SelectMany(x =&gt; x.GetParameters())&#xA;            .FirstOrDefault(x =&gt; x.Name == &quot;connectionString&quot;);&#xA;        &#xA;        if (parameter != null)&#xA;        {&#xA;            var connectionString = findConnectionStringFromConfiguration();&#xA;            instance.Ctor&lt;string&gt;(parameter.Name).Is(connectionString);&#xA;        }&#xA;    }&#xA;&#xA;    // find the connection string from whatever configuration&#xA;    // strategy your application uses&#xA;    private string findConnectionStringFromConfiguration()&#xA;    {&#xA;        return &quot;the connection string&quot;;&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<p>Now, let's use that policy against the types that need &quot;connectionString&quot; and see what happens:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void use_the_connection_string_policy()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Policies.Add&lt;ConnectionStringPolicy&gt;();&#xA;    });&#xA;&#xA;    container.GetInstance&lt;DatabaseUser&gt;()&#xA;        .ConnectionString.ShouldBe(&quot;the connection string&quot;);&#xA;&#xA;    container.GetInstance&lt;ConnectedThing&gt;()&#xA;        .ConnectionString.ShouldBe(&quot;the connection string&quot;);&#xA;}&#xA;&#xA;</code></pre>
+<p>Years ago StructureMap was knocked by an &quot;IoC expert&quot; for not having this functionality. I said at the
+time -- and still would -- that I would strongly recommend that you simply <strong>don't directly
+open database connections</strong> in more than one or a very few spots in your code anyway. If I did
+need to configure a database connection string in multiple concrete classes, I prefer <a href="http://jeremydmiller.com/2014/11/07/strong_typed_configuration/">strong typed configuration</a>.</p>
+<h2 id="example-2-connecting-to-databases-based-on-parameter-name">Example 2: Connecting to Databases based on Parameter Name</h2>
+<p>From another common user request over the years, let's say that your application needs to connect to
+multiple databases, but your data access service in both cases is an interface called <code>IDatabase</code>, and
+that's all the consumers of any database should ever need to know.</p>
+<p>To make this concrete, let's say that our data access is all behind an interface and concrete class pair named
+<code>Database/IDatabase</code> like so:</p>
+<pre><code class="language-csharp">&#xA;public interface IDatabase { }&#xA;&#xA;public class Database : IDatabase&#xA;{&#xA;    public string ConnectionString { get; set; }&#xA;&#xA;    public Database(string connectionString)&#xA;    {&#xA;        ConnectionString = connectionString;&#xA;    }&#xA;&#xA;    public override string ToString()&#xA;    {&#xA;        return string.Format(&quot;ConnectionString: {0}&quot;, ConnectionString);&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<p>For a registration policy, let's say that the parameter name of an <code>IDatabase</code> dependency
+in a constructor function should match an identifier of one of the registered <code>IDatabase</code> services.
+That policy would be:</p>
+<pre><code class="language-csharp">&#xA;public class InjectDatabaseByName : ConfiguredInstancePolicy&#xA;{&#xA;    protected override void apply(IConfiguredInstance instance)&#xA;    {&#xA;        instance.ImplementationType.GetConstructors()&#xA;            .SelectMany(x =&gt; x.GetParameters())&#xA;            .Where(x =&gt; x.ParameterType == typeof(IDatabase))&#xA;            .Each(param =&gt;&#xA;            {&#xA;                // Using ReferencedInstance here tells Lamar&#xA;                // to &quot;use the IDatabase by this name&quot;&#xA;                instance.Ctor&lt;IDatabase&gt;(param.Name).IsNamedInstance(param.Name);&#xA;            });&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<p>And because I'm generally pretty boring about picking test data names, let's say that two of
+our databases are named &quot;red&quot; and &quot;green&quot; with this container registration below:</p>
+<pre><code class="language-csharp">&#xA;var container = new Container(_ =&gt;&#xA;{&#xA;    _.For&lt;IDatabase&gt;().Add&lt;Database&gt;().Named(&quot;red&quot;)&#xA;        .Ctor&lt;string&gt;(&quot;connectionString&quot;).Is(&quot;*red*&quot;);&#xA;&#xA;    _.For&lt;IDatabase&gt;().Add&lt;Database&gt;().Named(&quot;green&quot;)&#xA;        .Ctor&lt;string&gt;(&quot;connectionString&quot;).Is(&quot;*green*&quot;);&#xA;&#xA;    _.Policies.Add&lt;InjectDatabaseByName&gt;();&#xA;});&#xA;</code></pre>
+<p>For more context, the classes that use <code>IDatabase</code> would need to have constructor functions like
+these below:</p>
+<pre><code class="language-csharp">&#xA;public class BigService&#xA;{&#xA;    public BigService(IDatabase green)&#xA;    {&#xA;        DB = green;&#xA;    }&#xA;&#xA;    public IDatabase DB { get; set; }&#xA;}&#xA;&#xA;public class ImportantService&#xA;{&#xA;    public ImportantService(IDatabase red)&#xA;    {&#xA;        DB = red;&#xA;    }&#xA;&#xA;    public IDatabase DB { get; set; }&#xA;}&#xA;&#xA;public class DoubleDatabaseUser&#xA;{&#xA;    public DoubleDatabaseUser(IDatabase red, IDatabase green)&#xA;    {&#xA;        Red = red;&#xA;        Green = green;&#xA;    }&#xA;&#xA;    // Watch out for potential conflicts between setters&#xA;    // and ctor params. The easiest thing is to just make&#xA;    // setters private&#xA;    public IDatabase Green { get; private set; }&#xA;&#xA;    public IDatabase Red { get; private set; }&#xA;}&#xA;&#xA;</code></pre>
+<p>Finally, we can exercise our new policy and see it in action:</p>
+<pre><code class="language-csharp">&#xA;// ImportantService should get the &quot;red&quot; database&#xA;container.GetInstance&lt;ImportantService&gt;()&#xA;    .DB.As&lt;Database&gt;().ConnectionString.ShouldBe(&quot;*red*&quot;);&#xA;&#xA;// BigService should get the &quot;green&quot; database&#xA;container.GetInstance&lt;BigService&gt;()&#xA;    .DB.As&lt;Database&gt;().ConnectionString.ShouldBe(&quot;*green*&quot;);&#xA;&#xA;// DoubleDatabaseUser gets both&#xA;var user = container.GetInstance&lt;DoubleDatabaseUser&gt;();&#xA;&#xA;user.Green.As&lt;Database&gt;().ConnectionString.ShouldBe(&quot;*green*&quot;);&#xA;user.Red.As&lt;Database&gt;().ConnectionString.ShouldBe(&quot;*red*&quot;);&#xA;</code></pre>
+<p><strong>How I prefer to do this</strong> - my strong preference would be to use separate interfaces for the different
+databases even if that type is just an empty type marker that implements the same base.
+I feel like using separate interfaces makes the code easier to trace and understand than trying
+to make StructureMap vary dependencies based on naming conventions or what namespace a concrete type
+happens to be in. At least now though, you have the choice of my way or using policies based on
+naming conventions.</p>
+<h2 id="example-3-make-objects-singletons-based-on-type-name">Example 3: Make objects singletons based on type name</h2>
+<p>Unlike the top two examples, this is taken from a strategy that I used in <a href="http://github.com/darthfubumvc/fubumvc">FubuMVC</a>
+for its service registration. In that case, we wanted any concrete type whose name ended with
+&quot;Cache&quot; to be a singleton in the container registration. With the new <code>IInstancePolicy</code> feature in StructureMap 4,
+we could create a new policy class like so:</p>
+<pre><code class="language-csharp">&#xA;public class CacheIsSingleton : IInstancePolicy&#xA;{&#xA;    public void Apply(Instance instance)&#xA;    {&#xA;        if (instance.ImplementationType.Name.EndsWith(&quot;Cache&quot;))&#xA;        {&#xA;            instance.Lifetime = ServiceLifetime.Singleton;&#xA;        }&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+    
+Now, let's say that we have an interface named `IWidgets` and a single implementation called `WidgetCache` that
+should track our widgets in the application. Using our new policy, we should see `WidgetCache` being
+made a singleton:
+  
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void set_cache_to_singleton()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Policies.Add&lt;CacheIsSingleton&gt;();&#xA;&#xA;        _.For&lt;IWidgets&gt;().Use&lt;WidgetCache&gt;();&#xA;    });&#xA;&#xA;    // The policy is applied *only* at the time&#xA;    // that StructureMap creates a &quot;build plan&quot;&#xA;    container.GetInstance&lt;IWidgets&gt;()&#xA;        .ShouldBeSameAs(container.GetInstance&lt;IWidgets&gt;());&#xA;&#xA;    // Now that the policy has executed, we&#xA;    // can verify that WidgetCache is a SingletonThing&#xA;    container.Model.For&lt;IWidgets&gt;().Default&#xA;            .Lifetime.ShouldBe(ServiceLifetime.Singleton);&#xA;}&#xA;&#xA;</code></pre>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/registration/configured-instance">Working with IConfiguredInstance</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration/changing-configuration-at-runtime">Changing Configuration at Runtime</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

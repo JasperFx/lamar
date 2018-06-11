@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Auto-Registration and Conventions</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/registration/inline-dependencies" title="Inline Dependencies">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration/configured-instance" title="Working with IConfiguredInstance">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/registration">Registration</a></li><li class="active">Auto-Registration and Conventions</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.10</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration/configured-instance">Working with IConfiguredInstance</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/registration/inline-dependencies">Inline Dependencies</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Auto-Registration and Conventions</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: Auto-Registration and Conventions-->
+<!--Url: auto-registration-and-conventions-->
+<p>Lamar has rich support for registering types by scanning assemblies and applying conventional registrations.
+Between scanning and default conventions, configurations are often just a few
+lines.</p>
+<p>Also see <a href="/lamar/documentation/ioc/diagnostics/type-scanning">Type Scanning Diagnostics</a> for help in understanding the assembly scanning behavior in your system.</p>
+<h2 id="serviceregistry.scan">ServiceRegistry.Scan()</h2>
+<p>Assembly scanning operations are defined by the <code>ServiceRegistry.Scan()</code> method demonstrated below:</p>
+<pre><code class="language-csharp">&#xA;public class BasicScanning : Registry&#xA;{&#xA;    public BasicScanning()&#xA;    {&#xA;        Scan(_ =&gt;&#xA;        {&#xA;            // Declare which assemblies to scan&#xA;            _.Assembly(&quot;StructureMap.Testing&quot;);&#xA;            _.AssemblyContainingType&lt;IWidget&gt;();&#xA;&#xA;            // Filter types&#xA;            _.Exclude(type =&gt; type.Name.Contains(&quot;Bad&quot;));&#xA;&#xA;            // A custom registration convention&#xA;            _.Convention&lt;MySpecialRegistrationConvention&gt;();&#xA;&#xA;            // Built in registration conventions&#xA;            _.AddAllTypesOf&lt;IWidget&gt;().NameBy(x =&gt; x.Name.Replace(&quot;Widget&quot;, &quot;&quot;));&#xA;            _.WithDefaultConventions();&#xA;        });&#xA;    }&#xA;}&#xA;</code></pre>
+<p>Please note (because I've been asked this several times over the years) that each call to <code>ServiceRegistry.Scan()</code> is an entirely atomic operation that has no impact on previous or subsequent calls.</p>
+<p>Any given call to <code>ServiceRegistry.Scan()</code> consists of three different things:</p>
+<ol>
+<li>One or more assemblies to scan for types</li>
+<li>One or more registration conventions</li>
+<li>Optionally, set filters to only include certain types or exclude other types from being processed by the scanning operation</li>
+</ol>
+<h2 id="scan-the-calling-assembly">Scan the Calling Assembly</h2>
+<p>One of the easiest ways to register types is by scanning the assembly your
+registry is placed in.</p>
+<p><strong>Note</strong> if you have other registries, Lamar will not automatically
+find them.</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void scan_but_ignore_registries_by_default()&#xA;{&#xA;    Scan(x =&gt; { x.TheCallingAssembly(); });&#xA;&#xA;    TestingRegistry.WasUsed.ShouldBeFalse();&#xA;}&#xA;&#xA;</code></pre>
+<p><strong>Note that this method is an extension method in the Lamar.Net4 assembly and cannot be used
+if you target PCL compliance.</strong></p>
+<h2 id="search-for-assemblies-on-the-file-system">Search for Assemblies on the File System</h2>
+<p>Lamar provides facilities for registering types by finding assemblies in the application bin path:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void scan_all_assemblies_in_a_folder()&#xA;{&#xA;    Scan(x =&gt; x.AssembliesFromPath(assemblyScanningFolder));&#xA;    shouldHaveFamilyWithSameName&lt;IInterfaceInWidget5&gt;();&#xA;    shouldHaveFamilyWithSameName&lt;IWorker&gt;();&#xA;    shouldNotHaveFamilyWithSameName&lt;IDefinedInExe&gt;();&#xA;}&#xA;&#xA;[Fact]&#xA;public void scan_all_assemblies_in_application_base_directory()&#xA;{&#xA;    Scan(x =&gt; x.AssembliesFromApplicationBaseDirectory());&#xA;    shouldHaveFamilyWithSameName&lt;IInterfaceInWidget5&gt;();&#xA;    shouldHaveFamilyWithSameName&lt;IWorker&gt;();&#xA;    shouldNotHaveFamilyWithSameName&lt;IDefinedInExe&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<p>Do note that Lamar 4.0 does not search for <code>.exe</code> files in the assembly search. The Lamar team felt this was
+problematic and &quot;nobody would ever actually want to do that.&quot; We were wrong, and due to many user requests, you can now
+<strong>opt in</strong> to scanning <code>.exe</code> files with a new public method on <code>AssemblyScanner</code> shown below:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void scan_all_assemblies_in_a_folder_including_exe()&#xA;{&#xA;    Scan(x =&gt; x.AssembliesAndExecutablesFromPath(assemblyScanningFolder));&#xA;&#xA;    shouldHaveFamilyWithSameName&lt;IInterfaceInWidget5&gt;();&#xA;    shouldHaveFamilyWithSameName&lt;IWorker&gt;();&#xA;    shouldHaveFamilyWithSameName&lt;IDefinedInExe&gt;();&#xA;}&#xA;&#xA;&#xA;[Fact]&#xA;public void scan_all_assemblies_in_application_base_directory_including_exe()&#xA;{&#xA;    Scan(x =&gt; x.AssembliesAndExecutablesFromApplicationBaseDirectory());&#xA;&#xA;    shouldHaveFamilyWithSameName&lt;IInterfaceInWidget5&gt;();&#xA;    shouldHaveFamilyWithSameName&lt;IWorker&gt;();&#xA;    shouldHaveFamilyWithSameName&lt;IDefinedInExe&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<p>Do be aware that while this technique is very powerful for extensibility, it's been extremely problematic for
+some folks in the past. The Lamar team's recommendation for using this feature is to:</p>
+<ol>
+<li>Make sure you have some kind of filter on the assemblies scanned for performance and predictability reasons. Either a naming convention or filter
+by an assembly attribute to narrow where Lamar looks</li>
+<li>Get familiar with the new <a href="/lamar/documentation/ioc/diagnostics/type-scanning">type scanning diagnostics</a> introduced in 4.0;-)</li>
+</ol>
+<p>Behind the scenes, Lamar is using the <code>Assembly.GetExportedTypes()</code> method from the .Net CLR to find types and this
+mechanism is <strong>very</strong> sensitive to missing dependencies. Again, thanks to the new <a href="/lamar/documentation/ioc/diagnostics/type-scanning">type scanning diagnostics</a>,
+you now have some visibility into assembly loading failures that used to be silently swallowed internally.</p>
+<h2 id="excluding-types">Excluding Types</h2>
+<p>Lamar also makes it easy to exclude types, either individually or by namespace.
+The following examples also show how Lamar can register an assembly by providing
+a type within that assembly.</p>
+<p>Excluding additional types or namespaces is as easy as calling the corresponding method
+again.</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void use_a_single_exclude_of_type()&#xA;{&#xA;    Scan(x =&gt;&#xA;    {&#xA;        x.AssemblyContainingType&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;        x.ExcludeType&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;    });&#xA;&#xA;    shouldHaveFamily&lt;IInterfaceInWidget5&gt;();&#xA;    shouldNotHaveFamily&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;}&#xA;&#xA;[Fact]&#xA;public void use_a_single_exclude2()&#xA;{&#xA;    Scan(x =&gt;&#xA;    {&#xA;        x.AssemblyContainingType&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;        x.ExcludeNamespace(&quot;StructureMap.Testing.Widget5&quot;);&#xA;    });&#xA;&#xA;    shouldNotHaveFamily&lt;IInterfaceInWidget5&gt;();&#xA;    shouldNotHaveFamily&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;}&#xA;&#xA;[Fact]&#xA;public void use_a_single_exclude3()&#xA;{&#xA;    Scan(x =&gt;&#xA;    {&#xA;        x.AssemblyContainingType&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;        x.ExcludeNamespaceContainingType&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;    });&#xA;&#xA;    shouldNotHaveFamily&lt;IInterfaceInWidget5&gt;();&#xA;    shouldNotHaveFamily&lt;ITypeThatHasAttributeButIsNotInRegistry&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<p>You can also ignore specific types through an attribute:</p>
+<pre><code class="language-csharp">&#xA;// This attribute causes the type scanning to ignore this type&#xA;[LamarIgnore]&#xA;public class BiHolder : IBiHolder&#xA;{&#xA;    public BiHolder(IBiGrandparent grandparent)&#xA;    {&#xA;    }&#xA;}&#xA;</code></pre>
+<h2 id="custom-registration-conventions">Custom Registration Conventions</h2>
+<p>It's just not possible (or desirable) for Lamar to include every possible type of auto registration
+convention users might want, but that's okay because Lamar allows you to create and use your own
+conventions through the <code>IRegistrationConvention</code> interface:</p>
+<pre><code class="language-csharp">&#xA;public interface IRegistrationConvention&#xA;{&#xA;    void ScanTypes(TypeSet types, IServiceCollection services);&#xA;}&#xA;</code></pre>
+<p>Let's say that you'd like a custom convention that just registers a concrete type against all the interfaces
+that it implements. You could then build a custom <code>IRegistrationConvention</code> class like the following example:</p>
+<pre><code class="language-csharp">&#xA;public interface IFoo&#xA;{&#xA;}&#xA;&#xA;public interface IBar&#xA;{&#xA;}&#xA;&#xA;public interface IBaz&#xA;{&#xA;}&#xA;&#xA;public class BusyGuy : IFoo, IBar, IBaz&#xA;{&#xA;}&#xA;&#xA;// Custom IRegistrationConvention&#xA;public class AllInterfacesConvention : IRegistrationConvention&#xA;{&#xA;    public void ScanTypes(TypeSet types, IServiceCollection services)&#xA;    {&#xA;        // Only work on concrete types&#xA;        foreach (var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x =&gt; x.Name == &quot;BusyGuy&quot;))&#xA;        {&#xA;            // Register against all the interfaces implemented&#xA;            // by this concrete class&#xA;&#xA;            foreach (var @interface in type.GetInterfaces())&#xA;            {&#xA;                services.AddTransient(@interface, type);&#xA;            }&#xA;            &#xA;        };&#xA;    }&#xA;&#xA;}&#xA;&#xA;[Fact]&#xA;public void use_custom_registration_convention()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Scan(x =&gt;&#xA;        {&#xA;            // You&#x27;re probably going to want to tightly filter&#xA;            // the Type&#x27;s that are applicable to avoid unwanted&#xA;            // registrations&#xA;            x.TheCallingAssembly();&#xA;            x.IncludeNamespaceContainingType&lt;BusyGuy&gt;();&#xA;&#xA;            // Register the custom policy&#xA;            x.Convention&lt;AllInterfacesConvention&gt;();&#xA;        });&#xA;    });&#xA;&#xA;    container.GetInstance&lt;IFoo&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;    container.GetInstance&lt;IBar&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;    container.GetInstance&lt;IBaz&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="the-default-isomethingsomething-convention">The Default ISomething/Something Convention</h2>
+<p>The &quot;default&quot; convention simply tries to connect concrete classes to interfaces using
+the I[Something]/[Something] naming convention as shown in this sample:</p>
+<pre><code class="language-csharp">&#xA;public interface ISpaceship { }&#xA;&#xA;public class Spaceship : ISpaceship { }&#xA;&#xA;public interface IRocket { }&#xA;&#xA;public class Rocket : IRocket { }&#xA;&#xA;[Fact]&#xA;public void default_scanning_in_action()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Scan(x =&gt;&#xA;        {&#xA;            x.Assembly(&quot;Lamar.Testing&quot;);&#xA;            x.WithDefaultConventions();&#xA;        });&#xA;    });&#xA;&#xA;    container.GetInstance&lt;ISpaceship&gt;().ShouldBeOfType&lt;Spaceship&gt;();&#xA;    container.GetInstance&lt;IRocket&gt;().ShouldBeOfType&lt;Rocket&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<p><em>The Lamar team contains some VB6 veterans who hate Hungarian Notation, but can't shake the &quot;I&quot; nomenclature.</em></p>
+<h2 id="registering-the-single-implementation-of-an-interface">Registering the Single Implementation of an Interface</h2>
+<p>To tell Lamar to automatically register any interface that only has one concrete implementation, use this method:</p>
+<pre><code class="language-csharp">&#xA;public interface ISong { }&#xA;&#xA;public class TheOnlySong : ISong { }&#xA;&#xA;[Fact]&#xA;public void only_implementation()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Scan(x =&gt;&#xA;        {&#xA;            x.TheCallingAssembly();&#xA;            x.SingleImplementationsOfInterface();&#xA;        });&#xA;    });&#xA;&#xA;    container.GetInstance&lt;ISong&gt;()&#xA;        .ShouldBeOfType&lt;TheOnlySong&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="register-all-concrete-types-of-an-interface">Register all Concrete Types of an Interface</h2>
+<p>To add all concrete types that can be cast to a named plugin type, use this syntax:</p>
+<pre><code class="language-csharp">&#xA;public interface IFantasySeries { }&#xA;&#xA;public class WheelOfTime : IFantasySeries { }&#xA;&#xA;public class GameOfThrones : IFantasySeries { }&#xA;&#xA;public class BlackCompany : IFantasySeries { }&#xA;&#xA;[Fact]&#xA;public void register_all_types_of_an_interface()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Scan(x =&gt;&#xA;        {&#xA;            x.TheCallingAssembly();&#xA;&#xA;            x.AddAllTypesOf&lt;IFantasySeries&gt;()&#xA;                .NameBy(type =&gt; type.Name.ToLower());&#xA;&#xA;            // or&#xA;&#xA;            x.AddAllTypesOf(typeof(IFantasySeries))&#xA;                .NameBy(type =&gt; type.Name.ToLower());&#xA;        });&#xA;    });&#xA;&#xA;    container.Model.For&lt;IFantasySeries&gt;()&#xA;        .Instances.Select(x =&gt; x.ImplementationType)&#xA;        .OrderBy(x =&gt; x.Name)&#xA;        .ShouldHaveTheSameElementsAs(typeof(BlackCompany), typeof(GameOfThrones), typeof(WheelOfTime));&#xA;&#xA;    container.GetInstance&lt;IFantasySeries&gt;(&quot;blackcompany&quot;).ShouldBeOfType&lt;BlackCompany&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<p><strong>Note, &quot;T&quot; does not have to be an interface, it's all based on the ability to cast a concrete type to the &quot;T&quot;</strong></p>
+<h2 id="generic-types">Generic Types</h2>
+<p>See <a href="/lamar/documentation/ioc/generics">Generic Types</a> for an example of using the <code>ConnectImplementationsToTypesClosing</code>
+mechanism for generic types.</p>
+<h2 id="register-concrete-types-against-the-first-interface">Register Concrete Types against the First Interface</h2>
+<p>The last built in registration convention is a mechanism to register all concrete types
+that implement at least one interface against the first interface that they implement.</p>
+<pre><code class="language-csharp">&#xA;container = new Container(x =&gt;&#xA;{&#xA;    x.Scan(o =&gt;&#xA;    {&#xA;        o.TheCallingAssembly();&#xA;        o.RegisterConcreteTypesAgainstTheFirstInterface();&#xA;&#xA;        o.Exclude(t =&gt; t.CanBeCastTo(typeof(IGateway)));&#xA;    });&#xA;});&#xA;</code></pre>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/registration/inline-dependencies">Inline Dependencies</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration/configured-instance">Working with IConfiguredInstance</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

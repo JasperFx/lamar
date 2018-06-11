@@ -80,34 +80,15 @@
 
               <div id="main-pane">
                 <!--Title: Validating Container Configuration-->
-<!--Url: validating-container-configuration-->
-<p>To find any potential holes in your StructureMap configuration like missing dependencies, unclear defaults of plugin types, validation errors, or just plain build errors, you can use this method below:</p>
+<p>To find any potential holes in your Lamar configuration like missing dependencies, unclear defaults of plugin types, validation errors, or just plain build errors, you can use this method below:</p>
 <pre><code class="language-csharp">&#xA;container.AssertConfigurationIsValid();&#xA;</code></pre>
 <p>Running this method will walk over every single registration in your <code>Container</code> and:</p>
 <ol>
 <li>Try to create a build plan for that Instance that will flush out any problems with missing dependencies or invalid inline configuration</li>
 <li>Try to build every single configured Instance</li>
-<li>Call any methods on built objects decorated with the <code>[ValidationMethod]</code> attribute to perform environment tests. See <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/environment-tests'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for more information on this usage.</li>
+<li>Call any methods on built objects decorated with the <code>[ValidationMethod]</code> attribute to perform environment tests. See <a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a> for more information on this usage.</li>
 </ol>
-<p>If StructureMap encounters any errors of any kind during this method, it will throw an exception summarizing <strong>all</strong> of the problems that it encountered. That output will look something like:</p>
-<pre>
-
-	StructureMap.StructureMapConfigurationException
-	StructureMap Failures:  1 Build/Configuration Failures and 0 Validation Errors
-	
-	Profile 'DEFAULT'
-	
-	-----------------------------------------------------------------------------------------------------
-	Build Error on Instance 'StructureMap.Testing.Diagnostics.NamedWidget'
-	    for PluginType StructureMap.Testing.Diagnostics.IWidget
-	
-	Unable to create a build plan for concrete type StructureMap.Testing.Diagnostics.NamedWidget
-	new NamedWidget(String name)
-	  ┗ String name = Required primitive dependency is not explicitly defined
-
-</pre>
-<h2 id="standin-dependencies-for-runtime-dependencies">Standin Dependencies for Runtime Dependencies</h2>
-<p>If you take advantage of StructureMap's ability to supply <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'resolving/passing-arguments-at-runtime'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p>, you may need to add fake or stubbed <em>stand in</em> services to StructureMap just to satisfy dependencies while calling <code>Container.AssertConfigurationIsValid()</code>. For example, in <a href="http://github.com/DarthFubuMVC/fubumvc">FubuMVC</a> we supply several services representing an HTTP request as explicit arguments. In order to use the container validation, we have to register stand in services in the main container.</p>
+<p>If Lamar encounters any errors of any kind during this method, it will throw an exception summarizing <strong>all</strong> of the problems that it encountered.</p>
 
               </div>
 

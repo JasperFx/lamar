@@ -38,7 +38,7 @@
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
             <li><a href="/lamar/documentation/ioc/auto-wiring" title="Auto Wiring">Previous</a></li>
-            <li><a href="/lamar/documentation/ioc/lazy-resolution" title="Lazy Resolution">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/disposing" title="Lamar and IDisposable">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -68,7 +68,7 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/lazy-resolution">Lazy Resolution</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/disposing">Lamar and IDisposable</a></p>
             <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/auto-wiring">Auto Wiring</a></p>
           </div><!--/left-->
 
@@ -80,11 +80,11 @@
 
               <div id="main-pane">
                 <!--Title:Building Objects with Lambdas-->
-<p>Instead of allowing StructureMap to build objects directly, you can give a StructureMap <code>Container</code> a <a href="https://msdn.microsoft.com/en-us/library/bb397687.aspx">Lambda function</a> that can be called to create an object at resolution time.</p>
+<p>Instead of allowing Lamar to build objects directly, you can give a Lamar <code>Container</code> a <a href="https://msdn.microsoft.com/en-us/library/bb397687.aspx">Lambda function</a> that can be called to create an object at resolution time.</p>
 <p>Using NHibernate's <a href="https://github.com/nhibernate/nhibernate-core/blob/master/src/NHibernate/ISession.cs"><code>ISession</code></a> as an example
 of an object that typically has to be built by using an <a href="https://github.com/nhibernate/nhibernate-core/blob/master/src/NHibernate/ISessionFactory.cs"><code>ISessionFactory</code></a> object:</p>
 <pre><code class="language-csharp">&#xA;public interface ISession { }&#xA;&#xA;public interface ISessionFactory&#xA;{&#xA;    ISession Build();&#xA;}&#xA;</code></pre>
-<p>If we want to allow StructureMap to control the <code>ISession</code> lifecycle and creation, we have to register a Lambda function as the
+<p>If we want to allow Lamar to control the <code>ISession</code> lifecycle and creation, we have to register a Lambda function as the
 means of creating <code>ISession</code> as shown in this example below:</p>
 <pre><code class="language-csharp">&#xA;public class SessionFactoryRegistry : Registry&#xA;{&#xA;    // Let&#x27;s not worry about how ISessionFactory is built&#xA;    // in this example&#xA;    public SessionFactoryRegistry(ISessionFactory factory)&#xA;    {&#xA;        For&lt;ISessionFactory&gt;().Use(factory);&#xA;&#xA;        // Build ISession with a lambda:&#xA;        For&lt;ISession&gt;().Use(&quot;Build ISession from ISessionFactory&quot;, c =&gt;&#xA;        {&#xA;            // To resolve ISession, I first pull out&#xA;            // ISessionFactory from the IContext and use that&#xA;            // to build a new ISession. &#xA;            return c.GetInstance&lt;ISessionFactory&gt;().Build();&#xA;        });&#xA;    }&#xA;}&#xA;</code></pre>
 <p>Lambda registrations can be done with any of the following four signatures:</p>
@@ -95,7 +95,7 @@ means of creating <code>ISession</code> as shown in this example below:</p>
 <li><code>(string description, Func&lt;T&gt; builder)</code> -- Supply a complex <code>Func&lt;T&gt;</code> with a user-supplied description for diagnostics</li>
 </ol>
 <p><strong>Be very wary of the difference between legal <code>Expression's</code> and more complicated Lambda's that will need to be <code>Func's</code>.</strong> It likely doesn't matter to
-you the user, but it unfortunately does to StructureMap and .Net itself. If you need to use a more complex <code>Func</code>, you will have
+you the user, but it unfortunately does to Lamar and .Net itself. If you need to use a more complex <code>Func</code>, you will have
 to supply a diagnostic description.</p>
 <p>See <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'the-container/working-with-the-icontext-at-build-time'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for more information.</p>
 
@@ -110,7 +110,7 @@ to supply a diagnostic description.</p>
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/ioc/lazy-resolution">Lazy Resolution</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/disposing">Lamar and IDisposable</a>
 
                 </span>
               </nav>

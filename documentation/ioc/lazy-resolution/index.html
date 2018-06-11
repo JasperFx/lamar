@@ -37,7 +37,7 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/ioc/lambdas" title="Building Objects with Lambdas">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/disposing" title="Lamar and IDisposable">Previous</a></li>
             <li><a href="/lamar/documentation/ioc/nested-containers" title="Nested Containers (Per Request/Transaction)">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
@@ -69,7 +69,7 @@
             </ul>
 
             <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/disposing">Lamar and IDisposable</a></p>
           </div><!--/left-->
 
           <!--right-->
@@ -80,17 +80,17 @@
 
               <div id="main-pane">
                 <!--Title:Lazy Resolution-->
-<p>StructureMap has some built in functionality for &quot;lazy&quot; resolved dependencies, so that instead of your
+<p>Lamar has some built in functionality for &quot;lazy&quot; resolved dependencies, so that instead of your
 application service taking a direct dependency on <code>IExpensiveToBuildService</code> that might not be necessary,
-you could instead have StructureMap fulfil a dependency on <code>Lazy&lt;IExpensiveToBuildService&gt;</code> or <code>Func&lt;IExpensiveToBuildService&gt;</code>
+you could instead have Lamar fulfil a dependency on <code>Lazy&lt;IExpensiveToBuildService&gt;</code> or <code>Func&lt;IExpensiveToBuildService&gt;</code>
 that could be used to retrieve that expensive service only when it is needed from whatever <code>Container</code> originally created
 the parent object.</p>
 <p>Do note that the <code>Lazy&lt;T&gt;</code> and <code>Func&lt;T&gt;</code> approaches respect the lifecycle of the underlying registration rather than
 automatically building a unique object instance.</p>
-<p>Also note that <code>Lazy&lt;T&gt;</code> or <code>Func&lt;T&gt;</code> is your best (only) viable approach if you wish to have StructureMap inject bi-directional
+<p>Also note that <code>Lazy&lt;T&gt;</code> or <code>Func&lt;T&gt;</code> is your best (only) viable approach if you wish to have Lamar inject bi-directional
 relationships.</p>
 <h2 id="lazyt">Lazy&lt;T&gt;</h2>
-<p>Assuming that StructureMap either has an existing configuration for <code>T</code> or can
+<p>Assuming that Lamar either has an existing configuration for <code>T</code> or can
 derive a way to build <code>T</code>, you can just declare a dependency on <code>Lazy&lt;T&gt;</code> like this sample:</p>
 <pre><code class="language-csharp">&#xA;public class WidgetLazyUser&#xA;{&#xA;    private readonly Lazy&lt;IWidget&gt; _widget;&#xA;&#xA;    public WidgetLazyUser(Lazy&lt;IWidget&gt; widget)&#xA;    {&#xA;        _widget = widget;&#xA;    }&#xA;&#xA;    public IWidget Widget&#xA;    {&#xA;        get { return _widget.Value; }&#xA;    }&#xA;}&#xA;&#xA;[Fact]&#xA;public void lazy_resolution_in_action()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IWidget&gt;().Use&lt;AWidget&gt;();&#xA;    });&#xA;&#xA;    container.GetInstance&lt;WidgetLazyUser&gt;()&#xA;        .Widget.ShouldBeOfType&lt;AWidget&gt;();&#xA;}&#xA;&#xA;</code></pre>
 <h2 id="funct">Func&lt;T&gt;</h2>
@@ -102,7 +102,7 @@ derive a way to build <code>T</code>, you can just declare a dependency on <code
 resolve a dependency of <code>T</code> by name:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void build_a_func_by_string()&#xA;{&#xA;    var container = new Container(x =&gt;&#xA;    {&#xA;        x.For&lt;IWidget&gt;().Add&lt;GreenWidget&gt;().Named(&quot;green&quot;);&#xA;        x.For&lt;IWidget&gt;().Add&lt;BlueWidget&gt;().Named(&quot;blue&quot;);&#xA;        x.For&lt;IWidget&gt;().Add&lt;RedWidget&gt;().Named(&quot;red&quot;);&#xA;    });&#xA;&#xA;    var func = container.GetInstance&lt;Func&lt;string, IWidget&gt;&gt;();&#xA;    func(&quot;green&quot;).ShouldBeOfType&lt;GreenWidget&gt;();&#xA;    func(&quot;blue&quot;).ShouldBeOfType&lt;BlueWidget&gt;();&#xA;    func(&quot;red&quot;).ShouldBeOfType&lt;RedWidget&gt;();&#xA;}&#xA;&#xA;</code></pre>
 <h2 id="bi-relational-dependency-workaround">Bi-relational Dependency Workaround</h2>
-<p><strong>StructureMap does not directly support bi-directional dependency relationships</strong> -- but will happily tell you in an exception when
+<p><strong>Lamar does not directly support bi-directional dependency relationships</strong> -- but will happily tell you in an exception when
 you accidentally manage to create one without cratering your AppDomain with a <code>StackOverflowException</code>.</p>
 <p>Either <code>Func&lt;T&gt;</code> or <code>Lazy&lt;T&gt;</code> can be used as a workaround for purposeful bi-directional dependencies between types. The
 following is an example of using this strategy:</p>
@@ -114,7 +114,7 @@ following is an example of using this strategy:</p>
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/disposing">Lamar and IDisposable</a>
 
                 </span>
                 <span class="pull-right">

@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - Working with IVariableSource</title>
+        <title>Lamar - Changing Configuration at Runtime</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -37,8 +37,8 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/compilation/frames/assembly" title="The GeneratedAssembly Model">Previous</a></li>
-            <li><a href="/lamar/documentation/compilation/frames/extension-methods" title="Extension Methods for Names in Code">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/registration/policies" title="Policies">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration/constructor-selection" title="Constructor Selection">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">Dynamic Code Generation and Compilation</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a></li><li class="active">Working with IVariableSource</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/registration">Registration</a></li><li class="active">Changing Configuration at Runtime</li></ol>
       </nav>
     </div>
 
@@ -68,18 +68,25 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/frames/assembly">The GeneratedAssembly Model</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration/constructor-selection">Constructor Selection</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/registration/policies">Policies</a></p>
           </div><!--/left-->
 
           <!--right-->
           <div class="col-md-9">
-              <h1>Working with IVariableSource</h1>
+              <h1>Changing Configuration at Runtime</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--title:Working with IVariableSource-->
+                <!--Title: Changing Configuration at Runtime-->
+<div class="alert-warning alert"><p><strong>Note!</strong>
+Don't do this, you've been warned.</p>
+</div>
+<p>The Lamar team respectfully recommends that you don't do this, but this functionality is here because we had to have this for
+Jasper's integration with ASP.Net Core. Please note that this should only be used <strong>additively</strong>. Unlike StructureMap, Lamar will not rewrite build
+plans for existing registrations to accomodate changes here.</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void add_all_new_services()&#xA;{&#xA;    var container = new Container(_ =&gt; { _.AddTransient&lt;IWidget, RedWidget&gt;(); });&#xA;    &#xA;    container.Configure(_ =&gt; _.AddTransient&lt;IService, WhateverService&gt;());&#xA;&#xA;    container.GetInstance&lt;IService&gt;()&#xA;        .ShouldBeOfType&lt;WhateverService&gt;();&#xA;}&#xA;</code></pre>
 
               </div>
 
@@ -87,12 +94,12 @@
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/compilation/frames/assembly">The GeneratedAssembly Model</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/registration/policies">Policies</a>
 
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration/constructor-selection">Constructor Selection</a>
 
                 </span>
               </nav>

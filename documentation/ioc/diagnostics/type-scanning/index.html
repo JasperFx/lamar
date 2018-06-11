@@ -38,7 +38,7 @@
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
             <li><a href="/lamar/documentation/ioc/diagnostics/using-the-container-model" title="Using the Container Model">Previous</a></li>
-            <li><a href="/lamar/documentation/ioc/best-practices" title="Best Practices">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/auto-wiring" title="Auto Wiring">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -68,7 +68,7 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/best-practices">Best Practices</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/auto-wiring">Auto Wiring</a></p>
             <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/diagnostics/using-the-container-model">Using the Container Model</a></p>
           </div><!--/left-->
 
@@ -80,15 +80,14 @@
 
               <div id="main-pane">
                 <!--Title:Type Scanning Diagnostics-->
-<div class="alert alert-info" role="alert"><b><big>This functionality was introduced in StructureMap 4.0.</b></big></div>
-<p>Type scanning and conventional auto-registration is a very powerful feature in StructureMap, but it has been frequently troublesome to users when things go wrong. To try to alleviate problems, StructureMap 4.0 introduces some new functionality for detecting and diagnosing problems with type scanning, mostly related to Assembly's being missing.</p>
+<p>Type scanning and conventional auto-registration is a very powerful feature in Lamar, but it has been frequently troublesome to users when things go wrong. To try to alleviate problems, Lamar has some functionality for detecting and diagnosing problems with type scanning, mostly related to Assembly's being missing.</p>
 <h2 id="assert-for-assembly-loading-failures">Assert for Assembly Loading Failures</h2>
-<p>At its root, most type scanning and auto-registration schemes in .Net frameworks rely on the <a href="https://msdn.microsoft.com/en-us/library/system.reflection.assembly.getexportedtypes%28v=vs.110%29.aspx">Assembly.GetExportedTypes()</a> method. Unfortunately, that method can be brittle and fail whenever any dependency of that Assembly cannot be loaded into the current process, even if your application has no need for that dependency. In StructureMap 3.* and before, that loading exception was essentially swallowed and lost. In StructureMap 4 and above, you can use this method to assert the presence of any assembly load exceptions during type scanning:</p>
+<p>At its root, most type scanning and auto-registration schemes in .Net frameworks rely on the <a href="https://msdn.microsoft.com/en-us/library/system.reflection.assembly.getexportedtypes%28v=vs.110%29.aspx">Assembly.GetExportedTypes()</a> method. Unfortunately, that method can be brittle and fail whenever any dependency of that Assembly cannot be loaded into the current process, even if your application has no need for that dependency. In Lamar, you can use this method to assert the presence of any assembly load exceptions during type scanning:</p>
 <pre><code class="language-csharp">&#xA;TypeRepository.AssertNoTypeScanningFailures();&#xA;</code></pre>
 <p>The method above will throw an exception listing all the Assembly's that failed during the call to <code>GetExportedTypes()</code> only if there were any failures. Use this method during your application bootstrapping if you want it to fail fast with any type scanning problems.</p>
-<h2 id="what-did-structuremap-scan">What did StructureMap scan?</h2>
-<p>Confusion of type scanning has been a constant problem with StructureMap usage over the years -- especially if users are trying to dynamically load assemblies from the file system for extensibility. In order to see into what StructureMap has done with type scanning, 4.0 introduces the <code>Container.WhatDidIScan()</code> method.</p>
-<p>Let's say that you have a <code>Container</code> that is set up with at least two different scanning operations like this sample from the StructureMap unit tests:</p>
+<h2 id="what-did-lamar-scan">What did Lamar scan?</h2>
+<p>Confusion of type scanning has been a constant problem with Lamar usage over the years -- especially if users are trying to dynamically load assemblies from the file system for extensibility. In order to see into what Lamar has done with type scanning, 4.0 introduces the <code>Container.WhatDidIScan()</code> method.</p>
+<p>Let's say that you have a <code>Container</code> that is set up with at least two different scanning operations like this sample from the Lamar unit tests:</p>
 <pre><code class="language-csharp">&#xA;var container = new Container(_ =&gt;&#xA;{&#xA;    _.Scan(x =&gt;&#xA;    {&#xA;        x.TheCallingAssembly();&#xA;&#xA;        x.WithDefaultConventions();&#xA;        x.RegisterConcreteTypesAgainstTheFirstInterface();&#xA;        x.SingleImplementationsOfInterface();&#xA;    });&#xA;&#xA;    _.Scan(x =&gt;&#xA;    {&#xA;        // Give your scanning operation a descriptive name&#xA;        // to help the diagnostics to be more useful&#xA;        x.Description = &quot;Second Scanner&quot;;&#xA;&#xA;        x.AssembliesFromApplicationBaseDirectory(assem =&gt; assem.FullName.Contains(&quot;Widget&quot;));&#xA;        x.ConnectImplementationsToTypesClosing(typeof(IService&lt;&gt;));&#xA;        x.AddAllTypesOf&lt;IWidget&gt;();&#xA;    });&#xA;});&#xA;&#xA;Console.WriteLine(container.WhatDidIScan());&#xA;</code></pre>
 <p>The resulting textual report is shown below:</p>
 <p><em>Sorry for the formatting and color of the text, but the markdown engine does <strong>not</strong> like the textual report</em></p>
@@ -113,7 +112,7 @@
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/ioc/best-practices">Best Practices</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/auto-wiring">Auto Wiring</a>
 
                 </span>
               </nav>

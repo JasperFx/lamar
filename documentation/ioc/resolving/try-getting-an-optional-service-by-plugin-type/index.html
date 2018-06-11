@@ -81,18 +81,24 @@
               <div id="main-pane">
                 <!--Title: Try Getting an Optional Service by Plugin Type-->
 <!--Url: try-getting-an-optional-service-by-plugin-type-->
-<div class="alert alert-info" role="alert">The Lamar team does not recommend using "optional" dependencies as shown in this topic, but
+<div class="alert-info alert"><p><strong>Note!</strong>
+The Lamar team does not recommend using &quot;optional&quot; dependencies as shown in this topic, but
 external frameworks like ASP.Net MVC and Web API use this concept in their IoC container integration, so here it is. The Lamar team
-prefers the usage of the <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Nullo pattern</a> instead.</div>
+prefers the usage of the <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Nullo pattern</a> instead.</div></p>
+</div>
 <p>In normal usage, if you ask Lamar for a service and Lamar doesn't recognize the requested type, the requested name, or know what the default should be for that type, Lamar will fail fast by throwing an exception rather than returning a null. Sometimes though, you may want to
 retrieve an <em>optional</em> service from Lamar that may or may not be registered in the Container. If that particular registration doesn't exist, you
 just want a null value. Lamar provides first class support for <em>optional</em> dependencies through the usage of the <code>IContainer.TryGetInstance()</code> methods.</p>
+<div class="alert-info alert"><p><strong>Note!</strong>
+In Lamar, the ASP.Net Core <code>IServiceProvider.GetService()</code> method has the same functionality and meaning as the <code>TryGetInstance()</code> method. If you
+were wondering how Lamar's StructureMap-flavored <code>GetInstance()</code> method is different, that's how.</p>
+</div>
 <p>Say you have a simple interface <code>IFoo</code> that may or may not be registered in the Container:</p>
 <pre><code class="language-csharp">&#xA;public interface IFoo&#xA;{&#xA;}&#xA;&#xA;public class Foo : IFoo&#xA;{&#xA;}&#xA;&#xA;</code></pre>
 <p>In your own code you might request the <code>IFoo</code> service like the code below, knowing that you'll
 take responsibility yourself for building the <code>IFoo</code> service if Lamar doesn't have a registration
 for <code>IFoo</code>:</p>
-<pre><code class="language-csharp">&#xA;public class MyFoo : IFoo&#xA;{&#xA;}&#xA;&#xA;[Fact]&#xA;public void real_usage()&#xA;{&#xA;    var container = new Container();&#xA;&#xA;    // if the container doesn&#x27;t know about it,&#xA;    // I&#x27;ll build it myself&#xA;    var foo = container.TryGetInstance&lt;IFoo&gt;()&#xA;              ?? new MyFoo();&#xA;}&#xA;&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public class MyFoo : IFoo&#xA;{&#xA;}&#xA;&#xA;[Fact]&#xA;public void real_usage()&#xA;{&#xA;    var container = new Container();&#xA;&#xA;    // if the container doesn&#x27;t know about it,&#xA;    // I&#x27;ll build it myself&#xA;    var foo = container.TryGetInstance&lt;IFoo&gt;()&#xA;              ?? new MyFoo();&#xA;&#xA;}&#xA;&#xA;</code></pre>
 <p>Just to make this perfectly clear, if Lamar has a default registration for <code>IFoo</code>, you get this behavior:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void i_have_got_that()&#xA;{&#xA;    var container = new Container(_ =&gt; _.For&lt;IFoo&gt;().Use&lt;Foo&gt;());&#xA;&#xA;    container.TryGetInstance&lt;IFoo&gt;()&#xA;        .ShouldNotBeNull();&#xA;&#xA;    // -- or --&#xA;&#xA;    container.TryGetInstance(typeof(IFoo))&#xA;        .ShouldNotBeNull();&#xA;}&#xA;&#xA;</code></pre>
 <p>If Lamar knows nothing about <code>IFoo</code>, you get a null:</p>

@@ -81,11 +81,14 @@
               <div id="main-pane">
                 <!--Title: Get all Services by Plugin Type-->
 <!--Url: get-all-services-by-plugin-type-->
-<p>Please see <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'the-container/working-with-enumerable-types'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for a lot more information about what's going on behind the
+<div class="alert-warning alert"><p><strong>Note!</strong>
+The functionality respects the order in which the actual instances are configured in the Container -- which is compliant with the
+expected behavior inside of ASP.Net Core.  Be warned that some other IoC tools make different assumptions if you are coming from a different tool.</p>
+</div>
+<p>Please see <a href="/lamar/documentation/ioc/working-with-enumerable-types">Working with Enumerable Types</a> for a lot more information about what's going on behind the
 scenes.</p>
 <p>Once in a while you might want to get an enumerable of all the configured objects for a PluginType.  That's done with the <code>GetAllInstances()</code> method shown below:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void get_all_instances()&#xA;{&#xA;    var container = new Container(x =&gt;&#xA;    {&#xA;        x.For&lt;IWidget&gt;().Add&lt;AWidget&gt;().Named(&quot;A&quot;);&#xA;        x.For&lt;IWidget&gt;().Add&lt;BWidget&gt;().Named(&quot;B&quot;);&#xA;        x.For&lt;IWidget&gt;().Add&lt;CWidget&gt;().Named(&quot;C&quot;);&#xA;    });&#xA;    &#xA;    container.QuickBuildAll&lt;IWidget&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;&#xA;    container.GetAllInstances&lt;IWidget&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;&#xA;    // or&#xA;&#xA;    container.GetAllInstances(typeof(IWidget))&#xA;        .OfType&lt;IWidget&gt;() // returns an IEnumerable, so I&#x27;m casting here&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;}&#xA;&#xA;</code></pre>
-<div class="alert alert-info" role="alert"><code>GetAllInstances()</code> respects the order in which the actual instances are configured in the Container.  Be warned that some other IoC tools make different assumptions if you are coming from a different tool.</div>
 
               </div>
 

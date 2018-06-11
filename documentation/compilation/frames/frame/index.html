@@ -38,7 +38,7 @@
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
             <li><a href="/lamar/documentation/compilation/frames/variables" title="Working with Variables">Previous</a></li>
-            <li><a href="/lamar/documentation/compilation/frames/assembly" title="The GeneratedAssembly Model">Next</a></li>
+            <li><a href="/lamar/documentation/compilation/frames/extension-methods" title="Extension Methods for Names in Code">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -68,7 +68,7 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames/assembly">The GeneratedAssembly Model</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a></p>
             <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/frames/variables">Working with Variables</a></p>
           </div><!--/left-->
 
@@ -80,6 +80,41 @@
 
               <div id="main-pane">
                 <!--title:Building Custom Frames-->
+<div class="alert-info alert"><p><strong>Note!</strong>
+If you're going to get into Lamar's code generation model, you probably want to be familiar and comfortable with both string interpolation
+in C# and the recent <code>nameof</code> operator.</p>
+</div>
+<p>To build a custom frame, you first need to create a new class that subclasses <code>Frame</code>, with these other more specific subclasses to start from as well:</p>
+<ul>
+<li><code>SyncFrame</code> - a frame that generates purely synchronous code</li>
+<li><code>AsyncFrame</code> - a frame that has at least one <code>await</code> call in the code generated</li>
+</ul>
+<p>The one thing you absolutely have to do when you create a new <code>Frame</code> class is to override the <code>GenerateCode()</code> method. Take this example
+from Lamar itself for a frame that just injects a comment into the generated code:</p>
+<pre><code class="language-csharp">&#xA;public class CommentFrame : SyncFrame&#xA;{&#xA;    private readonly string _commentText;&#xA;&#xA;    public CommentFrame(string commentText)&#xA;    {&#xA;        _commentText = commentText;&#xA;    }&#xA;&#xA;    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)&#xA;    {&#xA;        writer.WriteComment(_commentText);&#xA;        &#xA;        // It&#x27;s on you to call through to a possible next&#xA;        // frame to let it generate its code&#xA;        Next?.GenerateCode(method, writer);&#xA;    }&#xA;}&#xA;</code></pre>
+<p>A couple things to note about the <code>GenerateCode()</code> method:</p>
+<ul>
+<li>The <code>GeneratedMethod</code> will tell you information about the new method being generated like the return type and whether or not the method returns a <code>Task</code> or is marked with the <code>async</code> keyword.</li>
+<li>You use the <code>ISourceWriter</code> argument to write new code into the generated method</li>
+<li>It's your responsibility to call the <code>Next?.GenerateCode()</code> method to give the next frame a chance to write its code. <strong>Don't forget to do this step</strong>.</li>
+</ul>
+<p>Inside a custom frame, you can also nest the code from the frames following yours in a method. See this frame from Lamar itself that
+calls a &quot;no arg&quot; constructor on a concrete class and returns a variable. In the case of a class that implements <code>IDisposable</code>, it should write
+a C# <code>using</code> block that surrounds the inner code:</p>
+<pre><code class="language-csharp">&#xA;public class NoArgCreationFrame : SyncFrame&#xA;{&#xA;    public NoArgCreationFrame(Type concreteType) &#xA;    {&#xA;        // By creating the variable this way, we&#x27;re&#xA;        // marking the variable as having been created&#xA;        // by this frame&#xA;        Output = new Variable(concreteType, this);&#xA;    }&#xA;&#xA;    public Variable Output { get; }&#xA;&#xA;    // You have to override this method&#xA;    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)&#xA;    {&#xA;        var creation = $&quot;var {Output.Usage} = new {Output.VariableType.FullNameInCode()}()&quot;;&#xA;&#xA;        if (Output.VariableType.CanBeCastTo&lt;IDisposable&gt;())&#xA;        {&#xA;            // there is an ISourceWriter shortcut for this, but this makes&#xA;            // a better code demo;)&#xA;            writer.Write($&quot;BLOCK:using ({creation})&quot;);&#xA;            Next?.GenerateCode(method, writer);&#xA;            writer.FinishBlock();&#xA;        }&#xA;        else&#xA;        {&#xA;            writer.WriteLine(creation &#x2B; &quot;;&quot;);&#xA;            Next?.GenerateCode(method, writer);&#xA;        }&#xA;    }&#xA;}&#xA;</code></pre>
+<h2 id="creating-a-variable-within-a-frame">Creating a Variable within a Frame</h2>
+<p>If the code generated by a <code>Frame</code> creates a new <code>Variable</code> in the generated code, it should set itself as the creator of that variable. You can do that by
+either passing a frame into a variable as its creator like this line from the <code>NoArgCreationFrame</code> shown above:</p>
+<pre><code class="language-csharp">&#xA;public NoArgCreationFrame(Type concreteType) &#xA;{&#xA;    // By creating the variable this way, we&#x27;re&#xA;    // marking the variable as having been created&#xA;    // by this frame&#xA;    Output = new Variable(concreteType, this);&#xA;}&#xA;</code></pre>
+<p>Otherwise, you could also have written that code like this:</p>
+<pre><code class="language-csharp">&#xA;public NoArgCreationFrame(Type concreteType) &#xA;{&#xA;    // By creating the variable this way, we&#x27;re&#xA;    // marking the variable as having been created&#xA;    // by this frame&#xA;    Output = Create(concreteType);&#xA;}&#xA;</code></pre>
+<h2 id="finding-dependent-variables">Finding Dependent Variables</h2>
+<p>The other main thing you need to know is how to locate <code>Variable</code> objects your <code>Frame</code> needs to use. You accomplish that by
+overriding the <code>FindVariables()</code> method. Take this example below that is used within Lamar to generate code that resolves a service
+by calling a <a href="https://en.wikipedia.org/wiki/Service_locator_pattern">service locator</a> method on a Lamar <code>Scope</code> (a nested container most likely) object:</p>
+<pre><code class="language-csharp">&#xA;public class GetInstanceFrame : SyncFrame&#xA;{&#xA;    private Variable _scope;&#xA;    private readonly string _name;&#xA;&#xA;    public GetInstanceFrame(Instance instance)&#xA;    {&#xA;        Variable = new ServiceVariable(instance, this, ServiceDeclaration.ServiceType);&#xA;        &#xA;        _name = instance.Name;&#xA;    }&#xA;&#xA;    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)&#xA;    {&#xA;        writer.Write($&quot;var {Variable.Usage} = {_scope.Usage}.{nameof(Scope.GetInstance)}&lt;{Variable.VariableType.FullNameInCode()}&gt;(\&quot;{_name}\&quot;);&quot;);&#xA;        Next?.GenerateCode(method, writer);&#xA;    }&#xA;&#xA;    public override IEnumerable&lt;Variable&gt; FindVariables(IMethodVariables chain)&#xA;    {&#xA;        _scope = chain.FindVariable(typeof(Scope));&#xA;        yield return _scope;&#xA;    }&#xA;    &#xA;    public ServiceVariable Variable { get; }&#xA;}&#xA;</code></pre>
+<p>When you write a <code>FindVariables()</code> method, be sure to keep a reference to any variable you need for later, and return that variable as part of the enumeration from this method. Lamar uses the dependency relationship between frames, the variables they depend on, and the creators of those variables to
+correctly order and fill in any missing frames prior to generating code through the <code>GenerateCode()</code> method.</p>
 
               </div>
 
@@ -92,7 +127,7 @@
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames/assembly">The GeneratedAssembly Model</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a>
 
                 </span>
               </nav>

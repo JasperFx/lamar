@@ -80,36 +80,7 @@
 
               <div id="main-pane">
                 <!--Title: Build Plans-->
-<!--Url: build-plans-->
-<p>StructureMap 3.0 introduced the concept of the &quot;Build Plan.&quot; The build plan is a textual representation of exactly how StructureMap will build a given Instance, including:</p>
-<ol>
-<li>What constructor function, if any, StructureMap is going to use for a concrete type</li>
-<li>How it is resolving the constructor dependencies in a recursive fashion</li>
-<li>Which setter properties for a concrete type receive dependencies and how those setter dependencies are built</li>
-<li>The lifecycle used for the Instance</li>
-<li>All interceptors applied to the Instance</li>
-<li>Explicitly configured inline dependencies</li>
-<li>Description of any Lambda or <code>Func&lt;T&gt;</code> that is used to construct the Instance object</li>
-</ol>
-<p>To retrieve the build plan for a configured Instance, use the queryable <code>Container.Model</code> to find the configured Instance and call <code>DescribeBuildPlan(int maxDepth)</code> to get the textual report as shown in this sample below:</p>
-<pre><code class="language-csharp">&#xA;var container = Container.For&lt;VisualizationRegistry&gt;();&#xA;&#xA;var description = container.Model.For&lt;IDevice&gt;().Default&#xA;    .DescribeBuildPlan();&#xA;&#xA;Debug.WriteLine(description);&#xA;</code></pre>
-<p>The result of the code above is this textual representation of how StructureMap will build and/or resolve the default of the <code>IDevice</code> plugin type:</p>
-<pre>
-PluginType: StructureMap.Testing.Diagnostics.IDevice
-Lifecycle: Transient
-Decorator --> FuncInterceptor of StructureMap.Testing.Diagnostics.IDevice: new DeviceDecorator(IDevice)
-Decorator --> Decorator of type StructureMap.Testing.Diagnostics.CrazyDecorator
-    new CrazyDecorator(IDevice, IEngine, IFoo)
-      ┣ IDevice = The inner IDevice
-      ┃ ┗ new DefaultDevice()
-      ┣ IEngine = **Default**
-      ┗ IFoo = **Default**
-      
-</pre>
-<p>For another example, you can retrieve the build plan for a named instance of a certain build plan with this code:</p>
-<pre><code class="language-csharp">&#xA;var description = theContainer.Model.For&lt;IDevice&gt;()&#xA;    .Find(&quot;A&quot;)&#xA;    .DescribeBuildPlan();&#xA;</code></pre>
-<p>See <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/using-the-container-model'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for more information on using <code>Container.Model</code>.</p>
-<p>You can find many more examples of finding the build plan description from <code>Container.Model</code> from the <a href="https://github.com/structuremap/structuremap/blob/master/src/StructureMap.Testing/Diagnostics/BuildPlanVisualizationSmokeTester.cs">unit tests in the StructureMap codebase</a>.</p>
+<p>TODO -- this doesn't exist yet. Kinda important.</p>
 
               </div>
 

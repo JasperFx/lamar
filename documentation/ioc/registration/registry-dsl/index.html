@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - ServiceRegistry DSL</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/registration" title="Registration">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration/inline-dependencies" title="Inline Dependencies">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/registration">Registration</a></li><li class="active">ServiceRegistry DSL</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.10</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration/inline-dependencies">Inline Dependencies</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/registration">Registration</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>ServiceRegistry DSL</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: ServiceRegistry DSL-->
+<div class="alert-info alert"><p><strong>Note!</strong>
+Lamar's <em>ServiceRegistry</em> is the equivalent to StructureMap's <em>Registry</em>, but the name was changed
+to disambiguate from the nearly infinite number of other <em>Registry</em> types in .Net.</p>
+</div>
+<p>Creating <code>ServiceRegistry</code> classes is the recommended way of using the Registry DSL.</p>
+<p>The Registry DSL is mostly a <a href="http://martinfowler.com/bliki/FluentInterface.html">fluent interface</a> with some nested <a href="http://en.wikipedia.org/wiki/Closure_%28computer_programming%29">closure</a>
+usage. The intent of the Registry DSL is to make the configuration process as
+error free as possible by using &quot;compiler safe&quot; expressions and defensive
+programming to point out missing data.</p>
+<h2 id="the-serviceregistry-class">The ServiceRegistry Class</h2>
+<p>On all but the smallest systems, the main unit of configuration will probably be
+the <code>ServiceRegistry</code> class.  Typically, you would subclass the <code>ServiceRegistry</code> class, then
+use the <a href="https://en.wikipedia.org/wiki/Fluent_interface">fluent interface</a> methods exposed by the Registry class to create Container
+configuration. Here's a sample <code>ServiceRegistry</code> class below used to configure an
+instance of an <code>IWidget</code> interface:</p>
+<pre><code class="language-csharp">&#xA;public class PurpleRegistry : Registry&#xA;{&#xA;    public PurpleRegistry()&#xA;    {&#xA;        For&lt;IWidget&gt;().Use&lt;AWidget&gt;();&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="including-other-serviceregistry-objects">Including Other ServiceRegistry Objects</h2>
+<p>The next question is &quot;how does my new <code>ServiceRegistry</code> class get used?&quot;</p>
+<p>When you set up a <code>Container</code>, you need to simply direct the
+<code>Container</code> to use the configuration in that <code>ServiceRegistry</code> class:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void include_a_registry()&#xA;{&#xA;    var registry = new Registry();&#xA;    registry.IncludeRegistry&lt;YellowBlueRegistry&gt;();&#xA;    registry.IncludeRegistry&lt;RedGreenRegistry&gt;();&#xA;    registry.IncludeRegistry&lt;PurpleRegistry&gt;();&#xA;    // build a container&#xA;    var container = new Container(registry);&#xA;    // verify the default implementation and total registered implementations&#xA;    container.GetInstance&lt;IWidget&gt;().ShouldBeOfType&lt;AWidget&gt;();&#xA;    container.GetAllInstances&lt;IWidget&gt;().Count().ShouldBe(5);&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="use-versus-add"><em>Use</em> versus <em>Add</em></h2>
+<div class="alert-warning alert"><p><strong>Note!</strong>
+This behavior changed from StructureMap. Lamar follows the now common approach mandated by ASP.Net Core that the last registration
+for a certain service type wins. So no more special meaning to Use() vs. Add().</p>
+</div>
+<p><strong>There is no difference in behavior between <em>Use</em> and <em>Add</em> in Lamar</strong>. The two methods are synonyms and
+mostly remain in Lamar to provide and easier migration path from <a href="https://structuremap.github.io">StructureMap</a>. The</p>
+<h2 id="registrations-with-for.useadd">Registrations with For().Use()/Add()</h2>
+<p>To register an <code>Instance</code> of a type, the syntax is one of the <code>Registry.For().Use()</code> overloads shown below:</p>
+<pre><code class="language-csharp">&#xA;public class SettingDefaults : Registry&#xA;{&#xA;    public SettingDefaults()&#xA;    {&#xA;        // If you know the plugin type and its a closed type&#xA;        // you can use this syntax&#xA;        For&lt;IWidget&gt;().Use&lt;DefaultWidget&gt;();&#xA;&#xA;        // By Lambda&#xA;        For&lt;IWidget&gt;().Use(() =&gt; new DefaultWidget());&#xA;&#xA;        // Pre-existing object&#xA;        For&lt;IWidget&gt;().Use(new AWidget());&#xA;&#xA;        // This is rare now, but still valid&#xA;        For&lt;IWidget&gt;().Add&lt;AWidget&gt;().Named(&quot;A&quot;);&#xA;        For&lt;IWidget&gt;().Add&lt;BWidget&gt;().Named(&quot;B&quot;);&#xA;        For&lt;IWidget&gt;().Use(&quot;A&quot;); // makes AWidget the default&#xA;&#xA;        // Also rare, but you can supply an Instance object&#xA;        // yourself for special needs&#xA;        For&lt;IWidget&gt;().UseInstance(new MySpecialInstance());&#xA;&#xA;        // If you&#x27;re registering an open generic type&#xA;        // or you just have Type objects, use this syntax&#xA;        For(typeof (IService&lt;&gt;)).Use(typeof (Service&lt;&gt;));&#xA;&#xA;        // This is occasionally useful for generic types&#xA;        For(typeof (IService&lt;&gt;)).Use(new MySpecialInstance());&#xA;    }&#xA;}&#xA;</code></pre>
+<p>or</p>
+<pre><code class="language-csharp">&#xA;public class AdditionalRegistrations : Registry&#xA;{&#xA;    public AdditionalRegistrations()&#xA;    {&#xA;        // If you know the plugin type and its a closed type&#xA;        // you can use this syntax&#xA;        For&lt;IWidget&gt;().Add&lt;DefaultWidget&gt;();&#xA;&#xA;        // By Lambda&#xA;        For&lt;IWidget&gt;().Add(() =&gt; new DefaultWidget());&#xA;&#xA;        // Pre-existing object&#xA;        For&lt;IWidget&gt;().Add(new AWidget());&#xA;&#xA;        // Also rare, but you can supply an Instance object&#xA;        // yourself for special needs&#xA;        For&lt;IWidget&gt;().AddInstance(new MySpecialInstance());&#xA;&#xA;        // If you&#x27;re registering an open generic type&#xA;        // or you just have Type objects, use this syntax&#xA;        For(typeof(IService&lt;&gt;)).Add(typeof(Service&lt;&gt;));&#xA;&#xA;        // This is occasionally useful for generic types&#xA;        For(typeof(IService&lt;&gt;)).Add(new MySpecialInstance());&#xA;    }&#xA;}&#xA;</code></pre>
+<h2 id="add-many-registrations-with-for.addinstances">Add Many Registrations with For().AddInstances()</h2>
+<p>If you need to add several <code>Instances</code> to a single plugin type, the <code>AddInstances()</code> syntax
+shown below may be quicker and easier to use:</p>
+<pre><code class="language-csharp">&#xA;&#xA;// registry is a StructureMap Registry object&#xA;registry.For&lt;IService&gt;().AddInstances(x =&gt;&#xA;{&#xA;    // Equivalent to For&lt;IService&gt;().Add&lt;ColorService&gt;().....&#xA;    x.Type&lt;ColorService&gt;().Named(&quot;Red&quot;).Ctor&lt;string&gt;(&quot;color&quot;).Is(&quot;Red&quot;);&#xA;&#xA;    // Equivalent to For&lt;IService&gt;().Add(new ColorService(&quot;Yellow&quot;))......&#xA;    x.Object(new ColorService(&quot;Yellow&quot;)).Named(&quot;Yellow&quot;);&#xA;&#xA;    // Equivalent to For&lt;IService&gt;().Use(() =&gt; new ColorService(&quot;Purple&quot;))....&#xA;    x.ConstructedBy(() =&gt; new ColorService(&quot;Purple&quot;)).Named(&quot;Purple&quot;);&#xA;&#xA;    x.Type&lt;ColorService&gt;().Named(&quot;Decorated&quot;).Ctor&lt;string&gt;(&quot;color&quot;).Is(&quot;Orange&quot;);&#xA;});&#xA;&#xA;</code></pre>
+<h2 id="named-instances">Named Instances</h2>
+<p>When you have multiple implementations of an interface, it can often be useful to
+name instances. To retrieve a specific implementation:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void SimpleCaseWithNamedInstance()&#xA;{&#xA;    container = new Container(x =&gt; { x.For&lt;IWidget&gt;().Add&lt;AWidget&gt;().Named(&quot;MyInstance&quot;); });&#xA;    // retrieve an instance by name&#xA;    var widget = (AWidget)container.GetInstance&lt;IWidget&gt;(&quot;MyInstance&quot;);&#xA;    widget.ShouldNotBeNull();&#xA;}&#xA;&#xA;</code></pre>
+<p>You can also register named instances with the following shorthand:</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void A_concrete_type_is_available_by_name_when_it_is_added_by_the_shorthand_mechanism()&#xA;{&#xA;    IContainer container = new Container(r =&gt; r.For&lt;IAddTypes&gt;().AddInstances(x =&gt;&#xA;    {&#xA;        x.Type&lt;RedAddTypes&gt;().Named(&quot;Red&quot;);&#xA;        x.Type&lt;GreenAddTypes&gt;().Named(&quot;Green&quot;);&#xA;        x.Type&lt;BlueAddTypes&gt;().Named(&quot;Blue&quot;);&#xA;        x.Type&lt;PurpleAddTypes&gt;();&#xA;    }));&#xA;    // retrieve the instances by name&#xA;    container.GetInstance&lt;IAddTypes&gt;(&quot;Red&quot;).IsType&lt;RedAddTypes&gt;();&#xA;    container.GetInstance&lt;IAddTypes&gt;(&quot;Green&quot;).IsType&lt;GreenAddTypes&gt;();&#xA;    container.GetInstance&lt;IAddTypes&gt;(&quot;Blue&quot;).IsType&lt;BlueAddTypes&gt;();&#xA;}&#xA;&#xA;</code></pre>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/registration">Registration</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration/inline-dependencies">Inline Dependencies</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

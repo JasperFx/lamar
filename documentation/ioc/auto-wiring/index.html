@@ -37,7 +37,7 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/ioc/best-practices" title="Best Practices">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/diagnostics" title="Diagnostics">Previous</a></li>
             <li><a href="/lamar/documentation/ioc/lambdas" title="Building Objects with Lambdas">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
@@ -69,7 +69,7 @@
             </ul>
 
             <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/best-practices">Best Practices</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a></p>
           </div><!--/left-->
 
           <!--right-->
@@ -81,36 +81,21 @@
               <div id="main-pane">
                 <!--Title: Auto Wiring-->
 <!--Url: auto-wiring-->
-<p>The best way to use an IoC container is to allow &quot;Auto Wiring&quot; to do most of the work for you.  IoC Containers like StructureMap are an infrastructure concern, and as such, should be isolated from as much of your code as possible.  Before examining Auto Wiring in depth, let's look at a common anti pattern of IoC usage:</p>
+<p>The best way to use an IoC container is to allow &quot;Auto Wiring&quot; to do most of the work for you.  IoC Containers like Lamar are an infrastructure concern, and as such, should be isolated from as much of your code as possible.  Before examining Auto Wiring in depth, let's look at a common anti pattern of IoC usage:</p>
 <pre><code class="language-csharp">&#xA;// This is the wrong way to use an IoC container.  Do NOT invoke the container from&#xA;// the constructor function.  This tightly couples the ShippingScreenPresenter to&#xA;// the IoC container in a harmful way.  This class cannot be used in either&#xA;// production or testing without a valid IoC configuration.  Plus, you&#x27;re writing more&#xA;// code&#xA;public ShippingScreenPresenter(IContainer container)&#xA;{&#xA;    // It&#x27;s even worse if you use a static facade to retrieve&#xA;    // a service locator!&#xA;    _service = container.GetInstance&lt;IShippingService&gt;();&#xA;    _repository = container.GetInstance&lt;IRepository&gt;();&#xA;}&#xA;</code></pre>
-<p>Instead of binding <code>ShippingScreenPresenter</code> so tightly to StructureMap and having to explicitly fetch its dependencies, let's switch
-it to using StructureMap a little more idiomatically and just exposing a constructor function with the necessary dependencies
+<p>Instead of binding <code>ShippingScreenPresenter</code> so tightly to Lamar and having to explicitly fetch its dependencies, let's switch
+it to using Lamar a little more idiomatically and just exposing a constructor function with the necessary dependencies
 as arguments:</p>
 <pre><code class="language-csharp">&#xA;// This is the way to write a Constructor Function with an IoC tool&#xA;// Let the IoC container &quot;inject&quot; services from outside, and keep&#xA;// ShippingScreenPresenter ignorant of the IoC infrastructure&#xA;public ShippingScreenPresenter(IShippingService service, IRepository repository)&#xA;{&#xA;    _service = service;&#xA;    _repository = repository;&#xA;}&#xA;</code></pre>
-<p>As long as a StructureMap <code>Container</code> knows how to resolve the <code>IRepository</code> and
-<code>IShippingService</code> interfaces, StructureMap can build <code>ShippingScreenPresenter</code> by using &quot;auto-wiring.&quot; All this means is that
-instead of forcing you to explicitly configure all the dependencies for <code>ShippingScreenPresenter</code>, StructureMap can infer from
-the public <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'registration/constructor-selection'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> and <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'setter-injection'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p>
+<p>As long as a Lamar <code>Container</code> knows how to resolve the <code>IRepository</code> and
+<code>IShippingService</code> interfaces, Lamar can build <code>ShippingScreenPresenter</code> by using &quot;auto-wiring.&quot; All this means is that
+instead of forcing you to explicitly configure all the dependencies for <code>ShippingScreenPresenter</code>, Lamar can infer from
+the public <a href="/lamar/documentation/ioc/registration/constructor-selection">constructor function</a>
 what dependencies <code>ShippingScreenPresenter</code> needs and uses the defaults of both to build it out.</p>
 <p>Looking at the <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/build-plans'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for <code>ShippingScreenPresenter</code>:</p>
 <pre><code class="language-csharp">&#xA;public void ShowBuildPlan()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IShippingService&gt;().Use&lt;InternalShippingService&gt;();&#xA;        _.For&lt;IRepository&gt;().Use&lt;SimpleRepository&gt;();&#xA;    });&#xA;&#xA;    // Just proving that we can build ShippingScreenPresenter;)&#xA;    container.GetInstance&lt;ShippingScreenPresenter&gt;().ShouldNotBeNull();&#xA;&#xA;    var buildPlan = container.Model.For&lt;ShippingScreenPresenter&gt;().Default.DescribeBuildPlan(1);&#xA;&#xA;    Debug.WriteLine(buildPlan);&#xA;}&#xA;</code></pre>
 <p>give us:</p>
-<pre>
-PluginType: StructureMap.Testing.DocumentationExamples.ShippingScreenPresenter
-Lifecycle: Transient
-new ShippingScreenPresenter(IShippingService, IRepository)
-  ┣ IShippingService = **Default**
-  ┃                     | PluginType: StructureMap.Testing.DocumentationExamples.IShippingService
-  ┃                     | Lifecycle: Transient
-  ┃                     | new InternalShippingService()
-  ┃                    
-  ┗ IRepository = **Default**
-               | PluginType: StructureMap.Testing.DocumentationExamples.IRepository
-               | Lifecycle: Transient
-               | new SimpleRepository()
-              
-</pre>
-<p>See <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'the-container/primitives'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for more information on how StructureMap deals with primitive types like numbers, strings, enums, and dates in auto-wiring.</p>
+<p>TODO -- fill in this build plan</p>
 
               </div>
 
@@ -118,7 +103,7 @@ new ShippingScreenPresenter(IShippingService, IRepository)
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/best-practices">Best Practices</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a>
 
                 </span>
                 <span class="pull-right">

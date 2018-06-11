@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Lamar - Using Attributes for Configuration</title>
+        <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
+        <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+
+        <link href="/lamar/content/affix.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
+      <a href="https://github.com/jasperfx/Lamar"><img style="z-index: 5000; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/lamar" class="navbar-brand">Lamar</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="/lamar/getting_started">Getting Started</a>
+            </li>
+            <li>
+              <a href="/lamar/documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
+            </li>
+            <li><a href="/lamar/documentation/ioc/registration/existing-objects" title="Registering Existing Objects">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/lifetime" title="Service Lifetimes">Next</a></li>
+          </ul>
+          <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id="search" type="search" class="form-control" placeholder="Search">
+            </div>
+          </div>
+
+        </nav>
+
+      </div>
+    </nav>
+
+    <div class="container">
+      <nav class="navbar-inverse">
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/registration">Registration</a></li><li class="active">Using Attributes for Configuration</li></ol>
+      </nav>
+    </div>
+
+    <!--main-->
+    <div class="container">
+      <div class="row">
+          <!--left-->
+          <div class="col-md-3" id="leftCol">
+            <h3>Lamar 0.9.10</h3>
+            <br />
+
+            <ul class="nav nav-stacked affix" id="sidebar">
+            </ul>
+
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/lifetime">Service Lifetimes</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/registration/existing-objects">Registering Existing Objects</a></p>
+          </div><!--/left-->
+
+          <!--right-->
+          <div class="col-md-9">
+              <h1>Using Attributes for Configuration</h1>
+
+              <hr />
+
+              <div id="main-pane">
+                <!--Title: Using Attributes for Configuration-->
+<p>The Lamar team believe that forcing users to spray .Net attributes all over
+their own code is in clear violation of our philosophy of minimal intrusion into user code. <em>In other words, we don't want to be MEF.</em></p>
+<p>That being said, there are plenty of times when simple attribute usage is effective for one-off deviations from
+your normal registration conventions or cause less harm than having to constantly change a centralized <code>ServerRegistry</code> or
+just seem more clear and understandable to users than a convention. For those usages, Lamar 4.0 has introduced a
+new base class that can be extended and used to explicitly customize your Lamar configuration:</p>
+<pre><code class="language-csharp">&#xA;public abstract class LamarAttribute : Attribute&#xA;{&#xA;    public virtual void Alter(IConfiguredInstance instance)&#xA;    {&#xA;    }&#xA;&#xA;    public virtual void Alter(Instance instance)&#xA;    {&#xA;        &#xA;    }&#xA;}&#xA;</code></pre>
+<p>There's a couple thing to note, here about this new attibute:</p>
+<ul>
+<li>Lamar internals are looking for any attribute of the base class. Attributes that affect types are read and applied early,
+while attributes decorating properties or constructor parameters are only read and applied during the creation of <a href="/lamar/documentation/ioc/diagnostics/build-plans">Build Plans</a>.</li>
+<li>Unlike many other frameworks, the attributes in Lamar are not executed at build time. Instead, Lamar uses attributes <em>one time</em>
+to determine the build plan.</li>
+</ul>
+<h2 id="attribute-targeting-plugin-type-or-concrete-type">Attribute Targeting Plugin Type or Concrete Type</h2>
+<p>Take the new <code>[Singleton]</code> attribute shown below:</p>
+<pre><code class="language-csharp">&#xA;[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]&#xA;public class SingletonAttribute : LamarAttribute&#xA;{&#xA;    // This method will affect single registrations&#xA;    public override void Alter(IConfiguredInstance instance)&#xA;    {&#xA;        instance.Lifetime = ServiceLifetime.Singleton;&#xA;    }&#xA;}&#xA;</code></pre>
+<p>This new attribute can be used on either the plugin type (typically an interface) or on a concrete type
+to make an individual type registration be a singleton. You can see the usage on some types below:</p>
+<pre><code class="language-csharp">&#xA;[Singleton]&#xA;public class SingleWidget : IWidget&#xA;{&#xA;    public void DoSomething()&#xA;    {&#xA;        throw new System.NotImplementedException();&#xA;    }&#xA;}&#xA;</code></pre>
+<h2 id="built-in-attributes">Built In Attributes</h2>
+<p>Lamar supplies a handful of built in attributes for customizing configuration:</p>
+<ul>
+<li><code>[ValidationMethod]</code> - Allows you to expose <a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a> in your Lamar registrations</li>
+<li><code>[DefaultConstructor]</code> - Declare which constructor function should be used by Lamar. See <a href="/lamar/documentation/ioc/registration/constructor-selection">Constructor Selection</a> for more information</li>
+<li><code>[Scoped]</code> and <code>[Singleton]</code> - These attributes, just add another mechanism for <a href="/lamar/documentation/ioc/lifetime">lifecycle configuration</a></li>
+<li><code>[InstanceNamed(&quot;name&quot;)]</code> to override the instance name of a registered concrete class</li>
+</ul>
+
+              </div>
+
+              <hr />
+
+              <nav>
+                <span>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/registration/existing-objects">Registering Existing Objects</a>
+
+                </span>
+                <span class="pull-right">
+
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/lifetime">Service Lifetimes</a>
+
+                </span>
+              </nav>
+
+          </div><!--/right-->
+        </div><!--/row-->
+      </div><!--/container-->
+
+    </body>
+
+
+    <footer>
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/lamar/content/prism.js"></script>
+        <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
+        <script type="text/javascript" src="/lamar/content/affix.js"></script>
+
+<script>
+$('#search').keyup(function(e){
+  if(e.keyCode == 13) {
+    var search = $('#search').val();
+
+    var url = 'https://www.google.com/#q=site:jasperfx.github.io ' + search;
+    url = encodeURI(url);
+
+    window.location.href = url;
+
+    e.stopPropagation();
+    if (e.cancelBubble!=null) e.cancelBubble = true;
+    return false;
+  }
+});
+</script>
+    </footer>
+</html>

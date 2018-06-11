@@ -88,9 +88,9 @@
 <li>Could we connect via remoting to another deployed application?</li>
 </ul>
 <p>The deployments still frequently failed, but we were able to spot <strong>and diagnose</strong> the underlying problems much faster with our new environment tests than we could before by trying to run and debug the not-quite-valid application.</p>
-<p>One of the mechanisms we used for these environment tests was StructureMap's ability to mark methods on configured types as environment tests with the <code>[ValidationMethod]</code> attribute as shown below:</p>
+<p>One of the mechanisms we used for these environment tests was Lamar's ability to mark methods on configured types as environment tests with the <code>[ValidationMethod]</code> attribute as shown below:</p>
 <pre><code class="language-csharp">&#xA;public class Database : IDatabase&#xA;{&#xA;    [ValidationMethod]&#xA;    public void TryToConnect()&#xA;    {&#xA;        // try to open a connection to the configured&#xA;        // database connection string&#xA;&#xA;        // throw an exception if the database cannot&#xA;        // be reached&#xA;    }&#xA;}&#xA;</code></pre>
-<p>Used in conjunction with <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/validating-container-configuration'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p>, you can use this technique to quickly support environment tests embedded into your system code.</p>
+<p>Used in conjunction with <a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration">Lamar's ability to validate a container</a>, you can use this technique to quickly support environment tests embedded into your system code.</p>
 
               </div>
 

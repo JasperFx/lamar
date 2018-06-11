@@ -81,43 +81,34 @@
               <div id="main-pane">
                 <!--Title: Using the Container Model-->
 <!--Url: using-the-container-model-->
-<p>The queryable <code>Container.Model</code> is a power facility to look into your StructureMap <code>Container</code> and even to eject previously built services from the Container. The <code>Container.Model</code> represents a <strong>static view of what a <code>Container</code> already has</strong>, and does not account for policies that may allow StructureMap to validly discover types that it may encounter later at runtime.</p>
+<p>The queryable <code>Container.Model</code> is a power facility to look into your Lamar <code>Container</code> and even to eject previously built services from the Container. The <code>Container.Model</code> represents a <strong>static view of what a <code>Container</code> already has</strong>, and does not account for policies that may allow Lamar to validly discover types that it may encounter later at runtime.</p>
 <h2 id="querying-for-plugin-types">Querying for Plugin Types</h2>
-<p>The <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/whatdoihave'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> mechanism works by just iterating over the <code>Container.Model.PluginTypes</code> collection as shown below:</p>
+<p>The <a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a> mechanism works by just iterating over the <code>Container.Model.PluginTypes</code> collection as shown below:</p>
 <pre><code class="language-csharp">&#xA;container.Model.PluginTypes.Where(x =&gt; x.PluginType.Assembly == Assembly.GetExecutingAssembly())&#xA;    .Each(pluginType =&gt; Debug.WriteLine(pluginType.PluginType));&#xA;</code></pre>
-<h2 id="working-with-a-plugin-type">Working with a Plugin Type</h2>
-<p>The <code>IPluginTypeConfiguration</code> interface allows you to query and manipulate all the configured Instance's for a given plugin type.</p>
-<p>See the entire <a href="https://github.com/structuremap/structuremap/blob/master/src/StructureMap/Query/IPluginTypeConfiguration.cs">IPluginTypeConfiguration interface here</a>.</p>
-<h2 id="finding-the-default-for-a-plugin-type">Finding the Default for a Plugin Type</h2>
-<p>To simply find out what the default concrete type would be for a requested plugin type, use one of these two methods:</p>
+<h2 id="working-with-a-service-type">Working with a Service Type</h2>
+<p>The <code>IServiceFamilyConfiguration</code> interface allows you to query and manipulate all the configured Instance's for a given plugin type.</p>
+<p>See the entire <a href="https://github.com/JasperFx/lamar/blob/master/src/Lamar/IServiceFamilyConfiguration.cs">IServiceFamilyConfiguration interface here</a>.</p>
+<h2 id="finding-the-default-for-a-service-type">Finding the Default for a Service Type</h2>
+<p>To simply find out what the default concrete type would be for a requested service type, use one of these two methods:</p>
 <pre><code class="language-csharp">&#xA;// Finding the concrete type of the default&#xA;// IDevice service&#xA;container.Model.DefaultTypeFor&lt;IDevice&gt;()&#xA;    .ShouldBe(typeof(DefaultDevice));&#xA;&#xA;// Find the configuration model for the default&#xA;// IDevice service&#xA;container.Model.For&lt;IDevice&gt;().Default&#xA;    .ReturnedType.ShouldBe(typeof(DefaultDevice));&#xA;</code></pre>
 <h2 id="finding-an-instance-by-type-and-name">Finding an Instance by Type and Name</h2>
-<p>Use this syntax to find information about an Instance in a given plugin type and name:</p>
+<p>Use this syntax to find information about an Instance in a given service type and name:</p>
 <pre><code class="language-csharp">&#xA;var redRule = container.Model.Find&lt;Rule&gt;(&quot;Red&quot;);&#xA;</code></pre>
-<h2 id="all-instances-for-a-plugin-type">All Instances for a Plugin Type</h2>
-<p>This sample shows how you could iterate or query over all the registered instances for a single plugin type:</p>
+<h2 id="all-instances-for-a-service-type">All Instances for a Service Type</h2>
+<p>This sample shows how you could iterate or query over all the registered instances for a single service type:</p>
 <pre><code class="language-csharp">&#xA;container.Model.For&lt;Rule&gt;().Instances.Each(i =&gt;&#xA;{&#xA;    Debug.WriteLine(i.Instance.Description);&#xA;});&#xA;</code></pre>
-<h2 id="ejecting-services-andor-configuration">Ejecting Services and/or Configuration</h2>
-<p>It's possible to remove singleton scoped objects from a running Container to force a new one to be built or even to completely remove configured instance objects and configuration permanently from a Container. This is typically only used in automated testing to flush static state between tests.</p>
-<p>To remove and dispose previously built singleton scoped objects from a Container, use this code:</p>
-<pre><code class="language-csharp">&#xA;// ONLY ejects any built object for this Instance from the SingletonThing&#xA;// cache&#xA;container.Model.For&lt;IDevice&gt;().Default.EjectObject();&#xA;</code></pre>
-<p>To completely eject any singletons and permanently remove all related configuration, use this code:</p>
-<pre><code class="language-csharp">&#xA;// Removes all configurations and objects already built as singletons&#xA;// related to types in the current Assembly&#xA;container.Model.EjectAndRemoveTypes(type =&gt; type.Assembly == Assembly.GetExecutingAssembly());&#xA;&#xA;// Removes all configurations and objects already built as singletons&#xA;// that were registered to IDevice&#xA;container.Model.EjectAndRemove(typeof(IDevice));&#xA;</code></pre>
 <h2 id="testing-for-registrations">Testing for Registrations</h2>
 <p>To troubleshoot or automate testing of Container configuration, you can use code like the sample below to
 test for the presence of expected configurations:</p>
 <pre><code class="language-csharp">&#xA;// Is there a default instance for IDevice?&#xA;container.Model.HasDefaultImplementationFor&lt;IDevice&gt;().ShouldBeTrue();&#xA;&#xA;// Are there any configured instances for IDevice?&#xA;container.Model.HasImplementationsFor&lt;IDevice&gt;().ShouldBeTrue();&#xA;</code></pre>
 <h2 id="finding-all-possible-implementors-of-an-interface">Finding all Possible Implementors of an Interface</h2>
-<p>Forget about what types are registered for whatever plugin types and consider this, what if you have an interface called
+<p>Forget about what types are registered for whatever service types and consider this, what if you have an interface called
 <code>IStartable</code> that just denotes objects that will need to be activated after the container is bootstrapped?</p>
 <p>If our interface is this below:</p>
 <pre><code class="language-csharp">&#xA;public interface IStartable&#xA;{&#xA;    bool WasStarted { get; }&#xA;&#xA;    void Start();&#xA;}&#xA;&#xA;</code></pre>
-<p>We could walk through the entire StructureMap model and find every registered instance that implements this interface, create each, and call the <code>Start()</code> method like in this code below:</p>
+<p>We could walk through the entire Lamar model and find every registered instance that implements this interface, create each, and call the <code>Start()</code> method like in this code below:</p>
 <pre><code class="language-csharp">&#xA;var allStartables = container.Model.GetAllPossible&lt;IStartable&gt;();&#xA;allStartables.ToArray()&#xA;    .Each(x =&gt; x.Start());&#xA;</code></pre>
 <p>I've also used this mechanism in automated testing to reach out to all singleton services that may have state to clear out their data between tests.</p>
-<h2 id="working-with-individual-instances">Working with Individual Instances</h2>
-<p>You can manipulate an individual instance in several ways:</p>
-<pre><code class="language-csharp">&#xA;// First, find the model for a single Instance&#xA;var instance = container.Model.For&lt;IDevice&gt;().Default;&#xA;&#xA;// build or resolve an object for this Instance cast to&#xA;// the type specified to the Get() method&#xA;instance.Get&lt;IDevice&gt;().ShouldBeOfType&lt;DefaultDevice&gt;();&#xA;&#xA;// if the instance is configured as a SingletonThing, test&#xA;// if the SingletonThing object has already been created&#xA;var hasSingletonBeenCreated = instance.ObjectHasBeenCreated();&#xA;&#xA;if (hasSingletonBeenCreated)&#xA;{&#xA;    // remove the SingletonThing object from the cache so that&#xA;    // StructureMap will be forced to rebuild this object&#xA;    instance.EjectObject();&#xA;}&#xA;&#xA;// test the lifecycle of this instance&#xA;instance.Lifecycle.ShouldBeOfType&lt;SingletonLifecycle&gt;();&#xA;&#xA;// Visualize the build plan no more than 3 levels deep&#xA;Debug.WriteLine(instance.DescribeBuildPlan(3));&#xA;&#xA;// Get at the underlying Instance model that StructureMap itself&#xA;// uses. Be cautious using this.&#xA;var rawModel = instance.Instance;&#xA;&#xA;</code></pre>
 
               </div>
 

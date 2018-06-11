@@ -37,7 +37,7 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/ioc/disposing" title="StructureMap and IDisposable">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/nested-containers" title="Nested Containers (Per Request/Transaction)">Previous</a></li>
             <li><a href="/lamar/documentation/compilation" title="Dynamic Code Generation and Compilation">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
@@ -69,7 +69,7 @@
             </ul>
 
             <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation">Dynamic Code Generation and Compilation</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/disposing">StructureMap and IDisposable</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a></p>
           </div><!--/left-->
 
           <!--right-->
@@ -82,7 +82,7 @@
                 <!--Title: Working with Enumerable Types-->
 <!--Url: working-with-enumerable-types-->
 <p>While you can certainly use <em>any</em> <code>IEnumerable</code> type as a plugin type with your own explicit configuration,
-StructureMap has <em>some</em> built in support for these specific enumerable types:</p>
+Lamar has <em>some</em> built in support for these specific enumerable types:</p>
 <ol>
 <li><code>IEnumerable&lt;T&gt;</code></li>
 <li><code>IList&lt;T&gt;</code></li>
@@ -92,10 +92,10 @@ StructureMap has <em>some</em> built in support for these specific enumerable ty
 </ol>
 <p>Specifically, if you request one of these types either directly with <code>GetInstance&lt;IList&lt;IWidget&gt;&gt;()</code> or as a declared
 dependency in a constructor or setter (<code>new WidgetUser(IList&lt;IWidgets&gt; widgets)</code> for example) and you have no
-specific registration for the enumerable types, StructureMap has a built in policy to return all the registered instances
-of <code>IWidget</code> <strong>in the exact order that the registrations were made to StructureMap</strong>.</p>
+specific registration for the enumerable types, Lamar has a built in policy to return all the registered instances
+of <code>IWidget</code> <strong>in the exact order that the registrations were made to Lamar</strong>.</p>
 <p>Note, if there are not any registrations for whatever <code>T</code> is, you'll get an empty enumeration.</p>
-<p>Here's an acceptance test from the StructureMap codebase that demonstrates this:</p>
+<p>Here's an acceptance test from the Lamar codebase that demonstrates this:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void collection_types_are_all_possible_by_default()&#xA;{&#xA;    // NOTE that we do NOT make any explicit registration of&#xA;    // IList&lt;IWidget&gt;, IEnumerable&lt;IWidget&gt;, ICollection&lt;IWidget&gt;, or IWidget[]&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IWidget&gt;().Add&lt;AWidget&gt;();&#xA;        _.For&lt;IWidget&gt;().Add&lt;BWidget&gt;();&#xA;        _.For&lt;IWidget&gt;().Add&lt;CWidget&gt;();&#xA;    });&#xA;&#xA;    // IList&lt;T&gt;&#xA;    container.GetInstance&lt;IList&lt;IWidget&gt;&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;&#xA;    // ICollection&lt;T&gt;&#xA;    container.GetInstance&lt;ICollection&lt;IWidget&gt;&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;&#xA;    // Array of T&#xA;    container.GetInstance&lt;IWidget[]&gt;()&#xA;        .Select(x =&gt; x.GetType())&#xA;        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));&#xA;}&#xA;&#xA;</code></pre>
 <p>And another showing how you can override this behavior with explicit configuration:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void override_enumeration_behavior()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IWidget&gt;().Add&lt;AWidget&gt;();&#xA;        _.For&lt;IWidget&gt;().Add&lt;BWidget&gt;();&#xA;        _.For&lt;IWidget&gt;().Add&lt;CWidget&gt;();&#xA;&#xA;        // Explicit registration should have precedence over the default&#xA;        // behavior&#xA;        _.For&lt;IWidget[]&gt;().Use(new IWidget[] { new DefaultWidget() });&#xA;    });&#xA;&#xA;    container.GetInstance&lt;IWidget[]&gt;()&#xA;        .Single().ShouldBeOfType&lt;DefaultWidget&gt;();&#xA;}&#xA;&#xA;</code></pre>
@@ -108,7 +108,7 @@ series of rules that we might model with the <code>IWidgetValidator</code> inter
 <p>We <em>could</em> simply configure all of the <code>IWidgetValidator</code> rules in one place with an explicit registration of <code>IEnumerable&lt;IWidgetValidator&gt;</code>,
 but what if we need to have an extensibility to add more validation rules later? What if we want to add these additional rules in addon packages? Or we
 just don't want to continuously break into the centralized <code>Registry</code> class every single time we add a new validation rule?</p>
-<p>By relying on StructureMap's <code>IEnumerable</code> behavior, we're able to split our <code>IWidgetValidatior</code> registration across multiple <code>Registry</code> classes and that's not infrequently useful to do.</p>
+<p>By relying on Lamar's <code>IEnumerable</code> behavior, we're able to split our <code>IWidgetValidatior</code> registration across multiple <code>Registry</code> classes and that's not infrequently useful to do.</p>
 
               </div>
 
@@ -116,7 +116,7 @@ just don't want to continuously break into the centralized <code>Registry</code>
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/disposing">StructureMap and IDisposable</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/nested-containers">Nested Containers (Per Request/Transaction)</a>
 
                 </span>
                 <span class="pull-right">

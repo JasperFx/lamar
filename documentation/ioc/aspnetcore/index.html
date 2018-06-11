@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - The GeneratedAssembly Model</title>
+        <title>Lamar - Integration with ASP.Net Core</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -37,8 +37,8 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/compilation/frames/frame" title="Building Custom Frames">Previous</a></li>
-            <li><a href="/lamar/documentation/compilation/frames/sources" title="Working with IVariableSource">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/bootstrapping" title="Bootstrapping a Container">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration" title="Registration">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">Dynamic Code Generation and Compilation</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a></li><li class="active">The GeneratedAssembly Model</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li class="active">Integration with ASP.Net Core</li></ol>
       </nav>
     </div>
 
@@ -68,18 +68,28 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames/sources">Working with IVariableSource</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/frames/frame">Building Custom Frames</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration">Registration</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/bootstrapping">Bootstrapping a Container</a></p>
           </div><!--/left-->
 
           <!--right-->
           <div class="col-md-9">
-              <h1>The GeneratedAssembly Model</h1>
+              <h1>Integration with ASP.Net Core</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--title:The GeneratedAssembly Model-->
+                <!--title:Integration with ASP.Net Core-->
+<p>To use Lamar within ASP.Net Core applications, also install the <a href="https://www.nuget.org/packages/Lamar.Microsoft.DependencyInjection/">Lamar.Microsoft.DependencyInjection</a> library from Nuget to your ASP.Net Core project (and you can thank Microsoft for the clumsy naming convention, thank you).</p>
+<p>With that Nuget installed, your normal ASP.Net Core bootstrapping changes just slightly. When you bootstrap your <code>IWebHostBuilder</code> object
+that configures ASP.Net Core, you also need to call the <code>UseLamar()</code> method as shown below:</p>
+<pre><code class="language-csharp">&#xA;public static void Main(string[] args)&#xA;{&#xA;    var builder = new WebHostBuilder();&#xA;    builder&#xA;        // Replaces the built in DI container&#xA;        // with Lamar&#xA;        .UseLamar()&#xA;        &#xA;        // Normal ASP.Net Core bootstrapping&#xA;        .UseUrls(&quot;http://localhost:5002&quot;)&#xA;        .UseKestrel()&#xA;        .UseStartup&lt;Startup&gt;();&#xA;&#xA;    builder.Start();&#xA;&#xA;}&#xA;</code></pre>
+<p>If you use a <code>StartUp</code> class for extra configuration, your <code>ConfigureContainer()</code> method <em>can</em> take in a <code>ServiceRegistry</code> object from Lamar for service registrations in place of the ASP.Net Core <code>IServiceCollection</code> interface as shown below:</p>
+<pre><code class="language-csharp">&#xA;public class Startup&#xA;{&#xA;    // Take in Lamar&#x27;s ServiceRegistry instead of IServiceCollection&#xA;    // as your argument, but fear not, it implements IServiceCollection&#xA;    // as well&#xA;    public void ConfigureContainer(ServiceRegistry services)&#xA;    {&#xA;        // Supports ASP.Net Core DI abstractions&#xA;        services.AddMvc();&#xA;        services.AddLogging();&#xA;        &#xA;        // Also exposes Lamar specific registrations&#xA;        // and functionality&#xA;        services.Scan(s =&gt;&#xA;        {&#xA;            s.TheCallingAssembly();&#xA;            s.WithDefaultConventions();&#xA;        });&#xA;    }&#xA;&#xA;    public void Configure(IApplicationBuilder app)&#xA;    {&#xA;        app.UseMvc();&#xA;    }&#xA;}&#xA;</code></pre>
+<p>You can also still write <code>ConfigureServices(IServiceCollection)</code>, but you'd miss out on most of Lamar's extra functionality beyond what that abstraction
+provides.</p>
+<p>And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
+HTTP requests.</p>
 
               </div>
 
@@ -87,12 +97,12 @@
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/compilation/frames/frame">Building Custom Frames</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/bootstrapping">Bootstrapping a Container</a>
 
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames/sources">Working with IVariableSource</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration">Registration</a>
 
                 </span>
               </nav>

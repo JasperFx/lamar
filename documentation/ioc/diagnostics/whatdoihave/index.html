@@ -80,17 +80,14 @@
 
               <div id="main-pane">
                 <!--Title: WhatDoIHave()-->
-<!--Url: whatdoihave-->
 <p>The <code>IContainer.WhatDoIHave()</code> method can give you a quick textual report of the current configuration of a running <code>Container</code>:</p>
 <pre><code class="language-csharp">&#xA;var container = Container.Empty();&#xA;var report = container.WhatDoIHave();&#xA;&#xA;Console.WriteLine(report);&#xA;</code></pre>
-<p>If you're familiar with <code>WhatDoIHave()</code> from earlier versions of StructureMap, the usage has been enhanced for 3.0 to allow you
-to filter the results for easier usage. The format was also tweaked extensively to (hopefully) improve the usability of this feature.</p>
 <p>Enough talk, say you have a <code>Container</code> with this configuration:</p>
 <pre><code class="language-csharp">&#xA;var container = new Container(x =&gt;&#xA;{&#xA;    x.For&lt;IEngine&gt;().Use&lt;Hemi&gt;().Named(&quot;The Hemi&quot;);&#xA;&#xA;    x.For&lt;IEngine&gt;().Add&lt;VEight&gt;().Singleton().Named(&quot;V8&quot;);&#xA;    x.For&lt;IEngine&gt;().Add&lt;FourFiftyFour&gt;();&#xA;    x.For&lt;IEngine&gt;().Add&lt;StraightSix&gt;().Scoped();&#xA;&#xA;    x.For&lt;IEngine&gt;().Add(c =&gt; new Rotary()).Named(&quot;Rotary&quot;);&#xA;    x.For&lt;IEngine&gt;().Add(c =&gt; c.GetService&lt;PluginElectric&gt;());&#xA;&#xA;    x.For&lt;IEngine&gt;().Add(new InlineFour());&#xA;&#xA;    x.For&lt;IEngine&gt;().UseIfNone&lt;VTwelve&gt;();&#xA;});&#xA;</code></pre>
 <p>If you were to run the code below against this <code>Container</code>:</p>
 <pre><code class="language-csharp">&#xA;Console.WriteLine(container.WhatDoIHave());&#xA;</code></pre>
-<p>you would get the output shown in <a href="https://gist.githubusercontent.com/jeremydmiller/907e1deb2553a5ca5b18/raw/8b57456f36ccc5043e61d09e72b1ab5fcea94718/gistfile1.txt" target="_new">this gist</a>.</p>
-<p>If you're curious, all the raw code for this example is in <a href="https://github.com/structuremap/structuremap/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs">here</a>.</p>
+<p>you would get the output shown in <a href="https://gist.github.com/jeremydmiller/7eae90eda21cc47ed24fa30623f9feb2" target="_new">this gist</a>.</p>
+<p>If you're curious, all the raw code for this example is in <a href="https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs">here</a>.</p>
 <h2 id="filtering-whatdoihave">Filtering WhatDoIHave()</h2>
 <p>Filtering the <code>WhatDoIHave()</code> results can be done in these ways:</p>
 <pre><code class="language-csharp">&#xA;var container = Container.Empty();&#xA;&#xA;// Filter by the Assembly of the Plugin Type&#xA;var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);&#xA;&#xA;// Only report on the specified Plugin Type&#xA;var byPluginType = container.WhatDoIHave(typeof(IWidget));&#xA;&#xA;// Filter to Plugin Type&#x27;s in the named namespace&#xA;// The &#x27;IsInNamespace&#x27; test will include child namespaces&#xA;var byNamespace = container.WhatDoIHave(@namespace: &quot;StructureMap.Testing.Widget&quot;);&#xA;&#xA;// Filter by a case insensitive string.Contains() match&#xA;// against the Plugin Type name&#xA;var byType = container.WhatDoIHave(typeName: &quot;Widget&quot;);&#xA;</code></pre>
