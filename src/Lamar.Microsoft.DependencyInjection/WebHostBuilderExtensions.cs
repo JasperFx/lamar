@@ -27,9 +27,12 @@ namespace Lamar.Microsoft.DependencyInjection
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
 
-            foreach (var descriptor in registry)
+            if (registry != null)
             {
-                services.Add(descriptor);
+                foreach (var descriptor in registry)
+                {
+                    services.Add(descriptor);
+                }
             }
             
             return services;
