@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 0.9.10</h3>
+            <h3>Lamar 0.9.11</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -80,7 +80,12 @@
 
               <div id="main-pane">
                 <!--title:Decorators-->
-<p>TODO -- write some documentation here.</p>
+<p>For version 1.0, Lamar's only support for interception is decorators. If you look in the Lamar codebase, you'll find dozens of tests that use a fake type named <code>IWidget</code>:</p>
+<pre><code class="language-csharp">&#xA;public interface IWidget&#xA;{&#xA;    void DoSomething();&#xA;}&#xA;</code></pre>
+<p>Let's say that we have service registrations in our system for that <code>IWidget</code> interface, but we want each of them to be decorated by another form of <code>IWidget</code> like this:</p>
+<pre><code class="language-csharp">&#xA;public class WidgetDecorator : IWidget&#xA;{&#xA;    public WidgetDecorator(IThing thing, IWidget inner)&#xA;    {&#xA;        Inner = inner;&#xA;    }&#xA;&#xA;    public IWidget Inner { get; }&#xA;    &#xA;    public void DoSomething()&#xA;    {&#xA;        &#xA;    }&#xA;}&#xA;</code></pre>
+<p>We can configure Lamar to add a decorator around all other <code>IWidget</code> registrations with this syntax:</p>
+<pre><code class="language-csharp">&#xA;var container = new Container(_ =&gt;&#xA;{&#xA;    // This usage adds the WidgetHolder as a decorator&#xA;    // on all IWidget registrations&#xA;    _.For&lt;IWidget&gt;().DecorateAllWith&lt;WidgetDecorator&gt;();&#xA;    &#xA;    // The AWidget type will be decorated w/ &#xA;    // WidgetHolder when you resolve it from the container&#xA;    _.For&lt;IWidget&gt;().Use&lt;AWidget&gt;();&#xA;    &#xA;    _.For&lt;IThing&gt;().Use&lt;Thing&gt;();&#xA;});&#xA;&#xA;// Just proving that it actually works;)&#xA;container.GetInstance&lt;IWidget&gt;()&#xA;    .ShouldBeOfType&lt;WidgetDecorator&gt;()&#xA;    .Inner.ShouldBeOfType&lt;AWidget&gt;();&#xA;&#xA;</code></pre>
 
               </div>
 

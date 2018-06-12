@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - WhatDoIHave()</title>
+        <title>Lamar - Injecting Services at Runtime</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -37,8 +37,8 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/ioc/diagnostics" title="Diagnostics">Previous</a></li>
-            <li><a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration" title="Validating Container Configuration">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/lambdas" title="Building Objects with Lambdas">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/disposing" title="Lamar and IDisposable">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a></li><li class="active">WhatDoIHave()</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li class="active">Injecting Services at Runtime</li></ol>
       </nav>
     </div>
 
@@ -68,29 +68,33 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration">Validating Container Configuration</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/disposing">Lamar and IDisposable</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a></p>
           </div><!--/left-->
 
           <!--right-->
           <div class="col-md-9">
-              <h1>WhatDoIHave()</h1>
+              <h1>Injecting Services at Runtime</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--Title: WhatDoIHave()-->
-<p>The <code>IContainer.WhatDoIHave()</code> method can give you a quick textual report of the current configuration of a running <code>Container</code>:</p>
-<pre><code class="language-csharp">&#xA;var container = Container.Empty();&#xA;var report = container.WhatDoIHave();&#xA;&#xA;Console.WriteLine(report);&#xA;</code></pre>
-<p>Enough talk, say you have a <code>Container</code> with this configuration:</p>
-<pre><code class="language-csharp">&#xA;var container = new Container(x =&gt;&#xA;{&#xA;    x.For&lt;IEngine&gt;().Use&lt;Hemi&gt;().Named(&quot;The Hemi&quot;);&#xA;&#xA;    x.For&lt;IEngine&gt;().Add&lt;VEight&gt;().Singleton().Named(&quot;V8&quot;);&#xA;    x.For&lt;IEngine&gt;().Add&lt;FourFiftyFour&gt;();&#xA;    x.For&lt;IEngine&gt;().Add&lt;StraightSix&gt;().Scoped();&#xA;&#xA;    x.For&lt;IEngine&gt;().Add(c =&gt; new Rotary()).Named(&quot;Rotary&quot;);&#xA;    x.For&lt;IEngine&gt;().Add(c =&gt; c.GetService&lt;PluginElectric&gt;());&#xA;&#xA;    x.For&lt;IEngine&gt;().Add(new InlineFour());&#xA;&#xA;    x.For&lt;IEngine&gt;().UseIfNone&lt;VTwelve&gt;();&#xA;});&#xA;</code></pre>
-<p>If you were to run the code below against this <code>Container</code>:</p>
-<pre><code class="language-csharp">&#xA;Console.WriteLine(container.WhatDoIHave());&#xA;</code></pre>
-<p>you would get the output shown in <a href="https://gist.github.com/jeremydmiller/7eae90eda21cc47ed24fa30623f9feb2" target="_new">this gist</a>.</p>
-<p>If you're curious, all the raw code for this example is in <a href="https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs">here</a>.</p>
-<h2 id="filtering-whatdoihave">Filtering WhatDoIHave()</h2>
-<p>Filtering the <code>WhatDoIHave()</code> results can be done in these ways:</p>
-<pre><code class="language-csharp">&#xA;var container = Container.Empty();&#xA;&#xA;// Filter by the Assembly of the Plugin Type&#xA;var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);&#xA;&#xA;// Only report on the specified Plugin Type&#xA;var byPluginType = container.WhatDoIHave(typeof(IWidget));&#xA;&#xA;// Filter to Plugin Type&#x27;s in the named namespace&#xA;// The &#x27;IsInNamespace&#x27; test will include child namespaces&#xA;var byNamespace = container.WhatDoIHave(@namespace: &quot;StructureMap.Testing.Widget&quot;);&#xA;&#xA;// Filter by a case insensitive string.Contains() match&#xA;// against the Plugin Type name&#xA;var byType = container.WhatDoIHave(typeName: &quot;Widget&quot;);&#xA;</code></pre>
+                <!--title:Injecting Services at Runtime-->
+<p>Lamar's predecessor <a href="https://structuremap.github.io">StructureMap</a> allowed you to override service registrations in nested containers in a general way.
+Some .Net application frameworks depend on this functionality to inject some kind of contextual service into a nested container. ASP.Net Core's <code>HttpContext</code> is an example. MassTransit's <a href="https://github.com/MassTransit/MassTransit/blob/develop/src/MassTransit/ConsumeContext.cs">ConsumeContext</a> is another.</p>
+<p>Using that as an example, let's say that our application framework has this context type that the framework creates and wants to inject directly
+into nested containers for some kind of operation:</p>
+<pre><code class="language-csharp">&#xA;// This class is specific to some kind of short lived &#xA;// process and lives in a nested container&#xA;public class ExecutionContext&#xA;{&#xA;    public Guid Id { get; set; } = Guid.NewGuid();&#xA;}&#xA;</code></pre>
+<p>We might well have a service in our code that is resolved from a Lamar container that depends on that <code>ExecutionContext</code> interface:</p>
+<pre><code class="language-csharp">&#xA;public class ContextUsingService&#xA;{&#xA;    public ExecutionContext Context { get; }&#xA;&#xA;    public ContextUsingService(ExecutionContext context)&#xA;    {&#xA;        Context = context;&#xA;    }&#xA;}&#xA;</code></pre>
+<p>The first thing we have to do is make a registration in Lamar <strong>upfront</strong> that lets the container know that <code>ExecutionContext</code> is going to be injected
+at runtime:</p>
+<pre><code class="language-csharp">&#xA;var container = new Container(_ =&gt;&#xA;{&#xA;    _.Injectable&lt;ExecutionContext&gt;();&#xA;});&#xA;</code></pre>
+<p>At runtime, we can inject <code>ExecutionContext</code> like this:</p>
+<pre><code class="language-csharp">&#xA;var context = new ExecutionContext();&#xA;&#xA;var nested = container.GetNestedContainer();&#xA;nested.Inject(context);&#xA;</code></pre>
+<p>Finally, when we resolve a service that depends on <code>ExecutionContext</code> from the nested container
+we built above, we can see that it has a reference to our context object:</p>
+<pre><code class="language-csharp">&#xA;var service = nested.GetInstance&lt;ContextUsingService&gt;();&#xA;service.Context.ShouldBeSameAs(context);&#xA;</code></pre>
 
               </div>
 
@@ -98,12 +102,12 @@
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/diagnostics">Diagnostics</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/lambdas">Building Objects with Lambdas</a>
 
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration">Validating Container Configuration</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/disposing">Lamar and IDisposable</a>
 
                 </span>
               </nav>
