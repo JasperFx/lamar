@@ -100,6 +100,7 @@ namespace Lamar.IoC
 
         internal readonly Dictionary<int, object> Services = new Dictionary<int, object>();
 
+        
 
         public virtual void Dispose()
         {
@@ -316,6 +317,23 @@ namespace Lamar.IoC
             return assembly.GenerateCode(ServiceGraph);
         }
 
+        // don't build this if you don't need it
+        private Dictionary<Type, object> _injected;
 
+        public void Inject<T>(T @object)
+        {
+            if (_injected == null)
+            {
+                _injected = new Dictionary<Type, object>();
+                
+            }
+            
+            _injected.Add(typeof(T), @object);
+        }
+
+        public T GetInjected<T>()
+        {
+            return (T) (_injected?.ContainsKey(typeof(T)) ?? false ? _injected[typeof(T)] : null);
+        }
     }
 }

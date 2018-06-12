@@ -3,10 +3,12 @@ using Lamar;
 
 namespace StructureMap.Testing.Widget
 {
+    // SAMPLE: IWidget
     public interface IWidget
     {
         void DoSomething();
     }
+    // ENDSAMPLE
 
     public class ColorWidget : IWidget
     {

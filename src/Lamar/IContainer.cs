@@ -30,6 +30,13 @@ namespace Lamar
         /// <param name="configure"></param>
         void Configure(Action<IServiceCollection> configure);
 
+        /// <summary>
+        /// Inject an object into a container at runtime. Used primarily for services like
+        /// HttpContext that are passed into a nested container
+        /// </summary>
+        /// <param name="object"></param>
+        /// <typeparam name="T"></typeparam>
+        void Inject<T>(T @object);
     }
 
     public enum AssertMode

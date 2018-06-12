@@ -361,6 +361,15 @@ namespace Lamar
 
         }
 
+        /// <summary>
+        /// Tells Lamar that the service "T" will be injected into a built
+        /// container later. Used for framework support
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void Injectable<T>() where T : class
+        {
+            For<T>().Use(new InjectedInstance<T>());
+        }
     }
 
     public enum DynamicAssemblySharing

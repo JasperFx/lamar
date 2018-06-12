@@ -14,11 +14,12 @@ namespace Lamar.Testing.IoC.Acceptance
         [Fact]
         public void decorator_example()
         {
+            // SAMPLE: decorator-sample
             var container = new Container(_ =>
             {
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 
                 // The AWidget type will be decorated w/ 
                 // WidgetHolder when you resolve it from the container
@@ -29,13 +30,15 @@ namespace Lamar.Testing.IoC.Acceptance
 
             // Just proving that it actually works;)
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
+            
+            // ENDSAMPLE
         }
 
         public class WidgetHolderDecoratorPolicy : DecoratorPolicy
         {
-            public WidgetHolderDecoratorPolicy() : base(typeof(IWidget), typeof(WidgetHolder))
+            public WidgetHolderDecoratorPolicy() : base(typeof(IWidget), typeof(WidgetDecorator))
             {
             }
         }
@@ -54,7 +57,7 @@ namespace Lamar.Testing.IoC.Acceptance
             });
 
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
         }
         
@@ -66,7 +69,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 _.For<IWidget>().DecorateAllWith<OtherWidgetHolder>();
                 _.For<IWidget>().Use<AWidget>();
                 _.For<IThing>().Use<Thing>();
@@ -74,7 +77,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             container.GetInstance<IWidget>()
                 .ShouldBeOfType<OtherWidgetHolder>()
-                .Inner.ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
         }
         
@@ -86,7 +89,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For(typeof(IWidget)).DecorateAllWith(typeof(WidgetHolder));
+                _.For(typeof(IWidget)).DecorateAllWith(typeof(WidgetDecorator));
                 _.For(typeof(IWidget)).DecorateAllWith(typeof(OtherWidgetHolder));
                 
                 _.For<IWidget>().Use<AWidget>();
@@ -95,7 +98,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             container.GetInstance<IWidget>()
                 .ShouldBeOfType<OtherWidgetHolder>()
-                .Inner.ShouldBeOfType<WidgetHolder>()
+                .Inner.ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
         }
         
@@ -107,14 +110,14 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 _.For<IThing>().Use<Thing>();
             });
             
             container.Configure(x => x.AddTransient<IWidget, BWidget>());
             
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<BWidget>();
         }
         
@@ -126,7 +129,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 _.For<IThing>().Use<Thing>();
                 _.For<IWidget>().Use<AWidget>();
             });
@@ -134,7 +137,7 @@ namespace Lamar.Testing.IoC.Acceptance
             container.Configure(x => x.AddTransient<IWidget, BWidget>());
             
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<BWidget>();
         }
         
@@ -146,13 +149,13 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 _.For<IWidget>().Use<AWidget>().Named("A").Transient();
                 _.For<IThing>().Use<Thing>();
             });
             
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
 
             var @default = container.Model.For<IWidget>().Default.ShouldBeOfType<ConstructorInstance>();
@@ -168,13 +171,13 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 _.For<IWidget>().Use<AWidget>().Named("A").Singleton();
                 _.For<IThing>().Use<Thing>();
             });
             
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
 
             var @default = container.Model.For<IWidget>().Default.ShouldBeOfType<ConstructorInstance>();
@@ -190,13 +193,13 @@ namespace Lamar.Testing.IoC.Acceptance
                 // This usage adds the WidgetHolder as a decorator
                 // on all IWidget registrations and makes AWidget
                 // the default
-                _.For<IWidget>().DecorateAllWith<WidgetHolder>();
+                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
                 _.For<IWidget>().Use<AWidget>().Named("A").Scoped();
                 _.For<IThing>().Use<Thing>();
             });
             
             container.GetInstance<IWidget>()
-                .ShouldBeOfType<WidgetHolder>()
+                .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
 
             var @default = container.Model.For<IWidget>().Default.ShouldBeOfType<ConstructorInstance>();
@@ -228,10 +231,10 @@ namespace Lamar.Testing.IoC.Acceptance
         }
 
         
-        
-        public class WidgetHolder : IWidget
+        // SAMPLE: WidgetHolder-Decorator
+        public class WidgetDecorator : IWidget
         {
-            public WidgetHolder(IThing thing, IWidget inner)
+            public WidgetDecorator(IThing thing, IWidget inner)
             {
                 Inner = inner;
             }
@@ -243,8 +246,9 @@ namespace Lamar.Testing.IoC.Acceptance
                 
             }
         }
+        // ENDSAMPLE
 
-        public class OtherWidgetHolder : WidgetHolder
+        public class OtherWidgetHolder : WidgetDecorator
         {
             public OtherWidgetHolder(IThing thing, IWidget inner2) : base(thing, inner2)
             {
