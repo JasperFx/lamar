@@ -11,7 +11,7 @@ namespace Lamar
     public class InstanceRef
     {
         private readonly Scope _rootScope;
-        private Scope _scope;
+        private readonly Scope _scope;
 
         public InstanceRef(Instance instance, Scope scope)
         {
@@ -51,7 +51,7 @@ namespace Lamar
         /// <returns></returns>
         public T Get<T>() where T : class
         {
-            throw new NotImplementedException();
+            return Resolve() as T;
         }
 
         /// <summary>
@@ -62,9 +62,17 @@ namespace Lamar
         /// <returns></returns>
         public bool ObjectHasBeenCreated()
         {
-            
-            
-            throw new NotImplementedException();
+            switch (Lifetime)
+            {
+                case ServiceLifetime.Transient:
+                    return false;
+                case ServiceLifetime.Scoped:
+                    return _scope.Services.ContainsKey(Instance.Hash);
+                case ServiceLifetime.Singleton:
+                    return _scope.Root.Services.ContainsKey(Instance.Hash);
+            }
+
+            return false;
         }
 
         /// <summary>
