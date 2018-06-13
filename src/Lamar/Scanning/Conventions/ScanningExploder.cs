@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,35 @@ namespace Lamar.Scanning.Conventions
 {
     internal class ScanningExploder
     {
+        
+        internal static (ServiceRegistry, AssemblyScanner[]) ExplodeSynchronously(IServiceCollection services)
+        {
+            if (!services.HasScanners())
+            {
+                return (new ServiceRegistry(services), new AssemblyScanner[0]);
+            }
+
+            var (registry, operations) = ParseToOperations(services);
+
+            var scanners = operations.OfType<AssemblyScanner>().ToArray();
+
+            Task.WhenAll(scanners.Select(x => x.TypeFinder)).Wait(TimeSpan.FromSeconds(2));
+
+            foreach (var operation in operations)
+            {
+                if (operation is AssemblyScanner scanner)
+                {
+                    scanner.ApplyRegistrations(registry);
+                }
+
+                if (operation is ServiceDescriptor[] descriptors)
+                {
+                    registry.AddRange(descriptors);
+                }
+            }
+
+            return (registry, scanners);
+        }
                 
         internal static async Task<(ServiceRegistry, AssemblyScanner[])> Explode(IServiceCollection services)
         {
@@ -23,7 +53,8 @@ namespace Lamar.Scanning.Conventions
             {
                 if (operation is AssemblyScanner scanner)
                 {
-                    await scanner.ApplyRegistrations(registry);
+                    await scanner.TypeFinder;
+                    scanner.ApplyRegistrations(registry);
                 }
 
                 if (operation is ServiceDescriptor[] descriptors)
@@ -70,7 +101,7 @@ namespace Lamar.Scanning.Conventions
             }
 
             // Are there more?
-            if (indexes.Last() != indexes.Length - 1)
+            if (indexes.Last() != services.Count - 1)
             {
                 operations.Add(services.Skip(indexes.Last() + 1).ToArray());
             }

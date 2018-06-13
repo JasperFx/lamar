@@ -45,7 +45,7 @@ namespace Lamar
 
         public ServiceGraph(IServiceCollection services, Scope rootScope)
         {
-            var (registry, scanners) = ScanningExploder.Explode(services).GetAwaiter().GetResult();
+            var (registry, scanners) = ScanningExploder.ExplodeSynchronously(services);
 
             Scanners = scanners;
             
@@ -483,7 +483,7 @@ namespace Lamar
         {
             lock (_familyLock)
             {
-                var (registry, scanners) = ScanningExploder.Explode(services).GetAwaiter().GetResult();
+                var (registry, scanners) = ScanningExploder.ExplodeSynchronously(services);
 
                 Scanners = Scanners.Union(scanners).ToArray();
 

@@ -161,19 +161,14 @@ namespace Lamar.Scanning.Conventions
             _typeFinder = TypeRepository.FindTypes(_assemblies, type => _filter.Matches(type));
         }
 
-        
-        
-        public Task ApplyRegistrations(IServiceCollection services)
+        public Task<TypeSet> TypeFinder => _typeFinder;
+
+        public void ApplyRegistrations(IServiceCollection services)
         {
-            
-            
-            return _typeFinder.ContinueWith(t =>
+            foreach (var convention in Conventions)
             {
-                foreach (var convention in Conventions)
-                {
-                    convention.ScanTypes(t.Result, services);
-                }
-            });
+                convention.ScanTypes(_typeFinder.Result, services);
+            }
         }
 
         public bool Contains(string assemblyName)
