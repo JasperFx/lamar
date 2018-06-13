@@ -153,8 +153,14 @@ namespace Lamar.IoC.Instances
             _resolver.Name = Name;
         }
 
-        public override string GetBuildPlan()
+        internal override string GetBuildPlan(Scope rootScope)
         {
+            if (_resolverType == null)
+            {
+                // Force it to generate code
+                ToResolver(rootScope);
+            }
+            
             if (_resolverType != null)
             {
                 return _resolverType.SourceCode;

@@ -9,9 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
-    public class ServiceFamily : IServiceFamilyConfiguration
+    public class ServiceFamily 
     {
-        
         private readonly Dictionary<string, Instance> _instances = new Dictionary<string, Instance>();
 
 
@@ -181,13 +180,6 @@ namespace Lamar
         }
 
         public Instance Default { get; private set; }
-
-        IEnumerable<Instance> IServiceFamilyConfiguration.Instances => _instances.Values;
-
-        bool IServiceFamilyConfiguration.HasImplementations()
-        {
-            return _instances.Any();
-        }
 
         public IReadOnlyDictionary<string, Instance> Instances => _instances;
 

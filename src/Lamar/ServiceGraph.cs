@@ -16,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
-    public class ServiceGraph : IDisposable, IModel
+    public class ServiceGraph : IDisposable
     {
         private readonly Scope _rootScope;
         private readonly object _familyLock = new object();
@@ -44,7 +44,7 @@ namespace Lamar
         private ServiceGraph(IServiceCollection services, Scope rootScope, AssemblyScanner[] scanners)
         {
             Services = services;
-            _scanners = scanners;
+            Scanners = scanners;
             _rootScope = rootScope;
             organize(services);
         }
@@ -109,10 +109,10 @@ namespace Lamar
 
         private async Task applyScanners(IServiceCollection services)
         {
-            _scanners = services.Select(x => x.ImplementationInstance).OfType<AssemblyScanner>().ToArray();
+            Scanners = services.Select(x => x.ImplementationInstance).OfType<AssemblyScanner>().ToArray();
             services.RemoveAll(x => x.ServiceType == typeof(AssemblyScanner));
 
-            foreach (var scanner in _scanners)
+            foreach (var scanner in Scanners)
             {
                 await scanner.ApplyRegistrations(services);
             }
@@ -446,8 +446,9 @@ namespace Lamar
         }
 
         private readonly Stack<Instance> _chain = new Stack<Instance>();
-        private AssemblyScanner[] _scanners = new AssemblyScanner[0];
         private Assembly[] _allAssemblies;
+
+        internal AssemblyScanner[] Scanners { get; private set; } = new AssemblyScanner[0];
 
         internal void StartingToPlan(Instance instance)
         {
@@ -485,61 +486,6 @@ namespace Lamar
 
             return FamilyPolicies.FirstValue(x => x.Build(serviceType, this));
         }
-
-        IServiceFamilyConfiguration IModel.For<T>()
-        {
-            return ResolveFamily(typeof(T));
-        }
-
-        IServiceFamilyConfiguration IModel.For(Type type)
-        {
-            return ResolveFamily(type);
-        }
-
-        IEnumerable<IServiceFamilyConfiguration> IModel.ServiceTypes => _families.Values.ToArray();
-
-        IEnumerable<Instance> IModel.InstancesOf(Type serviceType)
-        {
-            return FindAll(serviceType);
-        }
-
-        IEnumerable<Instance> IModel.InstancesOf<T>()
-        {
-            return FindAll(typeof(T));
-        }
-
-        Type IModel.DefaultTypeFor<T>()
-        {
-            return FindDefault(typeof(T))?.ImplementationType;
-        }
-
-        Type IModel.DefaultTypeFor(Type serviceType)
-        {
-            return FindDefault(serviceType)?.ImplementationType;
-        }
-
-        IEnumerable<Instance> IModel.AllInstances => AllInstances().ToArray();
-
-        T[] IModel.GetAllPossible<T>()
-        {
-            return AllInstances().ToArray()
-                .Where(x => x.ImplementationType.CanBeCastTo(typeof(T)))
-                .Select(x => x.Resolve(_rootScope))
-                .OfType<T>()
-                .ToArray();
-        }
-
-        bool IModel.HasRegistrationFor(Type serviceType)
-        {
-            return FindDefault(serviceType) != null;
-        }
-
-        bool IModel.HasRegistrationFor<T>()
-        {
-            return FindDefault(typeof(T)) != null;
-        }
-
-        IEnumerable<AssemblyScanner> IModel.Scanners => _scanners;
 
         internal void ClearPlanning()
         {

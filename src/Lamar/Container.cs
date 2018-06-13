@@ -191,7 +191,7 @@ namespace Lamar
             {
                 try
                 {
-                    var o = instance.Resolve(this);
+                    var o = instance.Instance.Resolve(this);
 
                     if (o != null)
                     {
@@ -230,7 +230,7 @@ namespace Lamar
                 {
                     try
                     {
-                        var o = instance.Resolve(this);
+                        var o = instance.Instance.Resolve(this);
 
                         if (o != null)
                         {
@@ -269,7 +269,7 @@ namespace Lamar
 
         private bool validateConfiguration(StringWriter writer)
         {
-            var invalids = Model.AllInstances.Where(x => x.ErrorMessages.Any()).ToArray();
+            var invalids = Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any()).ToArray();
 
             if (!invalids.Any()) return false;
 
@@ -277,7 +277,7 @@ namespace Lamar
             foreach (var instance in invalids)
             {
                 writer.WriteLine(instance);
-                foreach (var message in instance.ErrorMessages)
+                foreach (var message in instance.Instance.ErrorMessages)
                 {
                     writer.WriteLine(message);
                 }

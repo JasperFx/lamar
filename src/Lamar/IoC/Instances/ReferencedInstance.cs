@@ -56,9 +56,9 @@ namespace Lamar.IoC.Instances
             yield return _inner;
         }
 
-        public override string GetBuildPlan()
+        internal override string GetBuildPlan(Scope rootScope)
         {
-            return _inner.GetBuildPlan();
+            return _inner.GetBuildPlan(rootScope);
         }
 
         public override Instance CloseType(Type serviceType, Type[] templateTypes)

@@ -209,7 +209,8 @@ namespace Lamar.IoC.Instances
         /// <summary>
         /// Tries to describe how this instance would be resolved at runtime
         /// </summary>
-        public virtual string GetBuildPlan() => ToString();
+        /// <param name="rootScope"></param>
+        internal virtual string GetBuildPlan(Scope rootScope) => ToString();
 
 
         public sealed override int GetHashCode()

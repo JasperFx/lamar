@@ -158,7 +158,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
 
-            var @default = container.Model.For<IWidget>().Default.ShouldBeOfType<ConstructorInstance>();
+            var @default = container.Model.For<IWidget>().Default.Instance.ShouldBeOfType<ConstructorInstance>();
             @default.Name.ShouldBe("A");
             @default.Lifetime.ShouldBe(ServiceLifetime.Transient);
         }
@@ -180,7 +180,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
 
-            var @default = container.Model.For<IWidget>().Default.ShouldBeOfType<ConstructorInstance>();
+            var @default = container.Model.For<IWidget>().Default.Instance.ShouldBeOfType<ConstructorInstance>();
             @default.Name.ShouldBe("A");
             @default.Lifetime.ShouldBe(ServiceLifetime.Singleton);
         }
@@ -202,7 +202,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
 
-            var @default = container.Model.For<IWidget>().Default.ShouldBeOfType<ConstructorInstance>();
+            var @default = container.Model.For<IWidget>().Default.Instance.ShouldBeOfType<ConstructorInstance>();
             @default.Name.ShouldBe("A");
             @default.Lifetime.ShouldBe(ServiceLifetime.Scoped);
         }

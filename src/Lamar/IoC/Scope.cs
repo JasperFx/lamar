@@ -90,7 +90,7 @@ namespace Lamar.IoC
         public DisposalLock DisposalLock { get; set; } = DisposalLock.Unlocked;
 
 
-        public IModel Model => ServiceGraph;
+        public IModel Model => new QueryModel(this);
 
         internal ServiceGraph ServiceGraph { get; set;}
 
@@ -255,7 +255,7 @@ namespace Lamar.IoC
         {
             assertNotDisposed();
 
-            var writer = new WhatDoIHaveWriter(ServiceGraph);
+            var writer = new WhatDoIHaveWriter(Model);
             return writer.GetText(new ModelQuery
             {
                 Assembly = assembly,

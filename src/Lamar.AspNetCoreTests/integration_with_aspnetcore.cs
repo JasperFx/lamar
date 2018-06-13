@@ -97,8 +97,8 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 var container = host.Services.ShouldBeOfType<Container>();
 
 
-                var errors = container.Model.AllInstances.Where(x => x.ErrorMessages.Any())
-                    .SelectMany(x => x.ErrorMessages).ToArray();
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
 
                 if (errors.Any()) throw new Exception(errors.Join(", "));
 
@@ -107,7 +107,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
                 {
-                    instance.Resolve(container).ShouldNotBeNull();
+                    instance.Resolve().ShouldNotBeNull();
                     
 //                    try
 //                    {

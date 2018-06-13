@@ -35,13 +35,13 @@ namespace Lamar
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        IEnumerable<Instance> InstancesOf(Type serviceType);
+        IEnumerable<InstanceRef> InstancesOf(Type serviceType);
 
         /// <summary>
         ///     Queryable access to all of the <see cref="Instance">Instance</see> for a given ServiceType
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Instance> InstancesOf<T>();
+        IEnumerable<InstanceRef> InstancesOf<T>();
 
         /// <summary>
         ///     Find the concrete type for the default Instance of T.
@@ -64,7 +64,7 @@ namespace Lamar
         ///     All explicitly known Instance's in this container.  Other instances can be created during
         ///     the lifetime of the container
         /// </summary>
-        IEnumerable<Instance> AllInstances { get; }
+        IEnumerable<InstanceRef> AllInstances { get; }
 
         /// <summary>
         ///     Get each and every configured instance that could possibly

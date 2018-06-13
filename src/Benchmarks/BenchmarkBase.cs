@@ -38,6 +38,7 @@ public class BenchmarkBase : IDisposable
         Instances = _blueMilkHost.Services.As<Container>().Model.AllInstances
             .Where(x => x.ServiceType.Assembly != typeof(Container).Assembly && !x.ServiceType.IsOpenGeneric())
             .Where(x => x.ServiceType != typeof(IServiceProviderFactory<ServiceRegistry>))
+            .Select(x => x.Instance)
             .ToArray();
 
         Types = Instances.Select(x => x.ServiceType).Distinct().ToArray();

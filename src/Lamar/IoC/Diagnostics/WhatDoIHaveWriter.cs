@@ -47,7 +47,7 @@ namespace Lamar.IoC.Diagnostics
     public class WhatDoIHaveWriter
     {
         private readonly IModel _graph;
-        private List<Instance> _instances;
+        private List<InstanceRef> _instances;
         private TextReportWriter _writer;
         private readonly StringWriter _stringWriter = new StringWriter();
 
@@ -77,7 +77,7 @@ namespace Lamar.IoC.Diagnostics
         private void writeContentsOfServiceTypes(IEnumerable<IServiceFamilyConfiguration> serviceTypes)
         {
             _writer = new TextReportWriter(5);
-            _instances = new List<Instance>();
+            _instances = new List<InstanceRef>();
 
             _writer.AddDivider('=');
             _writer.AddText("ServiceType", "Namespace", "Lifecycle", "Description", "Name");
@@ -128,7 +128,7 @@ namespace Lamar.IoC.Diagnostics
 
         }
 
-        private void writeInstance(Instance instance, IServiceFamilyConfiguration serviceType, string name = null)
+        private void writeInstance(InstanceRef instance, IServiceFamilyConfiguration serviceType, string name = null)
         {
             if (_instances.Contains(instance) || instance == null)
             {
@@ -143,7 +143,7 @@ namespace Lamar.IoC.Diagnostics
         }
 
 
-        private void setContents(string[] contents, Instance instance, string name, bool isDefault)
+        private void setContents(string[] contents, InstanceRef instance, string name, bool isDefault)
         {
             contents[2] = instance.Lifetime.ToString();
 
