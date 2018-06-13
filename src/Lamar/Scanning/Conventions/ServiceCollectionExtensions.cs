@@ -16,6 +16,11 @@ namespace Lamar.Scanning.Conventions
     
     public static class ServiceCollectionExtensions
     {
+        public static bool HasScanners(this IEnumerable<ServiceDescriptor> services)
+        {
+            return services.Any(x => x.ImplementationType == typeof(AssemblyScanner));
+        }
+        
         public static ConnectedConcretions ConnectedConcretions(this IServiceCollection services)
         {
             var concretions = services.FirstOrDefault(x => x.ServiceType == typeof(ConnectedConcretions))

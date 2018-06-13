@@ -48,7 +48,12 @@ namespace Lamar
         public ServiceRegistry()
         {
         }
-        
+
+        public ServiceRegistry(IEnumerable<ServiceDescriptor> descriptors)
+        {
+            AddRange(descriptors);
+        }
+
         /// <summary>
         /// This method is a shortcut for specifying the default constructor and 
         /// setter arguments for a ImplementationType.  ForConcreteType is shorthand for:

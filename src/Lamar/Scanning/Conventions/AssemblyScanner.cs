@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 #pragma warning disable 1591
 
@@ -293,7 +294,130 @@ namespace Lamar.Scanning.Conventions
             }
         }
 
+        
+        internal static async Task<(ServiceRegistry, AssemblyScanner[])> Explode(IServiceCollection services)
+        {
+            if (!services.HasScanners()) throw new InvalidOperationException("There are no AssemblyScanners in these services");
+
+
+            var (registry, operations) = ParseToOperations(services);
+
+            var scanners = new List<AssemblyScanner>();
+
+            foreach (var operation in operations)
+            {
+                var (registry2, scanned) = await operation.Apply(registry);
+                registry = registry2;
+                scanners.Fill(scanned);
+            }
+
+            return (registry, scanners.ToArray());
+        }
+
+        internal static (ServiceRegistry, List<IScanningOperation>) ParseToOperations(IServiceCollection services)
+        {
+            var scanners = services
+                .Where(x => x.ImplementationType == typeof(AssemblyScanner))
+                .ToArray();
+                
+            var indexes = scanners
+                .Select(services.IndexOf)
+                .ToArray();
+
+            var operations = new List<IScanningOperation>();
+            
+            var initial = indexes[0] > 0 
+                ? new ServiceRegistry(services.Take(indexes[0])) 
+                : new ServiceRegistry();
+            
+            operations.Add(new Scan(scanners[0]));
+
+            for (int i = 1; i < indexes.Length; i++)
+            {
+                var index = indexes[i];
+                var previous = indexes[i - 1];
+
+                if (previous != index - 1)
+                {
+                    // they are not sequential, just add a Scan operation
+                    var slice = services.Skip(previous + 1).Take(index - previous - 1).ToArray();
+                    operations.Add(new Append(slice));
+                }
+
+                
+                operations.Add(new Scan(scanners[i]));
+            }
+
+            // Are there more?
+            if (indexes.Last() != indexes.Length - 1)
+            {
+                operations.Add(new Append(services.Skip(indexes.Last() + 1).ToArray()));
+            }
+
+            return (initial, operations);
+        }
+
+        internal interface IScanningOperation
+        {
+            Task<(ServiceRegistry, AssemblyScanner[])> Apply(ServiceRegistry services);
+        }
+
+        internal class Append : IScanningOperation
+        {
+            private readonly ServiceDescriptor[] _services;
+
+            public Append(ServiceDescriptor[] services)
+            {
+                if (services.HasScanners())
+                {
+                    throw new ArgumentOutOfRangeException(nameof(services), "Shouldn't be any scanners in this collection");
+                }
+                
+                _services = services;
+            }
+
+            public Task<(ServiceRegistry, AssemblyScanner[])> Apply(ServiceRegistry services)
+            {
+                services.AddRange(_services);
+
+                return Task.FromResult((services, new AssemblyScanner[0]));
+            }
+        }
+
+        internal class Scan : IScanningOperation
+        {
+            private readonly AssemblyScanner _scanner;
+
+            public Scan(AssemblyScanner scanner)
+            {
+                _scanner = scanner;
+            }
+
+            public Scan(ServiceDescriptor scanner)
+            {
+                _scanner = scanner.ImplementationInstance.As<AssemblyScanner>();
+            }
+
+            public async Task<(ServiceRegistry, AssemblyScanner[])> Apply(ServiceRegistry services)
+            {
+                await _scanner.ApplyRegistrations(services);
+
+                if (services.HasScanners())
+                {
+                    // Go recursive baby!!!!
+                    var (services2, others) = await AssemblyScanner.Explode(services);
+                    
+                    return (services2, others.Concat(new []{_scanner}).ToArray());
+                }
+                else
+                {
+                    return (services, new AssemblyScanner[] {_scanner});
+                }
+            }
+        }
     }
+
+
 }
 
 #pragma warning restore 1591
