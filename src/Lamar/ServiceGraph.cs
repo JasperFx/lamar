@@ -29,15 +29,9 @@ namespace Lamar
 
         public static async Task<ServiceGraph> BuildAsync(IServiceCollection services, Scope rootScope)
         {
-            var scanners = services.Select(x => x.ImplementationInstance).OfType<AssemblyScanner>().ToArray();
-            services.RemoveAll(x => x.ServiceType == typeof(AssemblyScanner));
+            var (registry, scanners) = await ScanningExploder.Explode(services);
 
-            foreach (var scanner in scanners)
-            {
-                await scanner.ApplyRegistrations(services);
-            }
-            
-            return new ServiceGraph(services, rootScope, scanners);
+            return new ServiceGraph(registry, rootScope, scanners);
         }
         
         
@@ -51,16 +45,15 @@ namespace Lamar
 
         public ServiceGraph(IServiceCollection services, Scope rootScope)
         {
-            Services = services;
+            var (registry, scanners) = ScanningExploder.Explode(services).GetAwaiter().GetResult();
 
-
-            // This should blow up pretty fast if it's no good
-            applyScanners(services).Wait(TimeSpan.FromSeconds(2));
+            Scanners = scanners;
+            
+            Services = registry;
 
             _rootScope = rootScope;
 
-
-            organize(services);
+            organize(Services);
         }
 
         private void organize(IServiceCollection services)
@@ -106,18 +99,6 @@ namespace Lamar
         }
 
         public IInstancePolicy[] InstancePolicies { get; set; }
-
-        private async Task applyScanners(IServiceCollection services)
-        {
-            Scanners = services.Select(x => x.ImplementationInstance).OfType<AssemblyScanner>().ToArray();
-            services.RemoveAll(x => x.ServiceType == typeof(AssemblyScanner));
-
-            foreach (var scanner in Scanners)
-            {
-                await scanner.ApplyRegistrations(services);
-            }
-
-        }
 
         public IFamilyPolicy[] FamilyPolicies { get; private set; }
 
@@ -502,9 +483,11 @@ namespace Lamar
         {
             lock (_familyLock)
             {
-                applyScanners(services).Wait(TimeSpan.FromSeconds(2));
+                var (registry, scanners) = ScanningExploder.Explode(services).GetAwaiter().GetResult();
 
-                services
+                Scanners = Scanners.Union(scanners).ToArray();
+
+                registry
                     .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
 
                     .GroupBy(x => x.ServiceType)
