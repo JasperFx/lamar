@@ -254,7 +254,7 @@ namespace Lamar
 
         public void Scan(Action<IAssemblyScanner> scan)
         {
-            var finder = new AssemblyScanner();
+            var finder = new AssemblyScanner(this);
             scan(finder);
 
             finder.Start();

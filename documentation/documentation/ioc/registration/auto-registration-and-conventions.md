@@ -131,3 +131,18 @@ that implement at least one interface against the first interface that they impl
 <[sample:using-RegisterConcreteTypesAgainstTheFirstInterface]>
 
 
+## Look for Registries
+
+<[warning]>
+Use some caution with this feature. Many users tried to use this feature with StructureMap just to try 
+to break direct assembly coupling, and while it does accomplish that goal, ask yourself if the extra complexity is worth it.
+<[/warning]>
+
+Lamar can automatically include other registries with the`LookForRegistries`
+method. This functionality is *recursive*, meaning that assembly scanning declarations in the
+`ServiceRegistry` types discovered through `LookForRegistries()` will also be processed.
+
+
+<[sample:scan-for-registries]>
+
+

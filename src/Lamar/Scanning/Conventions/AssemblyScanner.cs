@@ -15,12 +15,15 @@ namespace Lamar.Scanning.Conventions
     [LamarIgnore]
     public class AssemblyScanner : IAssemblyScanner
     {
+        private readonly ServiceRegistry _parent;
         private readonly List<Assembly> _assemblies = new List<Assembly>();
         private readonly CompositeFilter<Type> _filter = new CompositeFilter<Type>();
         private Task<TypeSet> _typeFinder;
 
-        public AssemblyScanner()
+        public AssemblyScanner(ServiceRegistry parent)
         {
+            _parent = parent;
+
             Exclude(type => type.HasAttribute<LamarIgnoreAttribute>());
         }
 
@@ -186,6 +189,11 @@ namespace Lamar.Scanning.Conventions
 
         public void TheCallingAssembly()
         {
+            if (_parent.GetType().Assembly != typeof(ServiceRegistry).Assembly)
+            {
+                Assembly(_parent.GetType().Assembly);
+            }
+            
             var callingAssembly = CallingAssembly.Find();
 
             if (callingAssembly != null)
