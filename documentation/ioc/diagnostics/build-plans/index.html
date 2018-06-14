@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 0.9.11</h3>
+            <h3>Lamar 1.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -80,7 +80,41 @@
 
               <div id="main-pane">
                 <!--Title: Build Plans-->
-<p>TODO -- this doesn't exist yet. Kinda important.</p>
+<p>As part of the diagnostics, you can preview the generated code that Lamar has used to resolve a service to completely understand how that object and all of its
+dependencies are built out.</p>
+<p>Let's say you have a container configured like this:</p>
+<pre><code class="language-csharp">&#xA;container = new Container(x =&gt;&#xA;{&#xA;    x.For(typeof(IService&lt;&gt;)).Add(typeof(Service&lt;&gt;));&#xA;    x.For(typeof(IService&lt;&gt;)).Add(typeof(Service2&lt;&gt;));&#xA;&#xA;    x.For&lt;IWidget&gt;().Use&lt;AWidget&gt;().Singleton();&#xA;&#xA;    x.AddTransient&lt;Rule, DefaultRule&gt;();&#xA;    x.AddTransient&lt;Rule, ARule&gt;();&#xA;    x.AddSingleton&lt;Rule&gt;(new ColorRule(&quot;red&quot;));&#xA;&#xA;    x.AddScoped&lt;IThing, Thing&gt;();&#xA;    &#xA;&#xA;    x.For&lt;IEngine&gt;().Use&lt;PushrodEngine&gt;();&#xA;&#xA;    x.For&lt;Startable1&gt;().Use&lt;Startable1&gt;().Singleton();&#xA;    x.For&lt;Startable2&gt;().Use&lt;Startable2&gt;();&#xA;    x.For&lt;Startable3&gt;().Use&lt;Startable3&gt;();&#xA;});&#xA;</code></pre>
+<p>And you have a concrete type like this one:</p>
+<pre><code class="language-csharp">&#xA;public class UsesStuff&#xA;{&#xA;    public IWidget Widget { get; }&#xA;    public IThing Thing { get; }&#xA;    public IEngine Engine { get; }&#xA;&#xA;    public UsesStuff(IWidget widget, IThing thing, IEngine engine)&#xA;    {&#xA;        Widget = widget;&#xA;        Thing = thing;&#xA;        Engine = engine;&#xA;    }&#xA;}&#xA;</code></pre>
+<p>To see what the generated code is to resolve that <code>UsesStuff</code> type, we can use the <a href="/lamar/documentation/ioc/diagnostics/using-the-container-model">container diagnostic model</a> to access that code for us with this syntax:</p>
+<pre><code class="language-csharp">&#xA;var plan = container.Model.For&lt;UsesStuff&gt;().Default.DescribeBuildPlan();&#xA;</code></pre>
+<p>Which outputs this lovely looking code below:</p>
+<pre><code>    public class Lamar_Testing_IoC_Acceptance_container_model_usage_UsesStuff_usesStuff : Lamar.IoC.Resolvers.TransientResolver&lt;Lamar.Testing.IoC.Acceptance.container_model_usage.UsesStuff&gt;
+    {
+        private readonly IWidget _widget;
+
+        public Lamar_Testing_IoC_Acceptance_container_model_usage_UsesStuff_usesStuff(IWidget widget)
+        {
+            _widget = widget;
+        }
+
+
+
+        public override Lamar.Testing.IoC.Acceptance.container_model_usage.UsesStuff Build(Lamar.IoC.Scope scope)
+        {
+            var pushrodEngine = new Lamar.Testing.IoC.Acceptance.container_model_usage.PushrodEngine();
+            var thing = scope.GetInstance&lt;Lamar.Testing.IoC.Acceptance.IThing&gt;(&quot;thing&quot;);
+            return new Lamar.Testing.IoC.Acceptance.container_model_usage.UsesStuff(_widget, thing, pushrodEngine);
+        }
+
+    }
+</code></pre>
+<p>Some notes on this:</p>
+<ul>
+<li>You'll see that dependencies marked as <code>Transient</code> are just built inline (<code>PushrodEngine</code>)</li>
+<li>Dependencies marked as <code>Singleton</code> end up being constructor dependencies to the resolver class and effectively inlined. That's a pretty significant performance that most modern IoC tools make in some form or fashion</li>
+<li><code>Scoped</code> dependencies -- for the moment -- are accessed by using service location to get the scoping right and honestly just to simplify the code generation process</li>
+</ul>
 
               </div>
 

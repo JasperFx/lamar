@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 0.9.11</h3>
+            <h3>Lamar 1.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -133,10 +133,10 @@ again.</p>
 <p>It's just not possible (or desirable) for Lamar to include every possible type of auto registration
 convention users might want, but that's okay because Lamar allows you to create and use your own
 conventions through the <code>IRegistrationConvention</code> interface:</p>
-<pre><code class="language-csharp">&#xA;public interface IRegistrationConvention&#xA;{&#xA;    void ScanTypes(TypeSet types, IServiceCollection services);&#xA;}&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public interface IRegistrationConvention&#xA;{&#xA;    void ScanTypes(TypeSet types, ServiceRegistry services);&#xA;}&#xA;</code></pre>
 <p>Let's say that you'd like a custom convention that just registers a concrete type against all the interfaces
 that it implements. You could then build a custom <code>IRegistrationConvention</code> class like the following example:</p>
-<pre><code class="language-csharp">&#xA;public interface IFoo&#xA;{&#xA;}&#xA;&#xA;public interface IBar&#xA;{&#xA;}&#xA;&#xA;public interface IBaz&#xA;{&#xA;}&#xA;&#xA;public class BusyGuy : IFoo, IBar, IBaz&#xA;{&#xA;}&#xA;&#xA;// Custom IRegistrationConvention&#xA;public class AllInterfacesConvention : IRegistrationConvention&#xA;{&#xA;    public void ScanTypes(TypeSet types, IServiceCollection services)&#xA;    {&#xA;        // Only work on concrete types&#xA;        foreach (var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x =&gt; x.Name == &quot;BusyGuy&quot;))&#xA;        {&#xA;            // Register against all the interfaces implemented&#xA;            // by this concrete class&#xA;&#xA;            foreach (var @interface in type.GetInterfaces())&#xA;            {&#xA;                services.AddTransient(@interface, type);&#xA;            }&#xA;            &#xA;        };&#xA;    }&#xA;&#xA;}&#xA;&#xA;[Fact]&#xA;public void use_custom_registration_convention()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Scan(x =&gt;&#xA;        {&#xA;            // You&#x27;re probably going to want to tightly filter&#xA;            // the Type&#x27;s that are applicable to avoid unwanted&#xA;            // registrations&#xA;            x.TheCallingAssembly();&#xA;            x.IncludeNamespaceContainingType&lt;BusyGuy&gt;();&#xA;&#xA;            // Register the custom policy&#xA;            x.Convention&lt;AllInterfacesConvention&gt;();&#xA;        });&#xA;    });&#xA;&#xA;    container.GetInstance&lt;IFoo&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;    container.GetInstance&lt;IBar&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;    container.GetInstance&lt;IBaz&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public interface IFoo&#xA;{&#xA;}&#xA;&#xA;public interface IBar&#xA;{&#xA;}&#xA;&#xA;public interface IBaz&#xA;{&#xA;}&#xA;&#xA;public class BusyGuy : IFoo, IBar, IBaz&#xA;{&#xA;}&#xA;&#xA;// Custom IRegistrationConvention&#xA;public class AllInterfacesConvention : IRegistrationConvention&#xA;{&#xA;    public void ScanTypes(TypeSet types, ServiceRegistry services)&#xA;    {&#xA;        // Only work on concrete types&#xA;        foreach (var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x =&gt; x.Name == &quot;BusyGuy&quot;))&#xA;        {&#xA;            // Register against all the interfaces implemented&#xA;            // by this concrete class&#xA;&#xA;            foreach (var @interface in type.GetInterfaces())&#xA;            {&#xA;                services.AddTransient(@interface, type);&#xA;            }&#xA;            &#xA;        };&#xA;    }&#xA;&#xA;}&#xA;&#xA;[Fact]&#xA;public void use_custom_registration_convention()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.Scan(x =&gt;&#xA;        {&#xA;            // You&#x27;re probably going to want to tightly filter&#xA;            // the Type&#x27;s that are applicable to avoid unwanted&#xA;            // registrations&#xA;            x.TheCallingAssembly();&#xA;            x.IncludeNamespaceContainingType&lt;BusyGuy&gt;();&#xA;&#xA;            // Register the custom policy&#xA;            x.Convention&lt;AllInterfacesConvention&gt;();&#xA;        });&#xA;    });&#xA;&#xA;    container.GetInstance&lt;IFoo&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;    container.GetInstance&lt;IBar&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;    container.GetInstance&lt;IBaz&gt;().ShouldBeOfType&lt;BusyGuy&gt;();&#xA;}&#xA;&#xA;</code></pre>
 <h2 id="the-default-isomethingsomething-convention">The Default ISomething/Something Convention</h2>
 <p>The &quot;default&quot; convention simply tries to connect concrete classes to interfaces using
 the I[Something]/[Something] naming convention as shown in this sample:</p>
@@ -156,6 +156,15 @@ mechanism for generic types.</p>
 <p>The last built in registration convention is a mechanism to register all concrete types
 that implement at least one interface against the first interface that they implement.</p>
 <pre><code class="language-csharp">&#xA;container = new Container(x =&gt;&#xA;{&#xA;    x.Scan(o =&gt;&#xA;    {&#xA;        o.TheCallingAssembly();&#xA;        o.RegisterConcreteTypesAgainstTheFirstInterface();&#xA;&#xA;        o.Exclude(t =&gt; t.CanBeCastTo(typeof(IGateway)));&#xA;    });&#xA;});&#xA;</code></pre>
+<h2 id="look-for-registries">Look for Registries</h2>
+<div class="alert-warning alert"><p><strong>Note!</strong>
+Use some caution with this feature. Many users tried to use this feature with StructureMap just to try
+to break direct assembly coupling, and while it does accomplish that goal, ask yourself if the extra complexity is worth it.</p>
+</div>
+<p>Lamar can automatically include other registries with the<code>LookForRegistries</code>
+method. This functionality is <em>recursive</em>, meaning that assembly scanning declarations in the
+<code>ServiceRegistry</code> types discovered through <code>LookForRegistries()</code> will also be processed.</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void Search_for_registries_when_explicitly_told()&#xA;{&#xA;    Scan(x =&gt;&#xA;    {&#xA;        x.TheCallingAssembly();&#xA;        x.LookForRegistries();&#xA;    });&#xA;&#xA;    TestingRegistry.WasUsed.ShouldBeTrue();&#xA;}&#xA;&#xA;</code></pre>
 
               </div>
 
