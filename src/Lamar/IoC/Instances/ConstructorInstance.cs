@@ -245,6 +245,11 @@ namespace Lamar.IoC.Instances
             var instance = _inlines.FirstOrDefault(i => i.ServiceType == x.ParameterType && i.Name == x.Name)
                            ?? _inlines.FirstOrDefault(i => i.ServiceType == x.ParameterType)
                            ?? services.FindDefault(x.ParameterType);
+
+            if (instance == null && x.IsOptional && x.DefaultValue == null)
+            {
+                instance = new NullInstance(x.ParameterType);
+            }
             
             return new CtorArg(x, instance);
         }

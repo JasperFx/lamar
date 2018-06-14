@@ -13,7 +13,7 @@ namespace Lamar.IoC.Instances
         {
             Parameter = parameter;
             Instance = instance;
-
+            
             if (instance.IsInlineDependency() || instance is LambdaInstance && instance.ServiceType.IsGenericType)
             {
                 instance.Name = Parameter.Name;
@@ -22,6 +22,8 @@ namespace Lamar.IoC.Instances
 
         public Variable Resolve(ResolverVariables variables, BuildMode mode)
         {
+            
+            
             if (Instance.IsInlineDependency())
             {
                 var variable = Instance.CreateInlineVariable(variables);
@@ -39,6 +41,7 @@ namespace Lamar.IoC.Instances
             }
                 
             var inner = variables.Resolve(Instance, mode);
+            
             return Parameter.IsOptional 
                 ? new OptionalArgumentVariable(inner, Parameter) 
                 : inner;
