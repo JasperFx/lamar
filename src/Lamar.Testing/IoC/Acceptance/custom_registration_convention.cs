@@ -30,7 +30,7 @@ namespace Lamar.Testing.IoC.Acceptance
         // Custom IRegistrationConvention
         public class AllInterfacesConvention : IRegistrationConvention
         {
-            public void ScanTypes(TypeSet types, IServiceCollection services)
+            public void ScanTypes(TypeSet types, ServiceRegistry services)
             {
                 // Only work on concrete types
                 foreach (var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x => x.Name == "BusyGuy"))

@@ -7,7 +7,7 @@ namespace Lamar.Scanning.Conventions
 {
     public class DefaultConventionScanner : IRegistrationConvention
     {
-        public void ScanTypes(TypeSet types, IServiceCollection services)
+        public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
             foreach (var type in types.FindTypes(TypeClassification.Concretes).Where(type => type.GetConstructors().Any()))
             {

@@ -163,7 +163,7 @@ namespace Lamar.Scanning.Conventions
 
         public Task<TypeSet> TypeFinder => _typeFinder;
 
-        public void ApplyRegistrations(IServiceCollection services)
+        public void ApplyRegistrations(ServiceRegistry services)
         {
             foreach (var convention in Conventions)
             {

@@ -29,7 +29,7 @@ namespace Lamar.Scanning.Conventions
             return "Connect all implementations of open generic type " + _openType.FullNameInCode();
         }
 
-        public void ScanTypes(TypeSet types, IServiceCollection services)
+        public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
             foreach (var type in types.AllTypes())
             {

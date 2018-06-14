@@ -23,7 +23,7 @@ namespace Lamar.Scanning.Conventions
             return Instance.CanBeCastTo(type, _serviceType) && type.GetConstructors().Any() && type.CanBeCreated();
         }
 
-        public void ScanTypes(TypeSet types, IServiceCollection services)
+        public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
             if (_serviceType.IsOpenGeneric())
             {

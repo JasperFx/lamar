@@ -7,7 +7,7 @@ namespace Lamar.Scanning.Conventions
 {
     public class ImplementationMap : IRegistrationConvention
     {
-        public void ScanTypes(TypeSet types, IServiceCollection services)
+        public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
             var interfaces = types.FindTypes(TypeClassification.Interfaces | TypeClassification.Closed).Where(x => x != typeof(IDisposable));
             var concretes = types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x => x.GetConstructors().Any()).ToArray();

@@ -8,7 +8,7 @@ namespace Lamar.Scanning.Conventions
     /// </summary>
     public interface IRegistrationConvention
     {
-        void ScanTypes(TypeSet types, IServiceCollection services);
+        void ScanTypes(TypeSet types, ServiceRegistry services);
     }
     // ENDSAMPLE
 
