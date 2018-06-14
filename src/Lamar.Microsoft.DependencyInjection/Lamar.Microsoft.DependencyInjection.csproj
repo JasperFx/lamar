@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Lamar Adapter for ASP.Net Core</Description>
-    <VersionPrefix>0.9.11</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>netstandard2;net461</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
     <PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
-    <PackageProjectUrl>http://github.com/jasperfx/lamar</PackageProjectUrl>
+    <PackageProjectUrl>https://jasperfx.github.io/lamar</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE.txt</PackageLicenseUrl>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>

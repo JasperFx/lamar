@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Runtime Roslyn Chicanery and Fast IoC Tool, Successor to StructureMap</Description>
-    <VersionPrefix>0.9.12</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar</AssemblyName>
     <PackageId>Lamar</PackageId>
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
-    <PackageProjectUrl>http://github.com/jasperfx/lamar</PackageProjectUrl>
+    <PackageProjectUrl>http://jasperfx.github.io/lamar</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE.txt</PackageLicenseUrl>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
