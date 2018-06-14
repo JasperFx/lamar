@@ -247,6 +247,92 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<IAmOpenGeneric<string>>().ShouldBeOfType<SpecificClosedGeneric>();
         }
 
+        [Fact]
+        public void scanning_respects_order()
+        {
+            var container = new Container(_ =>
+            {
+                _.Scan(x =>
+                {
+                    x.TheCallingAssembly();
+                    x.AddAllTypesOf<ICar>();
+                });
+
+                _.For<ICar>().Use<SUV>();
+            });
+
+            container.GetInstance<ICar>().ShouldBeOfType<SUV>();
+        }
+        
+        [Fact]
+        public void scanning_respects_order_2()
+        {
+            
+            
+            var container = new Container(_ =>
+            {
+                _.For<ICar>().Use<SUV>();
+                
+                _.Scan(x =>
+                {
+                    x.TheCallingAssembly();
+                    x.AddAllTypesOf<ICar>();
+                });
+
+                
+            });
+
+            container.GetInstance<ICar>().ShouldNotBeOfType<SUV>();
+        }
+        
+        [Fact]
+        public async Task scanning_respects_order_async()
+        {
+            var container = await Container.BuildAsync(_ =>
+            {
+                _.Scan(x =>
+                {
+                    x.TheCallingAssembly();
+                    x.AddAllTypesOf<ICar>();
+                });
+
+                _.For<ICar>().Use<SUV>();
+            });
+
+            container.GetInstance<ICar>().ShouldBeOfType<SUV>();
+        }
+        
+        [Fact]
+        public async Task scanning_respects_order_2_async()
+        {
+            
+            
+            var container = await Container.BuildAsync(_ =>
+            {
+                _.For<ICar>().Use<SUV>();
+                
+                _.Scan(x =>
+                {
+                    x.TheCallingAssembly();
+                    x.AddAllTypesOf<ICar>();
+                });
+
+                
+            });
+
+            container.GetInstance<ICar>().ShouldNotBeOfType<SUV>();
+        }
+        
+        
+        
+        public interface ICar{}
+        public class Sedan : ICar{}
+        public class Coupe : ICar{}
+        public class SUV : ICar{}
+        
+        [LamarIgnore]
+        public class Crossover : ICar{}
+
         public interface IAmOpenGeneric<T>
         {
         }
