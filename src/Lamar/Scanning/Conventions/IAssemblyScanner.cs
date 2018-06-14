@@ -156,5 +156,13 @@ namespace Lamar.Scanning.Conventions
 
         void AssembliesFromPath(string path,
             Func<Assembly, bool> assemblyFilter);
+        
+        
+        /// <summary>
+        /// Directs the scanning operation to automatically detect and include any Registry
+        /// classes found in the Assembly's being scanned
+        /// </summary>
+        void LookForRegistries();
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
@@ -11,58 +12,72 @@ namespace Lamar.Scanning.Conventions
         
         internal static (ServiceRegistry, AssemblyScanner[]) ExplodeSynchronously(IServiceCollection services)
         {
-            if (!services.HasScanners())
+            var scanners = new AssemblyScanner[0];
+            var registry = new ServiceRegistry(services);
+
+            while (registry.HasScanners())
             {
-                return (new ServiceRegistry(services), new AssemblyScanner[0]);
-            }
+                var (registry2, operations) = ParseToOperations(registry);
 
-            var (registry, operations) = ParseToOperations(services);
+                var additional = operations.OfType<AssemblyScanner>().ToArray();
 
-            var scanners = operations.OfType<AssemblyScanner>().ToArray();
+                registry = registry2;
+                scanners = scanners.Concat(additional).ToArray();
 
-            Task.WhenAll(scanners.Select(x => x.TypeFinder)).Wait(TimeSpan.FromSeconds(2));
+                registry.RemoveAll(x => x.ServiceType == typeof(AssemblyScanner));
+                
+                Task.WhenAll(additional.Select(x => x.TypeFinder)).Wait(TimeSpan.FromSeconds(2));
 
-            foreach (var operation in operations)
-            {
-                if (operation is AssemblyScanner scanner)
+                foreach (var operation in operations)
                 {
-                    scanner.ApplyRegistrations(registry);
-                }
+                    if (operation is AssemblyScanner scanner)
+                    {
+                        scanner.ApplyRegistrations(registry);
+                    }
 
-                if (operation is ServiceDescriptor[] descriptors)
-                {
-                    registry.AddRange(descriptors);
+                    if (operation is ServiceDescriptor[] descriptors)
+                    {
+                        registry.AddRange(descriptors);
+                    }
                 }
+                
+                
             }
-
+            
             return (registry, scanners);
         }
                 
         internal static async Task<(ServiceRegistry, AssemblyScanner[])> Explode(IServiceCollection services)
         {
-            if (!services.HasScanners())
+            var scanners = new AssemblyScanner[0];
+            var registry = new ServiceRegistry(services);
+
+            while (registry.HasScanners())
             {
-                return (new ServiceRegistry(services), new AssemblyScanner[0]);
-            }
+                var (registry2, operations) = ParseToOperations(registry);
 
-            var (registry, operations) = ParseToOperations(services);
+                var additional = operations.OfType<AssemblyScanner>().ToArray();
 
-            var scanners = operations.OfType<AssemblyScanner>().ToArray();
+                registry = registry2;
+                scanners = scanners.Concat(additional).ToArray();
+                
+                registry.RemoveAll(x => x.ServiceType == typeof(AssemblyScanner));
 
-            foreach (var operation in operations)
-            {
-                if (operation is AssemblyScanner scanner)
+                foreach (var operation in operations)
                 {
-                    await scanner.TypeFinder;
-                    scanner.ApplyRegistrations(registry);
-                }
+                    if (operation is AssemblyScanner scanner)
+                    {
+                        await scanner.TypeFinder;
+                        scanner.ApplyRegistrations(registry);
+                    }
 
-                if (operation is ServiceDescriptor[] descriptors)
-                {
-                    registry.AddRange(descriptors);
+                    if (operation is ServiceDescriptor[] descriptors)
+                    {
+                        registry.AddRange(descriptors);
+                    }
                 }
             }
-
+            
             return (registry, scanners);
         }
 

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using StructureMap.Testing.Widget;
+using StructureMap.Testing.Widget5;
 using Xunit;
 
 namespace Lamar.Testing.IoC.Acceptance
@@ -349,14 +351,14 @@ namespace Lamar.Testing.IoC.Acceptance
         public void has_the_correct_number_by_initialize()
         {
             var container = Container.For<BookRegistry>();
-            container.GetAllInstances<IBook<SciFi>>().Count().ShouldBe(1);
+            container.GetAllInstances<IBook<SciFiBook>>().Count().ShouldBe(1);
         }
 
         [Fact]
         public void has_the_correct_number_by_configure()
         {
             var container = new Container(new BookRegistry());
-            container.GetAllInstances<IBook<SciFi>>().Count().ShouldBe(1);
+            container.GetAllInstances<IBook<SciFiBook>>().Count().ShouldBe(1);
         }
         
         
@@ -410,6 +412,49 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldHaveTheSameElementsAs(typeof(BirdImpl), typeof(BirdBaseImpl));
         }
         
+        [Fact]
+        public void look_for_registries_fires_assembly_scanning_in_child()
+        {
+            var container = new Container(x =>
+            {
+                x.Scan(s =>
+                {
+                    s.AssemblyContainingType<ITeam>();
+                    s.LookForRegistries();
+                });
+            });
+                
+            // From several registries in Widget5
+            container.Model.HasRegistrationFor<IWidget>()
+                .ShouldBeTrue();
+
+            // Look for TeamRegistry
+            container.Model.For<ITeam>().Instances.Select(x => x.ImplementationType.Name)
+                .OrderBy(x => x)
+                .ShouldHaveTheSameElementsAs("Broncos", "Chargers", "Chiefs", "Raiders");
+        }
+
+        [Fact]
+        public async Task look_for_registries_fires_assembly_scanning_in_child_async()
+        {
+            var container = await Container.BuildAsync(x =>
+            {
+                x.Scan(s =>
+                {
+                    s.AssemblyContainingType<ITeam>();
+                    s.LookForRegistries();
+                });
+            });
+                
+            // From several registries in Widget5
+            container.Model.HasRegistrationFor<IWidget>()
+                .ShouldBeTrue();
+
+            // Look for TeamRegistry
+            container.Model.For<ITeam>().Instances.Select(x => x.ImplementationType.Name)
+                .OrderBy(x => x)
+                .ShouldHaveTheSameElementsAs("Broncos", "Chargers", "Chiefs", "Raiders");
+        }
     }
     
 
@@ -448,7 +493,7 @@ namespace Lamar.Testing.IoC.Acceptance
     {
     }
 
-    public class SciFiBook : IBook<SciFi>
+    public class SciFiBook : IBook<SciFiBook>
     {
     }
 

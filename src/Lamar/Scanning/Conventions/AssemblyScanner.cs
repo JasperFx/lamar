@@ -170,6 +170,11 @@ namespace Lamar.Scanning.Conventions
                 convention.ScanTypes(_typeFinder.Result, services);
             }
         }
+        
+        public void LookForRegistries()
+        {
+            Convention<FindRegistriesScanner>();
+        }
 
         public bool Contains(string assemblyName)
         {
