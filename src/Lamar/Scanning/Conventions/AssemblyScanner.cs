@@ -192,6 +192,7 @@ namespace Lamar.Scanning.Conventions
             if (_parent.GetType().Assembly != typeof(ServiceRegistry).Assembly)
             {
                 Assembly(_parent.GetType().Assembly);
+                return;
             }
             
             var callingAssembly = CallingAssembly.Find();
