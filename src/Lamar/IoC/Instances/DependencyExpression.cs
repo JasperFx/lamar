@@ -24,7 +24,7 @@ namespace Lamar.IoC.Instances
         /// </summary>
         /// <param name="func"></param>
         /// <returns></returns>
-        public ConstructorInstance Is(Func<IContainer, TChild> func)
+        public ConstructorInstance Is(Func<IServiceContext, TChild> func)
         {
             var child = LambdaInstance.For(func);
             return Is(child);
@@ -36,7 +36,7 @@ namespace Lamar.IoC.Instances
         /// <param name="description">User friendly description for diagnostics</param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public ConstructorInstance Is(string description, Func<IContainer, TChild> func)
+        public ConstructorInstance Is(string description, Func<IServiceContext, TChild> func)
         {
             var child = LambdaInstance.For(func);
             child.Description = description;
