@@ -171,11 +171,19 @@ namespace Lamar.Testing.AspNetCoreIntegration
             services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
 
 
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = "something";
-                facebookOptions.AppSecret = "else";
-            });
+            services.AddAuthentication()
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "auth";
+                    options.RequireHttpsMetadata = true;
+                })
+                
+                
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = "something";
+                    facebookOptions.AppSecret = "else";
+                });
 
         }
 

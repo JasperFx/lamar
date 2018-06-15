@@ -8,25 +8,28 @@ namespace Lamar.IoC.Instances
     /// </summary>
     public class OptionalArgumentVariable : Variable
     {
-        private readonly Variable _inner;
         private readonly ParameterInfo _parameter;
 
         public OptionalArgumentVariable(Variable inner, ParameterInfo parameter) : base(inner.VariableType)
         {
-            _inner = inner;
+            Inner = inner;
             _parameter = parameter;
             
-            Dependencies.Add(_inner);
+            Dependencies.Add(Inner);
               
         }
 
+        public Variable Inner { get; }
+
         public override string Usage
         {
-            get { return $"{_parameter.Name}: {_inner.Usage}"; }
+            get => $"{_parameter.Name}: {Inner.Usage}";
             protected set
             {
                 // nothing
             }
         }
+
+
     }
 }

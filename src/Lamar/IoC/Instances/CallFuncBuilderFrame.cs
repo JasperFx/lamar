@@ -18,6 +18,15 @@ namespace Lamar.IoC.Instances
 
         public CallFuncBuilderFrame(ConstructorInstance instance, DisposeTracking disposal, Variable func, Variable[] arguments)
         {
+            // HACK, and I hate this but it's necessary.
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                if (arguments[i] is OptionalArgumentVariable)
+                {
+                    arguments[i] = ((OptionalArgumentVariable) arguments[i]).Inner;
+                }
+            }
+            
             Disposal = disposal;
             _func = func;
             _arguments = arguments;
