@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics.AspNetCore;
 using Lamar.Codegen;
 using Lamar.Microsoft.DependencyInjection;
 using IdentityServer4.Models;
@@ -21,6 +22,7 @@ using Shouldly;
 using Xunit;
 using Baseline;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Lamar.Testing.AspNetCoreIntegration
 {
@@ -76,8 +78,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
             }
         }
         
-
-
         [Fact]
         public void use_in_app()
         {
@@ -117,6 +117,54 @@ namespace Lamar.Testing.AspNetCoreIntegration
 //                    {
 //                        failures.Add(instance.ServiceType);
 //                    }
+                }
+            }
+
+            if (failures.Any())
+            {
+                throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
+            }
+        }
+
+        [Fact]
+        public void use_in_app_with_ambigious_references()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+                .UseMetrics()
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+            var failures = new List<Type>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+
+
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+                if (errors.Any()) throw new Exception(errors.Join(", "));
+
+
+
+
+                foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
+                {
+                    instance.Resolve().ShouldNotBeNull();
+
+                    //                    try
+                    //                    {
+                    //                        
+                    //                    }
+                    //                    catch (Exception e)
+                    //                    {
+                    //                        failures.Add(instance.ServiceType);
+                    //                    }
                 }
             }
 
@@ -169,7 +217,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients());
             services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
-
 
             services.AddAuthentication()
                 .AddIdentityServerAuthentication(options =>
