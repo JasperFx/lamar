@@ -19,11 +19,11 @@ namespace Lamar.Codegen.Variables
 
         public string CtorArg { get; protected set; }
 
-        public virtual string CtorArgDeclaration => $"{ArgType.NameInCode()} {CtorArg}";
+        public virtual string CtorArgDeclaration => $"{ArgType.FullNameInCode()} {CtorArg}";
 
         public void WriteDeclaration(ISourceWriter writer)
         {
-            writer.Write($"private readonly {ArgType.NameInCode()} {Usage};");
+            writer.Write($"private readonly {ArgType.FullNameInCode()} {Usage};");
         }
 
         public void WriteAssignment(ISourceWriter writer)

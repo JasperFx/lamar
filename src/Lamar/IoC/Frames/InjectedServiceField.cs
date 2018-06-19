@@ -41,8 +41,8 @@ namespace Lamar.IoC.Frames
                 }
 
                 return IsOnlyOne
-                    ? $"{ArgType.NameInCode()} {CtorArg}"
-                    : $"[Lamar.Named(\"{Instance.Name}\")] {ArgType.NameInCode()} {CtorArg}";
+                    ? $"{ArgType.FullNameInCode()} {CtorArg}"
+                    : $"[Lamar.Named(\"{Instance.Name}\")] {ArgType.FullNameInCode()} {CtorArg}";
             }
         }
 
