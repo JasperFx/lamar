@@ -72,7 +72,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             theServices.AddSingleton(new MessageTracker());
 
-            theCode.ShouldContain("public GeneratedClass(MessageTracker messageTracker)");
+            theCode.ShouldContain("public GeneratedClass(Lamar.Testing.IoC.Acceptance.MessageTracker messageTracker)");
             theCode.ShouldContain("var singletonArgMethod = new Lamar.Testing.IoC.Acceptance.SingletonArgMethod(_messageTracker);");
         }
 
@@ -284,7 +284,7 @@ namespace Lamar.Testing.IoC.Acceptance
             includeType<HandlerWithArray>();
             theServices.AddSingleton<IWidget[]>(new IWidget[] {new BlueWidget(), new GreenWidget(),});
 
-            theCode.ShouldContain("public GeneratedClass(IWidget[] widgetArray)");
+            theCode.ShouldContain("public GeneratedClass(StructureMap.Testing.Widget.IWidget[] widgetArray)");
             theCode.ShouldContain("var handlerWithArray = new Lamar.Testing.IoC.Acceptance.HandlerWithArray(_widgetArray);");
         }
 
@@ -309,7 +309,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             theServices.AddSingleton<IEnumerable<IWidget>>(new IWidget[] {new BlueWidget(), new GreenWidget(),});
 
-            theCode.ShouldContain("public GeneratedClass(IEnumerable<StructureMap.Testing.Widget.IWidget> widgetIEnumerable)");
+            theCode.ShouldContain("public GeneratedClass(System.Collections.Generic.IEnumerable<StructureMap.Testing.Widget.IWidget> widgetIEnumerable)");
             theCode.ShouldContain("var widgetEnumerableUser = new Lamar.Testing.IoC.Acceptance.WidgetEnumerableUser(_widgetIEnumerable);");
         }
 
@@ -337,7 +337,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             theServices.AddSingleton<List<IWidget>>(new List<IWidget> {new BlueWidget(), new GreenWidget(),});
 
-            theCode.ShouldContain("public GeneratedClass(List<StructureMap.Testing.Widget.IWidget> widgetList)");
+            theCode.ShouldContain("public GeneratedClass(System.Collections.Generic.List<StructureMap.Testing.Widget.IWidget> widgetList)");
             theCode.ShouldContain("var widgetListUser = new Lamar.Testing.IoC.Acceptance.WidgetListUser(_widgetList);");
         }
 
@@ -362,7 +362,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             theServices.AddSingleton<IList<IWidget>>(new List<IWidget> {new BlueWidget(), new GreenWidget(),});
 
-            theCode.ShouldContain("public GeneratedClass(IList<StructureMap.Testing.Widget.IWidget> widgetIList)");
+            theCode.ShouldContain("public GeneratedClass(System.Collections.Generic.IList<StructureMap.Testing.Widget.IWidget> widgetIList)");
             theCode.ShouldContain("var widgetIListUser = new Lamar.Testing.IoC.Acceptance.WidgetIListUser(_widgetIList);");
         }
 
@@ -387,7 +387,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             theServices.AddSingleton<IReadOnlyList<IWidget>>(new List<IWidget> {new BlueWidget(), new GreenWidget(),});
 
-            theCode.ShouldContain("public GeneratedClass(IReadOnlyList<StructureMap.Testing.Widget.IWidget> widgetIReadOnlyList)");
+            theCode.ShouldContain("public GeneratedClass(System.Collections.Generic.IReadOnlyList<StructureMap.Testing.Widget.IWidget> widgetIReadOnlyList)");
             theCode.ShouldContain("var widgetIReadOnlyListUser = new Lamar.Testing.IoC.Acceptance.WidgetIReadOnlyListUser(_widgetIReadOnlyList);");
         }
         
