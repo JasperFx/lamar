@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,13 +22,22 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
 using Baseline;
+using Lamar.IoC.Instances;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Xunit.Abstractions;
 
 namespace Lamar.Testing.AspNetCoreIntegration
 {
     public class integration_with_aspnetcore
     {
+        private readonly ITestOutputHelper _output;
+
+        public integration_with_aspnetcore(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void default_registrations_for_service_provider_factory()
         {
@@ -77,6 +87,37 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 Context = context;
             }
         }
+
+        [Fact]
+        public void see_singleton_registrations()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+            
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                
+                var singletons = container.Model.AllInstances
+                    .Where(x => x.Lifetime == ServiceLifetime.Singleton)
+                    .Where(x => !x.ServiceType.IsOpenGeneric())
+                    .Where(x => x.Instance is GeneratedInstance);
+
+                foreach (var singleton in singletons)
+                {
+                    _output.WriteLine($"{singleton.ServiceType.FullNameInCode()} --> {singleton.Instance}");
+                }
+            }
+
+
+
+        }
         
         [Fact]
         public void use_in_app()
@@ -92,11 +133,20 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
             var failures = new List<Type>();
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            long bootstrappingTime;
+
+            long starting;
+            long ending;
+            
             using (var host = builder.Start())
             {
+                bootstrappingTime = stopwatch.ElapsedMilliseconds;
                 var container = host.Services.ShouldBeOfType<Container>();
 
-
+                
                 var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
                     .SelectMany(x => x.Instance.ErrorMessages).ToArray();
 
@@ -104,7 +154,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
 
 
-
+                starting = stopwatch.ElapsedMilliseconds;
                 foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
                 {
                     instance.Resolve().ShouldNotBeNull();
@@ -118,7 +168,13 @@ namespace Lamar.Testing.AspNetCoreIntegration
 //                        failures.Add(instance.ServiceType);
 //                    }
                 }
+
+                ending = stopwatch.ElapsedMilliseconds;
+                stopwatch.Stop();
             }
+            
+            _output.WriteLine("Bootstrapping: " + bootstrappingTime);
+            _output.WriteLine("Building all:  " + (ending - starting));
 
             if (failures.Any())
             {
