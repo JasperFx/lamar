@@ -1,4 +1,5 @@
 ﻿using System;
+using Lamar.IoC.Instances;
 using Lamar.Util;
 
 namespace Lamar.IoC.Resolvers
@@ -38,9 +39,9 @@ namespace Lamar.IoC.Resolvers
                     else
                     {
                         _service = Build(_topLevelScope);
-                        if (_service is IDisposable)
+                        if (_service is IDisposable disposable)
                         {
-                            _topLevelScope.Disposables.Add((IDisposable) _service);
+                            _topLevelScope.Disposables.Add(disposable);
                         }
 
                         _topLevelScope.Services.SmartAdd(Hash, _service);
@@ -57,4 +58,6 @@ namespace Lamar.IoC.Resolvers
         public int Hash { get; set; }
 
     }
+
+
 }

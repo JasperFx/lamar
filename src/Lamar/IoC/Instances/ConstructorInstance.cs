@@ -91,12 +91,49 @@ namespace Lamar.IoC.Instances
 
         public IList<Instance> InlineDependencies => _inlines;
 
+        
+        public override Func<Scope, object> ToResolver(Scope topScope)
+        {
+            if (Lifetime == ServiceLifetime.Singleton)
+            {
+                return s =>
+                {
+                    if (topScope.Services.TryGetValue(Hash, out object service))
+                    {
+                        return service;
+                    }
+                    else
+                    {
+                        service = quickResolve(topScope);
+
+                        topScope.Services.Add(Hash, service);
+
+                        return service;
+                    }
+                };
+            }
+            
+            return base.ToResolver(topScope);
+        }
+        
+
         public override object QuickResolve(Scope scope)
         {
             if (_resolver != null || Lifetime != ServiceLifetime.Transient) return Resolve(scope);
 
+            return quickResolve(scope);
+        }
+
+        private object quickResolve(Scope scope)
+        {
             var values = _arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
             var service = Activator.CreateInstance(ImplementationType, values);
+
+            if (service is IDisposable disposable)
+            {
+                scope.Disposables.Add(disposable);
+            }
+
 
             return service;
         }

@@ -121,46 +121,50 @@ namespace Lamar
 
             
             rebuildReferencedAssemblyArray();
-
-            
-            var settings = FindDefault(typeof(ServiceRegistry.SharingSettings)) as ObjectInstance;
-            var sharing = settings?.Service.As<ServiceRegistry.SharingSettings>().Sharing ?? DynamicAssemblySharing.Shared;
-            
-            var generatedSingletons = AllInstances()
-                .OfType<GeneratedInstance>()
-                .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && x.IsDefault)
-                .TopologicalSort(x => x.Dependencies.OfType<GeneratedInstance>())
-                .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && !x.IsInlineDependency()) // to get rid of things that get injected in again
-                .Distinct()
-                .ToArray();
-
-
-
-            
-            if (generatedSingletons.Any())
+/*
+            timer.Record("Building Singleton Resolvers", () =>
             {
-                if (sharing == DynamicAssemblySharing.Individual)
-                {
-                    buildSingletonsInIndividualAssemblies(generatedSingletons);
-                }
-                else
-                {
-                    var assembly = ToGeneratedAssembly();
-                    
-                    foreach (var instance in generatedSingletons)
-                    {
-                        instance.GenerateResolver(assembly);
-                    }
-                    
-                    assembly.CompileAll();
-                    
-                    foreach (var instance in generatedSingletons)
-                    {
-                        instance.AttachResolver(_rootScope);
-                    }
-                }
+                var settings = FindDefault(typeof(ServiceRegistry.SharingSettings)) as ObjectInstance;
+                var sharing = settings?.Service.As<ServiceRegistry.SharingSettings>().Sharing ?? DynamicAssemblySharing.Shared;
+            
+                var generatedSingletons = AllInstances()
+                    .OfType<GeneratedInstance>()
+                    .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && x.IsDefault)
+                    .TopologicalSort(x => x.Dependencies.OfType<GeneratedInstance>())
+                    .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && !x.IsInlineDependency()) // to get rid of things that get injected in again
+                    .Distinct()
+                    .ToArray();
 
-            }
+
+
+            
+                if (generatedSingletons.Any())
+                {
+                    if (sharing == DynamicAssemblySharing.Individual)
+                    {
+                        buildSingletonsInIndividualAssemblies(generatedSingletons);
+                    }
+                    else
+                    {
+                        var assembly = ToGeneratedAssembly();
+                    
+                        foreach (var instance in generatedSingletons)
+                        {
+                            instance.GenerateResolver(assembly);
+                        }
+                    
+                        assembly.CompileAll();
+                    
+                        foreach (var instance in generatedSingletons)
+                        {
+                            instance.AttachResolver(_rootScope);
+                        }
+                    }
+
+                }
+            });
+            
+*/
             
 
         }

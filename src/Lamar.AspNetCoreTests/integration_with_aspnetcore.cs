@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -171,10 +172,19 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 ending = stopwatch.ElapsedMilliseconds;
                 stopwatch.Stop();
+
+                var writer = new StringWriter();
+                
+                container.Bootstrapping.DisplayTimings().Write(writer);
+                
+                _output.WriteLine(writer.ToString());
             }
             
             _output.WriteLine("Bootstrapping: " + bootstrappingTime);
             _output.WriteLine("Building all:  " + (ending - starting));
+            
+            
+            
 
             if (failures.Any())
             {
