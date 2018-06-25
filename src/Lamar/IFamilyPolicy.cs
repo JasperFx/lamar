@@ -9,7 +9,7 @@ namespace Lamar
     /// </summary>
     [LamarIgnore]
     // SAMPLE: IFamilyPolicy
-    public interface IFamilyPolicy
+    public interface IFamilyPolicy : ILamarPolicy
     {
         /// <summary>
         ///     Allows you to create missing registrations for an unknown plugin type

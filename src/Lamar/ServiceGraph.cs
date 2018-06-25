@@ -37,10 +37,10 @@ namespace Lamar
         
         private ServiceGraph(IServiceCollection services, Scope rootScope, AssemblyScanner[] scanners)
         {
-            Services = services;
+            _services = services as ServiceRegistry ?? new ServiceRegistry(services);
             Scanners = scanners;
             _rootScope = rootScope;
-            organize(services);
+            organize(_services);
         }
 
         public ServiceGraph(IServiceCollection services, Scope rootScope)
@@ -49,23 +49,18 @@ namespace Lamar
 
             Scanners = scanners;
             
-            Services = registry;
+            _services = registry;
 
             _rootScope = rootScope;
 
-            organize(Services);
+            organize(_services);
         }
 
-        private void organize(IServiceCollection services)
+        private void organize(ServiceRegistry services)
         {
-            DecoratorPolicies = services
-                .Where(x => x.ServiceType == typeof(IDecoratorPolicy))
-                .Select(x => x.ImplementationInstance.As<IDecoratorPolicy>())
-                .ToArray();
+            DecoratorPolicies = services.FindAndRemovePolicies<IDecoratorPolicy>();
             
-            FamilyPolicies = services
-                .Where(x => x.ServiceType == typeof(IFamilyPolicy))
-                .Select(x => x.ImplementationInstance.As<IFamilyPolicy>())
+            FamilyPolicies = services.FindAndRemovePolicies<IFamilyPolicy>()
                 .Concat(new IFamilyPolicy[]
                 {
                     new EnumerablePolicy(),
@@ -76,14 +71,14 @@ namespace Lamar
                 })
                 .ToArray();
 
-            InstancePolicies = services.Where(x =>
-                    x.ServiceType == typeof(IInstancePolicy) && x.ImplementationInstance is IInstancePolicy)
-                .Select(x => x.ImplementationInstance.As<IInstancePolicy>()).ToArray();
+            InstancePolicies = services.FindAndRemovePolicies<IInstancePolicy>();
 
+            var policies = services.FindAndRemovePolicies<IRegistrationPolicy>();
+            foreach (var policy in policies)
+            {
+                policy.Apply(services);
+            }
 
-            services.RemoveAll(x => x.ServiceType == typeof(IFamilyPolicy));
-            services.RemoveAll(x => x.ServiceType == typeof(IInstancePolicy));
-            services.RemoveAll(x => x.ServiceType == typeof(IDecoratorPolicy));
 
             addScopeResolver<Scope>(services);
             addScopeResolver<IServiceProvider>(services);
@@ -114,59 +109,13 @@ namespace Lamar
 
             timer.Record("Organize Into Families", () =>
             {
-                organizeIntoFamilies(Services);
+                organizeIntoFamilies(_services);
             });
 
             timer.Record("Planning Instances", buildOutMissingResolvers);
 
             
             rebuildReferencedAssemblyArray();
-/*
-            timer.Record("Building Singleton Resolvers", () =>
-            {
-                var settings = FindDefault(typeof(ServiceRegistry.SharingSettings)) as ObjectInstance;
-                var sharing = settings?.Service.As<ServiceRegistry.SharingSettings>().Sharing ?? DynamicAssemblySharing.Shared;
-            
-                var generatedSingletons = AllInstances()
-                    .OfType<GeneratedInstance>()
-                    .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && x.IsDefault)
-                    .TopologicalSort(x => x.Dependencies.OfType<GeneratedInstance>())
-                    .Where(x => x.Lifetime != ServiceLifetime.Transient && !x.ServiceType.IsOpenGeneric() && !x.IsInlineDependency()) // to get rid of things that get injected in again
-                    .Distinct()
-                    .ToArray();
-
-
-
-            
-                if (generatedSingletons.Any())
-                {
-                    if (sharing == DynamicAssemblySharing.Individual)
-                    {
-                        buildSingletonsInIndividualAssemblies(generatedSingletons);
-                    }
-                    else
-                    {
-                        var assembly = ToGeneratedAssembly();
-                    
-                        foreach (var instance in generatedSingletons)
-                        {
-                            instance.GenerateResolver(assembly);
-                        }
-                    
-                        assembly.CompileAll();
-                    
-                        foreach (var instance in generatedSingletons)
-                        {
-                            instance.AttachResolver(_rootScope);
-                        }
-                    }
-
-                }
-            });
-            
-*/
-            
-
         }
 
         private void buildSingletonsInIndividualAssemblies(GeneratedInstance[] generatedSingletons)
@@ -301,7 +250,7 @@ namespace Lamar
             return new ServiceFamily(serviceType, DecoratorPolicies, instances);
         }
 
-        public IServiceCollection Services { get; }
+        public IServiceCollection Services => _services;
 
         public IEnumerable<Instance> AllInstances()
         {
@@ -432,6 +381,7 @@ namespace Lamar
 
         private readonly Stack<Instance> _chain = new Stack<Instance>();
         private Assembly[] _allAssemblies;
+        private readonly ServiceRegistry _services;
 
         internal AssemblyScanner[] Scanners { get; private set; } = new AssemblyScanner[0];
 

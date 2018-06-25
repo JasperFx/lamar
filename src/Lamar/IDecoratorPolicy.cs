@@ -10,7 +10,7 @@ namespace Lamar
     /// Custom policy applied at service registration that optionally
     /// wraps the original Instance with a decorator
     /// </summary>
-    public interface IDecoratorPolicy
+    public interface IDecoratorPolicy : ILamarPolicy
     {
         bool TryWrap(Instance inner, out Instance wrapped);
     }

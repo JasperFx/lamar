@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Lamar.Codegen;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
@@ -311,7 +312,10 @@ namespace Lamar
             /// <param name="policy"></param>
             public void Add(ILamarPolicy policy)
             {
-                if (policy is IInstancePolicy i) _parent.AddSingleton(i);
+                if (policy is IInstancePolicy ip) _parent.AddSingleton(ip);
+                if (policy is IFamilyPolicy fp) _parent.AddSingleton(fp);
+                if (policy is IRegistrationPolicy rp) _parent.AddSingleton(rp);
+                if (policy is IDecoratorPolicy dp) _parent.AddSingleton(dp);
             }
 
             /// <summary>
@@ -365,6 +369,19 @@ namespace Lamar
         public void Injectable<T>() where T : class
         {
             For<T>().Use(new InjectedInstance<T>());
+        }
+
+        internal T[] FindAndRemovePolicies<T>() where T : ILamarPolicy
+        {
+            var policies = this
+                .Where(x => x.ServiceType == typeof(T) && x.ImplementationInstance != null)
+                .Select(x => x.ImplementationInstance)
+                .OfType<T>()
+                .ToArray();
+
+            RemoveAll(x => x.ServiceType == typeof(T));
+
+            return policies;
         }
     }
 

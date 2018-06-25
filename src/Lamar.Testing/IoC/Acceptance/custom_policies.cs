@@ -4,6 +4,7 @@ using Baseline;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using StructureMap.Testing.Widget;
 using Xunit;
 
 namespace Lamar.Testing.IoC.Acceptance
@@ -249,6 +250,27 @@ namespace Lamar.Testing.IoC.Acceptance
                 _.Policies.Add(new MyCustomPolicy());
             });
             // ENDSAMPLE
+        }
+
+
+        public class WidgetFilledPolicy : IRegistrationPolicy
+        {
+            public void Apply(ServiceRegistry services)
+            {
+                services.ForSingletonOf<IWidget>().Use<AWidget>();
+            }
+        }
+
+        [Fact]
+        public void use_registration_policy()
+        {
+            var container = new Container(x =>
+            {
+                x.Policies.Add<WidgetFilledPolicy>();
+            });
+
+            container.GetInstance<IWidget>()
+                .ShouldBeOfType<AWidget>();
         }
     }
 }
