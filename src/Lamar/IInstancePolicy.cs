@@ -10,7 +10,7 @@ namespace Lamar
     /// as part of creating a "build plan"
     /// </summary>
     
-    public interface IInstancePolicy
+    public interface IInstancePolicy : ILamarPolicy
     {
         /// <summary>
         /// Apply any conventional changes to the configuration

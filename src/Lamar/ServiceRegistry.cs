@@ -296,6 +296,7 @@ namespace Lamar
             /// get around type references. If you're using mixed ASP.Net Core 2.0 and 2.1 assemblies,
             /// you'll want this
             /// </summary>
+            [Obsolete("This will be unnecessary with the 1.1 model where you don't generate singletons upfront")]
             public DynamicAssemblySharing DynamicAssemblySharing
             {
                 set => _parent.AddSingleton(new SharingSettings {Sharing = value});
@@ -303,35 +304,25 @@ namespace Lamar
 
             
             /// <summary>
-            /// Adds a new instance policy to this container
+            /// Adds a new policy to this container
             /// that can apply to every object instance created
             /// by this container
             /// </summary>
             /// <param name="policy"></param>
-            public void Add(IInstancePolicy policy)
+            public void Add(ILamarPolicy policy)
             {
-                _parent.AddSingleton(policy);
+                if (policy is IInstancePolicy i) _parent.AddSingleton(i);
             }
 
             /// <summary>
-            /// Adds a new instance policy to this container
+            /// Adds a new policy to this container
             /// that can apply to every object instance created
             /// by this container
             /// </summary>
-            public void Add<T>() where T : IInstancePolicy, new()
+            public void Add<T>() where T : ILamarPolicy, new()
             {
                 Add(new T());
             }
-/*
-            /// <summary>
-            /// Register an interception policy
-            /// </summary>
-            /// <param name="policy"></param>
-            public void Interceptors(IInterceptorPolicy policy)
-            {
-                alter = graph => graph.Policies.Add(policy);
-            }
-*/
 
 
             /// <summary>
