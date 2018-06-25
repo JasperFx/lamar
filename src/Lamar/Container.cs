@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Lamar
 {
     // SAMPLE: Container-Declaration
-    public class Container : Scope, IContainer
+    public class Container : Scope, IContainer, INestedContainer
     // ENDSAMPLE
     {
         private static Task _warmup;
@@ -140,7 +140,7 @@ namespace Lamar
         }
 
 
-        public IContainer GetNestedContainer()
+        public INestedContainer GetNestedContainer()
         {
             assertNotDisposed();
             return new Container(ServiceGraph, this);
@@ -308,6 +308,11 @@ namespace Lamar
         /// <param name="configure"></param>
         public void Configure(Action<IServiceCollection> configure)
         {
+            if (!ReferenceEquals(this, Root))
+            {
+                throw new InvalidOperationException("Configure() cannot be used with nested containers");
+            }
+            
             var services = new ServiceRegistry();
             configure(services);
 

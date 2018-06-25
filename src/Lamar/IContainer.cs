@@ -1,15 +1,27 @@
 ﻿using System;
+using System.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
+    public interface INestedContainer : IServiceContext
+    {
+        /// <summary>
+        /// Inject an object into a container at runtime. Used primarily for services like
+        /// HttpContext that are passed into a nested container
+        /// </summary>
+        /// <param name="object"></param>
+        /// <typeparam name="T"></typeparam>
+        void Inject<T>(T @object);
+    }
+    
     public interface IContainer : IServiceContext, IDisposable
     {
         /// <summary>
         /// Starts a "Nested" Container for atomic, isolated access.
         /// </summary>
         /// <returns>The created nested container.</returns>
-        IContainer GetNestedContainer();
+        INestedContainer GetNestedContainer();
 
         /// <summary>
         /// Use with caution!  Does a full environment test of the configuration of this container.  Will try to create
@@ -29,14 +41,6 @@ namespace Lamar
         /// </summary>
         /// <param name="configure"></param>
         void Configure(Action<IServiceCollection> configure);
-
-        /// <summary>
-        /// Inject an object into a container at runtime. Used primarily for services like
-        /// HttpContext that are passed into a nested container
-        /// </summary>
-        /// <param name="object"></param>
-        /// <typeparam name="T"></typeparam>
-        void Inject<T>(T @object);
     }
 
     public enum AssertMode

@@ -43,7 +43,7 @@ namespace Lamar.Testing.IoC.Acceptance
             var container = Container.Empty();
             var nested = container.GetNestedContainer();
             
-            nested.GetInstance<IContainer>().ShouldBe(nested);
+            nested.GetInstance<IContainer>().ShouldBeSameAs(nested);
             nested.GetInstance<GuyWithContainer>()
                 .Container
                 .ShouldBeSameAs(nested);
