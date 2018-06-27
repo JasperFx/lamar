@@ -7,6 +7,7 @@ using Lamar.Codegen;
 using Lamar.Compilation;
 using Lamar.IoC;
 using Lamar.IoC.Enumerables;
+using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Lazy;
 using Lamar.IoC.Resolvers;
@@ -55,6 +56,8 @@ namespace Lamar
 
             organize(_services);
         }
+        
+        internal readonly Dictionary<string, Type> CachedResolverTypes = new Dictionary<string, Type>();
 
         private void organize(ServiceRegistry services)
         {
@@ -79,12 +82,25 @@ namespace Lamar
                 policy.Apply(services);
             }
 
+            var sets = services.FindAndRemovePolicies<CachedResolverSet>();
+            foreach (var resolverSet in sets)
+            {
+                if (resolverSet.TryLoadResolvers(out var dict))
+                {
+                    foreach (var pair in dict)
+                    {
+                        CachedResolverTypes.Add(pair.Key, pair.Value);
+                    }
+                }
+            }
+
 
             addScopeResolver<Scope>(services);
             addScopeResolver<IServiceProvider>(services);
             addScopeResolver<IContainer>(services);
             addScopeResolver<IServiceScopeFactory>(services);
         }
+
 
         public IDecoratorPolicy[] DecoratorPolicies { get; private set; } = new IDecoratorPolicy[0];
 
@@ -118,18 +134,6 @@ namespace Lamar
             rebuildReferencedAssemblyArray();
         }
 
-        private void buildSingletonsInIndividualAssemblies(GeneratedInstance[] generatedSingletons)
-        {
-            foreach (var instance in generatedSingletons)
-            {
-                if (instance.Resolver != null) continue;
-
-                var assembly = ToGeneratedAssembly();
-                instance.GenerateResolver(assembly);
-                assembly.CompileAll();
-                instance.AttachResolver(_rootScope);
-            }
-        }
 
         private void rebuildReferencedAssemblyArray()
         {
@@ -155,10 +159,10 @@ namespace Lamar
         }
 
 
-        internal GeneratedAssembly ToGeneratedAssembly()
+        internal GeneratedAssembly ToGeneratedAssembly(string @namespace = null)
         {
             // TODO -- will need to get at the GenerationRules from somewhere
-            var generatedAssembly = new GeneratedAssembly(new GenerationRules("Jasper.Generated"));
+            var generatedAssembly = new GeneratedAssembly(new GenerationRules(@namespace ?? "Jasper.Generated"));
 
             generatedAssembly.Generation.Assemblies.Fill(_allAssemblies);
 

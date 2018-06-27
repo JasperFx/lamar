@@ -31,6 +31,7 @@ namespace Lamar.Testing.IoC.Acceptance
             yield return _store;
         }
 
+
         public override Frame CreateBuildFrame()
         {
             throw new NotImplementedException();

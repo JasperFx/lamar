@@ -21,6 +21,32 @@ namespace Lamar.IoC.Instances
         {
         }
 
+        internal (string, string) GenerateResolverClassCode(GeneratedAssembly generatedAssembly)
+        {
+            var typeName = GetResolverTypeName();
+
+
+            var buildType = ServiceType.MustBeBuiltWithFunc() || ImplementationType.MustBeBuiltWithFunc()
+                ? typeof(object)
+                : ServiceType;
+            
+            var resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(buildType));
+
+            var method = resolverType.MethodFor("Build");
+
+            var frame = CreateBuildFrame();
+
+            method.Frames.Add(frame);
+
+            return (typeName, generatedAssembly.GenerateCode());
+        }
+
+        public string GetResolverTypeName()
+        {
+            var typeName = (ServiceType.FullNameInCode() + "_" + Name).Sanitize();
+            return typeName;
+        }
+
 
         public void GenerateResolver(GeneratedAssembly generatedAssembly)
         {
@@ -42,22 +68,6 @@ namespace Lamar.IoC.Instances
             var frame = CreateBuildFrame();
 
             method.Frames.Add(frame);
-        }
-
-        public void AttachResolver(Scope root)
-        {
-            if (ErrorMessages.Any() || Dependencies.Any(x => x.ErrorMessages.Any()))
-            {
-                _resolver = new ErrorMessageResolver(this);
-            }
-            else
-            {
-                _resolver = (IResolver) root.QuickBuild(_resolverType.CompiledType);
-                _resolverType.ApplySetterValues(_resolver);
-            }
-
-            _resolver.Hash = GetHashCode();
-            _resolver.Name = Name;
         }
 
         public sealed override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
@@ -127,25 +137,34 @@ namespace Lamar.IoC.Instances
 
         private void buildResolver(Scope scope)
         {
+            if (_resolver != null) return;
+            
             if (ErrorMessages.Any() || Dependencies.Any(x => x.ErrorMessages.Any()))
             {
                 _resolver = new ErrorMessageResolver(this);
             }
             else
             {
-                var assembly = scope.ServiceGraph.ToGeneratedAssembly();
-                GenerateResolver(assembly);
-
-                if (_resolverType == null)
+                if (scope.ServiceGraph.CachedResolverTypes.TryGetValue(GetResolverTypeName(), out var resolverType))
                 {
-                    _resolver = new ErrorMessageResolver(this);
+                    _resolver = (IResolver) scope.Root.QuickBuild(_resolverType.CompiledType);
                 }
                 else
                 {
-                    assembly.CompileAll();
+                    var assembly = scope.ServiceGraph.ToGeneratedAssembly();
+                    GenerateResolver(assembly);
 
-                    _resolver = (IResolver) scope.Root.QuickBuild(_resolverType.CompiledType);
-                    _resolverType.ApplySetterValues(_resolver);
+                    if (_resolverType == null)
+                    {
+                        _resolver = new ErrorMessageResolver(this);
+                    }
+                    else
+                    {
+                        assembly.CompileAll();
+
+                        _resolver = (IResolver) scope.Root.QuickBuild(_resolverType.CompiledType);
+                        _resolverType.ApplySetterValues(_resolver);
+                    }
                 }
             }
 
@@ -157,8 +176,8 @@ namespace Lamar.IoC.Instances
         {
             if (_resolverType == null)
             {
-                // Force it to generate code
-                ToResolver(rootScope);
+                var (name, code) = GenerateResolverClassCode(rootScope.ServiceGraph.ToGeneratedAssembly());
+                return code;
             }
             
             if (_resolverType != null)

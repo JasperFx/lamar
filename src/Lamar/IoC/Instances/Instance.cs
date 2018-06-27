@@ -192,7 +192,7 @@ namespace Lamar.IoC.Instances
             return CreateVariable(BuildMode.Dependency, variables, false);
         }
         
-        protected virtual IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected internal virtual IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             return Enumerable.Empty<Instance>();
         }

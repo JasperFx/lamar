@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lamar.IoC;
+using Lamar.IoC.Exports;
+using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
 
@@ -70,6 +72,16 @@ namespace Lamar
         }
 
         public IEnumerable<AssemblyScanner> Scanners => _scope.ServiceGraph.Scanners;
+
+        public void ExportResolverCode<T>(string path) where T : CachedResolverSet, new()
+        {
+            ExportResolverCode(new T(), path);
+        }
+
+        public void ExportResolverCode(CachedResolverSet resolverSet, string path)
+        {
+            resolverSet.Export(_scope.ServiceGraph, AllInstances.Select(x => x.Instance).OfType<GeneratedInstance>().ToArray(), path);
+        }
 
     }
 }

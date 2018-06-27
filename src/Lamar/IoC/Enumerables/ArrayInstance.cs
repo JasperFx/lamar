@@ -44,7 +44,7 @@ namespace Lamar.IoC.Enumerables
             return new ArrayAssignmentFrame<T>(this, elements).Variable;
         }
 
-        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _elements = services.FindAll(typeof(T));
             return _elements;

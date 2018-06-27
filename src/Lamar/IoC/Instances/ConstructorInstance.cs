@@ -241,7 +241,7 @@ namespace Lamar.IoC.Instances
 
 
 
-        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             Constructor = DetermineConstructor(services, out var message);
 
@@ -402,7 +402,6 @@ namespace Lamar.IoC.Instances
         }
         
         private readonly IList<Instance> _inlines = new List<Instance>();
-        private IReadOnlyList<Instance> _inlineDependencies;
 
         /// <summary>
         /// Adds an inline dependency
@@ -427,7 +426,7 @@ namespace Lamar.IoC.Instances
             return new DependencyExpression<T>(this, constructorArg);
         }
 
-        IReadOnlyList<Instance> IConfiguredInstance.InlineDependencies => _inlineDependencies;
+        IReadOnlyList<Instance> IConfiguredInstance.InlineDependencies { get; }
     }
     
     

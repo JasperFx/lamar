@@ -45,7 +45,7 @@ namespace Lamar.IoC.Instances
             return _inner.CreateInlineVariable(variables);
         }
 
-        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _inner = services.FindInstance(ServiceType, _instanceKey);
             if (_inner == null) throw new InvalidOperationException($"Referenced instance of {ServiceType.FullNameInCode()} named '{_instanceKey}' does not exist");
