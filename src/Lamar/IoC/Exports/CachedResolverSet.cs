@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Lamar.IoC.Instances;
+using Lamar.Scanning.Conventions;
 using Lamar.Util;
 
 namespace Lamar.IoC.Exports
@@ -33,17 +34,34 @@ namespace Lamar.IoC.Exports
             return false;
         }
 
+        private bool canBePrebuilt(GeneratedInstance instance)
+        {
+            if (instance.ImplementationType.MustBeBuiltWithFunc()) return false;
+
+            // TODO -- try to address this later
+            if (instance is ConstructorInstance i)
+            {
+                if (i.InlineDependencies.Any()) return false;
+            }
+
+            return true;
+        }
+
         internal void Export(ServiceGraph serviceGraph, GeneratedInstance[] instances, string path)
         {
             var system = new FileSystem();
 
             if (system.DirectoryExists(path))
+            {
                 system.CleanDirectory(path);
+            }
             else
+            {
                 system.CreateDirectory(path);
+            }
 
 
-            var matching = instances.Where(x => Include(x) && !Exclude(x)).ToArray();
+            var matching = instances.Where(x => canBePrebuilt(x) && Include(x) && !Exclude(x)).ToArray();
 
             var typenames = new Dictionary<string, string>();
 

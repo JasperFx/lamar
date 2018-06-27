@@ -262,7 +262,7 @@ namespace Lamar.IoC.Instances
 
                 if (ImplementationType.MustBeBuiltWithFunc())
                 {
-                    (var func, var funcType) = CtorFuncBuilder.LambdaTypeFor(ServiceType, ImplementationType, Constructor);
+                    var (func, funcType) = CtorFuncBuilder.LambdaTypeFor(ServiceType, ImplementationType, Constructor);
                     _func = new ObjectInstance(funcType, func);
 
 

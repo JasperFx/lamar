@@ -22,8 +22,6 @@ namespace Lamar.IoC.Instances
 
         public Variable Resolve(ResolverVariables variables, BuildMode mode)
         {
-            
-            
             if (Instance.IsInlineDependency())
             {
                 var variable = Instance.CreateInlineVariable(variables);

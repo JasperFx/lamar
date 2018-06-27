@@ -23,6 +23,7 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
 using Baseline;
+using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -87,6 +88,29 @@ namespace Lamar.Testing.AspNetCoreIntegration
             {
                 Context = context;
             }
+        }
+        
+        [Fact]
+        public void record_cached_set()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+            
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                
+                container.Model.ExportResolverCode<AspNetResolverSet>("../../../Internal/Resolvers");
+            }
+
+
+
         }
 
         [Fact]
@@ -272,6 +296,54 @@ namespace Lamar.Testing.AspNetCoreIntegration
         public IFeatureCollection Features { get; } = new FeatureCollection();
     }
 
+    public class AspNetResolverSet : CachedResolverSet
+    {
+        public override bool Include(GeneratedInstance instance)
+        {
+            return true;
+        }
+    }
+    
+    public class CachedStartup
+    {
+        public void ConfigureContainer(ServiceRegistry services)
+        {
+            services.AddMvc();
+            services.AddLogging();
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients());
+            services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
+
+            services.AddAuthentication()
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "auth";
+                    options.RequireHttpsMetadata = true;
+                })
+                
+                
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = "something";
+                    facebookOptions.AppSecret = "else";
+                });
+
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseIdentityServer();
+
+            app.Run(c =>
+            {
+                var maker = c.RequestServices.GetService<IMessageMaker>();
+                return c.Response.WriteAsync(maker.ToString());
+            });
+        }
+    }
+    
     public class Startup
     {
         public void ConfigureContainer(ServiceRegistry services)

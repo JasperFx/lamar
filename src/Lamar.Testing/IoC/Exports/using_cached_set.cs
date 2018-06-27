@@ -14,7 +14,7 @@ namespace Lamar.Testing.IoC.Exports
 {
     public class using_cached_set
     {
-        [Fact]
+        //[Fact]
         public void try_it_out()
         {
             var container = new Container(x =>
@@ -30,7 +30,7 @@ namespace Lamar.Testing.IoC.Exports
 
         }
 
-        [Fact]
+        //[Fact]
         public void try_to_load_resolvers()
         {
             var @set = new WidgetCachedSet();
@@ -39,7 +39,7 @@ namespace Lamar.Testing.IoC.Exports
             resolvers.Values.Single().CanBeCastTo<IResolver>().ShouldBeTrue();
         }
 
-        [Fact]
+        //[Fact]
         public void use_it_for_realsies()
         {
             var container = new Container(x =>
