@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Lamar.Util
 {
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         private static readonly IList<Type> _integerTypes = new List<Type>
         {

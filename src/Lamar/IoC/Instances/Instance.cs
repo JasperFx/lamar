@@ -19,6 +19,11 @@ namespace Lamar.IoC.Instances
         
         public bool IsOnlyOneOfServiceType { get; set; }
 
+        public ServiceDescriptor ToDescriptor()
+        {
+            return new ServiceDescriptor(ServiceType, this);
+        }
+        
         public string DefaultArgName()
         {
             var argName = Variable.DefaultArgName(ServiceType);
@@ -205,6 +210,16 @@ namespace Lamar.IoC.Instances
 
 
         public bool IsDefault { get; set; } = false;
+
+        protected bool tryGetService(Scope scope, out object service)
+        {
+            return scope.Services.TryGetValue(Hash, out service);
+        }
+
+        protected void store(Scope scope, object service)
+        {
+            scope.Services.Add(Hash, service);
+        }
 
         /// <summary>
         /// Tries to describe how this instance would be resolved at runtime

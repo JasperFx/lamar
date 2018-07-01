@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Baseline;
 using Lamar;
 using Lamar.Codegen;
 using Lamar.IoC.Instances;
@@ -27,7 +26,11 @@ public class BenchmarkBase : IDisposable
                 var registry = new ServiceRegistry();
                 configure(registry);
 
-                services.AddRange(registry);
+                foreach (var descriptor in registry)
+                {
+                    services.Add(descriptor);
+                }
+                
             })
             .UseUrls("http://localhost:5002")
             .UseServer(new NulloServer())

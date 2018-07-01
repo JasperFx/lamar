@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Lamar.Microsoft.DependencyInjection
 {
@@ -27,6 +28,9 @@ namespace Lamar.Microsoft.DependencyInjection
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
 
+            services.AddSingleton<IRegistrationPolicy>(new LoggerPolicy());
+            services.AddSingleton<IFamilyPolicy>(new LoggerPolicy());
+            
             if (registry != null)
             {
                 foreach (var descriptor in registry)
