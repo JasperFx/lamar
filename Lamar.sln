@@ -27,8 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Microsoft.DependencyI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AspNetCoreTests", "src\Lamar.AspNetCoreTests\Lamar.AspNetCoreTests.csproj", "{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "src\Benchmarks\Benchmarks.csproj", "{F4454378-F439-4B0A-9331-03816AE8013D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,10 +77,6 @@ Global
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4454378-F439-4B0A-9331-03816AE8013D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4454378-F439-4B0A-9331-03816AE8013D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4454378-F439-4B0A-9331-03816AE8013D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4454378-F439-4B0A-9331-03816AE8013D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
