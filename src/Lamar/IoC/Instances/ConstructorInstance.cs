@@ -106,8 +106,6 @@ namespace Lamar.IoC.Instances
                     {
                         service = quickResolve(topScope);
 
-                        topScope.Services.Add(Hash, service);
-
                         return service;
                     }
                 };
@@ -119,19 +117,36 @@ namespace Lamar.IoC.Instances
 
         public override object QuickResolve(Scope scope)
         {
-            if (_resolver != null || Lifetime != ServiceLifetime.Transient) return Resolve(scope);
-
-            return quickResolve(scope);
+            return _resolver?.Resolve(scope) ?? quickResolve(scope);
         }
 
         private object quickResolve(Scope scope)
         {
+            var holdingScope = Lifetime == ServiceLifetime.Singleton ? scope.Root : scope;
+            if (tryGetService(holdingScope, out var cached))
+            {
+                return cached;
+            }
+            
             var values = _arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
             var service = Activator.CreateInstance(ImplementationType, values);
 
             if (service is IDisposable disposable)
             {
-                scope.Disposables.Add(disposable);
+                if (Lifetime == ServiceLifetime.Singleton)
+                {
+                    scope.Root.Disposables.Fill(disposable);
+                }
+                else
+                {
+                    scope.Disposables.Fill(disposable);
+                }
+                
+            }
+
+            if (Lifetime != ServiceLifetime.Transient)
+            {
+                store(holdingScope, service);
             }
 
 

@@ -239,6 +239,7 @@ public class lazy_and_func_resolution
                 _.AddSingleton<Thing1>();
                 _.AddSingleton<Thing2>();
             });
+            
             var thing1 = container.GetInstance<Thing1>();
             var thing2 = container.GetInstance<Thing2>();
 
