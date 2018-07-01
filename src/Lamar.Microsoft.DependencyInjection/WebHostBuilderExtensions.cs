@@ -31,6 +31,9 @@ namespace Lamar.Microsoft.DependencyInjection
             services.AddSingleton<IRegistrationPolicy>(new LoggerPolicy());
             services.AddSingleton<IFamilyPolicy>(new LoggerPolicy());
             
+            services.AddSingleton<IRegistrationPolicy>(new OptionsPolicy());
+            services.AddSingleton<IFamilyPolicy>(new OptionsPolicy());
+            
             if (registry != null)
             {
                 foreach (var descriptor in registry)

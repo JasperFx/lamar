@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Lamar.Microsoft.DependencyInjection
 {
+    
+    
+    
     public class LoggerPolicy : IRegistrationPolicy, IFamilyPolicy
     {
         public static bool Matches(ServiceDescriptor descriptor)
