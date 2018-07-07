@@ -329,7 +329,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     facebookOptions.AppId = "something";
                     facebookOptions.AppSecret = "else";
                 });
-            services.AddSaml();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -369,6 +368,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     facebookOptions.AppId = "something";
                     facebookOptions.AppSecret = "else";
                 });
+
             services.AddSaml();
 
         }
