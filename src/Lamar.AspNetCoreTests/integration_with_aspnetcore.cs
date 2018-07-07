@@ -76,7 +76,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             });
 
             container.GetInstance<AppDbContext>().ShouldNotBeNull();
-            
+
             container.GetInstance<Foo>().Context.ShouldNotBeNull();
         }
 
@@ -89,14 +89,14 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 Context = context;
             }
         }
-        
+
         //[Fact]
         public void record_cached_set()
         {
             var builder = new WebHostBuilder();
             builder
                 .UseLamar()
-            
+
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
                 .UseApplicationInsights()
@@ -105,7 +105,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             using (var host = builder.Start())
             {
                 var container = host.Services.ShouldBeOfType<Container>();
-                
+
                 container.Model.ExportResolverCode<AspNetResolverSet>("../../../Internal/Resolvers");
             }
 
@@ -119,7 +119,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             var builder = new WebHostBuilder();
             builder
                 .UseLamar()
-            
+
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
                 .UseApplicationInsights()
@@ -128,7 +128,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             using (var host = builder.Start())
             {
                 var container = host.Services.ShouldBeOfType<Container>();
-                
+
                 var singletons = container.Model.AllInstances
                     .Where(x => x.Lifetime == ServiceLifetime.Singleton)
                     .Where(x => !x.ServiceType.IsOpenGeneric())
@@ -143,14 +143,14 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
 
         }
-        
+
         [Fact]
         public void use_in_app()
         {
             var builder = new WebHostBuilder();
             builder
                 .UseLamar()
-            
+
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
                 .UseApplicationInsights()
@@ -165,13 +165,13 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
             long starting;
             long ending;
-            
+
             using (var host = builder.Start())
             {
                 bootstrappingTime = stopwatch.ElapsedMilliseconds;
                 var container = host.Services.ShouldBeOfType<Container>();
 
-                
+
                 var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
                     .SelectMany(x => x.Instance.ErrorMessages).ToArray();
 
@@ -183,10 +183,10 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
                 {
                     instance.Resolve().ShouldNotBeNull();
-                    
+
 //                    try
 //                    {
-//                        
+//
 //                    }
 //                    catch (Exception e)
 //                    {
@@ -198,17 +198,17 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 stopwatch.Stop();
 
                 var writer = new StringWriter();
-                
+
                 container.Bootstrapping.DisplayTimings().Write(writer);
-                
+
                 _output.WriteLine(writer.ToString());
             }
-            
+
             _output.WriteLine("Bootstrapping: " + bootstrappingTime);
             _output.WriteLine("Building all:  " + (ending - starting));
-            
-            
-            
+
+
+
 
             if (failures.Any())
             {
@@ -249,7 +249,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                     //                    try
                     //                    {
-                    //                        
+                    //
                     //                    }
                     //                    catch (Exception e)
                     //                    {
@@ -276,7 +276,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
         {
         }
     }
-    
+
     public class NulloServer : IServer
     {
         public void Dispose()
@@ -303,7 +303,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             return true;
         }
     }
-    
+
     public class CachedStartup
     {
         public void ConfigureContainer(ServiceRegistry services)
@@ -322,14 +322,13 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     options.Authority = "auth";
                     options.RequireHttpsMetadata = true;
                 })
-                
-                
+
+
                 .AddFacebook(facebookOptions =>
                 {
                     facebookOptions.AppId = "something";
                     facebookOptions.AppSecret = "else";
                 });
-
         }
 
         public void Configure(IApplicationBuilder app)
@@ -343,7 +342,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             });
         }
     }
-    
+
     public class Startup
     {
         public void ConfigureContainer(ServiceRegistry services)
@@ -362,13 +361,15 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     options.Authority = "auth";
                     options.RequireHttpsMetadata = true;
                 })
-                
-                
+
+
                 .AddFacebook(facebookOptions =>
                 {
                     facebookOptions.AppId = "something";
                     facebookOptions.AppSecret = "else";
                 });
+
+            services.AddSaml();
 
         }
 
@@ -383,7 +384,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             });
         }
     }
-    
+
     public class Config {
         public static IEnumerable<ApiResource> GetApiResources() => new List<ApiResource> {
             new ApiResource("api1", "My API")
