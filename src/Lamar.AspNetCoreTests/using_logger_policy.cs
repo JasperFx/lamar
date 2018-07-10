@@ -46,6 +46,4 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
         }
     }
-    
-    
 }

@@ -369,7 +369,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     facebookOptions.AppSecret = "else";
                 });
 
-            services.AddSaml();
 
         }
 
