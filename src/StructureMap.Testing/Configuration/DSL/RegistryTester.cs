@@ -33,7 +33,7 @@ namespace StructureMap.Testing.Configuration.DSL
         }
 
         // SAMPLE: simple-registry
-        public class PurpleRegistry : Registry
+        public class PurpleRegistry : ServiceRegistry
         {
             public PurpleRegistry()
             {

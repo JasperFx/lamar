@@ -20,7 +20,7 @@ namespace StructureMap.Testing.Acceptance
 
     /*
     // SAMPLE: SettingDefaults
-    public class SettingDefaults : Registry
+    public class SettingDefaults : ServiceRegistry
     {
         public SettingDefaults()
         {
@@ -53,7 +53,7 @@ namespace StructureMap.Testing.Acceptance
     }
     // ENDSAMPLE
     // SAMPLE: AdditionalRegistrations
-    public class AdditionalRegistrations : Registry
+    public class AdditionalRegistrations : ServiceRegistry
     {
         public AdditionalRegistrations()
         {
