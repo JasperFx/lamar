@@ -104,7 +104,10 @@ namespace Lamar.IoC.Instances
                     }
                     else
                     {
-                        service = quickResolve(topScope);
+                        lock (_locker)
+                        {
+                            service = quickResolve(topScope);
+                        }
 
                         return service;
                     }
@@ -115,9 +118,20 @@ namespace Lamar.IoC.Instances
         }
         
 
+        private readonly object _locker = new object();
         public override object QuickResolve(Scope scope)
         {
-            return _resolver?.Resolve(scope) ?? quickResolve(scope);
+            if (_resolver != null) return _resolver.Resolve(scope);
+
+            if (Lifetime == ServiceLifetime.Singleton)
+            {
+                lock (_locker)
+                {
+                    return quickResolve(scope);
+                }
+            }
+
+            return quickResolve(scope);
         }
 
         private object quickResolve(Scope scope)
