@@ -24,6 +24,11 @@ namespace Lamar.IoC.Instances
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
             writer.Write($"var {Variable.Usage} = ({Variable.VariableType.FullNameInCode()}){_setter.Usage}(({typeof(TContainer).FullNameInCode()}){_scope.Usage});");
+            writer.Write($"var {Variable.Usage}_disposable = {Variable.Usage} as System.IDisposable;");
+            writer.Write($"if({Variable.Usage}_disposable != null) {{");
+            writer.Write($"   {_scope.Usage}.Disposables.Add({Variable.Usage}_disposable);");
+            writer.Write("}");
+
             Next?.GenerateCode(method, writer);
         }
 
