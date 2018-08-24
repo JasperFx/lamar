@@ -170,14 +170,41 @@ namespace StructureMap.Testing.Pipeline
         public void should_dispose_lambda_instance_with_transient_scope()
         {
             var container = new Container(x => { x.For<I1>().Use(_ => new C1Yes()).Transient(); });
-            var nestedContainer = container.GetNestedContainer();
-            
-            var disposable = nestedContainer.GetInstance<I1>().ShouldBeOfType<C1Yes>();
-            disposable.WasDisposed.ShouldBeFalse();
+
+            var disposableDependent = container.GetInstance<DisposableDependent>();
+            disposableDependent.WasDisposed.ShouldBeFalse();
 
             container.Dispose();
 
-            disposable.WasDisposed.ShouldBeTrue();
+            disposableDependent.WasDisposed.ShouldBeTrue();
+            disposableDependent.ChildDisposable.WasDisposed.ShouldBeTrue();
+        }
+    }
+
+    public class DisposableDependent : IDisposable
+    {
+        private I1 _i1;
+        private bool _wasDisposed;
+
+        public DisposableDependent(I1 i1)
+        {
+            _i1 = i1;
+        }
+
+        public C1Yes ChildDisposable
+        {
+            get { return (C1Yes)_i1; }
+        }
+
+        public bool WasDisposed
+        {
+            get { return _wasDisposed; }
+        }
+
+        public void Dispose()
+        {
+            Assert.False(_wasDisposed, "This object should not be disposed twice");
+            _wasDisposed = true;
         }
     }
 
