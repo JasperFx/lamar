@@ -165,6 +165,20 @@ namespace StructureMap.Testing.Pipeline
 
             disposable.WasDisposed.ShouldBeTrue();
         }
+
+        [Fact]
+        public void should_dispose_lambda_instance_with_transient_scope()
+        {
+            var container = new Container(x => { x.For<I1>().Use(_ => new C1Yes()).Transient(); });
+            var nestedContainer = container.GetNestedContainer();
+            
+            var disposable = nestedContainer.GetInstance<I1>().ShouldBeOfType<C1Yes>();
+            disposable.WasDisposed.ShouldBeFalse();
+
+            container.Dispose();
+
+            disposable.WasDisposed.ShouldBeTrue();
+        }
     }
 
     public class Disposable : IDisposable
