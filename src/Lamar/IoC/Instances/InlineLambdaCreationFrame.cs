@@ -25,7 +25,7 @@ namespace Lamar.IoC.Instances
         {
             writer.Write($"var {Variable.Usage} = ({Variable.VariableType.FullNameInCode()}){_setter.Usage}(({typeof(TContainer).FullNameInCode()}){_scope.Usage});");
 
-            if(!Variable.VariableType.IsPrimitive && Variable.VariableType != typeof(string))
+            if(!Variable.VariableType.IsPrimitive && !Variable.VariableType.IsEnum && Variable.VariableType != typeof(string))
             {
                 writer.Write($"var {Variable.Usage}_disposable = {Variable.Usage} as System.IDisposable;");
                 writer.Write($"if({Variable.Usage}_disposable != null) {{");
