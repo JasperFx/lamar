@@ -179,6 +179,42 @@ namespace StructureMap.Testing.Pipeline
             disposableDependent.WasDisposed.ShouldBeTrue();
             disposableDependent.ChildDisposable.WasDisposed.ShouldBeTrue();
         }
+        
+        [Fact]
+        public void should_dispose_lambda_instance_with_transient_scope_parent_is_singleton()
+        {
+            var container = new Container(x =>
+            {
+                x.For<DisposableDependent>().Use<DisposableDependent>().Singleton();
+                x.For<I1>().Use(_ => new C1Yes()).Transient();
+            });
+
+            var disposableDependent = container.GetInstance<DisposableDependent>();
+            disposableDependent.WasDisposed.ShouldBeFalse();
+
+            container.Dispose();
+
+            disposableDependent.WasDisposed.ShouldBeTrue();
+            disposableDependent.ChildDisposable.WasDisposed.ShouldBeTrue();
+        }
+        
+        [Fact]
+        public void should_dispose_lambda_instance_with_transient_scope_parent_is_scoped()
+        {
+            var container = new Container(x =>
+            {
+                x.For<DisposableDependent>().Use<DisposableDependent>().Scoped();
+                x.For<I1>().Use(_ => new C1Yes()).Transient();
+            });
+
+            var disposableDependent = container.GetInstance<DisposableDependent>();
+            disposableDependent.WasDisposed.ShouldBeFalse();
+
+            container.Dispose();
+
+            disposableDependent.WasDisposed.ShouldBeTrue();
+            disposableDependent.ChildDisposable.WasDisposed.ShouldBeTrue();
+        }
     }
 
     public class DisposableDependent : IDisposable

@@ -10,8 +10,10 @@ namespace Lamar.IoC.Instances
 {
     public class InlineLambdaCreationFrame<TContainer> : SyncFrame
     {
+        
         private Variable _scope;
         private readonly Setter _setter;
+        
 
         public InlineLambdaCreationFrame(Setter setter, Instance instance)
         {
@@ -27,10 +29,7 @@ namespace Lamar.IoC.Instances
 
             if(!Variable.VariableType.IsPrimitive && !Variable.VariableType.IsEnum && Variable.VariableType != typeof(string))
             {
-                writer.Write($"var {Variable.Usage}_disposable = {Variable.Usage} as System.IDisposable;");
-                writer.Write($"if({Variable.Usage}_disposable != null) {{");
-                writer.Write($"   {_scope.Usage}.Disposables.Add({Variable.Usage}_disposable);");
-                writer.Write("}");
+                writer.WriteLine($"{_scope.Usage}.{nameof(Scope.TryAddDisposable)}({Variable.Usage});");
             }
 
             Next?.GenerateCode(method, writer);

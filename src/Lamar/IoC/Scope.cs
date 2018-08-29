@@ -335,5 +335,17 @@ namespace Lamar.IoC
         {
             return (T) (_injected?.ContainsKey(typeof(T)) ?? false ? _injected[typeof(T)] : null);
         }
+
+        /// <summary>
+        /// Some bookkeeping here. Tracks this to the scope's disposable tracking *if* it is disposable
+        /// </summary>
+        /// <param name="object"></param>
+        public void TryAddDisposable(object @object)
+        {
+            if (@object is IDisposable disposable)
+            {
+                Disposables.Add(disposable);
+            }
+        }
     }
 }
