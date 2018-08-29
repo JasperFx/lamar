@@ -187,7 +187,7 @@ namespace Lamar
         {
             bool hasErrors = false;
 
-            foreach (var instance in Model.AllInstances.Where(x => x.Lifetime == ServiceLifetime.Singleton))
+            foreach (var instance in Model.AllInstances.Where(x => x.Lifetime == ServiceLifetime.Singleton && !x.ServiceType.IsOpenGeneric()))
             {
                 try
                 {
@@ -226,7 +226,7 @@ namespace Lamar
 
             using (var scope = new Scope(ServiceGraph, this))
             {
-                foreach (var instance in Model.AllInstances.Where(x => x.Lifetime != ServiceLifetime.Singleton))
+                foreach (var instance in Model.AllInstances.Where(x => x.Lifetime != ServiceLifetime.Singleton && !x.ServiceType.IsOpenGeneric()))
                 {
                     try
                     {
