@@ -94,11 +94,13 @@ namespace Lamar
                 }
             }
 
+            services.Add(new ScopeInstance<Scope>());
+            services.Add(new ScopeInstance<IServiceProvider>());
+            services.Add(new ScopeInstance<IServiceContext>());
+            
+            services.Add(new ScopeInstance<IContainer>());;
+            services.Add(new RootScopeInstance<IServiceScopeFactory>());;
 
-            addScopeResolver<Scope>(services);
-            addScopeResolver<IServiceProvider>(services);
-            addScopeResolver<IContainer>(services);
-            addScopeResolver<IServiceScopeFactory>(services);
         }
 
 

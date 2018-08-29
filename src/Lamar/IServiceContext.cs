@@ -10,21 +10,11 @@ namespace Lamar
 {
     public interface IServiceContext : IServiceProvider, IDisposable
     {
-        PerfTimer Bootstrapping { get; }
-        Scope Root { get; }
-
-        /// <summary>
-        /// Govern the behavior on Dispose() to prevent applications from 
-        /// being prematurely disposed
-        /// </summary>
-        DisposalLock DisposalLock { get; set; }
 
         /// <summary>
         /// Provides queryable access to the configured serviceType's and Instances of this Container.
         /// </summary>
         IModel Model { get; }
-        IList<IDisposable> Disposables { get; }
-        IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Creates or finds the default instance of <typeparamref name="T"/>.

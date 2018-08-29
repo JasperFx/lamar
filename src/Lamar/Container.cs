@@ -111,17 +111,14 @@ namespace Lamar
 
         private Container() : base()
         {
-            
         }
 
         public Container(IServiceCollection services) : base(services)
         {
-
         }
 
         public Container(Action<ServiceRegistry> configuration) : this(ServiceRegistry.For(configuration))
         {
-
         }
 
         private Container(ServiceGraph serviceGraph, Container container) : base(serviceGraph, container)
@@ -130,7 +127,6 @@ namespace Lamar
 
         public Container(IServiceCollection services, PerfTimer timer) : base(services, timer)
         {
-
         }
 
 
