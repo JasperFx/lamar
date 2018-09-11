@@ -21,7 +21,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .UseLamar()
                 .UseStartup<FailingStartupLamar>();
             
-            //FAILING TEST
+            //FAILING TEST : Does not throw when using Lamar
             Assert.ThrowsAny<Exception>(() => builder.Start());
         }
 
@@ -32,7 +32,8 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .UseKestrel()
                 .UseStructureMap()
                 .UseStartup<FailingStartupStructuremap>();
-
+            
+            //PASSING TEST : Correctly throws when using StructureMap as it is using the below OptionsFactoryDecorator
             Assert.ThrowsAny<Exception>(() => builder.Start());
         }
     }
