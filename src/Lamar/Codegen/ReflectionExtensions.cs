@@ -54,11 +54,17 @@ namespace Lamar.Codegen
             if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
                 var cleanName = type.Name.Split('`').First();
+                if(type.IsNested && type.DeclaringType?.IsGenericTypeDefinition == true)
+                {
+                    cleanName = $"{type.ReflectedType.NameInCode(type.GetGenericArguments())}.{cleanName}";
+                    return $"{type.Namespace}.{cleanName}";
+                }
+
                 if (type.IsNested)
                 {
                     cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
                 }
-                
+
                 var args = type.GetGenericArguments().Select(x => x.FullNameInCode()).Join(", ");
 
                 return $"{type.Namespace}.{cleanName}<{args}>";
@@ -99,7 +105,20 @@ namespace Lamar.Codegen
                 return $"{type.ReflectedType.NameInCode()}.{type.Name}";
             }
 
-            return type.Name.Replace("+", ".");
+            return type.Name.Replace("+", ".").Replace("`", "_");
+        }
+
+        /// <summary>
+        /// Derives the type name *as it would appear in C# code* for a type with generic parameters
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="genericParameterTypes"></param>
+        /// <returns></returns>
+        public static string NameInCode(this Type type, Type[] genericParameterTypes)
+        {
+            var cleanName = type.Name.Split('`').First().Replace("+", ".");
+            var args = genericParameterTypes.Select(x => x.FullNameInCode()).Join(", ");
+            return $"{cleanName}<{args}>";
         }
         
         public static string ShortNameInCode(this Type type)

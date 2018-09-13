@@ -76,6 +76,12 @@ namespace Lamar.Testing.Codegen
         {
             typeof(ThingHolder.Thing1).NameInCode().ShouldBe("ThingHolder.Thing1");
         }
+
+        [Fact]
+        public void full_name_in_code_of_generic_types_nested_type()
+        {
+            typeof(GenericTestClassWithNested<string>.NestedTestClass).FullNameInCode().ShouldBe("Lamar.Testing.Codegen.GenericTestClassWithNested<string>.NestedTestClass");
+        }
     }
 
     public class ThingHolder
@@ -92,4 +98,12 @@ namespace Lamar.Testing.Codegen
     }
 
     public class Message1{}
+
+    public class GenericTestClassWithNested<T>
+    {
+        public sealed class NestedTestClass
+        {
+
+        }
+    }
 }
