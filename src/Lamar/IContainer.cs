@@ -10,9 +10,31 @@ namespace Lamar
         /// Inject an object into a container at runtime. Used primarily for services like
         /// HttpContext that are passed into a nested container
         /// </summary>
-        /// <param name="object"></param>
-        /// <typeparam name="T"></typeparam>
-        void Inject<T>(T @object);
+        /// <param name="serviceType">Service type to inject.</param>
+        /// <param name="object">Service instance to inject.</param>
+        /// <param name="replace">When true, replaces any previously injected value for the service type.</param>
+
+        void Inject( Type serviceType, object @object, bool replace );
+
+        /// <summary>
+        /// Inject an object into a container at runtime. Used primarily for services like
+        /// HttpContext that are passed into a nested container
+        /// </summary>
+        /// <typeparam name="T">Service type to inject.</typeparam>
+        /// <param name="object">Service instance to inject.</param>
+        /// <param name="replace">When true, replaces any previously injected value for the service type.</param>
+
+        void Inject<T>( T @object, bool replace );
+
+        /// <summary>
+        /// Inject an object into a container at runtime. Used primarily for services like
+        /// HttpContext that are passed into a nested container
+        /// </summary>
+        /// <typeparam name="T">Service type to inject.</typeparam>
+        /// <param name="object">Service instance to inject.</param>
+        /// <param name="replace">When true, replaces any previously injected value for the service type.</param>
+
+        void Inject<T>( T @object );
     }
     
     public interface IContainer : IServiceContext, IDisposable
