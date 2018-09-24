@@ -320,17 +320,30 @@ namespace Lamar.IoC
         // don't build this if you don't need it
         private Dictionary<Type, object> _injected;
 
-        public void Inject<T>(T @object)
+        public virtual void Inject( Type serviceType, object @object, bool replace )
         {
-            if (_injected == null)
+            if ( !serviceType.IsAssignableFrom( @object.GetType() ) )
+                throw new InvalidOperationException( $"{serviceType} is not assignable from {@object.GetType()}" );
+
+            if ( _injected == null )
             {
                 _injected = new Dictionary<Type, object>();
-                
             }
-            
-            _injected.Add(typeof(T), @object);
+
+            if ( replace ) 
+            {
+                _injected[serviceType] = @object;
+            }
+
+            else
+            {
+                _injected.Add( serviceType, @object );
+            }
         }
 
+        public void Inject<T>( T @object ) => Inject( typeof(T), @object, false );
+        public void Inject<T>( T @object, bool replace = false ) => Inject( typeof(T), @object, replace );
+        
         public T GetInjected<T>()
         {
             return (T) (_injected?.ContainsKey(typeof(T)) ?? false ? _injected[typeof(T)] : null);
