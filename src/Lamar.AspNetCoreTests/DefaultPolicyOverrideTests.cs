@@ -28,7 +28,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
         {
             var builder = new WebHostBuilder()
                 .UseKestrel()
-                .UseLamar(addDefaultPolicies: false)
+                .UseLamar(resolving:LoggingAndOptionResolving.AspNetCore)
                 .UseStartup<FailingStartup>();
 
             Assert.ThrowsAny<Exception>(() => builder.Start());
