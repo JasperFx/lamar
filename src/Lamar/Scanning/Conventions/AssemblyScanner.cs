@@ -120,7 +120,17 @@ namespace Lamar.Scanning.Conventions
             var convention = new DefaultConventionScanner();
             With(convention);
         }
-        
+
+        public void WithDefaultConventions(OverwriteBehavior behavior)
+        {
+            var convention = new DefaultConventionScanner
+            {
+                Overwrites = behavior
+            };
+            
+            With(convention);
+        }
+
         public void ConnectImplementationsToTypesClosing(Type openGenericType)
         {
             var convention = new GenericConnectionScanner(openGenericType);

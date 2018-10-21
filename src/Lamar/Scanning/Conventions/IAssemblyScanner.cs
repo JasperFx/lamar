@@ -110,6 +110,14 @@ namespace Lamar.Scanning.Conventions
         /// added to PluginType "ISomething"
         /// </summary>
         void WithDefaultConventions();
+        
+        /// <summary>
+        /// Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
+        /// class named "Something" that implements "ISomething" will be automatically
+        /// added to PluginType "ISomething"
+        /// </summary>
+        /// <param name="behavior">Define whether or not Lamar should overwrite any existing registrations. Default is IfNew</param>
+        void WithDefaultConventions(OverwriteBehavior behavior);
 
         /// <summary>
         /// Automatically registers all concrete types without primitive arguments

@@ -45,6 +45,11 @@ namespace Lamar.Microsoft.DependencyInjection
             return AddLamar(services, registry: null, resolving: LoggingAndOptionResolving.Lamar);
         }
 
+        public static IServiceCollection AddLamar<T>(this IServiceCollection services, LoggingAndOptionResolving resolving = LoggingAndOptionResolving.Lamar) where T : ServiceRegistry, new()
+        {
+            return services.AddLamar(new T(), resolving);
+        }
+
         public static IServiceCollection AddLamar(this IServiceCollection services, LoggingAndOptionResolving resolving)
         {
             return AddLamar(services, registry: null, resolving: resolving);

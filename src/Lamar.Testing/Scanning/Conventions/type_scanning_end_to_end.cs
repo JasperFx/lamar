@@ -154,7 +154,66 @@ namespace Lamar.Testing.Scanning.Conventions
             container.Model.For<IShoes>().Default.ImplementationType.ShouldBe(typeof(Shoes));
             container.Model.For<IShorts>().Default.ImplementationType.ShouldBe(typeof(Shorts));
         }
+
+        [Fact]
+        public void use_default_scanning_with_no_overrides()
+        {
+            var container = Container.For(_ =>
+            {
+                _.For<IRanger>().Use<RedRanger>();
+
+                _.Scan(x =>
+                {
+                    x.AssemblyContainingType<IRanger>();
+                    x.WithDefaultConventions(OverwriteBehavior.Never);
+                });
+            });
+            
+            container.Model.For<IRanger>().Instances.Single()
+                .ImplementationType.ShouldBe(typeof(RedRanger));
+        }
+        
+        [Fact]
+        public void use_default_scanning_with_if_newer_and_not_a_match()
+        {
+            var container = Container.For(_ =>
+            {
+                _.For<IRanger>().Use<RedRanger>();
+
+                _.Scan(x =>
+                {
+                    x.AssemblyContainingType<IRanger>();
+                    x.WithDefaultConventions(OverwriteBehavior.NewType);
+                });
+            });
+            
+            container.Model.For<IRanger>().Instances.Select(x => x.ImplementationType)
+                .ShouldHaveTheSameElementsAs(typeof(RedRanger), typeof(Ranger));
+        }
+        
+        [Fact]
+        public void use_default_scanning_with_if_newer_and_a_match()
+        {
+            var container = Container.For(_ =>
+            {
+                _.For<IRanger>().Use<Ranger>();
+
+                _.Scan(x =>
+                {
+                    x.AssemblyContainingType<IRanger>();
+                    x.WithDefaultConventions(OverwriteBehavior.NewType);
+                });
+            });
+            
+            container.Model.For<IRanger>().Instances.Single()
+                .ImplementationType.ShouldBe(typeof(Ranger));
+        }
+
     }
+    
+    public interface IRanger{}
+    public class Ranger : IRanger {}
+    public class RedRanger : IRanger{}
 
 
     public interface Muppet
