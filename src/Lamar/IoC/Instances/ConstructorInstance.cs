@@ -228,6 +228,8 @@ namespace Lamar.IoC.Instances
         {
             var variables = new ResolverVariables();
             var ctorParameters = _arguments.Select(arg => arg.Resolve(variables, BuildMode.Dependency)).ToArray();
+            
+            variables.MakeNamesUnique();
 
             if (_func != null)
             {
@@ -238,6 +240,8 @@ namespace Lamar.IoC.Instances
                     ReturnCreated = true
                 };
             }
+            
+            
             
             return new ConstructorFrame(this, DisposeTracking.None, ctorParameters)
             {

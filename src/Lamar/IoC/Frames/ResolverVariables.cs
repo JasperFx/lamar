@@ -47,16 +47,6 @@ namespace Lamar.IoC.Frames
                 var transient = instance.CreateVariable(mode, this, false);
 
 
-                var sameNamed = _all.Where(x => x.Usage == transient.Usage).ToArray();
-                if (sameNamed.Length == 1)
-                {
-                    sameNamed.Single().OverrideName(transient.Usage + "1");
-                    transient.OverrideName(transient.Usage + "2");
-                }
-                else if (sameNamed.Length > 1)
-                {
-                    transient.OverrideName(transient.Usage + (sameNamed.Length + 1));
-                }
 
                 _all.Add(transient);
 
@@ -77,16 +67,17 @@ namespace Lamar.IoC.Frames
             return variable;
         }
 
-        public void Add(ServiceVariable variable)
+        public void MakeNamesUnique()
         {
-            // TODO -- have to do more on naming too
-            var index = AllFor(variable.Instance).Length + 1;
-            if (index > 1)
+            var duplicateGroups = _all.GroupBy(x => x.Usage).Where(x => x.Count() > 1).ToArray();
+            foreach (var @group in duplicateGroups)
             {
-                variable.OverrideName(variable.Usage + "_" + index);
+                var i = 0;
+                foreach (var variable in group)
+                {
+                    variable.OverrideName(variable.Usage + ++i);
+                }
             }
-
-            _cached.Add(variable);
         }
     }
 }

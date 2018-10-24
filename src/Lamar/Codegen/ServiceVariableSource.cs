@@ -73,6 +73,8 @@ namespace Lamar.Codegen
                 var family = _services.FindAll(field.VariableType);
                 field.IsOnlyOne = family.Length == 1;
             });
+            
+            variables.MakeNamesUnique();
         }
 
         private void useServiceProvider()

@@ -13,7 +13,7 @@ namespace Lamar.IoC.Lazy
 
         public FuncInstance() : base(typeof(Func<T>), typeof(Func<T>), ServiceLifetime.Transient)
         {
-            Name = "func_of_" + typeof(T).NameInCode();
+            Name = "func_of_" + typeof(T).FullNameInCode().Sanitize();
         }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)

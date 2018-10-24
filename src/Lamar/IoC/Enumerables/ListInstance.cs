@@ -25,6 +25,7 @@ namespace Lamar.IoC.Enumerables
         {
             var variables = new ResolverVariables();
             var elements = _elements.Select(x => variables.Resolve(x, BuildMode.Dependency)).ToArray();
+            variables.MakeNamesUnique();
             
             return new ListAssignmentFrame<T>(this, elements)
             {
