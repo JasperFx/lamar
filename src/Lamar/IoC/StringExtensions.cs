@@ -6,7 +6,7 @@ namespace Lamar.IoC
     {
         public static string Sanitize(this string value)
         {
-            return Regex.Replace(value, @"[\#\<\>\,\.\]\[\`\+]", "_").Replace(" ", "");
+            return Regex.Replace(value, @"[\#\<\>\,\.\]\[\`\+\-]", "_").Replace(" ", "");
         }
     }
 }
