@@ -10,6 +10,8 @@ namespace Lamar.Microsoft.DependencyInjection
 {
     public class LoggerInstance<T> : Instance
     {
+        private readonly object _locker = new object();
+        
         public LoggerInstance() : base(typeof(ILogger<T>), typeof(Logger<T>), ServiceLifetime.Singleton)
         {
         }
@@ -31,11 +33,19 @@ namespace Lamar.Microsoft.DependencyInjection
                 return service;
             }
 
-            var factory = root.GetInstance<ILoggerFactory>();
-            var logger = new Logger<T>(factory);
-            store(root, logger);
+            lock (_locker)
+            {
+                if (tryGetService(root, out service))
+                {
+                    return service;
+                }
+                
+                var factory = root.GetInstance<ILoggerFactory>();
+                var logger = new Logger<T>(factory);
+                store(root, logger);
 
-            return logger;
+                return logger;
+            }
         }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)

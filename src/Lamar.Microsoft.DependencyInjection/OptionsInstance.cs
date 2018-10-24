@@ -73,6 +73,8 @@ namespace Lamar.Microsoft.DependencyInjection
         {
             return resolveFromRoot(scope.Root);
         }
+        
+        private readonly object _locker = new object();
 
         private object resolveFromRoot(Scope root)
         {
@@ -81,15 +83,25 @@ namespace Lamar.Microsoft.DependencyInjection
                 return service;
             }
 
-            var setups = root.QuickBuildAll<IConfigureOptions<T>>();
-            var postConfigures = root.QuickBuildAll<IPostConfigureOptions<T>>();
+            lock (_locker)
+            {
+                if (tryGetService(root, out service))
+                {
+                    return service;
+                }
+                
+                var setups = root.QuickBuildAll<IConfigureOptions<T>>();
+                var postConfigures = root.QuickBuildAll<IPostConfigureOptions<T>>();
 
-            var options = new OptionsManager<T>(new OptionsFactory<T>(setups, postConfigures));
+                var options = new OptionsManager<T>(new OptionsFactory<T>(setups, postConfigures));
             
             
-            store(root, options);
+                store(root, options);
 
-            return options;
+                return options;
+            }
+
+
         }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
@@ -113,6 +125,8 @@ namespace Lamar.Microsoft.DependencyInjection
         {
             return resolveFromRoot(scope.Root);
         }
+        
+        private readonly object _locker = new object();
 
         private object resolveFromRoot(Scope root)
         {
@@ -121,15 +135,25 @@ namespace Lamar.Microsoft.DependencyInjection
                 return service;
             }
 
-            var setups = root.QuickBuildAll<IConfigureOptions<T>>();
-            var postConfigures = root.QuickBuildAll<IPostConfigureOptions<T>>();
+            lock (_locker)
+            {
+                if (tryGetService(root, out service))
+                {
+                    return service;
+                }
+                
+                var setups = root.QuickBuildAll<IConfigureOptions<T>>();
+                var postConfigures = root.QuickBuildAll<IPostConfigureOptions<T>>();
 
-            var options = new OptionsManager<T>(new OptionsFactory<T>(setups, postConfigures));
+                var options = new OptionsManager<T>(new OptionsFactory<T>(setups, postConfigures));
             
             
-            store(root, options);
+                store(root, options);
 
-            return options;
+                return options;
+            }
+
+
         }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
