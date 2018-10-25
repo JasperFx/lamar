@@ -104,5 +104,28 @@ namespace Generated
             // ENDSAMPLE
             result.ShouldBe(3);
         }
+
+        [Fact]
+        public void generate_assembly_with_random_name_by_default()
+        {
+            var generator = new AssemblyGenerator();
+
+            var assembly = generator.Generate("public class Given{}");
+
+            assembly.GetName().Name.ShouldNotBeNullOrWhiteSpace();
+        }
+
+        [Fact]
+        public void generate_assembly_with_given_name()
+        {
+            var generator = new AssemblyGenerator
+            {
+                AssemblyName = "given",
+            };
+
+            var assembly = generator.Generate("public class Given{}");
+
+            assembly.GetName().Name.ShouldBe("given");
+        }
     }
 }

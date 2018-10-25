@@ -30,6 +30,8 @@ namespace Lamar.Compilation
 			ReferenceAssembly(typeof(Enumerable).GetTypeInfo().Assembly);
 		}
 
+		public string AssemblyName { get; set; }
+
 		/// <summary>
 		/// Tells Roslyn to reference the given assembly and any of its dependencies
 		/// when compiling code
@@ -136,7 +138,7 @@ namespace Lamar.Compilation
 		/// <exception cref="InvalidOperationException"></exception>
 		public Assembly Generate(string code)
 		{
-			var assemblyName = Path.GetRandomFileName();
+			var assemblyName = AssemblyName ?? Path.GetRandomFileName();
 			var syntaxTree = CSharpSyntaxTree.ParseText(code);
 
 			var references = _references.ToArray();
