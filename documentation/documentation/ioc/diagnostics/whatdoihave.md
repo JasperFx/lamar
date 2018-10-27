@@ -22,3 +22,9 @@ If you're curious, all the raw code for this example is in [here](https://github
 Filtering the `WhatDoIHave()` results can be done in these ways:
 
 <[sample:whatdoihave-filtering]>
+
+## WhatDoIHave() under ASP.Net Core
+
+You can call `WhatDoIHave()` and `WhatDidIScan()` when running in ASP.Net Core like so:
+
+<[sample:whatdoihave-aspnetcore]>
