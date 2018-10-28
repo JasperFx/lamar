@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Lamar
 {
     // SAMPLE: Container-Declaration
-    public class Container : Scope, IContainer, INestedContainer
+    public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope, ISupportRequiredService
     // ENDSAMPLE
     {
         private static Task _warmup;
@@ -130,9 +130,9 @@ namespace Lamar
         }
 
 
-        public IServiceScope CreateScope()
+        IServiceScope IServiceScopeFactory.CreateScope()
         {
-            return new Scope(ServiceGraph, this);
+            return (IServiceScope) GetNestedContainer();
         }
 
 
@@ -313,6 +313,12 @@ namespace Lamar
             configure(services);
 
             Configure(services);
+        }
+
+
+        object ISupportRequiredService.GetRequiredService(Type serviceType)
+        {
+            return GetInstance(serviceType);
         }
     }
 

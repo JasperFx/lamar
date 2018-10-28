@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Lamar.IoC
 {
     // SAMPLE: Scope-Declarations
-    public class Scope : IServiceScope, ISupportRequiredService, IServiceScopeFactory, IServiceContext
+    public class Scope : IServiceContext
     // ENDSAMPLE
     {
         protected bool _hasDisposed;
@@ -237,17 +237,6 @@ namespace Lamar.IoC
             return ServiceGraph.FindAll(serviceType).Select(x => x.Resolve(this)).ToArray();
         }
 
-
-        object ISupportRequiredService.GetRequiredService(Type serviceType)
-        {
-            return GetInstance(serviceType);
-        }
-
-        IServiceScope IServiceScopeFactory.CreateScope()
-        {
-            assertNotDisposed();
-            return new Scope(ServiceGraph, this);
-        }
 
 
         public string WhatDoIHave(Type serviceType = null, Assembly assembly = null, string @namespace = null,
