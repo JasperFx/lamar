@@ -42,6 +42,27 @@ namespace Lamar.Testing.Bugs
         [InlineData(ServiceLifetime.Transient)]
         [InlineData(ServiceLifetime.Singleton)]
         [InlineData(ServiceLifetime.Scoped)]
+        public void should_be_disposed_when_registered_through_aspnet_core(ServiceLifetime lifetime)
+        {
+            var container = Container.For(_ =>
+            {
+                _.Add(new ServiceDescriptor(typeof(ITruck), typeof(Truck), lifetime));
+            });
+
+            var nested = container.GetNestedContainer();
+
+            var truck = nested.GetInstance<ITruck>();
+            
+            nested.Dispose();
+            container.Dispose();
+            
+            truck.As<Truck>().WasDisposed.ShouldBeTrue();
+        }
+        
+        [Theory]
+        [InlineData(ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
         public void should_be_disposed_as_lambda_function(ServiceLifetime lifetime)
         {
             var container = Container.For(_ => { _.For<ITruck>().Use(c => new Truck()).Lifetime = lifetime; });
