@@ -66,7 +66,7 @@ namespace Lamar.IoC.Instances
                     
                 case DisposeTracking.RegisterWithScope:
                     writer.Write(declaration + ";");
-                    writer.Write($"{_scope.Usage}.{nameof(Scope.Disposables)}.Add({Variable.Usage});");
+                    writer.Write($"{_scope.Usage}.{nameof(Scope.TryAddDisposable)}({Variable.Usage});");
                     Next?.GenerateCode(method, writer);
                     break;
                    
