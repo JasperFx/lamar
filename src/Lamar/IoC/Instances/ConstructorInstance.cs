@@ -11,9 +11,11 @@ using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
+using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using Setter = Lamar.IoC.Setters.Setter;
 
 namespace Lamar.IoC.Instances
 {
@@ -276,6 +278,7 @@ namespace Lamar.IoC.Instances
 
         protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
+
             Constructor = DetermineConstructor(services, out var message);
 
             if (message.IsNotEmpty()) ErrorMessages.Add(message);
@@ -283,45 +286,73 @@ namespace Lamar.IoC.Instances
 
             if (Constructor != null)
             {
-                _arguments = Constructor.GetParameters()
-                    .Select(x => determineArgument(services, x))
-                    .Where(x => x.Instance != null).ToArray();
-
-
-                foreach (var argument in _arguments)
-                {
-                    argument.Instance.CreatePlan(services);
-                }
+                buildOutConstructorArguments(services);
 
                 if (ImplementationType.MustBeBuiltWithFunc())
                 {
                     var (func, funcType) = CtorFuncBuilder.LambdaTypeFor(ServiceType, ImplementationType, Constructor);
                     _func = new ObjectInstance(funcType, func);
 
-
-
                     services.Inject(_func);
                 }
+
+                findSetters(services);
             }
 
 
             return _arguments.Select(x => x.Instance);
         }
-
         
+        private readonly List<Setter> _setters = new List<Setter>();
+
+        public IReadOnlyList<Setter> Setters => _setters;
+
+        private void findSetters(ServiceGraph services)
+        {
+            foreach (var property in ImplementationType.GetProperties().Where(x => x.CanWrite))
+            {
+                var instance = findInlineDependency(property.Name, property.PropertyType);
+                if (instance == null && services.ShouldBeSet(property))
+                {
+                    instance = services.FindDefault(property.PropertyType);
+                }
+
+                if (instance != null) _setters.Add(new Setter(property, instance));
+            }
+        }
+
+        private void buildOutConstructorArguments(ServiceGraph services)
+        {
+            _arguments = Constructor.GetParameters()
+                .Select(x => determineArgument(services, x))
+                .Where(x => x.Instance != null).ToArray();
+
+
+            foreach (var argument in _arguments)
+            {
+                argument.Instance.CreatePlan(services);
+            }
+        }
+
 
         private CtorArg determineArgument(ServiceGraph services, ParameterInfo x)
         {
-            var instance = _inlines.FirstOrDefault(i => i.ServiceType == x.ParameterType && i.Name == x.Name)
-                           ?? _inlines.FirstOrDefault(i => i.ServiceType == x.ParameterType)
-                           ?? services.FindDefault(x.ParameterType);
+            var dependencyType = x.ParameterType;
+            var instance = findInlineDependency(x.Name, dependencyType) ?? services.FindDefault(dependencyType);
 
             if (instance == null && x.IsOptional && x.DefaultValue == null)
             {
-                instance = new NullInstance(x.ParameterType);
+                instance = new NullInstance(dependencyType);
             }
             
             return new CtorArg(x, instance);
+        }
+
+        private Instance findInlineDependency(string name, Type dependencyType)
+        {
+            var instance = _inlines.FirstOrDefault(i => i.ServiceType == dependencyType && i.Name == name)
+                           ?? _inlines.FirstOrDefault(i => i.ServiceType == dependencyType);
+            return instance;
         }
 
 
@@ -460,6 +491,10 @@ namespace Lamar.IoC.Instances
         }
 
         IReadOnlyList<Instance> IConfiguredInstance.InlineDependencies { get; }
+
+        
+        
+ 
     }
     
     

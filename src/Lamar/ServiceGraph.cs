@@ -11,6 +11,7 @@ using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Lazy;
 using Lamar.IoC.Resolvers;
+using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
@@ -74,6 +75,8 @@ namespace Lamar
                 })
                 .ToArray();
 
+            
+            setterPolicies = services.FindAndRemovePolicies<ISetterPolicy>();
             InstancePolicies = services.FindAndRemovePolicies<IInstancePolicy>();
 
             var policies = services.FindAndRemovePolicies<IRegistrationPolicy>();
@@ -103,6 +106,12 @@ namespace Lamar
 
         }
 
+        private ISetterPolicy[] setterPolicies { get; set; }
+
+        internal bool ShouldBeSet(PropertyInfo property)
+        {
+            return setterPolicies.Any(x => x.Matches(property));
+        }
 
         public IDecoratorPolicy[] DecoratorPolicies { get; private set; } = new IDecoratorPolicy[0];
 

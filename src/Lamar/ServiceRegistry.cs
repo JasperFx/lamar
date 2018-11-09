@@ -4,6 +4,7 @@ using System.Linq;
 using Lamar.Codegen;
 using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
+using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
@@ -318,6 +319,7 @@ namespace Lamar
                 if (policy is IRegistrationPolicy rp) _parent.AddSingleton(rp);
                 if (policy is IDecoratorPolicy dp) _parent.AddSingleton(dp);
                 if (policy is CachedResolverSet @set) _parent.AddSingleton(@set);
+                if (policy is ISetterPolicy sp) _parent.AddSingleton(sp);
             }
 
             /// <summary>
