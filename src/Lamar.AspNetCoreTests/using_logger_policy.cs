@@ -1,5 +1,12 @@
-﻿using Lamar.Microsoft.DependencyInjection;
+﻿using System.IO;
+using System.Linq;
+using Lamar.Microsoft.DependencyInjection;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
 
@@ -17,6 +24,40 @@ namespace Lamar.Testing.AspNetCoreIntegration
     
     public class using_logger_policy
     {
+        [Fact]
+        public void with_aspnet_core()
+        {
+            var builder = WebHost.CreateDefaultBuilder()
+                
+                .ConfigureAppConfiguration(config =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+                })
+                .ConfigureLogging(x =>
+            {
+//                x.AddConsole();
+//                x.AddDebug();
+            })
+                .UseStartup<Startup>()
+                .UseLamar();
+            
+            var host = builder.Build();
+            var services = host.Services;
+
+            var options = services.GetService<IOptions<LoggerFilterOptions>>();
+            var logging = options.Value;
+            
+            logging.ShouldBeSameAs(services.GetRequiredService<LoggerFilterOptions>());
+            
+            logging.Rules.Any().ShouldBeTrue();
+            
+            var logger = services.GetRequiredService<ILogger<Thing>>();
+            
+            
+            logger.ShouldNotBeNull();
+        }
+        
         [Fact]
         public void is_a_singleton()
         {

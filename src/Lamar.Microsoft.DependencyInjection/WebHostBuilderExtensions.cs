@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Lamar.Microsoft.DependencyInjection
 {
@@ -67,21 +69,19 @@ namespace Lamar.Microsoft.DependencyInjection
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
 
+            registry = registry ?? new ServiceRegistry();
+
+            registry.For<LoggerFilterOptions>().Use(c => c.GetInstance<IOptions<LoggerFilterOptions>>().Value);
+            
             if (resolving == LoggingAndOptionResolving.Lamar)
             {
-                services.AddSingleton<IRegistrationPolicy>(new LoggerPolicy());
-                services.AddSingleton<IFamilyPolicy>(new LoggerPolicy());
-
-                services.AddSingleton<IRegistrationPolicy>(new OptionsPolicy());
-                services.AddSingleton<IFamilyPolicy>(new OptionsPolicy());
+                registry.Policies.Add(new LoggerPolicy());
+                registry.Policies.Add(new OptionsPolicy());
             }
 
-            if (registry != null)
+            foreach (var descriptor in registry)
             {
-                foreach (var descriptor in registry)
-                {
-                    services.Add(descriptor);
-                }
+                services.Add(descriptor);
             }
 
             return services;
