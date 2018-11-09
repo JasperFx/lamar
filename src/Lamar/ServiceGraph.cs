@@ -124,11 +124,6 @@ namespace Lamar
 
         public IFamilyPolicy[] FamilyPolicies { get; private set; }
 
-        private void addScopeResolver<T>(IServiceCollection services)
-        {
-            var instance = new ScopeInstance<T>();
-            services.Add(instance);
-        }
 
         public void Initialize(PerfTimer timer = null)
         {
