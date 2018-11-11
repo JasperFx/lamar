@@ -15,7 +15,6 @@ using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
-using Setter = Lamar.IoC.Setters.Setter;
 
 namespace Lamar.IoC.Instances
 {
@@ -147,6 +146,11 @@ namespace Lamar.IoC.Instances
             var values = _arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
             var service = Activator.CreateInstance(ImplementationType, values);
 
+            foreach (var setter in _setters)
+            {
+                setter.ApplyQuickBuildProperties(service, scope);
+            }
+
             if (service is IDisposable disposable)
             {
                 if (Lifetime == ServiceLifetime.Singleton)
@@ -211,18 +215,18 @@ namespace Lamar.IoC.Instances
             var dependencyMode = isRoot && mode == BuildMode.Build ? BuildMode.Dependency : mode;
 
             var ctorParameters = _arguments.Select(arg => arg.Resolve(variables, dependencyMode)).ToArray();
-
-            if (_func == null)
-            {
-                return new ConstructorFrame(this, disposalTracking, ctorParameters).Variable;
-            }
-            else
-            {
-                var funcArg = variables.Resolve(_func, BuildMode.Dependency);
-                return new CallFuncBuilderFrame(this, disposalTracking, funcArg, ctorParameters).Variable;
-            }
+            var setterParameters = _setters.Select(arg => arg.Resolve(variables, dependencyMode)).ToArray();
 
             
+            if (_func == null)
+            {
+                return new ConstructorFrame(this, disposalTracking, ctorParameters, setterParameters).Variable;
+            }
+
+            var funcArg = variables.Resolve(_func, BuildMode.Dependency);
+            return new CallFuncBuilderFrame(this, disposalTracking, funcArg, ctorParameters).Variable;
+
+
         }
 
 
@@ -230,6 +234,8 @@ namespace Lamar.IoC.Instances
         {
             var variables = new ResolverVariables();
             var ctorParameters = _arguments.Select(arg => arg.Resolve(variables, BuildMode.Dependency)).ToArray();
+
+            var setterParameters = _setters.Select(arg => arg.Resolve(variables, BuildMode.Dependency)).ToArray();
             
             variables.MakeNamesUnique();
 
@@ -245,7 +251,7 @@ namespace Lamar.IoC.Instances
             
             
             
-            return new ConstructorFrame(this, DisposeTracking.None, ctorParameters)
+            return new ConstructorFrame(this, DisposeTracking.None, ctorParameters, setterParameters)
             {
                 ReturnCreated = true
             };
@@ -300,12 +306,12 @@ namespace Lamar.IoC.Instances
             }
 
 
-            return _arguments.Select(x => x.Instance);
+            return _arguments.Select(x => x.Instance).Concat(_setters.Select(x => x.Instance));
         }
         
-        private readonly List<Setter> _setters = new List<Setter>();
+        private readonly List<InjectedSetter> _setters = new List<InjectedSetter>();
 
-        public IReadOnlyList<Setter> Setters => _setters;
+        public IReadOnlyList<InjectedSetter> Setters => _setters;
 
         private void findSetters(ServiceGraph services)
         {
@@ -317,7 +323,12 @@ namespace Lamar.IoC.Instances
                     instance = services.FindDefault(property.PropertyType);
                 }
 
-                if (instance != null) _setters.Add(new Setter(property, instance));
+                if (instance != null) _setters.Add(new InjectedSetter(property, instance));
+            }
+            
+            foreach (var setter in _setters)
+            {
+                setter.Instance.CreatePlan(services);
             }
         }
 

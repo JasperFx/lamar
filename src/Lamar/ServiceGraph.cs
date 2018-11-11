@@ -110,7 +110,7 @@ namespace Lamar
 
         internal bool ShouldBeSet(PropertyInfo property)
         {
-            return setterPolicies.Any(x => x.Matches(property));
+            return property.HasAttribute<SetterPropertyAttribute>() || setterPolicies.Any(x => x.Matches(property));
         }
 
         public IDecoratorPolicy[] DecoratorPolicies { get; private set; } = new IDecoratorPolicy[0];

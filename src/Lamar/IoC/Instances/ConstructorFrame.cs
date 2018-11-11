@@ -7,6 +7,7 @@ using Lamar.Codegen.Frames;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Lamar.IoC.Frames;
+using Lamar.IoC.Setters;
 using Lamar.Util;
 
 namespace Lamar.IoC.Instances
@@ -14,13 +15,16 @@ namespace Lamar.IoC.Instances
     public class ConstructorFrame : SyncFrame
     {
         private readonly Variable[] _arguments;
+        private readonly SetterArg[] _setterParameters;
         private Variable _scope;
         private readonly Type _implementationType;
 
-        public ConstructorFrame(ConstructorInstance instance, DisposeTracking disposal, Variable[] arguments)
+        public ConstructorFrame(ConstructorInstance instance, DisposeTracking disposal, Variable[] arguments,
+            SetterArg[] setterParameters)
         {
             Disposal = disposal;
             _arguments = arguments;
+            _setterParameters = setterParameters;
             Variable = new ServiceVariable(instance, this);
             _implementationType = instance.ImplementationType;
         }
@@ -35,9 +39,11 @@ namespace Lamar.IoC.Instances
             var arguments = _arguments.Select(x => x.Usage).Join(", ");
             var implementationTypeName = _implementationType.FullNameInCode();
 
+
             if (ReturnCreated)
             {
                 writer.Write($"return new {implementationTypeName}({arguments});");
+                
                 Next?.GenerateCode(method, writer);
                 return;
             }
@@ -74,6 +80,7 @@ namespace Lamar.IoC.Instances
             
             
         }
+
 
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
         {

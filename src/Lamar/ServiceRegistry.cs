@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Lamar.Codegen;
 using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
@@ -362,7 +363,30 @@ namespace Lamar
                 _parent.AddSingleton(policy);
             }
 
+            /// <summary>
+            /// Creates automatic "policies" for which public setters are considered mandatory
+            /// properties by StructureMap that will be "setter injected" as part of the 
+            /// construction process.
+            /// </summary>
+            /// <param name="action"></param>
+            public void SetAllProperties(Action<SetterConvention> action)
+            {
+                var convention = new SetterConvention(this);
+                action(convention);
+            }
 
+            /// <summary>
+            /// Directs StructureMap to always inject dependencies into any and all public Setter properties
+            /// of the type TPluginType.
+            /// </summary>
+            /// <typeparam name="TServiceType"></typeparam>
+            /// <returns></returns>
+            public InstanceExpression<TServiceType> FillAllPropertiesOfType<TServiceType>() where TServiceType : class
+            {
+                Add(new LambdaSetterPolicy(prop => prop.PropertyType == typeof(TServiceType)));
+
+                return _parent.For<TServiceType>();
+            }
         }
 
         /// <summary>
@@ -387,6 +411,8 @@ namespace Lamar
 
             return policies;
         }
+        
+
     }
 
     public enum DynamicAssemblySharing

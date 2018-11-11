@@ -6,6 +6,7 @@ using Lamar.Codegen.Frames;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Lamar.IoC.Frames;
+using Lamar.IoC.Setters;
 using Lamar.Util;
 
 namespace Lamar.IoC.Instances
@@ -16,7 +17,8 @@ namespace Lamar.IoC.Instances
         private readonly Variable[] _arguments;
         private Variable _scope;
 
-        public CallFuncBuilderFrame(ConstructorInstance instance, DisposeTracking disposal, Variable func, Variable[] arguments)
+        public CallFuncBuilderFrame(ConstructorInstance instance, DisposeTracking disposal, Variable func,
+            Variable[] arguments)
         {
             // HACK, and I hate this but it's necessary.
             for (int i = 0; i < arguments.Length; i++)
