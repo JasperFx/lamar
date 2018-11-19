@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Lamar.Codegen.Frames;
+using Lamar.Codegen.ServiceLocation;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Lamar.Util;
@@ -154,7 +155,7 @@ namespace Lamar.Codegen
                 : ReturnType.FullNameInCode();
         }
 
-        public void ArrangeFrames(GeneratedType type, ServiceGraph services)
+        public void ArrangeFrames(GeneratedType type, IServiceVariableSource services)
         {
             if (!Frames.Any())
             {

@@ -16,11 +16,11 @@ namespace Lamar.Codegen
         private readonly GeneratedMethod _method;
         private readonly GeneratedType _type;
         private readonly Dictionary<Type, Variable> _variables = new Dictionary<Type, Variable>();
-        private readonly ServiceVariableSource _services;
+        private readonly IServiceVariableSource _services;
 
-        public MethodFrameArranger(GeneratedMethod method, GeneratedType type, ServiceGraph services) : this(method, type)
+        public MethodFrameArranger(GeneratedMethod method, GeneratedType type, IServiceVariableSource services) : this(method, type)
         {
-            if (services != null) _services = new ServiceVariableSource(services);
+            _services = services;
         }
 
         public MethodFrameArranger(GeneratedMethod method, GeneratedType type)

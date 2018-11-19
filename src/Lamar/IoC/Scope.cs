@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Lamar.Codegen;
+using Lamar.Codegen.ServiceLocation;
 using Lamar.Compilation;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Instances;
@@ -298,12 +299,12 @@ namespace Lamar.IoC
 
         public void CompileWithInlineServices(GeneratedAssembly assembly)
         {
-            assembly.CompileAll(ServiceGraph);
+            assembly.CompileAll(new ServiceVariableSource(ServiceGraph));
         }
 
         public string GenerateCodeWithInlineServices(GeneratedAssembly assembly)
         {
-            return assembly.GenerateCode(ServiceGraph);
+            return assembly.GenerateCode(new ServiceVariableSource(ServiceGraph));
         }
 
         // don't build this if you don't need it

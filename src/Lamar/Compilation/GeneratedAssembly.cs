@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Lamar.Codegen;
+using Lamar.Codegen.ServiceLocation;
 using Lamar.Util;
 
 namespace Lamar.Compilation
@@ -38,7 +39,7 @@ namespace Lamar.Compilation
             return generatedType;
         }
 
-        public void CompileAll(ServiceGraph services = null)
+        public void CompileAll(IServiceVariableSource services = null)
         {
             var code = GenerateCode(services);
 
@@ -54,7 +55,7 @@ namespace Lamar.Compilation
             }
         }
 
-        public string GenerateCode(ServiceGraph services = null)
+        public string GenerateCode(IServiceVariableSource services = null)
         {
             foreach (var generatedType in GeneratedTypes)
             {

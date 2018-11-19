@@ -9,7 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Codegen.ServiceLocation
 {
-    public class ServiceVariableSource : IVariableSource
+    public interface IServiceVariableSource : IVariableSource
+    {
+        void ReplaceVariables();
+    }
+
+    public class ServiceVariableSource : IServiceVariableSource
     {
         private readonly ServiceGraph _services;
         private readonly IList<ServiceStandinVariable> _standins = new List<ServiceStandinVariable>();

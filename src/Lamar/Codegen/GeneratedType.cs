@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Lamar.Codegen.ServiceLocation;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Lamar.Util;
@@ -221,7 +222,7 @@ namespace Lamar.Codegen
             CompiledType = generated.Single(x => x.Name == TypeName);
         }
 
-        public void ArrangeFrames(ServiceGraph services = null)
+        public void ArrangeFrames(IServiceVariableSource services = null)
         {
             foreach (var method in _methods) method.ArrangeFrames(this, services);
         }
