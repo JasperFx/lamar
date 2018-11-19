@@ -2,7 +2,7 @@
 using Lamar.Codegen.Variables;
 using Lamar.IoC.Instances;
 
-namespace Lamar.Codegen
+namespace Lamar.Codegen.ServiceLocation
 {
     public class ServiceStandinVariable : Variable
     {

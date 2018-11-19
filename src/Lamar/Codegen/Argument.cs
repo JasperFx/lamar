@@ -4,6 +4,9 @@ using Lamar.Codegen.Variables;
 
 namespace Lamar.Codegen
 {
+    /// <summary>
+    /// Variable that represents the input argument to a generated method
+    /// </summary>
     public class Argument : Variable
     {
         public Argument(Type variableType, string usage) : base(variableType, usage)
