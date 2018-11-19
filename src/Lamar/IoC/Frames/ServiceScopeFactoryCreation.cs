@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using Lamar.Codegen;
 using Lamar.Codegen.Frames;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.Codegen.ServiceLocation
+namespace Lamar.IoC.Frames
 {
     public class ServiceScopeFactoryCreation : SyncFrame
     {

@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lamar.Codegen;
 using Lamar.Codegen.Variables;
-using Lamar.IoC;
-using Lamar.IoC.Frames;
 using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.Codegen.ServiceLocation
+namespace Lamar.IoC.Frames
 {
-    public interface IServiceVariableSource : IVariableSource
-    {
-        void ReplaceVariables();
-    }
-
     public class ServiceVariableSource : IServiceVariableSource
     {
         private readonly ServiceGraph _services;

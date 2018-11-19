@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Lamar.Codegen.ServiceLocation;
 using Lamar.Codegen.Variables;
 using Lamar.Compilation;
 using Lamar.Util;

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Lamar.Codegen;
-using Lamar.Codegen.ServiceLocation;
 using Lamar.Util;
 
 namespace Lamar.Compilation
