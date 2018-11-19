@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Lamar.Codegen.Frames;
@@ -83,6 +84,21 @@ namespace Lamar.Codegen
         {
             Frames.AddRange(frames);
             return this;
+        }
+
+        /// <summary>
+        /// Convenience method to add a method call to the GeneratedMethod Frames
+        /// collection
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public MethodCall Call<T>(Expression<Action<T>> expression)
+        {
+            var @call = MethodCall.For(expression);
+            Frames.Add(@call);
+
+            return @call;
         }
         
         
