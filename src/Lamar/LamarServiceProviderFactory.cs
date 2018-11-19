@@ -1,5 +1,4 @@
 ﻿using System;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
@@ -29,6 +28,4 @@ namespace Lamar
             return CreateBuilder(services);
         }
     }
-    
-    
 }
