@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace Lamar.Util
 {
-    public enum CopyBehavior
+    internal enum CopyBehavior
     {
         overwrite,
         preserve

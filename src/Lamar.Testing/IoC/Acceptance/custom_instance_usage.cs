@@ -25,7 +25,7 @@ namespace Lamar.Testing.IoC.Acceptance
         {
         }
 
-        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _store = services.FindDefault(typeof(IStore));
             yield return _store;
