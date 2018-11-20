@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Lamar.Util;
+using LamarCompiler.Util;
 
 namespace Lamar.Scanning
 {

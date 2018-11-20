@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Lamar.Codegen;
 using Lamar.IoC.Instances;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Diagnostics
 {

@@ -3,11 +3,11 @@
     <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Baseline" Version="1.4.0" />
+    <PackageReference Include="Baseline" Version="1.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.5.0" />
-    <PackageReference Include="xunit" Version="2.3.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="Shouldly" Version="3.0.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
   </ItemGroup>

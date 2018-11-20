@@ -1,9 +1,9 @@
 ﻿using System;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
 
 namespace Lamar.IoC.Lazy
 {

@@ -1,5 +1,5 @@
-﻿using Lamar.Codegen;
-using Lamar.IoC;
+﻿using Lamar.IoC;
+using LamarCompiler;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;

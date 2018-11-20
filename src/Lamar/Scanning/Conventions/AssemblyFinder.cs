@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Lamar.Compilation;
+using LamarCompiler;
 
 namespace Lamar.Scanning.Conventions
 {

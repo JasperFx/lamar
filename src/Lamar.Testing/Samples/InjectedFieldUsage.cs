@@ -1,7 +1,7 @@
 ﻿using System;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
 using Xunit;
 using Xunit.Abstractions;
 

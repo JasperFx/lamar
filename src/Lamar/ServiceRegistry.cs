@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Lamar.Codegen;
 using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar

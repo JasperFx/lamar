@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Compilation;
 using Lamar.IoC.Resolvers;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Exports
 {

@@ -1,7 +1,7 @@
-﻿using Lamar.Codegen;
-using Lamar.Codegen.Variables;
-using Lamar.IoC.Instances;
+﻿using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
+using LamarCompiler;
+using LamarCompiler.Model;
 
 namespace Lamar.IoC.Frames
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lamar.Codegen;
-using Lamar.Codegen.Variables;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
+using LamarCompiler;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -45,7 +45,7 @@ namespace Lamar.IoC.Instances
             return _inner.CreateInlineVariable(variables);
         }
 
-        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _inner = services.FindInstance(ServiceType, _instanceKey);
             if (_inner == null) throw new InvalidOperationException($"Referenced instance of {ServiceType.FullNameInCode()} named '{_instanceKey}' does not exist");

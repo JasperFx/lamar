@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Lamar.Compilation;
-using Lamar.Testing.Codegen;
+using LamarCompiler;
 using Shouldly;
 using Xunit;
 

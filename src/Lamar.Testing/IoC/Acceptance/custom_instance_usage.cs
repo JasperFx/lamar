@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Testing.IoC.Acceptance
@@ -25,7 +24,7 @@ namespace Lamar.Testing.IoC.Acceptance
         {
         }
 
-        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _store = services.FindDefault(typeof(IStore));
             yield return _store;

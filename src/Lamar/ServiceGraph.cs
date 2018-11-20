@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Lamar.Codegen;
-using Lamar.Compilation;
 using Lamar.IoC;
 using Lamar.IoC.Enumerables;
 using Lamar.IoC.Exports;
@@ -13,7 +11,8 @@ using Lamar.IoC.Lazy;
 using Lamar.IoC.Resolvers;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar

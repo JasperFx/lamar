@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Resolvers

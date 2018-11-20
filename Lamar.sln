@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Microsoft.DependencyI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AspNetCoreTests", "src\Lamar.AspNetCoreTests\Lamar.AspNetCoreTests.csproj", "{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarCompiler", "src\LamarCompiler\LamarCompiler.csproj", "{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarCompiler.Testing", "src\LamarCompiler.Testing\LamarCompiler.Testing.csproj", "{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,14 @@ Global
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

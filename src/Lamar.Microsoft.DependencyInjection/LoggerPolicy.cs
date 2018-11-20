@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Lamar.IoC.Instances;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using LamarCompiler.Util;
 
 namespace Lamar.Microsoft.DependencyInjection
 {

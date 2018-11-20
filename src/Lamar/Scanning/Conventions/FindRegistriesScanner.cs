@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Lamar.Util;
+using LamarCompiler.Util;
 
 namespace Lamar.Scanning.Conventions
 {

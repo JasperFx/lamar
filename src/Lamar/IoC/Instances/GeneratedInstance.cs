@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Instances
 {

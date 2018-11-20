@@ -3,12 +3,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Lamar.Codegen;
-using Lamar.Compilation;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
 using Lamar.Scanning;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

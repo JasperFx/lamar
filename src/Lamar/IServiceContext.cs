@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Lamar.Compilation;
 using Lamar.IoC;
-using Lamar.Util;
+using LamarCompiler;
 
 namespace Lamar
 {

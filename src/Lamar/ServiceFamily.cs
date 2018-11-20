@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lamar.Codegen;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
-using Lamar.Util;
+using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar
 {

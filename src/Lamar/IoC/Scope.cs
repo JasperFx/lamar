@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Lamar.Codegen;
-using Lamar.Compilation;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.Scanning;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC

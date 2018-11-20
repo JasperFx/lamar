@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using Lamar.Codegen.Variables;
 using Lamar.IoC.Frames;
+using LamarCompiler.Model;
 
 namespace Lamar.IoC.Instances
 {

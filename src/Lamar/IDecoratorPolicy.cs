@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Lamar.Codegen;
 using Lamar.IoC.Instances;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
 
 namespace Lamar
 {

@@ -1,6 +1,6 @@
 ﻿using System;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Resolvers
 {

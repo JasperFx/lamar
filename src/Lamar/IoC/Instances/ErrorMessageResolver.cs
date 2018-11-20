@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Lamar.Codegen;
 using Lamar.IoC.Resolvers;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Instances
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lamar.IoC.Instances;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar.Scanning.Conventions
 {

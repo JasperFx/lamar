@@ -1,5 +1,5 @@
-﻿using Lamar.Codegen.Variables;
-using Lamar.IoC.Instances;
+﻿using Lamar.IoC.Instances;
+using LamarCompiler.Model;
 
 namespace Lamar.IoC.Frames
 {

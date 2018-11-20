@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Baseline;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Compilation;
-using Lamar.Testing.Codegen;
+using LamarCompiler;
+using LamarCompiler.Frames;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.GenericWidgets;
 using StructureMap.Testing.Widget;
@@ -392,6 +390,11 @@ namespace Lamar.Testing.IoC.Acceptance
         }
         
 
+    }
+
+    public class Message1
+    {
+        
     }
 
     public class Widget : IWidget

@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Lamar.Codegen;
 using Lamar.IoC.Instances;
-using Lamar.Util;
+using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar.Scanning.Conventions
 {

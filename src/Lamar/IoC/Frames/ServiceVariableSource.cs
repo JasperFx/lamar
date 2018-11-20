@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lamar.Codegen;
-using Lamar.Codegen.Variables;
-using Lamar.Util;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Frames
 {

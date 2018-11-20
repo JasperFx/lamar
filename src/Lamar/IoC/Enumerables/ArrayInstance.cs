@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
-using Lamar.Util;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Enumerables
 {
@@ -46,7 +44,7 @@ namespace Lamar.IoC.Enumerables
             return new ArrayAssignmentFrame<T>(this, elements).Variable;
         }
 
-        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _elements = services.FindAll(typeof(T));
             return _elements;

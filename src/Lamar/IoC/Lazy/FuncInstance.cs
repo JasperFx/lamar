@@ -1,9 +1,9 @@
 ﻿using System;
-using Lamar.Codegen;
-using Lamar.Codegen.Variables;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
+using LamarCompiler;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Lazy

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Lamar.Codegen;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;

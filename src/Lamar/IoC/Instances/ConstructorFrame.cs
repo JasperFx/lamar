@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Setters;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Instances
 {

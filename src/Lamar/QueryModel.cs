@@ -5,7 +5,7 @@ using Lamar.IoC;
 using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
+using LamarCompiler.Util;
 
 namespace Lamar
 {

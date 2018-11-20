@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Lamar.Codegen;
 using Lamar.IoC.Enumerables;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Util;
+
 
 namespace Lamar.IoC.Instances
 {
@@ -78,9 +79,9 @@ namespace Lamar.IoC.Instances
                 {
                     arguments[i] = Expression.Parameter(typeof(object));
 
-                    if (EnumerablePolicy.IsEnumerable(parameter.ParameterType))
+                    if (parameter.ParameterType.IsEnumerable())
                     {
-                        var elementType = EnumerablePolicy.DetermineElementType(parameter.ParameterType);
+                        var elementType = parameter.ParameterType.DetermineElementType();
                         var coerceMethod = (parameter.ParameterType.IsArray ? _coerceToArray : _coerceToList)
                             .MakeGenericMethod(elementType);
 

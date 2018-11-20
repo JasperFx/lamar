@@ -1,8 +1,8 @@
 ﻿using System;
-using Lamar.Codegen.Variables;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

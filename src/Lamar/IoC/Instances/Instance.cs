@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Lamar.Codegen;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 
 namespace Lamar.IoC.Instances
@@ -197,7 +196,7 @@ namespace Lamar.IoC.Instances
             return CreateVariable(BuildMode.Dependency, variables, false);
         }
         
-        protected internal virtual IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected virtual IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             return Enumerable.Empty<Instance>();
         }

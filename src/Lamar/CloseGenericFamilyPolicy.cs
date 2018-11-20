@@ -2,8 +2,8 @@
 using System.Linq;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar
 {

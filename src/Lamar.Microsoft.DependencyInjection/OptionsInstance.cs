@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using Lamar.Codegen.Variables;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using Lamar.Util;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using LamarCompiler.Util;
 
 namespace Lamar.Microsoft.DependencyInjection
 {

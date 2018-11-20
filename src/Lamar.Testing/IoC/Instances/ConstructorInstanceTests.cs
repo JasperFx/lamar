@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Lamar.Codegen;
-using Lamar.Codegen.Variables;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
 using Lamar.Testing.IoC.Acceptance;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;

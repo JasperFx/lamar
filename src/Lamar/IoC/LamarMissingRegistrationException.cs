@@ -1,5 +1,5 @@
 ﻿using System;
-using Lamar.Codegen;
+using LamarCompiler;
 
 namespace Lamar.IoC
 {

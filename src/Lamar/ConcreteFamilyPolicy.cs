@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Lamar.IoC.Instances;
-using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCompiler.Util;
 
 namespace Lamar
 {

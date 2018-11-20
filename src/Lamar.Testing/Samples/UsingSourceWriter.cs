@@ -1,5 +1,5 @@
 ﻿using System;
-using Lamar.Compilation;
+using LamarCompiler;
 using Xunit;
 using Xunit.Abstractions;
 

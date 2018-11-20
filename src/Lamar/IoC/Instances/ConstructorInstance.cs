@@ -5,15 +5,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using Lamar.Codegen;
-using Lamar.Codegen.Frames;
-using Lamar.Codegen.Variables;
-using Lamar.Compilation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
-using Lamar.Util;
+using LamarCompiler;
+using LamarCompiler.Frames;
+using LamarCompiler.Model;
+using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -282,7 +281,7 @@ namespace Lamar.IoC.Instances
 
 
 
-        protected internal override IEnumerable<Instance> createPlan(ServiceGraph services)
+        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
 
             Constructor = DetermineConstructor(services, out var message);
