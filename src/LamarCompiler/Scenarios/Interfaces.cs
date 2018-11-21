@@ -4,6 +4,11 @@ namespace LamarCompiler.Scenarios
     {
         void DoStuff(T arg1);
     }
+
+    public interface IBuilds<T>
+    {
+        T Build();
+    }
     
     public interface IAction<TResult, T1>
     {

@@ -8,6 +8,7 @@ using LamarCompiler;
 using LamarCompiler.Frames;
 using LamarCompiler.Model;
 using LamarCompiler.Util;
+using SetterArg = Lamar.IoC.Setters.SetterArg;
 
 namespace Lamar.IoC.Instances
 {

@@ -54,6 +54,16 @@ namespace LamarCompiler.Scenarios
             return new CodegenResult<TObject>(generatedType.CreateInstance<TObject>(), generatedType.SourceCode);
         }
         
+        public static CodegenResult<IBuilds<T>> ForBuilds<T>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
+        {
+            return ForBaseOf<IBuilds<T>>(configuration, rules);
+        }
+        
+        public static CodegenResult<IBuilds<T>> ForBuilds<T>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
+        {
+            return ForBaseOf<IBuilds<T>>((t, m) => configuration(m), rules);
+        }
+        
         public static CodegenResult<IAction<T>> ForAction<T>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<T>>(configuration, rules);

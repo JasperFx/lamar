@@ -26,22 +26,21 @@ namespace LamarCompiler
         {
             return new GeneratedMethod(name, typeof(TReturn), new Argument[0]);
         }
-        
-        private readonly Argument[] _arguments;
+
         private AsyncMode _asyncMode = AsyncMode.None;
         private Frame _top;
 
         public GeneratedMethod(MethodInfo method)
         {
             ReturnType = method.ReturnType;
-            _arguments = method.GetParameters().Select(x => new Argument(x)).ToArray();
+            Arguments = method.GetParameters().Select(x => new Argument(x)).ToArray();
             MethodName = method.Name;
         }
 
         public GeneratedMethod(string methodName, Type returnType, params Argument[] arguments)
         {
             ReturnType = returnType;
-            _arguments = arguments;
+            Arguments = arguments;
             MethodName = methodName;
         }
 
@@ -69,8 +68,8 @@ namespace LamarCompiler
         
         public InjectedField[] Fields { get; internal set; } = new InjectedField[0];
         public IList<Frame> Frames { get; } = new List<Frame>();
-        public IEnumerable<Argument> Arguments => _arguments;
-        
+        public Argument[] Arguments { get; }
+
         public IEnumerable<Setter> Setters { get; internal set; }
 
 
@@ -169,6 +168,32 @@ namespace LamarCompiler
             return AsyncMode == AsyncMode.AsyncTask 
                 ? "return;" 
                 : $"return {typeof(Task).FullName}.{nameof(Task.CompletedTask)};";
+        }
+
+        /// <summary>
+        /// Adds a ReturnFrame to the method that will return a variable of the specified type
+        /// </summary>
+        /// <param name="returnType"></param>
+        /// <returns></returns>
+        public ReturnFrame Return(Type returnType)
+        {
+            var frame = new ReturnFrame(returnType);
+
+            Frames.Add(frame);
+            return frame;
+        }
+
+        /// <summary>
+        /// Adds a ReturnFrame for the specified variable
+        /// </summary>
+        /// <param name="returnVariable"></param>
+        /// <returns></returns>
+        public ReturnFrame Return(Variable returnVariable)
+        {
+            var frame = new ReturnFrame(returnVariable);
+
+            Frames.Add(frame);
+            return frame;
         }
     }
 }
