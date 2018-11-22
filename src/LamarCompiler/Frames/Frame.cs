@@ -110,7 +110,7 @@ namespace LamarCompiler.Frames
 
             // Filter out created variables because bad, bad Stackoverflow things happen
             // when you don't 
-            var variables = FindVariables(method).Where(x => !Creates.Contains(x)).ToArray();
+            var variables = FindVariables(method).Where(x => !Creates.Contains(x)).Distinct().ToArray();
             if (variables.Any(x => x == null))
                 throw new InvalidOperationException($"Frame {this} could not resolve one of its variables");
 

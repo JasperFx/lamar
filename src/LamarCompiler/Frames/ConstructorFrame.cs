@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
@@ -46,6 +47,20 @@ namespace LamarCompiler.Frames
         public string PropertyName { get; private set; }
         public Variable Variable { get; private set; }
         public Type PropertyType { get; private set; }
+
+        public string Assignment()
+        {
+            return $"{PropertyName} = {Variable.Usage}";
+        }
+
+
+        internal void FindVariable(IMethodVariables chain)
+        {
+            if (Variable == null)
+            {
+                Variable = chain.FindVariable(PropertyType);
+            }
+        }
     }
     
     public class ConstructorFrame : SyncFrame
@@ -61,7 +76,7 @@ namespace LamarCompiler.Frames
             Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor));
             Parameters = new Variable[ctor.GetParameters().Length];
             
-            // Need a declared variable?
+            Variable = new Variable(BuiltType, this);
         }
 
         public Type BuiltType { get; }
@@ -77,14 +92,74 @@ namespace LamarCompiler.Frames
         
         public IList<SetterArg> Setters { get; } = new List<SetterArg>();
         
+        /// <summary>
+        /// The variable set by invoking this frame. 
+        /// </summary>
+        public Variable Variable { get;}
+        
+        
+        
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            throw new NotImplementedException();
+            var invocation = $"new {BuiltType.FullNameInCode()}({Parameters.Select(x => x.Usage).Join(", ")})";
+            if (Setters.Any())
+            {
+                invocation += $"{{{Setters.Select(x => x.Assignment()).Join(", ")}}}";
+            }
+            
+            switch (Mode)
+            {
+                case ConstructorCallMode.Variable:
+                    writer.Write($"var {Variable.Usage} = {invocation};");
+                    Next?.GenerateCode(method, writer);
+                    break;
+                    
+                case ConstructorCallMode.ReturnValue:
+                    writer.Write($"return {invocation};");
+                    Next?.GenerateCode(method, writer);
+                    break;
+                    
+                case ConstructorCallMode.UsingNestedVariable:
+                    writer.UsingBlock($"var {Variable.Usage} = {invocation}", w => Next?.GenerateCode(method, w));
+                    break;
+            }
         }
 
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
         {
-            throw new NotImplementedException();
+            var parameters = Ctor.GetParameters();
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                
+                if (Parameters[i] == null)
+                {
+                    var parameter = parameters[i];
+                    Parameters[i] = chain.FindVariable(parameter.ParameterType);
+                }
+            }
+
+            foreach (var parameter in Parameters)
+            {
+                yield return parameter;
+            }
+
+            foreach (var setter in Setters)
+            {
+                setter.FindVariable(chain);
+            }
+
+            foreach (var setter in Setters)
+            {
+                yield return setter.Variable;
+            }
+
+            foreach (var frame in ActivatorFrames)
+            {
+                foreach (var variable in frame.FindVariables(chain))
+                {
+                    yield return variable;
+                }
+            }
         }
     }
 

@@ -195,5 +195,20 @@ namespace LamarCompiler
             Frames.Add(frame);
             return frame;
         }
+
+        /// <summary>
+        /// Adds a ConstructorFrame<T> to the method frames
+        /// </summary>
+        /// <param name="constructor"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public ConstructorFrame<T> CallConstructor<T>(Expression<Func<T>> constructor)
+        {
+            var frame = new ConstructorFrame<T>(constructor);
+            Frames.Add(frame);
+
+            return frame;
+        }
     }
 }

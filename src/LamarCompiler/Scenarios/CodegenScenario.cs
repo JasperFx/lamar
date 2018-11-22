@@ -69,17 +69,17 @@ namespace LamarCompiler.Scenarios
             return ForBaseOf<IAction<T>>(configuration, rules);
         }
         
-        public static CodegenResult<IAction<TResult, T1>> ForAction<TResult, T1>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
+        public static CodegenResult<IAction<TResult, T1>> ForBuilds<TResult, T1>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<TResult, T1>>(configuration, rules);
         }
         
-        public static CodegenResult<IAction<TResult, T1, T2>> ForAction<TResult, T1, T2>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
+        public static CodegenResult<IAction<TResult, T1, T2>> ForBuilds<TResult, T1, T2>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<TResult, T1, T2>>(configuration, rules);
         }
         
-        public static CodegenResult<IAction<TResult, T1, T2, T3>> ForAction<TResult, T1, T2, T3>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
+        public static CodegenResult<IAction<TResult, T1, T2, T3>> ForBuilds<TResult, T1, T2, T3>(Action<GeneratedType, GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<TResult, T1, T2, T3>>(configuration, rules);
         }
@@ -90,17 +90,17 @@ namespace LamarCompiler.Scenarios
             return ForBaseOf<IAction<T>>((t, m) => configuration(m), rules);
         }
         
-        public static CodegenResult<IAction<TResult, T1>> ForAction<TResult, T1>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
+        public static CodegenResult<IAction<TResult, T1>> ForBuilds<TResult, T1>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<TResult, T1>>((t, m) => configuration(m), rules);
         }
         
-        public static CodegenResult<IAction<TResult, T1, T2>> ForAction<TResult, T1, T2>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
+        public static CodegenResult<IAction<TResult, T1, T2>> ForBuilds<TResult, T1, T2>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<TResult, T1, T2>>((t, m) => configuration(m), rules);
         }
         
-        public static CodegenResult<IAction<TResult, T1, T2, T3>> ForAction<TResult, T1, T2, T3>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
+        public static CodegenResult<IAction<TResult, T1, T2, T3>> ForBuilds<TResult, T1, T2, T3>(Action<GeneratedMethod> configuration, GenerationRules rules = null)
         {
             return ForBaseOf<IAction<TResult, T1, T2, T3>>((t, m) => configuration(m), rules);
         }

@@ -19,7 +19,7 @@ namespace LamarCompiler.Testing.Codegen
         [Fact]
         public void return_a_variable_by_type()
         {
-            var result = CodegenScenario.ForAction<int, int>(m => m.Return(typeof(int)));
+            var result = CodegenScenario.ForBuilds<int, int>(m => m.Return(typeof(int)));
             
             result.LinesOfCode.ShouldContain("return arg1;");
             result.Object.Create(5).ShouldBe(5);
@@ -28,7 +28,7 @@ namespace LamarCompiler.Testing.Codegen
         [Fact]
         public void return_explicit_variable()
         {
-            var result = CodegenScenario.ForAction<int, int>(m =>
+            var result = CodegenScenario.ForBuilds<int, int>(m =>
             {
                 var arg = m.Arguments.Single();
                 m.Return(arg);

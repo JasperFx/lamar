@@ -38,7 +38,7 @@ namespace LamarCompiler.Testing.Codegen.Scenarios
         [Fact]
         public void simple_execution_with_one_input_and_output()
         {
-            var result = CodegenScenario.ForAction<int, int>((t, m) => m.Add<AddTwoFrame>());
+            var result = CodegenScenario.ForBuilds<int, int>((t, m) => m.Add<AddTwoFrame>());
             
             result.Object.Create(5).ShouldBe(7);
         }
@@ -46,7 +46,7 @@ namespace LamarCompiler.Testing.Codegen.Scenarios
         [Fact]
         public void simple_execution_with_one_input_and_output_2()
         {
-            var result = CodegenScenario.ForAction<int, int>(m => m.Add<AddTwoFrame>());
+            var result = CodegenScenario.ForBuilds<int, int>(m => m.Add<AddTwoFrame>());
             
             result.Object.Create(5).ShouldBe(7);
         }

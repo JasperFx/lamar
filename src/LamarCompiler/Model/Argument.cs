@@ -16,7 +16,7 @@ namespace LamarCompiler.Model
         {
         }
 
-        public string Declaration => $"{VariableType.FullName} {Usage}";
+        public string Declaration => $"{VariableType.FullNameInCode()} {Usage}";
 
         public new static Argument For<T>(string argName = null)
         {
