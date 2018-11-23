@@ -210,5 +210,13 @@ namespace LamarCompiler
 
             return frame;
         }
+
+        /// <summary>
+        /// Add a return frame for the method's return type
+        /// </summary>
+        public ReturnFrame Return()
+        {
+            return Return(ReturnType);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Lamar.IoC.Instances;
 using LamarCompiler.Frames;
 using LamarCompiler.Scenarios;
 using Shouldly;
@@ -8,7 +9,9 @@ namespace LamarCompiler.Testing.Codegen
 {
     public class ConstructorFrameTests
     {
-        public class NoArgGuy : IDisposable
+        public interface IGuy{}
+        
+        public class NoArgGuy : IGuy, IDisposable
         {
             public NoArgGuy()
             {
@@ -46,6 +49,19 @@ namespace LamarCompiler.Testing.Codegen
             });
             
             result.LinesOfCode.ShouldContain($"var noArgGuy = new {typeof(NoArgGuy).FullNameInCode()}();");
+            result.Object.Build().ShouldNotBeNull();
+        }
+        
+        [Fact]
+        public void override_built_type()
+        {
+            var result = CodegenScenario.ForBuilds<IGuy>(m =>
+            {
+                m.CallConstructor(() => new NoArgGuy()).DeclaredType = typeof(IGuy);
+                m.Return(typeof(NoArgGuy));
+            });
+            
+            result.LinesOfCode.ShouldContain($"{typeof(IGuy).FullNameInCode()} noArgGuy = new {typeof(NoArgGuy).FullNameInCode()}();");
             result.Object.Build().ShouldNotBeNull();
         }
         
@@ -126,18 +142,113 @@ namespace LamarCompiler.Testing.Codegen
             noArgGuy.String.ShouldBe("wow");
         }
         
-        /*
-         * Test cases
+        [Fact]
+        public void no_arg_return_with_three_setters_case_explicit_setter()
+        {
+            var result = CodegenScenario.ForBuilds<NoArgGuy, int, double, string>(m =>
+            {
+                var @call = m.CallConstructor(() => new NoArgGuy());
+                @call.Mode = ConstructorCallMode.ReturnValue;
+                @call.Set(x => x.Number);
+                @call.Set(x => x.Double);
+                @call.Set(x => x.String, new Value("Explicit"));
+            });
 
-         * 4. No args, one setter
-         * 5. No args, multiple setters
-         * 6. No args, extra frame, NOT return
-         * 7. No args, extra frame, return
-         * 8. No args, extra frame, using 
-         * 9. No args, multiple setters, extra frame, NOT return
-         * 10. No args, multiple setters, extra frame, using 
+            var noArgGuy = result.Object.Create(11, 1.22, "wow");
+            noArgGuy.Number.ShouldBe(11);
+            noArgGuy.Double.ShouldBe(1.22);
+            noArgGuy.String.ShouldBe("Explicit");
+        }
+
+        public class MultiArgGuy
+        {
+            public int Number { get; }
+            public double Amount { get; }
+            public string Name { get; }
+
+            public MultiArgGuy(int number)
+            {
+                Number = number;
+            }
+
+            public MultiArgGuy(int number, double amount)
+            {
+                Number = number;
+                Amount = amount;
+            }
+
+            public MultiArgGuy(int number, double amount, string name)
+            {
+                Number = number;
+                Amount = amount;
+                Name = name;
+            }
+        }
+
+        [Fact]
+        public void one_argument_constructor()
+        {
+            var result = CodegenScenario.ForBuilds<MultiArgGuy, int>(m =>
+            {
+                m.CallConstructor<MultiArgGuy>(() => new MultiArgGuy(0));
+                m.Return();
+            });
+
+            var guy = result.Object.Create(14);
+            guy.Number.ShouldBe(14);
+        }
+
+        [Fact] 
+        public void two_argument_constructor()
+        {
+            var result = CodegenScenario.ForBuilds<MultiArgGuy, int, double>(m =>
+            {
+                m.CallConstructor<MultiArgGuy>(() => new MultiArgGuy(0, 0));
+                m.Return();
+            });
+
+            var guy = result.Object.Create(14, 1.23);
+            guy.Number.ShouldBe(14);
+            guy.Amount.ShouldBe(1.23);
+            
+        }
+        
+        [Fact] 
+        public void three_argument_constructor()
+        {
+            var result = CodegenScenario.ForBuilds<MultiArgGuy, int, double, string>(m =>
+            {
+                m.CallConstructor<MultiArgGuy>(() => new MultiArgGuy(0, 0, ""));
+                m.Return();
+            });
+
+            var guy = result.Object.Create(14, 1.23, "Beck");
+            guy.Number.ShouldBe(14);
+            guy.Amount.ShouldBe(1.23);
+            guy.Name.ShouldBe("Beck");
+            
+        }
+        
+        [Fact] 
+        public void override_an_argument()
+        {
+            var result = CodegenScenario.ForBuilds<MultiArgGuy, int, double, string>(m =>
+            {
+                var ctor = m.CallConstructor<MultiArgGuy>(() => new MultiArgGuy(0, 0, ""));
+                ctor.Parameters[2] = new Value("Kent");
+                m.Return();
+            });
+
+            var guy = result.Object.Create(14, 1.23, "Beck");
+            guy.Number.ShouldBe(14);
+            guy.Amount.ShouldBe(1.23);
+            guy.Name.ShouldBe("Kent");
+            
+        }
+        
+        /*
+
          * 11. Specify some arguments
-         * 12. Multiple arguments
          * 13. Explicit declared type
          *
          * 

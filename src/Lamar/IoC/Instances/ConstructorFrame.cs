@@ -94,11 +94,45 @@ namespace Lamar.IoC.Instances
                 _scope = chain.FindVariable(typeof(Scope));
                 yield return _scope;
             }
+            
+            // TODO -- also go through the activator frames!
         }
 
         public override string ToString()
         {
             return $"new {_implementationType.NameInCode()}({_arguments.Select(x => x.VariableType.NameInCode()).Join(", ")})";
+        }
+
+        public class StandinMethodVariables : IMethodVariables
+        {
+            private readonly Variable _current;
+            private readonly IMethodVariables _inner;
+
+            public StandinMethodVariables(Variable current, IMethodVariables inner)
+            {
+                _current = current;
+                _inner = inner;
+            }
+
+            public Variable FindVariable(Type type)
+            {
+                return type == _current.VariableType ? _current : _inner.FindVariable(type);
+            }
+
+            public Variable FindVariableByName(Type dependency, string name)
+            {
+                return _inner.FindVariableByName(dependency, name);
+            }
+
+            public bool TryFindVariableByName(Type dependency, string name, out Variable variable)
+            {
+                return _inner.TryFindVariableByName(dependency, name, out variable);
+            }
+
+            public Variable TryFindVariable(Type type, VariableSource source)
+            {
+                return _inner.TryFindVariable(type, source);
+            }
         }
     }
 }

@@ -70,22 +70,24 @@ namespace LamarCompiler.Frames
 
         }
 
-        public ConstructorFrame(Type builtType, ConstructorInfo ctor)
+        public ConstructorFrame(Type builtType, ConstructorInfo ctor) 
         {
-            BuiltType = builtType;
             Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor));
             Parameters = new Variable[ctor.GetParameters().Length];
             
+            
+            BuiltType = builtType;
             Variable = new Variable(BuiltType, this);
         }
 
-        public Type BuiltType { get; }
+        public Type BuiltType { get;  }
+        
+        public Type DeclaredType { get; set; }
+        
         public ConstructorInfo Ctor { get; }
 
         public Variable[] Parameters { get; }
         
-        public Variable Result { get; private set; }
-
         public IList<Frame> ActivatorFrames { get; } = new List<Frame>();
 
         public ConstructorCallMode Mode { get; set; } = ConstructorCallMode.Variable;
@@ -101,28 +103,40 @@ namespace LamarCompiler.Frames
         
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
+            switch (Mode)
+            {
+                case ConstructorCallMode.Variable:
+                    writer.Write(Declaration() + ";");
+                    Next?.GenerateCode(method, writer);
+                    break;
+                    
+                case ConstructorCallMode.ReturnValue:
+                    writer.Write($"return {Invocation()};");
+                    Next?.GenerateCode(method, writer);
+                    break;
+                    
+                case ConstructorCallMode.UsingNestedVariable:
+                    writer.UsingBlock(Declaration(), w => Next?.GenerateCode(method, w));
+                    break;
+            }
+        }
+
+        public string Declaration()
+        {
+            return DeclaredType == null 
+                ? $"var {Variable.Usage} = {Invocation()}" 
+                : $"{DeclaredType.FullNameInCode()} {Variable.Usage} = {Invocation()}";
+        }
+
+        public string Invocation()
+        {
             var invocation = $"new {BuiltType.FullNameInCode()}({Parameters.Select(x => x.Usage).Join(", ")})";
             if (Setters.Any())
             {
                 invocation += $"{{{Setters.Select(x => x.Assignment()).Join(", ")}}}";
             }
-            
-            switch (Mode)
-            {
-                case ConstructorCallMode.Variable:
-                    writer.Write($"var {Variable.Usage} = {invocation};");
-                    Next?.GenerateCode(method, writer);
-                    break;
-                    
-                case ConstructorCallMode.ReturnValue:
-                    writer.Write($"return {invocation};");
-                    Next?.GenerateCode(method, writer);
-                    break;
-                    
-                case ConstructorCallMode.UsingNestedVariable:
-                    writer.UsingBlock($"var {Variable.Usage} = {invocation}", w => Next?.GenerateCode(method, w));
-                    break;
-            }
+
+            return invocation;
         }
 
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
