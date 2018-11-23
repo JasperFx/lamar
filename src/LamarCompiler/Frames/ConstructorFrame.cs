@@ -107,17 +107,46 @@ namespace LamarCompiler.Frames
             {
                 case ConstructorCallMode.Variable:
                     writer.Write(Declaration() + ";");
+                    writeActivators(method, writer);
+                    
                     Next?.GenerateCode(method, writer);
                     break;
                     
                 case ConstructorCallMode.ReturnValue:
-                    writer.Write($"return {Invocation()};");
-                    Next?.GenerateCode(method, writer);
+                    if (ActivatorFrames.Any())
+                    {
+                        writer.Write(Declaration() + ";");
+                        writeActivators(method, writer);
+                    
+                        writer.Write($"return {Variable.Usage};");
+                        Next?.GenerateCode(method, writer);
+                        
+                        
+                    }
+                    else
+                    {
+                        writer.Write($"return {Invocation()};");
+                        Next?.GenerateCode(method, writer);
+                    }
+                    
+
                     break;
                     
                 case ConstructorCallMode.UsingNestedVariable:
-                    writer.UsingBlock(Declaration(), w => Next?.GenerateCode(method, w));
+                    writer.UsingBlock(Declaration(), w =>
+                    {
+                        writeActivators(method, writer);
+                        Next?.GenerateCode(method, w);
+                    });
                     break;
+            }
+        }
+
+        private void writeActivators(GeneratedMethod method, ISourceWriter writer)
+        {
+            foreach (var frame in ActivatorFrames)
+            {
+                frame.GenerateCode(method, writer);
             }
         }
 

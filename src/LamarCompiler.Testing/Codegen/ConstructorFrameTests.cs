@@ -246,12 +246,58 @@ namespace LamarCompiler.Testing.Codegen
             
         }
         
-        /*
+        [Fact]
+        public void activator_with_no_return()
+        {
+            var result = CodegenScenario.ForAction<NoArgGuyCatcher>(m =>
+            {
+                var ctor = m.CallConstructor(() => new NoArgGuy());
+                ctor.ActivatorFrames.Add(MethodCall.For<NoArgGuyCatcher>(x => x.Catch(null)));
 
-         * 11. Specify some arguments
-         * 13. Explicit declared type
-         *
-         * 
-         */
+                
+            });
+            
+
+            var catcher = new NoArgGuyCatcher();
+            result.Object.DoStuff(catcher);
+            
+            catcher.Guy.ShouldNotBeNull();
+        }
+        
+        [Fact]
+        public void activator_with_return()
+        {
+            var result = CodegenScenario.ForBuilds<NoArgGuy, NoArgGuyCatcher>(m =>
+            {
+                var ctor = m.CallConstructor(() => new NoArgGuy());
+                ctor.Mode = ConstructorCallMode.ReturnValue;
+                ctor.ActivatorFrames.Add(MethodCall.For<NoArgGuyCatcher>(x => x.Catch(null)));
+            });
+            
+
+            var catcher = new NoArgGuyCatcher();
+            var guy = result.Object.Create(catcher);
+            
+            catcher.Guy.ShouldBeSameAs(guy);
+        }
+        
+        [Fact]
+        public void activator_with_nested_in_using()
+        {
+            var result = CodegenScenario.ForAction<NoArgGuyCatcher>(m =>
+            {
+                var ctor = m.CallConstructor(() => new NoArgGuy());
+                ctor.Mode = ConstructorCallMode.UsingNestedVariable;
+                ctor.ActivatorFrames.Add(MethodCall.For<NoArgGuyCatcher>(x => x.Catch(null)));
+            });
+            
+
+            var catcher = new NoArgGuyCatcher();
+            result.Object.DoStuff(catcher);
+            
+            catcher.Guy.ShouldNotBeNull();
+            catcher.Guy.WasDisposed.ShouldBeTrue();
+        }
+
     }
 }
