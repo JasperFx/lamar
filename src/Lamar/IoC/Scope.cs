@@ -195,7 +195,11 @@ namespace Lamar.IoC
 
             if (!objectType.IsConcrete()) throw new InvalidOperationException("Type must be concrete");
 
-            var ctor = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient).DetermineConstructor(ServiceGraph, out var message);
+            var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
+            var ctor = constructorInstance.DetermineConstructor(ServiceGraph, out var message);
+            var setters = constructorInstance.FindSetters(ServiceGraph);
+            
+            
             if (ctor == null) throw new InvalidOperationException(message);
 
             var dependencies = ctor.GetParameters().Select(x =>
@@ -215,7 +219,13 @@ namespace Lamar.IoC
                 }
             }).ToArray();
 
-            return ctor.Invoke(dependencies);
+            var service = ctor.Invoke(dependencies);
+            foreach (var setter in setters)
+            {
+                setter.ApplyQuickBuildProperties(service, this);
+            }
+            
+            return service;
         }
 
         public IReadOnlyList<T> QuickBuildAll<T>()

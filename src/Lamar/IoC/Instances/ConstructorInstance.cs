@@ -196,7 +196,7 @@ namespace Lamar.IoC.Instances
             
             if (_func == null)
             {
-                return new ConstructorFrame(this, disposalTracking, ctorParameters, setterParameters).Variable;
+                return new InstanceConstructorFrame(this, disposalTracking, ctorParameters, setterParameters).Variable;
             }
 
             var funcArg = variables.Resolve(_func, BuildMode.Dependency);
@@ -227,9 +227,9 @@ namespace Lamar.IoC.Instances
             
             
             
-            return new ConstructorFrame(this, DisposeTracking.None, ctorParameters, setterParameters)
+            return new InstanceConstructorFrame(this, DisposeTracking.None, ctorParameters, setterParameters)
             {
-                ReturnCreated = true
+                Mode = ConstructorCallMode.ReturnValue
             };
         }
 
@@ -289,9 +289,15 @@ namespace Lamar.IoC.Instances
 
         public IReadOnlyList<InjectedSetter> Setters => _setters;
 
+        internal InjectedSetter[] FindSetters(ServiceGraph services)
+        {
+            findSetters(services);
+            return _setters.ToArray();
+        }
+
         private void findSetters(ServiceGraph services)
         {
-            foreach (var property in ImplementationType.GetProperties().Where(x => x.CanWrite))
+            foreach (var property in ImplementationType.GetProperties().Where(x => x.CanWrite && x.SetMethod.IsPublic))
             {
                 var instance = findInlineDependency(property.Name, property.PropertyType);
                 if (instance == null && services.ShouldBeSet(property))

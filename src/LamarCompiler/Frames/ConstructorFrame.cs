@@ -86,8 +86,8 @@ namespace LamarCompiler.Frames
         
         public ConstructorInfo Ctor { get; }
 
-        public Variable[] Parameters { get; }
-        
+        public Variable[] Parameters { get; set; }
+
         public IList<Frame> ActivatorFrames { get; } = new List<Frame>();
 
         public ConstructorCallMode Mode { get; set; } = ConstructorCallMode.Variable;
@@ -97,10 +97,9 @@ namespace LamarCompiler.Frames
         /// <summary>
         /// The variable set by invoking this frame. 
         /// </summary>
-        public Variable Variable { get;}
-        
-        
-        
+        public Variable Variable { get; protected set; }
+
+
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
             switch (Mode)

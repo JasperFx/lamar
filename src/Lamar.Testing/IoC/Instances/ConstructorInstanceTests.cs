@@ -258,6 +258,7 @@ namespace Lamar.Testing.IoC.Instances
         public void should_be_an_injected_field(ServiceLifetime lifetime, BuildMode mode, bool isInjected)
         {
             var instance = ConstructorInstance.For<AWidget>(lifetime);
+            instance.CreatePlan(ServiceGraph.Empty());
             
             var variable = instance.CreateVariable(mode, null, false);
 
@@ -300,8 +301,10 @@ namespace Lamar.Testing.IoC.Instances
         public void create_variable_should_be_through_constructor(Type concreteType, ServiceLifetime lifetime, BuildMode build, DisposeTracking disposal)
         {
             var instance = new ConstructorInstance(concreteType, concreteType, lifetime);
+            instance.CreatePlan(ServiceGraph.Empty());            
+            
             instance.CreateVariable(build, new ResolverVariables(), false).Creator
-                .ShouldBeOfType<ConstructorFrame>()
+                .ShouldBeOfType<InstanceConstructorFrame>()
                 .Disposal.ShouldBe(disposal);
         }
         

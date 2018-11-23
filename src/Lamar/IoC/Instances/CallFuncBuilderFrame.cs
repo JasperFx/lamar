@@ -59,15 +59,7 @@ namespace Lamar.IoC.Instances
                     break;
                     
                 case DisposeTracking.WithUsing:
-                    if (Next is ConstructorFrame && Next.As<ConstructorFrame>().Disposal == DisposeTracking.WithUsing)
-                    {
-                        writer.Write($"using ({declaration})");
-                        Next?.GenerateCode(method, writer);
-                    }
-                    else
-                    {
-                        writer.UsingBlock(declaration, w => Next?.GenerateCode(method, w));
-                    }
+                    writer.UsingBlock(declaration, w => Next?.GenerateCode(method, w));
 
                     break;
                     

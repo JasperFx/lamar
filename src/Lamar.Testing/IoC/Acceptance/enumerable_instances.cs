@@ -8,6 +8,7 @@ using Lamar.Testing;
 using Lamar.Testing.IoC.Acceptance;
 using StructureMap.Testing.Widget;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace StructureMap.Testing.Acceptance
 {
@@ -20,10 +21,12 @@ namespace StructureMap.Testing.Acceptance
     
     public class enumerable_instances
     {
-        private Container container;
+        private readonly ITestOutputHelper _output;
 
-        public enumerable_instances()
+        public enumerable_instances(ITestOutputHelper output)
         {
+            _output = output;
+            
             container = new Container(_ =>
             {
                 _.For<IWidget>().Add<AWidget>();
@@ -31,6 +34,9 @@ namespace StructureMap.Testing.Acceptance
                 _.For<IWidget>().Add<CWidget>().Scoped();
             });
         }
+
+        private Container container;
+
         
         [Fact]
         public void honor_lifecycle_in_get_instance()
@@ -121,6 +127,9 @@ namespace StructureMap.Testing.Acceptance
         [Fact]
         public void retrieve_as_array()
         {
+            var code = container.Model.For<IWidget[]>().Default.DescribeBuildPlan();
+            _output.WriteLine(code);
+            
             var widgets = container.GetInstance<IWidget[]>();
 
             widgets
@@ -150,6 +159,8 @@ namespace StructureMap.Testing.Acceptance
                 _.For<IWidget[]>().Use(new IWidget[] { new DefaultWidget() });
             });
 
+            
+            
             container.GetInstance<IWidget[]>()
                 .Single().ShouldBeOfType<DefaultWidget>();
         }

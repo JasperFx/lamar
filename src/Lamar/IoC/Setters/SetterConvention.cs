@@ -1,98 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Lamar.IoC.Frames;
-using Lamar.IoC.Instances;
-using LamarCompiler.Model;
 using LamarCompiler.Util;
 
 namespace Lamar.IoC.Setters
 {
-
-    public class InjectedSetter
-    {
-        public PropertyInfo Property { get; }
-        public Instance Instance { get; }
-
-        public InjectedSetter(PropertyInfo property, Instance instance)
-        {
-            Property = property;
-            Instance = instance;
-        }
-
-
-        public void ApplyQuickBuildProperties(object service, Scope scope)
-        {
-            var value = Instance.QuickResolve(scope);
-            Property.SetValue(service, value);
-        }
-
-        public SetterArg Resolve(ResolverVariables variables, BuildMode mode)
-        {
-            Variable variable;
-            if (Instance.IsInlineDependency())
-            {
-                variable = Instance.CreateInlineVariable(variables);
-
-                // HOKEY. Might need some smarter way of doing this. Helps to disambiguate
-                // between ctor args of nested decorators
-                if (!(variable is Setter))
-                {
-                    variable.OverrideName(variable.Usage + "_inline_" + ++variables.VariableSequence);
-                }
-            }
-            else
-            {
-                variable = variables.Resolve(Instance, mode);
-            }
-                
-            return new SetterArg(variable, Property);
-        }
-    }
-
-    public class SetterArg
-    {
-        public Variable Variable { get; }
-        public PropertyInfo Property { get; }
-
-        public SetterArg(Variable variable, PropertyInfo property)
-        {
-            Variable = variable;
-            Property = property;
-        }
-
-        public string InlineAssignment => $"{Property.Name} = {Variable.Usage}";
-
-        public string ToSetPropertyCode(ServiceVariable target)
-        {
-            return $"{target.Usage}.{Property.Name} = {Variable.Usage}";
-        }
-    }
-    
-
-    public interface ISetterPolicy : ILamarPolicy
-    {
-        bool Matches(PropertyInfo prop);
-    }
-
-    public class LambdaSetterPolicy : ISetterPolicy
-    {
-        private readonly Func<PropertyInfo, bool> _match;
-
-        public LambdaSetterPolicy(Func<PropertyInfo, bool> match)
-        {
-            _match = match;
-        }
-
-        public bool Matches(PropertyInfo prop)
-        {
-            return _match(prop);
-        }
-    }
-
-
-        /// <summary>
+    /// <summary>
     /// Used as an expression builder to specify setter injection policies
     /// </summary>
     public class SetterConvention
@@ -168,5 +80,4 @@ namespace Lamar.IoC.Setters
 
 
     }
-
 }
