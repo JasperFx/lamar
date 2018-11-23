@@ -196,12 +196,51 @@ namespace LamarCompiler.Frames
                 yield return setter.Variable;
             }
 
-            foreach (var frame in ActivatorFrames)
+
+            if (ActivatorFrames.Any())
             {
-                foreach (var variable in frame.FindVariables(chain))
+                var standin = new StandinMethodVariables(Variable, chain);
+                
+                foreach (var frame in ActivatorFrames)
                 {
-                    yield return variable;
+                    foreach (var variable in frame.FindVariables(standin))
+                    {
+                        yield return variable;
+                    }
                 }
+            }
+        }
+        
+        
+        public class StandinMethodVariables : IMethodVariables
+        {
+            private readonly Variable _current;
+            private readonly IMethodVariables _inner;
+
+            public StandinMethodVariables(Variable current, IMethodVariables inner)
+            {
+                _current = current;
+                _inner = inner;
+            }
+
+            public Variable FindVariable(Type type)
+            {
+                return type == _current.VariableType ? _current : _inner.FindVariable(type);
+            }
+
+            public Variable FindVariableByName(Type dependency, string name)
+            {
+                return _inner.FindVariableByName(dependency, name);
+            }
+
+            public bool TryFindVariableByName(Type dependency, string name, out Variable variable)
+            {
+                return _inner.TryFindVariableByName(dependency, name, out variable);
+            }
+
+            public Variable TryFindVariable(Type type, VariableSource source)
+            {
+                return _inner.TryFindVariable(type, source);
             }
         }
     }
