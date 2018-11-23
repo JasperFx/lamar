@@ -93,6 +93,29 @@ namespace Lamar.Testing.IoC.Acceptance
         [InlineData(ServiceLifetime.Singleton, ServiceLifetime.Transient)]
         [InlineData(ServiceLifetime.Singleton, ServiceLifetime.Scoped)]
         [InlineData(ServiceLifetime.Singleton, ServiceLifetime.Singleton)]
+        public void build_with_explicit_inline_dependency_for_setter(ServiceLifetime parentLifetime, ServiceLifetime childLifetime)
+        {
+            var container = Container.For(_ =>
+            {
+                var instance = _.ForConcreteType<GuyWithWidgetSetter>().Configure;
+                instance.Ctor<IWidget>().Is<AWidget>();
+                instance.Lifetime = parentLifetime;
+            });
+
+            var guy = container.GetInstance<GuyWithWidgetSetter>();
+            guy.Widget.ShouldBeOfType<AWidget>();
+        }
+        
+        [Theory]
+        [InlineData(ServiceLifetime.Transient, ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Transient, ServiceLifetime.Scoped)]
+        [InlineData(ServiceLifetime.Transient, ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped, ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Scoped, ServiceLifetime.Scoped)]
+        [InlineData(ServiceLifetime.Scoped, ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Singleton, ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton, ServiceLifetime.Scoped)]
+        [InlineData(ServiceLifetime.Singleton, ServiceLifetime.Singleton)]
         public void build_with_setter_of_policy_of_type(ServiceLifetime parentLifetime, ServiceLifetime childLifetime)
         {
             var container = Container.For(_ =>
