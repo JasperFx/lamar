@@ -482,6 +482,18 @@ namespace Lamar.IoC.Instances
         {
             return new DependencyExpression<T>(this, constructorArg);
         }
+        
+        /// <summary>
+        ///     Inline definition of a setter dependency.  Select the setter property by type and optionally by property name.
+        ///     Use this method if there is more than one constructor arguments of the same type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+        public DependencyExpression<T> Setter<T>(string propName = null)
+        {
+            return new DependencyExpression<T>(this, propName);
+        }
 
         IReadOnlyList<Instance> IConfiguredInstance.InlineDependencies { get; }
 

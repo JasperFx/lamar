@@ -1,27 +1,21 @@
-﻿using Shouldly;
-using StructureMap.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Baseline;
+using Lamar.IoC;
+using Lamar.IoC.Frames;
+using Lamar.IoC.Instances;
+using LamarCompiler.Model;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
+using Shouldly;
+using StructureMap.Testing.Widget;
 using Xunit;
 
-namespace StructureMap.Testing.Acceptance
+namespace Lamar.Testing.Examples
 {
     public class inline_dependencies
     {
-        // SAMPLE: inline-dependencies-ColorWidget
-        public class ColorWidget : IWidget
-        {
-            public string Color { get; set; }
-
-            public ColorWidget(string color)
-            {
-                Color = color;
-            }
-        }
-
-        // ENDSAMPLE
-
         // SAMPLE: inline-dependencies-value
         [Fact]
         public void inline_usage_of_primitive_constructor_argument()
@@ -117,7 +111,7 @@ namespace StructureMap.Testing.Acceptance
         }
 
         // SAMPLE: inline-dependencies-simple-ctor-injection
-        public class InlineCtorArgs : Registry
+        public class InlineCtorArgs : ServiceRegistry
         {
             public InlineCtorArgs()
             {
@@ -144,13 +138,7 @@ namespace StructureMap.Testing.Acceptance
                 For<IEventRule>().Use<SimpleRule>()
                     .Ctor<IAction>().Is(new MySpecialActionInstance());
 
-                // Inline configuration of your dependency's dependencies
 
-                For<IEventRule>().Use<SimpleRule>()
-                    .Ctor<ICondition>().IsSpecial(_ => _.Type<BigCondition>().Ctor<int>().Is(100))
-
-                    // or
-                    .Ctor<ICondition>().Is(new SmartInstance<BigCondition>().Ctor<int>().Is(100));
             }
 
             public class BigCondition : ICondition
@@ -165,11 +153,25 @@ namespace StructureMap.Testing.Acceptance
                 }
             }
 
-            public class MySpecialActionInstance : LambdaInstance<Action3>
+            public class MySpecialActionInstance : Instance
             {
-                public MySpecialActionInstance()
-                    : base(() => new Action3())
+                public MySpecialActionInstance(Type serviceType, Type implementationType, ServiceLifetime lifetime) : base(serviceType, implementationType, lifetime)
                 {
+                }
+
+                public override Func<Scope, object> ToResolver(Scope topScope)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public override object Resolve(Scope scope)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
+                {
+                    throw new NotImplementedException();
                 }
             }
         }
@@ -199,7 +201,7 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        public class DualConditionRuleRegistry : Registry
+        public class DualConditionRuleRegistry : ServiceRegistry
         {
             public DualConditionRuleRegistry()
             {
@@ -228,7 +230,7 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        public class RuleWithSettersRegistry : Registry
+        public class RuleWithSettersRegistry : ServiceRegistry
         {
             public RuleWithSettersRegistry()
             {
@@ -310,33 +312,7 @@ namespace StructureMap.Testing.Acceptance
 
         // ENDSAMPLE
 
-        // SAMPLE: inline-dependencies-programmatic-configuration
-        public class OpenTypesRegistry : Registry
-        {
-            public OpenTypesRegistry()
-            {
-                var instance = new ConstructorInstance(typeof(EventRule<>));
 
-                // By name
-                instance.Dependencies.Add("action", typeof(Action1<>));
-
-                // Everything else is syntactical sugur over this:
-                instance.Dependencies.Add(new Argument
-                {
-                    Type = typeof(IAction<>), // The dependency type
-                    Name = "action", // The name of the dependency, either
-                    // a constructor argument name or
-                    // the name of a setter property
-
-                    // Specify the actual dependency
-                    // This can be either a concrete type, the prebuilt value,
-                    // or an Instance
-                    Dependency = typeof(Action1<>)
-                });
-            }
-        }
-
-        // ENDSAMPLE
 
         // SAMPLE: inline-dependencies-enumerables
         public class BigRule : IEventRule
@@ -359,27 +335,6 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        public class BigRuleRegistry : Registry
-        {
-            public BigRuleRegistry()
-            {
-                For<IEventRule>().Use<BigRule>()
-
-                    // Each line in the nested closure adds another
-                    // ICondition to the enumerable dependency in
-                    // the order in which they are configured
-                    .EnumerableOf<ICondition>().Contains(_ =>
-                    {
-                        _.Type<Condition1>();
-                        _.Type<Condition2>();
-                    })
-                    .EnumerableOf<IAction>().Contains(_ =>
-                    {
-                        _.Type<Action1>();
-                        _.Object(new Action2());
-                    });
-            }
-        }
 
         // ENDSAMPLE
     }

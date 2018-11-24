@@ -1,14 +1,17 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using StructureMap.Attributes;
-using StructureMap.Graph;
-using StructureMap.Graph.Scanning;
-using StructureMap.Testing.Acceptance;
+using Lamar.Scanning;
+using Lamar.Scanning.Conventions;
+using Microsoft.Win32;
+using Shouldly;
+using StructureMap.Testing.Widget;
 using StructureMap.Testing.Widget3;
-using IService = StructureMap.Testing.Widget3.IService;
+using Xunit;
+using Xunit.Abstractions;
 
-namespace StructureMap.Testing.DocumentationExamples
+
+namespace Lamar.Testing.Examples
 {
     public interface IDataProvider
     {
@@ -17,16 +20,11 @@ namespace StructureMap.Testing.DocumentationExamples
     // SAMPLE: setter-injection-with-SetterProperty
     public class Repository
     {
-        private IDataProvider _provider;
-
         // Adding the SetterProperty to a setter directs
-        // StructureMap to use this property when
+        // Lamar to use this property when
         // constructing a Repository instance
         [SetterProperty]
-        public IDataProvider Provider
-        {
-            set { _provider = value; }
-        }
+        public IDataProvider Provider { get; set; }
 
         [SetterProperty]
         public bool ShouldCache { get; set; }
@@ -37,6 +35,14 @@ namespace StructureMap.Testing.DocumentationExamples
 
     public class BuildPlans
     {
+        private readonly ITestOutputHelper _output;
+
+        public BuildPlans(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [Fact]
         public void ShowRepositoryBuildPlan()
         {
             var container = new Container(_ =>
@@ -45,7 +51,7 @@ namespace StructureMap.Testing.DocumentationExamples
                 _.ForConcreteType<Repository>().Configure.Setter<bool>().Is(false);
             });
 
-            Debug.WriteLine(container.Model.For<Repository>().Default.DescribeBuildPlan());
+            _output.WriteLine(container.Model.For<Repository>().Default.DescribeBuildPlan());
         }
     }
 
@@ -80,120 +86,17 @@ namespace StructureMap.Testing.DocumentationExamples
         }
     }
 
-    // SAMPLE: ShippingRegistry
-    public class ShippingRegistry : Registry
-    {
-        public ShippingRegistry()
-        {
-            For<IShippingService>().AddInstances(x =>
-            {
-                x.Type<ShippingWebService>()
-                    .Ctor<string>("url").Is("a url")
-                    .Named("Domestic");
-
-                x.Type<ShippingWebService>()
-                    .Ctor<string>("url").Is("a different url")
-                    .Named("International");
-
-                x.Type<InternalShippingService>().Named("Internal");
-            });
-        }
-    }
-
-    // ENDSAMPLE
-
-    public class ClassThatUsesShippingService
-    {
-        public ClassThatUsesShippingService()
-        {
-            // SAMPLE: getting-ishippingservice
-            var container = new Container(new ShippingRegistry());
-
-            // Accessing the IShippingService Instance's by name
-            var internationalService = container.GetInstance<IShippingService>("International");
-            var domesticService = container.GetInstance<IShippingService>("Domestic");
-            var internalService = container.GetInstance<IShippingService>("Internal");
-
-            // ENDSAMPLE
-
-            // Without generics
-            var internationalService2 =
-                (IShippingService) container.GetInstance(typeof (IShippingService), "International");
 
 
-            internationalService.ShipIt();
-            domesticService.ShipIt();
-            internationalService2.ShipIt();
 
-            var serviceName = determineShippingService();
-            var service = container.GetInstance<IShippingService>(serviceName);
-
-
-            service.ShipIt();
-        }
-
-
-        private string determineShippingService()
-        {
-            throw new NotImplementedException();
-        }
-
-        // With Generics
-        public ValidationResult RunRulesWithGenerics(Invoice invoice)
-        {
-            var result = new ValidationResult();
-
-            var container = Container.For<ShippingRegistry>();
-            var validators = container.GetAllInstances<InvoiceValidator>();
-            foreach (var validator in validators)
-            {
-                validator.Validate(invoice, result);
-            }
-
-            return result;
-        }
-
-        // Without Generics
-        public ValidationResult RunRulesWithoutGenerics(Invoice invoice)
-        {
-            var result = new ValidationResult();
-
-            var container = Container.For<ShippingRegistry>();
-            var validators = container.GetAllInstances(typeof (InvoiceValidator));
-            foreach (InvoiceValidator validator in validators)
-            {
-                validator.Validate(invoice, result);
-            }
-
-            return result;
-        }
-
-        #region Nested type: InvoiceValidator
-
-        public interface InvoiceValidator
-        {
-            void Validate(Invoice invoice, ValidationResult result);
-        }
-
-        #endregion
-
-        #region Nested type: ValidationResult
-
-        public class ValidationResult
-        {
-        }
-
-        #endregion
-    }
-
-    public class ScanningRegistry : Registry
+    public class ScanningRegistry : ServiceRegistry
     {
         public ScanningRegistry()
         {
             Scan(x =>
             {
                 // Add assembly by name.
-                x.Assembly("StructureMap.Testing.Widget");
+                x.Assembly("Lamar.Testing.Widget");
 
                 // Add an assembly directly
                 x.Assembly(typeof(ScanningRegistry).GetTypeInfo().Assembly);
@@ -207,12 +110,12 @@ namespace StructureMap.Testing.DocumentationExamples
 
             Scan(x =>
             {
-                // I'm telling StructureMap to sweep a folder called "Extensions" directly
+                // I'm telling Lamar to sweep a folder called "Extensions" directly
                 // underneath the application root folder for any assemblies
                 x.AssembliesFromPath("Extensions");
 
-                // I also direct StructureMap to add any Registries that it finds in these
-                // assemblies.  I'm assuming that all the StructureMap directives are
+                // I also direct Lamar to add any Registries that it finds in these
+                // assemblies.  I'm assuming that all the Lamar directives are
                 // contained in Registry classes -- and this is the recommended approach
                 x.LookForRegistries();
             });
@@ -229,14 +132,14 @@ namespace StructureMap.Testing.DocumentationExamples
     }
 
     // SAMPLE: BasicScanning
-    public class BasicScanning : Registry
+    public class BasicScanning : ServiceRegistry
     {
         public BasicScanning()
         {
             Scan(_ =>
             {
                 // Declare which assemblies to scan
-                _.Assembly("StructureMap.Testing");
+                _.Assembly("Lamar.Testing");
                 _.AssemblyContainingType<IWidget>();
 
                 // Filter types
@@ -255,7 +158,7 @@ namespace StructureMap.Testing.DocumentationExamples
 
     public class MySpecialRegistrationConvention : IRegistrationConvention
     {
-        public void ScanTypes(TypeSet types, Registry registry)
+        public void ScanTypes(TypeSet types, ServiceRegistry registry)
         {
             throw new NotImplementedException();
         }
@@ -323,7 +226,15 @@ namespace StructureMap.Testing.DocumentationExamples
 
     public class ShowBuildPlanOfShippingPresenter
     {
+        private readonly ITestOutputHelper _output;
+
+        public ShowBuildPlanOfShippingPresenter(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         // SAMPLE: ShippingScreenPresenter-build-plan
+        [Fact]
         public void ShowBuildPlan()
         {
             var container = new Container(_ =>
@@ -335,9 +246,10 @@ namespace StructureMap.Testing.DocumentationExamples
             // Just proving that we can build ShippingScreenPresenter;)
             container.GetInstance<ShippingScreenPresenter>().ShouldNotBeNull();
 
-            var buildPlan = container.Model.For<ShippingScreenPresenter>().Default.DescribeBuildPlan(1);
+            var buildPlan = container.Model.For<ShippingScreenPresenter>().Default.DescribeBuildPlan();
 
-            Debug.WriteLine(buildPlan);
+            // _output is the xUnit ITestOutputHelper here
+            _output.WriteLine(buildPlan);
         }
         // ENDSAMPLE
     }
@@ -444,7 +356,7 @@ namespace StructureMap.Testing.DocumentationExamples
             // Create the main form
             var shell = new ApplicationShell();
 
-            // Put the main form, and some of its children into StructureMap
+            // Put the main form, and some of its children into Lamar
             // where other Controllers and Commands can get to them
             // without being coupled to the main form
             //ObjectFactory.Container.Inject<IApplicationShell>(shell);
@@ -465,7 +377,7 @@ namespace StructureMap.Testing.DocumentationExamples
         }
     }
 
-    public class InstanceExampleRegistry : Registry
+    public class InstanceExampleRegistry : ServiceRegistry
     {
         public InstanceExampleRegistry()
         {
@@ -477,20 +389,6 @@ namespace StructureMap.Testing.DocumentationExamples
 
             // Add an additional Instance of a PluginType
             For<IService>().Use<RemoteService>();
-
-            // Add multiple additional Instances of a PluginType
-            For<IService>().AddInstances(x =>
-            {
-                x.ConstructedBy(() => new ColorService("Red"));
-
-                x.Type<RemoteService>();
-
-                x.Object(new ColorService("Red"));
-            });
-
-            // Use the InstanceExpression to define the default Instance
-            // of a PluginType within a Profile
-            Profile("Connected", x => { x.For<IService>().Use<RemoteService>(); });
         }
     }
 }

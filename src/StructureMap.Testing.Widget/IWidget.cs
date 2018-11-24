@@ -10,16 +10,15 @@ namespace StructureMap.Testing.Widget
     }
     // ENDSAMPLE
 
+    // SAMPLE: inline-dependencies-ColorWidget
     public class ColorWidget : IWidget
     {
-        private readonly string _Color;
-
         public ColorWidget(string color)
         {
-            _Color = color;
+            Color = color;
         }
 
-        public string Color { get { return _Color; } }
+        public string Color { get; }
 
         #region ICloneable Members
 
@@ -43,19 +42,20 @@ namespace StructureMap.Testing.Widget
             if (this == obj) return true;
             var colorWidget = obj as ColorWidget;
             if (colorWidget == null) return false;
-            return Equals(_Color, colorWidget._Color);
+            return Equals(Color, colorWidget.Color);
         }
 
         public override int GetHashCode()
         {
-            return _Color != null ? _Color.GetHashCode() : 0;
+            return Color != null ? Color.GetHashCode() : 0;
         }
 
         public override string ToString()
         {
-            return string.Format("Color: {0}", Color);
+            return $"Color: {Color}";
         }
     }
+    // ENDSAMPLE
 
     public class AWidget : IWidget
     {
