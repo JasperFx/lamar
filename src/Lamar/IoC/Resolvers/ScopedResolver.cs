@@ -5,6 +5,8 @@ namespace Lamar.IoC.Resolvers
     public abstract class ScopedResolver<T> : IResolver
     {
         public Type ServiceType => typeof(T);
+        
+        private readonly object _locker = new object();
 
         public object Resolve(Scope scope)
         {
@@ -12,16 +14,26 @@ namespace Lamar.IoC.Resolvers
             {
                 return service;
             }
-            
-            service = (T) Build(scope);
-            scope.Services.Add(Hash, service);
 
-            if (service is IDisposable)
+            lock (_locker)
             {
-                scope.Disposables.Add((IDisposable) service);
-            }
+                if (scope.Services.TryGetValue(Hash, out service))
+                {
+                    return service;
+                }
+                
+                service = (T) Build(scope);
+                scope.Services.Add(Hash, service);
 
-            return service;
+                if (service is IDisposable)
+                {
+                    scope.Disposables.Add((IDisposable) service);
+                }
+
+                return service;
+            }
+            
+
         }
 
         public abstract T Build(Scope scope);
