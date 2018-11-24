@@ -19,4 +19,4 @@ build_script:
 test: off
 
 artifacts:
-  - path: '**\Lamar.*.nupkg' # find all NuGet packages recursively
+  - path: '**\Lamar*.nupkg' # find all NuGet packages recursively
