@@ -68,10 +68,6 @@ we're using an open generic type for our rules engine so that we can respond to 
 
 <[sample:inline-dependencies-open-types]>
 
-As an alternative approach, we _could_ build up `ConstructorInstance` objects to represent our rules like so:
-
-<[sample:inline-dependencies-programmatic-configuration]>
-
 It's frequently useful to explicitly configure all the elements for an enumerable argument (arrays, IEnumerable, or IList). 
 Lamar provides this syntax to do just that:
 
