@@ -127,12 +127,6 @@ namespace Lamar.Testing.Examples
                     .Ctor<IAction>().Is(new Action2())
                     .Named("Two");
 
-                // Use Lambda construction
-                For<IEventRule>().Use<SimpleRule>()
-                    .Ctor<ICondition>().Is(() => new Condition3())
-                    .Ctor<IAction>().Is("some crazy builder", c => c.GetInstance<Action3>())
-                    .Named("Three");
-
                 // Rarely used, but gives you a "do any crazy thing" option
                 // Pass in your own Instance object
                 For<IEventRule>().Use<SimpleRule>()
@@ -155,7 +149,7 @@ namespace Lamar.Testing.Examples
 
             public class MySpecialActionInstance : Instance
             {
-                public MySpecialActionInstance(Type serviceType, Type implementationType, ServiceLifetime lifetime) : base(serviceType, implementationType, lifetime)
+                public MySpecialActionInstance() : base(typeof(IAction), typeof(IAction), ServiceLifetime.Transient)
                 {
                 }
 
@@ -237,15 +231,9 @@ namespace Lamar.Testing.Examples
                 For<IEventRule>().Use<RuleWithSetters>()
                     .Setter<ICondition>().Is<Condition1>()
 
-                    // or
-                    .Setter(x => x.Action).Is(new Action1())
+                    // or if you need to specify the property name
+                    .Setter<IAction>("Action").Is<Action2>();
 
-                    // or if you need to specify the name
-                    .Setter<IAction>("Action").Is<Action2>()
-
-                    // or you can configure values *after* the object
-                    // is constructed with the SetProperty method
-                    .SetProperty(x => x.Action = new Action2());
             }
         }
 

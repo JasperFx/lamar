@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;
+using StructureMap.Testing.Widget3;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -288,7 +290,7 @@ namespace Lamar.Testing.IoC.Acceptance
             Debug.WriteLine(description);
 
             var target = container.GetInstance<ClassWithNamedProperties>();
-            target.Service.ShouldBeTheSameAs(theService);
+            target.Service.ShouldBeSameAs(theService);
             target.Gateway.ShouldBeOfType<DefaultGateway>();
         }
 
@@ -313,7 +315,7 @@ namespace Lamar.Testing.IoC.Acceptance
             Debug.WriteLine(description);
 
             var target = container.GetInstance<ClassWithNamedProperties>();
-            target.Service.ShouldBeTheSameAs(theService);
+            target.Service.ShouldBeSameAs(theService);
             target.Gateway.ShouldBeNull();
         }
 
@@ -331,7 +333,7 @@ namespace Lamar.Testing.IoC.Acceptance
             });
 
             var target = container.GetInstance<ClassWithNamedProperties>();
-            target.Service.ShouldBeTheSameAs(theService);
+            target.Service.ShouldBeSameAs(theService);
             target.Gateway.ShouldBeNull();
         }
     }
