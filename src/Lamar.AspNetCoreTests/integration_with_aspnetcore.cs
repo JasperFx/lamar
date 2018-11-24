@@ -183,15 +183,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
                 {
                     instance.Resolve().ShouldNotBeNull();
-
-//                    try
-//                    {
-//
-//                    }
-//                    catch (Exception e)
-//                    {
-//                        failures.Add(instance.ServiceType);
-//                    }
                 }
 
                 ending = stopwatch.ElapsedMilliseconds;
@@ -213,6 +204,48 @@ namespace Lamar.Testing.AspNetCoreIntegration
             if (failures.Any())
             {
                 throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
+            }
+        }
+
+        [Fact]
+        public void bug_103_multithreaded_access_to_options()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+
+            using (var host = builder.Build())
+            {
+                var container = host.Services.As<Container>();
+
+                var optionTypes = container.Model.AllInstances
+                    .Select(x => x.ServiceType)
+                    .Where(x => !x.IsOpenGeneric())
+                    .Where(x => x.Closes(typeof(IOptions<>)))
+                    .ToArray();
+
+                void tryToResolveAll()
+                {
+                    foreach (var optionType in optionTypes)
+                    {
+                        container.GetInstance(optionType).ShouldNotBeNull();
+                    }
+                }
+
+                var list = new List<Task>();
+
+                for (int i = 0; i < 10; i++)
+                {
+                    list.Add(Task.Factory.StartNew(tryToResolveAll));
+                }
+
+                Task.WaitAll(list.ToArray());
             }
         }
 
