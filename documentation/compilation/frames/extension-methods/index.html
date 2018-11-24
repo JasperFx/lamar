@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">Dynamic Code Generation and Compilation</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a></li><li class="active">Extension Methods for Names in Code</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCompiler</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a></li><li class="active">Extension Methods for Names in Code</li></ol>
       </nav>
     </div>
 
@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 1.0.0</h3>
+            <h3>Lamar 2.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -89,9 +89,9 @@ determine how a type should be written <em>in code</em> with these extension met
 </li>
 </ol>
 <p>The functionality of <code>NameInCode()</code> is demonstrated below with some of its xUnit tests:</p>
-<pre><code class="language-csharp">&#xA;[Theory]&#xA;[InlineData(typeof(void), &quot;void&quot;)]&#xA;[InlineData(typeof(int), &quot;int&quot;)]&#xA;[InlineData(typeof(string), &quot;string&quot;)]&#xA;[InlineData(typeof(long), &quot;long&quot;)]&#xA;[InlineData(typeof(bool), &quot;bool&quot;)]&#xA;[InlineData(typeof(double), &quot;double&quot;)]&#xA;[InlineData(typeof(object), &quot;object&quot;)]&#xA;[InlineData(typeof(Message1), &quot;Message1&quot;)]&#xA;[InlineData(typeof(Handler&lt;Message1&gt;), &quot;Handler&lt;Lamar.Testing.Codegen.Message1&gt;&quot;)]&#xA;[InlineData(typeof(Handler&lt;string&gt;), &quot;Handler&lt;string&gt;&quot;)]&#xA;public void alias_name_of_task(Type type, string name)&#xA;{&#xA;    // Gets the type name&#xA;    type.NameInCode().ShouldBe(name);&#xA;}&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;[Theory]&#xA;[InlineData(typeof(void), &quot;void&quot;)]&#xA;[InlineData(typeof(int), &quot;int&quot;)]&#xA;[InlineData(typeof(string), &quot;string&quot;)]&#xA;[InlineData(typeof(long), &quot;long&quot;)]&#xA;[InlineData(typeof(bool), &quot;bool&quot;)]&#xA;[InlineData(typeof(double), &quot;double&quot;)]&#xA;[InlineData(typeof(object), &quot;object&quot;)]&#xA;[InlineData(typeof(Message1), &quot;Message1&quot;)]&#xA;[InlineData(typeof(Handler&lt;Message1&gt;), &quot;Handler&lt;LamarCompiler.Testing.Codegen.Message1&gt;&quot;)]&#xA;[InlineData(typeof(Handler&lt;string&gt;), &quot;Handler&lt;string&gt;&quot;)]&#xA;public void alias_name_of_task(Type type, string name)&#xA;{&#xA;    // Gets the type name&#xA;    type.NameInCode().ShouldBe(name);&#xA;}&#xA;</code></pre>
 <p>Likewise, <code>FullNameInCode()</code> is shown below:</p>
-<pre><code class="language-csharp">&#xA;[Theory]&#xA;[InlineData(typeof(void), &quot;void&quot;)]&#xA;[InlineData(typeof(int), &quot;int&quot;)]&#xA;[InlineData(typeof(string), &quot;string&quot;)]&#xA;[InlineData(typeof(long), &quot;long&quot;)]&#xA;[InlineData(typeof(bool), &quot;bool&quot;)]&#xA;[InlineData(typeof(double), &quot;double&quot;)]&#xA;[InlineData(typeof(object), &quot;object&quot;)]&#xA;[InlineData(typeof(Message1), &quot;Lamar.Testing.Codegen.Message1&quot;)]&#xA;[InlineData(typeof(Handler&lt;Message1&gt;), &quot;Lamar.Testing.Codegen.Handler&lt;Lamar.Testing.Codegen.Message1&gt;&quot;)]&#xA;[InlineData(typeof(Handler&lt;string&gt;), &quot;Lamar.Testing.Codegen.Handler&lt;string&gt;&quot;)]&#xA;public void alias_full_name_of_task(Type type, string name)&#xA;{&#xA;    type.FullNameInCode().ShouldBe(name);&#xA;}&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;[Theory]&#xA;[InlineData(typeof(void), &quot;void&quot;)]&#xA;[InlineData(typeof(int), &quot;int&quot;)]&#xA;[InlineData(typeof(string), &quot;string&quot;)]&#xA;[InlineData(typeof(long), &quot;long&quot;)]&#xA;[InlineData(typeof(bool), &quot;bool&quot;)]&#xA;[InlineData(typeof(double), &quot;double&quot;)]&#xA;[InlineData(typeof(object), &quot;object&quot;)]&#xA;[InlineData(typeof(Message1), &quot;LamarCompiler.Testing.Codegen.Message1&quot;)]&#xA;[InlineData(typeof(Handler&lt;Message1&gt;), &quot;LamarCompiler.Testing.Codegen.Handler&lt;LamarCompiler.Testing.Codegen.Message1&gt;&quot;)]&#xA;[InlineData(typeof(Handler&lt;string&gt;), &quot;LamarCompiler.Testing.Codegen.Handler&lt;string&gt;&quot;)]&#xA;public void alias_full_name_of_task(Type type, string name)&#xA;{&#xA;    type.FullNameInCode().ShouldBe(name);&#xA;}&#xA;</code></pre>
 
               </div>
 

@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 1.0.0</h3>
+            <h3>Lamar 2.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -87,7 +87,7 @@ lines.</p>
 <p>Also see <a href="/lamar/documentation/ioc/diagnostics/type-scanning">Type Scanning Diagnostics</a> for help in understanding the assembly scanning behavior in your system.</p>
 <h2 id="serviceregistry.scan">ServiceRegistry.Scan()</h2>
 <p>Assembly scanning operations are defined by the <code>ServiceRegistry.Scan()</code> method demonstrated below:</p>
-<pre><code class="language-csharp">&#xA;public class BasicScanning : Registry&#xA;{&#xA;    public BasicScanning()&#xA;    {&#xA;        Scan(_ =&gt;&#xA;        {&#xA;            // Declare which assemblies to scan&#xA;            _.Assembly(&quot;StructureMap.Testing&quot;);&#xA;            _.AssemblyContainingType&lt;IWidget&gt;();&#xA;&#xA;            // Filter types&#xA;            _.Exclude(type =&gt; type.Name.Contains(&quot;Bad&quot;));&#xA;&#xA;            // A custom registration convention&#xA;            _.Convention&lt;MySpecialRegistrationConvention&gt;();&#xA;&#xA;            // Built in registration conventions&#xA;            _.AddAllTypesOf&lt;IWidget&gt;().NameBy(x =&gt; x.Name.Replace(&quot;Widget&quot;, &quot;&quot;));&#xA;            _.WithDefaultConventions();&#xA;        });&#xA;    }&#xA;}&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public class BasicScanning : ServiceRegistry&#xA;{&#xA;    public BasicScanning()&#xA;    {&#xA;        Scan(_ =&gt;&#xA;        {&#xA;            // Declare which assemblies to scan&#xA;            _.Assembly(&quot;Lamar.Testing&quot;);&#xA;            _.AssemblyContainingType&lt;IWidget&gt;();&#xA;&#xA;            // Filter types&#xA;            _.Exclude(type =&gt; type.Name.Contains(&quot;Bad&quot;));&#xA;&#xA;            // A custom registration convention&#xA;            _.Convention&lt;MySpecialRegistrationConvention&gt;();&#xA;&#xA;            // Built in registration conventions&#xA;            _.AddAllTypesOf&lt;IWidget&gt;().NameBy(x =&gt; x.Name.Replace(&quot;Widget&quot;, &quot;&quot;));&#xA;            _.WithDefaultConventions();&#xA;        });&#xA;    }&#xA;}&#xA;</code></pre>
 <p>Please note (because I've been asked this several times over the years) that each call to <code>ServiceRegistry.Scan()</code> is an entirely atomic operation that has no impact on previous or subsequent calls.</p>
 <p>Any given call to <code>ServiceRegistry.Scan()</code> consists of three different things:</p>
 <ol>

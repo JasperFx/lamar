@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 1.0.0</h3>
+            <h3>Lamar 2.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -91,6 +91,9 @@
 <h2 id="filtering-whatdoihave">Filtering WhatDoIHave()</h2>
 <p>Filtering the <code>WhatDoIHave()</code> results can be done in these ways:</p>
 <pre><code class="language-csharp">&#xA;var container = Container.Empty();&#xA;&#xA;// Filter by the Assembly of the Plugin Type&#xA;var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);&#xA;&#xA;// Only report on the specified Plugin Type&#xA;var byPluginType = container.WhatDoIHave(typeof(IWidget));&#xA;&#xA;// Filter to Plugin Type&#x27;s in the named namespace&#xA;// The &#x27;IsInNamespace&#x27; test will include child namespaces&#xA;var byNamespace = container.WhatDoIHave(@namespace: &quot;StructureMap.Testing.Widget&quot;);&#xA;&#xA;// Filter by a case insensitive string.Contains() match&#xA;// against the Plugin Type name&#xA;var byType = container.WhatDoIHave(typeName: &quot;Widget&quot;);&#xA;</code></pre>
+<h2 id="whatdoihave-under-asp.net-core">WhatDoIHave() under ASP.Net Core</h2>
+<p>You can call <code>WhatDoIHave()</code> and <code>WhatDidIScan()</code> when running in ASP.Net Core like so:</p>
+<pre><code class="language-csharp">&#xA;public class StartupWithDiagnostics&#xA;{&#xA;    // Take in Lamar&#x27;s ServiceRegistry instead of IServiceCollection&#xA;    // as your argument, but fear not, it implements IServiceCollection&#xA;    // as well&#xA;    public void ConfigureContainer(ServiceRegistry services)&#xA;    {&#xA;        // Supports ASP.Net Core DI abstractions&#xA;        services.AddMvc();&#xA;        services.AddLogging();&#xA;&#xA;        // Also exposes Lamar specific registrations&#xA;        // and functionality&#xA;        services.Scan(s =&gt;&#xA;        {&#xA;            s.TheCallingAssembly();&#xA;            s.WithDefaultConventions();&#xA;        });&#xA;    }&#xA;&#xA;    public void Configure(IApplicationBuilder app, IHostingEnvironment env)&#xA;    {&#xA;        if(env.IsDevelopment())&#xA;        {&#xA;            var container = (IContainer)app.ApplicationServices;&#xA;            // or write to your own Logger&#xA;            Console.WriteLine(container.WhatDidIScan());&#xA;            Console.WriteLine(container.WhatDoIHave());&#xA;        }&#xA;&#xA;        app.UseMvc();&#xA;    }&#xA;}&#xA;</code></pre>
 
               </div>
 

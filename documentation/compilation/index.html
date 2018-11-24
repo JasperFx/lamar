@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - Dynamic Code Generation and Compilation</title>
+        <title>Lamar - LamarCompiler</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li class="active">Dynamic Code Generation and Compilation</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li class="active">LamarCompiler</li></ol>
       </nav>
     </div>
 
@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 1.0.0</h3>
+            <h3>Lamar 2.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -74,14 +74,13 @@
 
           <!--right-->
           <div class="col-md-9">
-              <h1>Dynamic Code Generation and Compilation</h1>
+              <h1>LamarCompiler</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--title:Dynamic Code Generation and Compilation-->
-<p>While most folks will probably use Lamar as an IoC container tool, you can also use the underlying
-code generation and compilation support all by itself. The <a href="https://jasperfx.github.io">Jasper application framework</a>
+                <!--title:LamarCompiler-->
+<p>Underneath Lamar the IoC container is a standalone library named <code>LamarCompiler</code> that can be used by itself as a code generation and in memory compilation of C# via Roslyn. The <a href="https://jasperfx.github.io">Jasper application framework</a>
 heavily uses this capability as its <a href="https://jeremydmiller.com/2018/01/16/introducing-bluemilk-structuremaps-replacement-jaspers-special-sauce/">&quot;Special Sauce&quot;</a> (Lamar was originally built
 under the project name &quot;BlueMilk&quot;). See also <a href="https://jeremydmiller.com/2018/05/16/roslyn-powered-code-weaving-middleware/">Roslyn Powered Code Weaving Middleware</a> for more information about how Jasper
 uses Lamar for its efficient middleware strategy.</p>
