@@ -8,6 +8,10 @@ that configures ASP.Net Core, you also need to call the `UseLamar()` method as s
 
 <[sample:getting-started-main]>
 
+<[warning]>
+The `Startup.ConfigureServices(ServiceRegistry)` convention does not work as of ASP.Net Core 2.1. Use `ConfigureContainer(ServiceRegistry)` instead.
+<[/warning]>
+
 If you use a `StartUp` class for extra configuration, your `ConfigureContainer()` method *can* take in a `ServiceRegistry` object from Lamar for service registrations in place of the ASP.Net Core `IServiceCollection` interface as shown below:
 
 <[sample:getting-started-startup]>
