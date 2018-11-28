@@ -19,11 +19,11 @@ namespace LamarCompiler.Testing.Compilation
 
 
             var adder = assembly.AddType("Adder", typeof(INumberGenerator));
-            adder.MethodFor("Generate").Add<AddFrame>();
+            adder.MethodFor("Generate").Frames.Append<AddFrame>();
 
             var multiplier = assembly.AddType("Multiplier", typeof(INumberGenerator));
             multiplier.MethodFor(nameof(INumberGenerator.Generate))
-                .Add<MultiplyFrame>();
+                .Frames.Append<MultiplyFrame>();
             
             assembly.CompileAll();
             

@@ -15,7 +15,7 @@ namespace LamarCompiler.Testing.Codegen.Methods
             
             var generatedType = assembly.AddType("NumberGetter", typeof(INumberGetter));
             
-            generatedType.MethodFor("GetNumber").Add(new ReturnFive());
+            generatedType.MethodFor("GetNumber").Frames.Append(new ReturnFive());
             
             assembly.CompileAll();
 

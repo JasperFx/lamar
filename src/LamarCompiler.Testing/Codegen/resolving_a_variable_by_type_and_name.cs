@@ -47,8 +47,8 @@ namespace LamarCompiler.Testing.Codegen
             var frame1 = new FrameThatBuildsVariable("aaa", typeof(string));
             var frame2 = new FrameThatBuildsVariable("bbb", typeof(string));
 
-            var method = new GeneratedMethod("Something", typeof(Task), arg1, arg2 )
-                .Add(frame1, frame2);
+            var method = new GeneratedMethod("Something", typeof(Task), arg1, arg2);
+            method.Frames.Append(frame1, frame2);
             
             
             method.ToArranger().FindVariableByName(typeof(string), "aaa")

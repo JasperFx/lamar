@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using LamarCompiler.Frames;
@@ -67,38 +66,12 @@ namespace LamarCompiler
         }
         
         public InjectedField[] Fields { get; internal set; } = new InjectedField[0];
-        public IList<Frame> Frames { get; } = new List<Frame>();
         public Argument[] Arguments { get; }
 
         public IEnumerable<Setter> Setters { get; internal set; }
 
 
-        public GeneratedMethod Add<T>() where T : Frame, new()
-        {
-            return Add(new T());
-        }
 
-        public GeneratedMethod Add(params Frame[] frames)
-        {
-            Frames.AddRange(frames);
-            return this;
-        }
-
-        /// <summary>
-        /// Convenience method to add a method call to the GeneratedMethod Frames
-        /// collection
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public MethodCall Call<T>(Expression<Action<T>> expression)
-        {
-            var @call = MethodCall.For(expression);
-            Frames.Add(@call);
-
-            return @call;
-        }
-        
         
         // TODO -- need a test here. It's used within Jasper, but still
         public IList<Variable> DerivedVariables { get; } = new List<Variable>();
@@ -169,54 +142,15 @@ namespace LamarCompiler
                 ? "return;" 
                 : $"return {typeof(Task).FullName}.{nameof(Task.CompletedTask)};";
         }
-
-        /// <summary>
-        /// Adds a ReturnFrame to the method that will return a variable of the specified type
-        /// </summary>
-        /// <param name="returnType"></param>
-        /// <returns></returns>
-        public ReturnFrame Return(Type returnType)
-        {
-            var frame = new ReturnFrame(returnType);
-
-            Frames.Add(frame);
-            return frame;
-        }
-
-        /// <summary>
-        /// Adds a ReturnFrame for the specified variable
-        /// </summary>
-        /// <param name="returnVariable"></param>
-        /// <returns></returns>
-        public ReturnFrame Return(Variable returnVariable)
-        {
-            var frame = new ReturnFrame(returnVariable);
-
-            Frames.Add(frame);
-            return frame;
-        }
-
-        /// <summary>
-        /// Adds a ConstructorFrame<T> to the method frames
-        /// </summary>
-        /// <param name="constructor"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public ConstructorFrame<T> CallConstructor<T>(Expression<Func<T>> constructor)
-        {
-            var frame = new ConstructorFrame<T>(constructor);
-            Frames.Add(frame);
-
-            return frame;
-        }
-
+        
         /// <summary>
         /// Add a return frame for the method's return type
         /// </summary>
         public ReturnFrame Return()
         {
-            return Return(ReturnType);
+            return Frames.Return((Type) ReturnType);
         }
+        
+        public FramesCollection Frames { get; } = new FramesCollection();
     }
 }
