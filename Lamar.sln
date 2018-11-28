@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarCompiler.Testing", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryUsageChecker", "MemoryUsageChecker\MemoryUsageChecker.csproj", "{BC0FEAA3-E30F-4C0E-90F8-E9ADC638283D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApp", "src\SampleWebApp\SampleWebApp.csproj", "{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{BC0FEAA3-E30F-4C0E-90F8-E9ADC638283D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC0FEAA3-E30F-4C0E-90F8-E9ADC638283D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC0FEAA3-E30F-4C0E-90F8-E9ADC638283D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
