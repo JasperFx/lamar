@@ -90,5 +90,13 @@ namespace LamarCompiler
             return this;
         }
 
+        public void Write(GeneratedMethod method, ISourceWriter writer)
+        {
+            foreach (var frame in this)
+            {
+                frame.GenerateCode(method, writer);
+            }
+        }
+
     }
 }
