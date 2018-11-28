@@ -88,7 +88,7 @@ namespace LamarCompiler.Frames
 
         public Variable[] Parameters { get; set; }
 
-        public IList<Frame> ActivatorFrames { get; } = new List<Frame>();
+        public FramesCollection ActivatorFrames { get; } = new FramesCollection();
 
         public ConstructorCallMode Mode { get; set; } = ConstructorCallMode.Variable;
         

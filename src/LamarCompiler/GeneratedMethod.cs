@@ -146,9 +146,9 @@ namespace LamarCompiler
         /// <summary>
         /// Add a return frame for the method's return type
         /// </summary>
-        public ReturnFrame Return()
+        public void Return()
         {
-            return Frames.Return((Type) ReturnType);
+            Frames.Return(ReturnType);
         }
         
         public FramesCollection Frames { get; } = new FramesCollection();

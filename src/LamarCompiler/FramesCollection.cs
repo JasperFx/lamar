@@ -14,12 +14,12 @@ namespace LamarCompiler
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
-        public ReturnFrame Return(Type returnType)
+        public FramesCollection Return(Type returnType)
         {
             var frame = new ReturnFrame(returnType);
 
             Add(frame);
-            return frame;
+            return this;
         }
 
         /// <summary>
@@ -27,27 +27,29 @@ namespace LamarCompiler
         /// </summary>
         /// <param name="returnVariable"></param>
         /// <returns></returns>
-        public ReturnFrame Return(Variable returnVariable)
+        public FramesCollection Return(Variable returnVariable)
         {
             var frame = new ReturnFrame(returnVariable);
 
             Add(frame);
-            return frame;
+            return this;
         }
 
         /// <summary>
         /// Adds a ConstructorFrame<T> to the method frames
         /// </summary>
         /// <param name="constructor"></param>
+        /// <param name="configure">Optional, any additional configuration for the constructor frame</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public ConstructorFrame<T> CallConstructor<T>(Expression<Func<T>> constructor)
+        public FramesCollection CallConstructor<T>(Expression<Func<T>> constructor, Action<ConstructorFrame<T>> configure = null)
         {
             var frame = new ConstructorFrame<T>(constructor);
+            configure?.Invoke(frame);
             Add(frame);
 
-            return frame;
+            return this;
         }
 
         /// <summary>
@@ -76,14 +78,16 @@ namespace LamarCompiler
         /// collection
         /// </summary>
         /// <param name="expression"></param>
+        /// <param name="configure">Optional configuration of the MethodCall</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public MethodCall Call<T>(Expression<Action<T>> expression)
+        public FramesCollection Call<T>(Expression<Action<T>> expression, Action<MethodCall> configure = null)
         {
             var @call = MethodCall.For(expression);
+            configure?.Invoke(@call);
             Add(@call);
 
-            return @call;
+            return this;
         }
 
     }

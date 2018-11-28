@@ -57,7 +57,7 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<IGuy>(m =>
             {
-                m.Frames.CallConstructor(() => new NoArgGuy()).DeclaredType = typeof(IGuy);
+                m.Frames.CallConstructor(() => new NoArgGuy(), c => c.DeclaredType = typeof(IGuy));
                 m.Frames.Return(typeof(NoArgGuy));
             });
             
@@ -70,7 +70,7 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForAction<NoArgGuyCatcher>(m =>
             {
-                m.Frames.CallConstructor(() => new NoArgGuy()).Mode = ConstructorCallMode.UsingNestedVariable;
+                m.Frames.CallConstructor(() => new NoArgGuy(), c => c.Mode = ConstructorCallMode.UsingNestedVariable);
                 m.Frames.Call<NoArgGuyCatcher>(x => x.Catch(null));
             });
             
@@ -88,7 +88,7 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<NoArgGuy>(m =>
             {
-                m.Frames.CallConstructor(() => new NoArgGuy()).Mode = ConstructorCallMode.ReturnValue;
+                m.Frames.CallConstructor(() => new NoArgGuy(), c => c.Mode = ConstructorCallMode.ReturnValue);
             });
             
             result.LinesOfCode.ShouldContain($"return new {typeof(NoArgGuy).FullNameInCode()}();");
@@ -100,9 +100,12 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<NoArgGuy, int>(m =>
             {
-                var @call = m.Frames.CallConstructor(() => new NoArgGuy());
-                @call.Mode = ConstructorCallMode.ReturnValue;
-                @call.Set(x => x.Number);
+                m.Frames.CallConstructor(() => new NoArgGuy(), @call =>
+                {
+                    @call.Mode = ConstructorCallMode.ReturnValue;
+                    @call.Set(x => x.Number);
+                });
+
             });
             
             result.Object.Create(11).Number.ShouldBe(11);
@@ -113,10 +116,13 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<NoArgGuy, int, double>(m =>
             {
-                var @call = m.Frames.CallConstructor(() => new NoArgGuy());
-                @call.Mode = ConstructorCallMode.ReturnValue;
-                @call.Set(x => x.Number);
-                @call.Set(x => x.Double);
+                m.Frames.CallConstructor(() => new NoArgGuy(), @call =>
+                {
+                    @call.Mode = ConstructorCallMode.ReturnValue;
+                    @call.Set(x => x.Number);
+                    @call.Set(x => x.Double);
+                });
+
             });
 
             var noArgGuy = result.Object.Create(11, 1.22);
@@ -129,11 +135,15 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<NoArgGuy, int, double, string>(m =>
             {
-                var @call = m.Frames.CallConstructor(() => new NoArgGuy());
-                @call.Mode = ConstructorCallMode.ReturnValue;
-                @call.Set(x => x.Number);
-                @call.Set(x => x.Double);
-                @call.Set(x => x.String);
+                m.Frames.CallConstructor(() => new NoArgGuy(), @call =>
+                {                
+                    @call.Mode = ConstructorCallMode.ReturnValue;
+                    @call.Set(x => x.Number);
+                    @call.Set(x => x.Double);
+                    @call.Set(x => x.String);
+                    
+                });
+
             });
 
             var noArgGuy = result.Object.Create(11, 1.22, "wow");
@@ -147,11 +157,14 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<NoArgGuy, int, double, string>(m =>
             {
-                var @call = m.Frames.CallConstructor(() => new NoArgGuy());
-                @call.Mode = ConstructorCallMode.ReturnValue;
-                @call.Set(x => x.Number);
-                @call.Set(x => x.Double);
-                @call.Set(x => x.String, new Value("Explicit"));
+                m.Frames.CallConstructor(() => new NoArgGuy(), @call =>
+                {
+                    @call.Mode = ConstructorCallMode.ReturnValue;
+                    @call.Set(x => x.Number);
+                    @call.Set(x => x.Double);
+                    @call.Set(x => x.String, new Value("Explicit"));
+                });
+
             });
 
             var noArgGuy = result.Object.Create(11, 1.22, "wow");
@@ -234,8 +247,11 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<MultiArgGuy, int, double, string>(m =>
             {
-                var ctor = m.Frames.CallConstructor<MultiArgGuy>(() => new MultiArgGuy(0, 0, ""));
-                ctor.Parameters[2] = new Value("Kent");
+                m.Frames.CallConstructor<MultiArgGuy>(() => new MultiArgGuy(0, 0, ""), ctor =>
+                {
+                    ctor.Parameters[2] = new Value("Kent"); 
+                });
+                
                 m.Return();
             });
 
@@ -251,10 +267,10 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForAction<NoArgGuyCatcher>(m =>
             {
-                var ctor = m.Frames.CallConstructor(() => new NoArgGuy());
-                ctor.ActivatorFrames.Add(MethodCall.For<NoArgGuyCatcher>(x => x.Catch(null)));
-
-                
+                m.Frames.CallConstructor(() => new NoArgGuy(), ctor =>
+                {
+                    ctor.ActivatorFrames.Call<NoArgGuyCatcher>(x => x.Catch(null));
+                });
             });
             
 
@@ -269,9 +285,12 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForBuilds<NoArgGuy, NoArgGuyCatcher>(m =>
             {
-                var ctor = m.Frames.CallConstructor(() => new NoArgGuy());
-                ctor.Mode = ConstructorCallMode.ReturnValue;
-                ctor.ActivatorFrames.Add(MethodCall.For<NoArgGuyCatcher>(x => x.Catch(null)));
+                m.Frames.CallConstructor(() => new NoArgGuy(), ctor =>
+                {
+                    ctor.Mode = ConstructorCallMode.ReturnValue;
+                    ctor.ActivatorFrames.Call<NoArgGuyCatcher>(x => x.Catch(null));
+                });
+
             });
             
 
@@ -286,9 +305,12 @@ namespace LamarCompiler.Testing.Codegen
         {
             var result = CodegenScenario.ForAction<NoArgGuyCatcher>(m =>
             {
-                var ctor = m.Frames.CallConstructor(() => new NoArgGuy());
-                ctor.Mode = ConstructorCallMode.UsingNestedVariable;
-                ctor.ActivatorFrames.Add(MethodCall.For<NoArgGuyCatcher>(x => x.Catch(null)));
+                m.Frames.CallConstructor(() => new NoArgGuy(), ctor =>
+                {
+                    ctor.Mode = ConstructorCallMode.UsingNestedVariable;
+                    ctor.ActivatorFrames.Call<NoArgGuyCatcher>(x => x.Catch(null));
+                });
+
             });
             
 
