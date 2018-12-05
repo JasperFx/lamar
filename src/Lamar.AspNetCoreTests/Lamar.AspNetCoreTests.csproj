@@ -8,9 +8,10 @@
     <PackageReference Include="Baseline" Version="1.5.0" />
     <PackageReference Include="IdentityServer4" Version="2.3.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All"  />
+    <PackageReference Include="Microsoft.AspNetCore.All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="12.0.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>

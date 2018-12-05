@@ -438,7 +438,9 @@ namespace Lamar.Testing.AspNetCoreIntegration
     {
         public void ConfigureContainer(ServiceRegistry services)
         {
+            
             services.AddMvc();
+            services.AddSwaggerDocument();
             services.AddLogging();
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
@@ -466,6 +468,8 @@ namespace Lamar.Testing.AspNetCoreIntegration
         public void Configure(IApplicationBuilder app)
         {
             app.UseIdentityServer();
+
+            app.UseSwagger();
 
             app.Run(c =>
             {

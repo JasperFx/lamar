@@ -2,6 +2,11 @@
 
 namespace Lamar.IoC.Resolvers
 {
+    public abstract class Resolver
+    {
+        
+    }
+    
     public abstract class TransientResolver<T> : IResolver
     {
         public object Resolve(Scope scope)
