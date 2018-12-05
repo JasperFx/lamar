@@ -150,7 +150,11 @@ namespace Lamar
             _isDisposing = true;
 
             base.Dispose();
-            ServiceGraph.Dispose();
+            
+            if (ReferenceEquals(Root, this))
+            {
+                ServiceGraph.Dispose();
+            }
         }
 
 
