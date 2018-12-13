@@ -27,7 +27,7 @@ namespace Lamar.IoC.Instances
                     arguments[i] = ((OptionalArgumentVariable) arguments[i]).Inner;
                 }
             }
-
+            
             Disposal = disposal;
             _func = func;
             _arguments = arguments;
@@ -48,7 +48,7 @@ namespace Lamar.IoC.Instances
                 Next?.GenerateCode(method, writer);
                 return;
             }
-
+            
             var declaration = $"var {Variable.Usage} = {_func.Usage}({arguments})";
 
             switch (Disposal)
@@ -57,21 +57,21 @@ namespace Lamar.IoC.Instances
                     writer.Write(declaration + ";");
                     Next?.GenerateCode(method, writer);
                     break;
-
+                    
                 case DisposeTracking.WithUsing:
                     writer.UsingBlock(declaration, w => Next?.GenerateCode(method, w));
 
                     break;
-
+                    
                 case DisposeTracking.RegisterWithScope:
                     writer.Write(declaration + ";");
                     writer.Write($"{_scope.Usage}.{nameof(Scope.TryAddDisposable)}({Variable.Usage});");
                     Next?.GenerateCode(method, writer);
                     break;
-
+                   
             }
-
-
+            
+            
         }
 
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
@@ -82,7 +82,7 @@ namespace Lamar.IoC.Instances
             }
 
             yield return _func;
-
+            
             if (Disposal == DisposeTracking.RegisterWithScope)
             {
                 _scope = chain.FindVariable(typeof(Scope));
