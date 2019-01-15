@@ -57,6 +57,7 @@ namespace LamarCompiler
         {
             foreach (var generatedType in GeneratedTypes)
             {
+                services?.StartNewType();
                 generatedType.ArrangeFrames(services);
             }
 

@@ -56,8 +56,20 @@ namespace Lamar.IoC.Frames
             }
         }
 
+        public void StartNewType()
+        {
+            StartNewMethod();
+            _fields.Clear();
+        }
+
+        public void StartNewMethod()
+        {
+            _standins.Clear();
+        }
+
         private void useInlineConstruction()
         {
+            // THIS NEEDS TO BE SCOPED PER METHOD!!!
             var variables = new ResolverVariables(_fields);
             foreach (var standin in _standins)
             {

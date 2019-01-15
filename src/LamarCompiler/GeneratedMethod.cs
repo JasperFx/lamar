@@ -132,6 +132,8 @@ namespace LamarCompiler
                 throw new ArgumentOutOfRangeException(nameof(Frames), "Cannot be an empty list");
             }
             
+            services?.StartNewMethod();
+
             var compiler = new MethodFrameArranger(this, type, services);
             compiler.Arrange(out _asyncMode, out _top);
         }
