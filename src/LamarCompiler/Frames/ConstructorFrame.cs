@@ -79,6 +79,16 @@ namespace LamarCompiler.Frames
             BuiltType = builtType;
             Variable = new Variable(BuiltType, this);
         }
+        
+        public ConstructorFrame(Type builtType, ConstructorInfo ctor, Func<ConstructorFrame, Variable> variableSource) 
+        {
+            Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor));
+            Parameters = new Variable[ctor.GetParameters().Length];
+            
+            
+            BuiltType = builtType;
+            Variable = variableSource(this);
+        }
 
         public Type BuiltType { get;  }
         

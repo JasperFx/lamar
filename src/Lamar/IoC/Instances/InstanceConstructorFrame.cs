@@ -12,9 +12,8 @@ namespace Lamar.IoC.Instances
     public class InstanceConstructorFrame : ConstructorFrame
     {
         public InstanceConstructorFrame(ConstructorInstance instance, DisposeTracking disposal, Variable[] arguments,
-            SetterArg[] setterParameters) : base(instance.ImplementationType, instance.Constructor)
+            SetterArg[] setterParameters) : base(instance.ImplementationType, instance.Constructor, f => new ServiceVariable(instance, f, ServiceDeclaration.ServiceType))
         {
-            Variable = new ServiceVariable(instance, this, ServiceDeclaration.ServiceType);
             Disposal = disposal;
 
             Parameters = arguments;
