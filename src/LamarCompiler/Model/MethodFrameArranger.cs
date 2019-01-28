@@ -87,7 +87,6 @@ namespace LamarCompiler.Model
             return frames.TopologicalSort(x => dependencies.Dependencies[x], true).ToArray();
         }
 
-        [Obsolete("Let's try to make this be unnecessary")]
         internal void findInjectedFields(DependencyGatherer dependencies)
         {
             // Stupid. Can't believe I haven't fixed this in Baseline
@@ -103,16 +102,14 @@ namespace LamarCompiler.Model
 
         internal void findSetters(DependencyGatherer dependencies)
         {
-            var list = new List<Setter>();
             dependencies.Variables.Each((key, _) =>
             {
-                if (key is Setter)
+                if (key is Setter setter)
                 {
-                    list.Add(key.As<Setter>());
+                    _type.Setters.Fill(setter);
                 }
             });
 
-            _method.Setters = list.ToArray();
         }
 
         private IEnumerable<IVariableSource> allVariableSources(VariableSource variableSource)

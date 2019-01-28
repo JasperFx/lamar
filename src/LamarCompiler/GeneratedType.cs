@@ -25,6 +25,8 @@ namespace LamarCompiler
         }
 
         public GenerationRules Rules { get; }
+        
+        public IList<Setter> Setters { get; } = new List<Setter>();
 
         public string TypeName { get; }
 
@@ -159,14 +161,9 @@ namespace LamarCompiler
             writer.FinishBlock();
         }
 
-        private IEnumerable<Setter> setters()
-        {
-            return _methods.SelectMany(x => x.Setters).Distinct();
-        }
-
         private void writeSetters(ISourceWriter writer)
         {
-            foreach (var setter in setters())
+            foreach (var setter in Setters)
             {
                 writer.BlankLine();
                 setter.WriteDeclaration(writer);
@@ -247,7 +244,10 @@ namespace LamarCompiler
                 throw new ArgumentOutOfRangeException(nameof(builtObject),
                     "This can only be applied to objects of the generated type");
 
-            foreach (var setter in setters()) setter.SetInitialValue(builtObject);
+            foreach (var setter in Setters)
+            {
+                setter.SetInitialValue(builtObject);
+            }
         }
     }
 }

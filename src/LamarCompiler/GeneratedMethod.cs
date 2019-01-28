@@ -67,11 +67,6 @@ namespace LamarCompiler
         
         public Argument[] Arguments { get; }
 
-        [Obsolete("This needs to be done on the GeneratedType")]
-        public IEnumerable<Setter> Setters { get; internal set; }
-
-
-
         
         // TODO -- need a test here. It's used within Jasper, but still
         public IList<Variable> DerivedVariables { get; } = new List<Variable>();
