@@ -65,9 +65,9 @@ namespace LamarCompiler
             set => _asyncMode = value;
         }
         
-        public InjectedField[] Fields { get; internal set; } = new InjectedField[0];
         public Argument[] Arguments { get; }
 
+        [Obsolete("This needs to be done on the GeneratedType")]
         public IEnumerable<Setter> Setters { get; internal set; }
 
 

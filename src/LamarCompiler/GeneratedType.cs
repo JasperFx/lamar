@@ -34,6 +34,8 @@ namespace LamarCompiler
         public Type BaseType { get; private set; }
 
         public InjectedField[] BaseConstructorArguments { get; private set; } = new InjectedField[0];
+        
+        public IList<InjectedField> AllInjectedFields { get; } = new List<InjectedField>();
 
         public IEnumerable<Type> Interfaces => _interfaces;
 
@@ -68,8 +70,12 @@ namespace LamarCompiler
                     $"The base type for the code generation must only have one public constructor. {baseType.FullNameInCode()} has {ctors.Length}");
 
             if (ctors.Length == 1)
+            {
                 BaseConstructorArguments = ctors.Single().GetParameters()
                     .Select(x => new InjectedField(x.ParameterType, x.Name)).ToArray();
+
+                AllInjectedFields.AddRange(BaseConstructorArguments);
+            }
 
 
             BaseType = baseType;
@@ -135,11 +141,10 @@ namespace LamarCompiler
         {
             writeDeclaration(writer);
 
-            var args = Args();
-            if (args.Any())
+            if (AllInjectedFields.Any())
             {
-                writeFieldDeclarations(writer, args);
-                writeConstructorMethod(writer, args);
+                writeFieldDeclarations(writer, AllInjectedFields);
+                writeConstructorMethod(writer, AllInjectedFields);
             }
 
             writeSetters(writer);
@@ -170,13 +175,9 @@ namespace LamarCompiler
             writer.BlankLine();
         }
 
-        public InjectedField[] Args()
-        {
-            return _methods.SelectMany(x => x.Fields).Concat(BaseConstructorArguments).Distinct().ToArray();
-        }
 
 
-        private void writeConstructorMethod(ISourceWriter writer, InjectedField[] args)
+        private void writeConstructorMethod(ISourceWriter writer, IList<InjectedField> args)
         {
             var ctorArgs = args.Select(x => x.CtorArgDeclaration).Join(", ");
             var declaration = $"BLOCK:public {TypeName}({ctorArgs})";
@@ -190,7 +191,7 @@ namespace LamarCompiler
             writer.FinishBlock();
         }
 
-        private void writeFieldDeclarations(ISourceWriter writer, InjectedField[] args)
+        private void writeFieldDeclarations(ISourceWriter writer, IList<InjectedField> args)
         {
             foreach (var field in args) field.WriteDeclaration(writer);
 
