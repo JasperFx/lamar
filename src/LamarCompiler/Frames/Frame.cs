@@ -62,7 +62,7 @@ namespace LamarCompiler.Frames
             get => _next;
             set
             {
-                if (_next != null) throw new InvalidOperationException("Frame chain is being re-arranged");
+                if (_next != null) throw new InvalidOperationException($"Frame chain is being re-arranged, tried to set {value} as the 'Next");
                 _next = value;
             }
         }
