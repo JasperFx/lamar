@@ -29,8 +29,14 @@ namespace Lamar.IoC.Frames
             var instance = _services.FindDefault(type);
             if (instance.Lifetime == ServiceLifetime.Singleton)
             {
-                var field = new InjectedServiceField(instance);
-                _fields.Add(field);
+                var field = _fields.FirstOrDefault(x => x.Instance == instance);
+                if (field == null)
+                {
+                    field = new InjectedServiceField(instance);
+                    _fields.Add(field);
+                }
+                
+
 
                 return field;
             }

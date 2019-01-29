@@ -19,7 +19,6 @@ namespace Lamar
 {
     public class ServiceGraph : IDisposable
     {
-        private readonly Scope _rootScope;
         private readonly object _familyLock = new object();
         
 
@@ -40,7 +39,7 @@ namespace Lamar
         {
             _services = services as ServiceRegistry ?? new ServiceRegistry(services);
             Scanners = scanners;
-            _rootScope = rootScope;
+            RootScope = rootScope;
             organize(_services);
         }
 
@@ -52,11 +51,13 @@ namespace Lamar
             
             _services = registry;
 
-            _rootScope = rootScope;
+            RootScope = rootScope;
 
             organize(_services);
         }
-        
+
+        public Scope RootScope { get; }
+
         internal readonly Dictionary<string, Type> CachedResolverTypes = new Dictionary<string, Type>();
 
         private void organize(ServiceRegistry services)
@@ -334,7 +335,7 @@ namespace Lamar
                 }
                 else if (instance.Lifetime == ServiceLifetime.Singleton)
                 {
-                    var inner = instance.ToResolver(_rootScope);
+                    var inner = instance.ToResolver(RootScope);
                     resolver = s =>
                     {
                         var value = inner(s);
@@ -345,7 +346,7 @@ namespace Lamar
                 }
                 else
                 {
-                    resolver = instance.ToResolver(_rootScope);
+                    resolver = instance.ToResolver(RootScope);
                 }
 
                 _byType = _byType.AddOrUpdate(serviceType, resolver);
