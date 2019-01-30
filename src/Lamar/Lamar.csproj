@@ -9,7 +9,7 @@
     <PackageId>Lamar</PackageId>
     <PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
     <PackageProjectUrl>http://jasperfx.github.io/lamar</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE</PackageLicenseUrl>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>

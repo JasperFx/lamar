@@ -12,15 +12,6 @@ using Xunit.Abstractions;
 
 namespace LamarRest.Testing
 {
-    public interface IUserService
-    {
-        [Get("/user/{name}")]
-        Task<User> GetUser(string name);
-
-        [Post("/user/create")]
-        Task Create(User user);
-    }
-    
     public class end_to_end 
     {
         private readonly ITestOutputHelper _output;
@@ -39,7 +30,11 @@ namespace LamarRest.Testing
                 x.Policies.Add<LamarRestPolicy>();
             });
 
+            
+            // Build an implementation of this service as needed
             var userService = container.GetInstance<IUserService>();
+            
+            
             userService
                 .ShouldNotBeNull();
             
