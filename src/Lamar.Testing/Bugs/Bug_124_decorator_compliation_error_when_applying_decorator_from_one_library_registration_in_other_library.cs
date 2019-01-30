@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Lamar.Testing.Bugs
 {
-    public class Bug_124_decorator_compliation_error_when_applying_ecorator_from_one_library_registration_in_other_library
+    public class Bug_124_decorator_compliation_error_when_applying_decorator_from_one_library_registration_in_other_library
     {
         [Fact]
         public void it_should_not_blow_up()
