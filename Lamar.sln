@@ -27,17 +27,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Microsoft.DependencyI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AspNetCoreTests", "src\Lamar.AspNetCoreTests\Lamar.AspNetCoreTests.csproj", "{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarCompiler", "src\LamarCompiler\LamarCompiler.csproj", "{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarCompiler", "src\LamarCompiler\LamarCompiler.csproj", "{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarCompiler.Testing", "src\LamarCompiler.Testing\LamarCompiler.Testing.csproj", "{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarCompiler.Testing", "src\LamarCompiler.Testing\LamarCompiler.Testing.csproj", "{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApp", "src\SampleWebApp\SampleWebApp.csproj", "{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApp", "src\SampleWebApp\SampleWebApp.csproj", "{ED93C5BB-DA3F-4E99-B83C-F512F6B802D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarRest", "src\LamarRest\LamarRest.csproj", "{D9A0D31A-DC87-4BF1-88C1-970E28A8D3CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarRest", "src\LamarRest\LamarRest.csproj", "{D9A0D31A-DC87-4BF1-88C1-970E28A8D3CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarRest.Testing", "src\LamarRest.Testing\LamarRest.Testing.csproj", "{B661CC83-70FD-4345-837D-EC56C5290B95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarRest.Testing", "src\LamarRest.Testing\LamarRest.Testing.csproj", "{B661CC83-70FD-4345-837D-EC56C5290B95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApp", "src\UserApp\UserApp.csproj", "{5692C841-BA5A-464B-87E5-B0B6E92803F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApp", "src\UserApp\UserApp.csproj", "{5692C841-BA5A-464B-87E5-B0B6E92803F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bug-124-Widgets", "Bug-124-Widgets", "{317DED50-F632-48EB-8E02-E1B6739B35E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Aspect.Logger", "src\Aspect.Logger\Widget.Aspect.Logger.csproj", "{A367AE1C-B39D-438B-BADD-3B7E368DDF97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Instance", "Widget.Instance\Widget.Instance.csproj", "{6F721733-9012-4434-A830-2F5E9A6A926B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Core", "Widget.Core\Widget.Core.csproj", "{178C596D-65D9-42F9-927C-DF63F348DCA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Registration", "Widget.Registration\Widget.Registration.csproj", "{39F01E1B-0549-422A-A60F-747C1CDF0C08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +123,22 @@ Global
 		{5692C841-BA5A-464B-87E5-B0B6E92803F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5692C841-BA5A-464B-87E5-B0B6E92803F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5692C841-BA5A-464B-87E5-B0B6E92803F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F721733-9012-4434-A830-2F5E9A6A926B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F721733-9012-4434-A830-2F5E9A6A926B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F721733-9012-4434-A830-2F5E9A6A926B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F721733-9012-4434-A830-2F5E9A6A926B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{178C596D-65D9-42F9-927C-DF63F348DCA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{178C596D-65D9-42F9-927C-DF63F348DCA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{178C596D-65D9-42F9-927C-DF63F348DCA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{178C596D-65D9-42F9-927C-DF63F348DCA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39F01E1B-0549-422A-A60F-747C1CDF0C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39F01E1B-0549-422A-A60F-747C1CDF0C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39F01E1B-0549-422A-A60F-747C1CDF0C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39F01E1B-0549-422A-A60F-747C1CDF0C08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +151,11 @@ Global
 		{4DE5B1E6-1C00-46C4-9B8E-919D90893D86} = {FD91278B-4618-491E-87D6-F82CFCFFD049}
 		{536AFF1A-15BF-43E0-8002-9C149388C1A5} = {FD91278B-4618-491E-87D6-F82CFCFFD049}
 		{BFC9380C-E94F-462B-96EA-0BCF5E431AB2} = {FD91278B-4618-491E-87D6-F82CFCFFD049}
+		{317DED50-F632-48EB-8E02-E1B6739B35E1} = {FD91278B-4618-491E-87D6-F82CFCFFD049}
+		{A367AE1C-B39D-438B-BADD-3B7E368DDF97} = {317DED50-F632-48EB-8E02-E1B6739B35E1}
+		{6F721733-9012-4434-A830-2F5E9A6A926B} = {317DED50-F632-48EB-8E02-E1B6739B35E1}
+		{178C596D-65D9-42F9-927C-DF63F348DCA5} = {317DED50-F632-48EB-8E02-E1B6739B35E1}
+		{39F01E1B-0549-422A-A60F-747C1CDF0C08} = {317DED50-F632-48EB-8E02-E1B6739B35E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91FA5377-2697-4D0A-B0EE-6FECA3D8E48C}
