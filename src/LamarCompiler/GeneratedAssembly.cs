@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using LamarCompiler.Model;
 using LamarCompiler.Util;
@@ -17,7 +18,14 @@ namespace LamarCompiler
         }
 
         public GenerationRules Generation { get; }
+        
+        private readonly IList<Assembly> _assemblies = new List<Assembly>();
 
+        public void ReferenceAssembly(Assembly assembly)
+        {
+            _assemblies.Fill(assembly);
+        }
+        
         public GeneratedType AddType(string typeName, Type baseType)
         {
             // TODO -- assert that it's been generated already?
@@ -106,6 +114,11 @@ namespace LamarCompiler
             generator.ReferenceAssembly(typeof(Task).Assembly);
 
             foreach (var assembly in generation.Assemblies)
+            {
+                generator.ReferenceAssembly(assembly);
+            }
+
+            foreach (var assembly in _assemblies)
             {
                 generator.ReferenceAssembly(assembly);
             }

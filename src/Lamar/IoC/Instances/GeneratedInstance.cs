@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
@@ -46,6 +48,11 @@ namespace Lamar.IoC.Instances
             return typeName;
         }
 
+        protected virtual IEnumerable<Assembly> relatedAssemblies()
+        {
+            yield return ServiceType.Assembly;
+            yield return ImplementationType.Assembly;
+        }
 
         public void GenerateResolver(GeneratedAssembly generatedAssembly)
         {
@@ -61,6 +68,11 @@ namespace Lamar.IoC.Instances
                 : ServiceType;
 
             _resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(buildType));
+
+            foreach (var relatedAssembly in relatedAssemblies())
+            {
+                generatedAssembly.ReferenceAssembly(relatedAssembly);
+            }
 
             var method = _resolverType.MethodFor("Build");
 
