@@ -453,7 +453,7 @@ namespace Lamar.IoC.Instances
                 }
             }
 
-
+            
 
             return declaration;
         }
@@ -497,9 +497,11 @@ namespace Lamar.IoC.Instances
 
         IReadOnlyList<Instance> IConfiguredInstance.InlineDependencies { get; }
 
-        
-        
- 
+
+        protected override IEnumerable<Assembly> relatedAssemblies()
+        {
+            return base.relatedAssemblies().Concat(_inlines.SelectMany(x => x.ReferencedAssemblies()));
+        }
     }
     
     
