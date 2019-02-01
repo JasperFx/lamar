@@ -28,6 +28,8 @@ namespace LamarRest.Internal.Frames
         {
             var methodName = $"{typeof(JsonConvert).FullNameInCode()}.{nameof(JsonConvert.SerializeObject)}";
 
+            writer.BlankLine();
+            writer.WriteComment($"From {nameof(SerializeJsonFrame)}");
             writer.Write($"var {Json.Usage} = {methodName}({_input.Usage});");
             Next?.GenerateCode(method, writer);
         }

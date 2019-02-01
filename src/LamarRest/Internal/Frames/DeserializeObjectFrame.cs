@@ -24,6 +24,8 @@ namespace LamarRest.Internal.Frames
             var responseContent = $"await {_response.Usage}.Content.ReadAsStringAsync()";
             var methodName = $"{typeof(JsonConvert).FullNameInCode()}.{nameof(JsonConvert.DeserializeObject)}";
             
+            writer.BlankLine();
+            writer.WriteComment($"From {nameof(DeserializeObjectFrame)}");
             writer.Write($"var {ReturnValue.Usage} = {methodName}<{ReturnValue.VariableType.FullNameInCode()}>({responseContent});");
             Next?.GenerateCode(method, writer);
         }

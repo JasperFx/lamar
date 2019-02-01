@@ -21,6 +21,8 @@ namespace LamarRest.Internal.Frames
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
+            writer.BlankLine();
+            writer.WriteComment($"From {nameof(FillUrlFrame)}");
             writer.Write($"var {Url.Usage} = $\"{Pattern}\";");
             Next?.GenerateCode(method, writer);
         }

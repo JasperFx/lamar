@@ -22,10 +22,10 @@ namespace Lamar.Testing.Samples
         }
 
         [Fact]
-        public void do_it_the_hard_way()
+        public void say_hello()
         {
             var generator = new AssemblyGenerator();
-            generator.ReferenceAssembly(GetType().Assembly);
+            generator.ReferenceAssembly(typeof(IGreeter).Assembly);
             
             var assembly = generator.Generate(w =>
             {

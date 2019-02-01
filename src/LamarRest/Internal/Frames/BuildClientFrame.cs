@@ -24,6 +24,8 @@ namespace LamarRest.Internal.Frames
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
+            writer.BlankLine();
+            writer.WriteComment($"From {nameof(BuildClientFrame)}");
             writer.Write($"var {Client.Usage} = {_factory.Usage}.{nameof(IHttpClientFactory.CreateClient)}(\"{_interfaceType.Name}\");");
             Next?.GenerateCode(method, writer);
         }
