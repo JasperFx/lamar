@@ -125,11 +125,12 @@ namespace LamarCompiler
 		/// <returns></returns>
 		public Assembly Generate(Action<ISourceWriter> write)
 		{
-			var writer = new SourceWriter();
-			write(writer);
-
-			return Generate(writer.Code());
-		}
+            using (var writer = new SourceWriter())
+            {
+                write(writer);
+                return Generate(writer.Code());
+            }
+        }
 
 		/// <summary>
 		/// Compile the code passed into this method to a new assembly in memory

@@ -1,10 +1,11 @@
+using System;
 using System.IO;
 using System.Linq;
 using LamarCompiler.Util;
 
 namespace LamarCompiler
 {
-    internal class SourceCodeParser
+    internal class SourceCodeParser : IDisposable
     {
         private readonly LightweightCache<string, string> _code = new LightweightCache<string, string>(name => "UNKNOWN");
 
@@ -22,6 +23,10 @@ namespace LamarCompiler
                     if (line.Trim().StartsWith("// START"))
                     {
                         _name = line.Split(':').Last().Trim();
+
+                        // dispose the old writer before overriding the reference
+                        _current?.Dispose();
+
                         _current = new StringWriter();
                     }
                 }
@@ -47,6 +52,11 @@ namespace LamarCompiler
         public string CodeFor(string typeName)
         {
             return _code[typeName];
+        }
+
+        public void Dispose()
+        {
+            _current?.Dispose();
         }
     }
 }
