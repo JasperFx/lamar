@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 namespace Lamar.IoC.Diagnostics
 {
@@ -54,12 +53,12 @@ namespace Lamar.IoC.Diagnostics
 
         public string Write()
         {
-            var sb = new StringBuilder();
-            var writer = new StringWriter(sb);
+            using (var writer = new StringWriter())
+            {
+                Write(writer);
 
-            Write(writer);
-
-            return sb.ToString();
+                return writer.ToString();
+            }
         }
 
         public void DumpToDebug()
