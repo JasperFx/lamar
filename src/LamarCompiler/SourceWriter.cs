@@ -4,7 +4,7 @@ using LamarCompiler.Util;
 
 namespace LamarCompiler
 {
-    public class SourceWriter : ISourceWriter
+    public class SourceWriter : ISourceWriter, IDisposable
     {
         private readonly StringWriter _writer = new StringWriter();
         private string _leadingSpaces = "";
@@ -105,6 +105,11 @@ namespace LamarCompiler
             {
                 _parent.FinishBlock();
             }
+        }
+
+        public void Dispose()
+        {
+            _writer?.Dispose();
         }
     }
 }

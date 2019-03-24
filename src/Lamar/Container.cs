@@ -160,26 +160,25 @@ namespace Lamar
 
         public void AssertConfigurationIsValid(AssertMode mode = AssertMode.Full)
         {
-            var writer = new StringWriter();
-            bool hasErrors = validateConfiguration(writer);
-
-            if (!hasErrors && mode == AssertMode.Full)
+            using (var writer = new StringWriter())
             {
-                hasErrors = buildAndValidateAll(writer);
+                bool hasErrors = validateConfiguration(writer);
+
+                if (!hasErrors && mode == AssertMode.Full)
+                {
+                    hasErrors = buildAndValidateAll(writer);
+                }
+
+                if (hasErrors)
+                {
+                    writer.WriteLine();
+                    writer.WriteLine();
+                    writer.WriteLine("The known registrations are:");
+                    writer.WriteLine(WhatDoIHave());
+
+                    throw new ContainerValidationException(writer.ToString());
+                }
             }
-
-            if (hasErrors)
-            {
-                writer.WriteLine();
-                writer.WriteLine();
-                writer.WriteLine("The known registrations are:");
-                writer.WriteLine(WhatDoIHave());
-
-                throw new ContainerValidationException(writer.ToString());
-            }
-
-
-
         }
 
         private bool buildAndValidateAll(StringWriter writer)

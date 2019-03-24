@@ -70,41 +70,41 @@ namespace LamarCompiler
             }
 
             var namespaces = GeneratedTypes
-                .SelectMany(x => x.AllInjectedFields)
-                .Select(x => x.ArgType.Namespace)
-                .Concat(new string[]{typeof(Task).Namespace})
-                .Distinct().ToList();
+                            .SelectMany(x => x.AllInjectedFields)
+                            .Select(x => x.ArgType.Namespace)
+                            .Concat(new string[] {typeof(Task).Namespace})
+                            .Distinct().ToList();
 
-            var writer = new SourceWriter();
-
-            foreach (var ns in namespaces.OrderBy(x => x))
+            using (var writer = new SourceWriter())
             {
-                writer.Write($"using {ns};");
+                foreach (var ns in namespaces.OrderBy(x => x))
+                {
+                    writer.Write($"using {ns};");
+                }
+
+                writer.BlankLine();
+
+                writer.Namespace(Generation.ApplicationNamespace);
+
+                foreach (var @class in GeneratedTypes)
+                {
+                    writer.WriteLine($"// START: {@class.TypeName}");
+                    @class.Write(writer);
+                    writer.WriteLine($"// END: {@class.TypeName}");
+
+                    writer.WriteLine("");
+                    writer.WriteLine("");
+                }
+
+                writer.FinishBlock();
+
+
+                var code = writer.Code();
+
+                attachSourceCodeToChains(ref code);
+
+                return code;
             }
-
-            writer.BlankLine();
-
-            writer.Namespace(Generation.ApplicationNamespace);
-
-            foreach (var @class in GeneratedTypes)
-            {
-                writer.WriteLine($"// START: {@class.TypeName}");
-                @class.Write(writer);
-                writer.WriteLine($"// END: {@class.TypeName}");
-
-                writer.WriteLine("");
-                writer.WriteLine("");
-            }
-
-            writer.FinishBlock();
-
-
-            var code = writer.Code();
-
-            attachSourceCodeToChains(code);
-
-
-            return code;
         }
 
         private AssemblyGenerator buildGenerator(GenerationRules generation)
@@ -133,12 +133,14 @@ namespace LamarCompiler
             return generator;
         }
 
-        private void attachSourceCodeToChains(string code)
+        private void attachSourceCodeToChains(ref string code)
         {
-            var parser = new SourceCodeParser(code);
-            foreach (var type in GeneratedTypes)
+            using (var parser = new SourceCodeParser(code))
             {
-                type.SourceCode = parser.CodeFor(type.TypeName);
+                foreach (var type in GeneratedTypes)
+                {
+                    type.SourceCode = parser.CodeFor(type.TypeName);
+                }
             }
         }
 

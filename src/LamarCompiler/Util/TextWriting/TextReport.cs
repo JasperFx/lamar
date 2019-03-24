@@ -59,10 +59,11 @@ namespace LamarCompiler.Util.TextWriting
 
         public override string ToString()
         {
-            var writer = new StringWriter();
-            Write(writer, 100);
-
-            return writer.ToString();
+            using (var writer = new StringWriter())
+            {
+                Write(writer, 100);
+                return writer.ToString();
+            }
         }
 
     }

@@ -276,34 +276,33 @@ namespace Lamar.IoC
 
             if (!scanners.Any()) return "No type scanning in this Container";
 
-            var writer = new StringWriter();
-            writer.WriteLine("All Scanners");
-            writer.WriteLine("================================================================");
-
-            scanners.Each(scanner =>
+            using (var writer = new StringWriter())
             {
-                scanner.Describe(writer);
+                writer.WriteLine("All Scanners");
+                writer.WriteLine("================================================================");
 
-                writer.WriteLine();
-                writer.WriteLine();
-            });
-
-            var failed = TypeRepository.FailedAssemblies();
-            if (failed.Any())
-            {
-                writer.WriteLine();
-                writer.WriteLine("Assemblies that failed in the call to Assembly.GetExportedTypes()");
-                failed.Each(assem =>
+                scanners.Each(scanner =>
                 {
-                    writer.WriteLine("* " + assem.Record.Name);
-                });
-            }
-            else
-            {
-                writer.WriteLine("No problems were encountered in exporting types from Assemblies");
-            }
+                    scanner.Describe(writer);
 
-            return writer.ToString();
+                    writer.WriteLine();
+                    writer.WriteLine();
+                });
+
+                var failed = TypeRepository.FailedAssemblies();
+                if (failed.Any())
+                {
+                    writer.WriteLine();
+                    writer.WriteLine("Assemblies that failed in the call to Assembly.GetExportedTypes()");
+                    failed.Each(assem => { writer.WriteLine("* " + assem.Record.Name); });
+                }
+                else
+                {
+                    writer.WriteLine("No problems were encountered in exporting types from Assemblies");
+                }
+
+                return writer.ToString();
+            }
         }
 
         public void CompileWithInlineServices(GeneratedAssembly assembly)
