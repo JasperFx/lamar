@@ -8,7 +8,8 @@ using Newtonsoft.Json;
 namespace LamarRest.Internal.Frames
 {
     /// <summary>
-    /// Serializes the incoming message
+    /// Generates code to serializes the incoming message and creates a variable
+    /// in the method called "json"
     /// </summary>
     public class SerializeJsonFrame : SyncFrame
     {
@@ -26,11 +27,11 @@ namespace LamarRest.Internal.Frames
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            var methodName = $"{typeof(JsonConvert).FullNameInCode()}.{nameof(JsonConvert.SerializeObject)}";
+            var serializeMethodName = $"{typeof(JsonConvert).FullNameInCode()}.{nameof(JsonConvert.SerializeObject)}";
 
             writer.BlankLine();
             writer.WriteComment($"From {nameof(SerializeJsonFrame)}");
-            writer.Write($"var {Json.Usage} = {methodName}({_input.Usage});");
+            writer.Write($"var {Json.Usage} = {serializeMethodName}({_input.Usage});");
             Next?.GenerateCode(method, writer);
         }
 

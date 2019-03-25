@@ -15,14 +15,21 @@ namespace LamarRest
         {
             if (type.GetMethods().Any(x => x.HasAttribute<PathAttribute>()))
             {
-                var generatedAssembly = new GeneratedAssembly(new GenerationRules("LamarRest"));
+                var rules = new GenerationRules("LamarRest");
+                var generatedAssembly = new GeneratedAssembly(rules);
                 var generatedType = new GeneratedServiceType(generatedAssembly, type);
 
                 var container = (IContainer)serviceGraph.RootScope;
                 
                 container.CompileWithInlineServices(generatedAssembly);
-                
-                return new ServiceFamily(type, new IDecoratorPolicy[0], new ConstructorInstance(type, generatedType.CompiledType, ServiceLifetime.Singleton));
+
+                return new ServiceFamily(
+                    type, 
+                    new IDecoratorPolicy[0], 
+                    new ConstructorInstance(type, 
+                    generatedType.CompiledType, 
+                    ServiceLifetime.Singleton
+                ));
             }
 
             return null;

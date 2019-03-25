@@ -47,7 +47,7 @@ namespace UserApp.Controllers
         [HttpPost("/user/create")]
         public IActionResult Create([FromBody] User user)
         {
-            _logger.LogInformation($"I CREATED A NEW USER NAMED '{user.Name}'");
+            _logger.LogInformation($"I created a new user with the name '{user.Name}'");
             _repository.Users.Fill(user);
             return Ok();
         }

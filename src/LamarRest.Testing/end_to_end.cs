@@ -26,12 +26,16 @@ namespace LamarRest.Testing
         {
             var container = new Container(x =>
             {
-                x.AddHttpClient(typeof(IUserService).Name, c => c.BaseAddress = new Uri("http://localhost:5000"));
+                x.AddHttpClient(
+                    typeof(IUserService).Name, 
+                    c => c.BaseAddress = new Uri("http://localhost:5000"));
                 x.Policies.Add<LamarRestPolicy>();
             });
 
             
             // Build an implementation of this service as needed
+            // I'm using service location here, but you'd be able
+            // to inject IUserService as a constructor argument as well
             var userService = container.GetInstance<IUserService>();
             
             
