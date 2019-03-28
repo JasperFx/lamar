@@ -47,6 +47,9 @@ namespace LamarCodeGeneration.Frames
             Type returnType = correctedReturnType(method.ReturnType);
             if (returnType != null)
             {
+#if NETSTANDARD2_0
+                
+
                 if (returnType.IsValueTuple())
                 {
                     var values = returnType.GetGenericArguments().Select(x => new Variable(x, this)).ToArray();
@@ -55,12 +58,17 @@ namespace LamarCodeGeneration.Frames
                 }
                 else
                 {
+#endif
                     var name = returnType.IsSimple() || returnType == typeof(object) || returnType == typeof(object[])
                         ? "result_of_" + method.Name
                         : Variable.DefaultArgName(returnType);
                     
+
                     ReturnVariable = new Variable(returnType, name, this); 
+                    
+#if NETSTANDARD2_0
                 }
+#endif
             }
             
 
@@ -196,7 +204,13 @@ namespace LamarCodeGeneration.Frames
             var isDisposable = false;
             if (shouldAssignVariableToReturnValue(method))
             {
+#if NETSTANDARD2_0
                 returnValue = ReturnVariable.VariableType.IsValueTuple() ? $"{ReturnVariable.Usage} = {returnValue}" : $"var {ReturnVariable.Usage} = {returnValue}";
+                #else
+                returnValue = $"var {ReturnVariable.Usage} = {returnValue}";
+#endif
+                
+                
                 isDisposable = ReturnVariable.VariableType.CanBeCastTo<IDisposable>();
             }
 
