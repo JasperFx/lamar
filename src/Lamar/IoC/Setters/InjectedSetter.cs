@@ -3,7 +3,8 @@ using System.Linq;
 using System.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 
 namespace Lamar.IoC.Setters
 {
@@ -26,7 +27,7 @@ namespace Lamar.IoC.Setters
             Property.SetValue(service, value);
         }
 
-        public LamarCompiler.Frames.SetterArg Resolve(ResolverVariables variables, BuildMode mode)
+        public SetterArg Resolve(ResolverVariables variables, BuildMode mode)
         {
             Variable variable;
             if (Instance.IsInlineDependency())
@@ -45,7 +46,7 @@ namespace Lamar.IoC.Setters
                 variable = variables.Resolve(Instance, mode);
             }
                 
-            return new LamarCompiler.Frames.SetterArg(Property, variable);
+            return new SetterArg(Property, variable);
         }
     }
 }

@@ -1,9 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using LamarCompiler.Expressions;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Model;
 using LamarCompiler.Testing.Codegen;
-using LamarCompiler.Util;
 using Shouldly;
 using Xunit;
 

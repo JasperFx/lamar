@@ -1,6 +1,7 @@
 using System;
 using Lamar.IoC.Instances;
-using LamarCompiler.Frames;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
 using LamarCompiler.Scenarios;
 using Shouldly;
 using Xunit;

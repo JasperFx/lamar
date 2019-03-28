@@ -4,11 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using Lamar.IoC.Enumerables;
 using Lamar.Scanning.Conventions;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Expressions;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Frames
 {

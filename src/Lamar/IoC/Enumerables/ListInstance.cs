@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Enumerables
 {

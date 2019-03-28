@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
+using LamarCodeGeneration;
 using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar
 {

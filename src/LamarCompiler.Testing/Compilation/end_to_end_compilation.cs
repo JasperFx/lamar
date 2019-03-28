@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Baseline;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using Shouldly;
 using Xunit;
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler.Scenarios;
 using Shouldly;
 using Xunit;

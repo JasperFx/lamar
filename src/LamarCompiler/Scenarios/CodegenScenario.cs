@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
-using LamarCompiler.Util;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Util;
 
 namespace LamarCompiler.Scenarios
 {

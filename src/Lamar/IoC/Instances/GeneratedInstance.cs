@@ -6,11 +6,12 @@ using System.Reflection.Metadata.Ecma335;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
 using Lamar.Scanning.Conventions;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {

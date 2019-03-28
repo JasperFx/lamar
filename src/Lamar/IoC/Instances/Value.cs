@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 
 namespace Lamar.IoC.Instances
 {

@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using NSubstitute;
 using Shouldly;
 using Xunit;

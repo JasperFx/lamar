@@ -4,10 +4,11 @@ using System.Linq;
 using System.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 
 namespace Lamar.IoC.Instances

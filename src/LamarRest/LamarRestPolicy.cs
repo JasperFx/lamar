@@ -3,6 +3,7 @@ using System.Linq;
 using Baseline.Reflection;
 using Lamar;
 using Lamar.IoC.Instances;
+using LamarCodeGeneration;
 using LamarCompiler;
 using LamarRest.Internal;
 using Microsoft.Extensions.DependencyInjection;

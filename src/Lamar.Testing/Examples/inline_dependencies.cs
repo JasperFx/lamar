@@ -5,7 +5,7 @@ using Baseline;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using Shouldly;

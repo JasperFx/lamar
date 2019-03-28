@@ -1,5 +1,5 @@
 ﻿using Lamar.IoC.Instances;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 
 namespace Lamar.IoC.Frames
 {

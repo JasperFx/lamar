@@ -3,10 +3,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Expressions;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 
 namespace Lamar.IoC.Lazy
 {

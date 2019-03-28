@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Lamar.IoC.Frames;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Expressions;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 
 namespace Lamar.IoC.Instances
 {

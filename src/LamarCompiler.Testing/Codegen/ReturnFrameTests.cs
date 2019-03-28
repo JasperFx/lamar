@@ -1,5 +1,5 @@
 using System.Linq;
-using LamarCompiler.Frames;
+using LamarCodeGeneration.Frames;
 using LamarCompiler.Scenarios;
 using Shouldly;
 using Xunit;

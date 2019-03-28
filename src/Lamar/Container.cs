@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
 using Lamar.Scanning;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Util;
 using LamarCompiler;
-using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

@@ -1,12 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Lamar.IoC.Instances;
-using LamarCompiler.Util;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http.Features;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.Testing.IoC
 {

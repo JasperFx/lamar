@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using LamarCompiler.Frames;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
 using Shouldly;
 using Xunit;
 

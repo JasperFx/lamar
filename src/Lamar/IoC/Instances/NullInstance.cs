@@ -1,7 +1,7 @@
 ﻿using System;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances

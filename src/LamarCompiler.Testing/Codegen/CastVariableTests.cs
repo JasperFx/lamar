@@ -1,4 +1,5 @@
-﻿using LamarCompiler.Model;
+﻿using LamarCodeGeneration;
+using LamarCodeGeneration.Model;
 using Shouldly;
 using Xunit;
 

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using LamarCompiler.Expressions;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {

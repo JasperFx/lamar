@@ -10,8 +10,9 @@ using Lamar.IoC.Lazy;
 using Lamar.IoC.Resolvers;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Util;
 using LamarCompiler;
-using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar

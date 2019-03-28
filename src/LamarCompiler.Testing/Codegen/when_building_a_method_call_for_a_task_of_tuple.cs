@@ -1,5 +1,5 @@
-﻿using LamarCompiler.Frames;
-using LamarCompiler.Model;
+﻿using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using Shouldly;
 using Xunit;
 

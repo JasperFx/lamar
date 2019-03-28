@@ -1,4 +1,5 @@
 ﻿using Lamar.IoC;
+using LamarCodeGeneration;
 using LamarCompiler;
 using Shouldly;
 using StructureMap.Testing.Widget;

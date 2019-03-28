@@ -1,4 +1,5 @@
 ﻿using System;
+using LamarCodeGeneration;
 using Shouldly;
 using Xunit;
 

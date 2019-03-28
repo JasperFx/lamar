@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 using Microsoft.Extensions.Configuration;
 
 namespace LamarRest.Internal.Frames

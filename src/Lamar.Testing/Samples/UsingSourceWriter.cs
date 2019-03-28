@@ -1,4 +1,5 @@
 ﻿using System;
+using LamarCodeGeneration;
 using LamarCompiler;
 using Xunit;
 using Xunit.Abstractions;

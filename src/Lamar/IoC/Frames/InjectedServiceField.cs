@@ -2,11 +2,12 @@
 using System.Linq.Expressions;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Expressions;
-using LamarCompiler.Model;
-using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Frames
 {

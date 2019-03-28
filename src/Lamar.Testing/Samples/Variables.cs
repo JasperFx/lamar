@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 using Microsoft.AspNetCore.Http;
 using Shouldly;
 using StructureMap.Testing.Widget;

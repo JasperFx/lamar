@@ -1,5 +1,5 @@
 using System.Net.Http;
-using LamarCompiler.Frames;
+using LamarCodeGeneration.Frames;
 
 namespace LamarRest.Internal.Frames
 {

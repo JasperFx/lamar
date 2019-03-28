@@ -3,11 +3,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Expressions;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Expressions;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
-using LamarCompiler.Util;
 
 namespace Lamar.IoC.Lazy
 {
@@ -54,7 +54,7 @@ namespace Lamar.IoC.Lazy
             }
             else
             {
-                throw new InvalidCastException($"{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}");
+                throw new InvalidCastException($"{Next.GetType().FullNameInCode()} does not implement {nameof(IResolverFrame)}");
             }
         }
     }

@@ -2,7 +2,7 @@
 using System.Reflection;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar
 {

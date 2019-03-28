@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Baseline;
-using LamarCompiler.Model;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Model;
 using Shouldly;
 using Xunit;
 

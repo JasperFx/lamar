@@ -3,7 +3,7 @@ using System.Linq;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.Microsoft.DependencyInjection
 {

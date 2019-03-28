@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Baseline;
 using Baseline.Reflection;
 using Lamar;
+using LamarCodeGeneration;
 using LamarCompiler;
-using LamarCompiler.Model;
 using LamarRest.Internal.Frames;
 using Microsoft.Extensions.Configuration;
 

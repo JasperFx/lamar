@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 
 namespace LamarCompiler.Testing.Codegen
 {

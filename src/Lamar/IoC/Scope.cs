@@ -8,9 +8,10 @@ using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.Scanning;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 using LamarCompiler;
-using LamarCompiler.Model;
-using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC

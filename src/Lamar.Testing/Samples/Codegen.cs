@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using LamarCodeGeneration;
 using LamarCompiler;
 using Shouldly;
 using Xunit;

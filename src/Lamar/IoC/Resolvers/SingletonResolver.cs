@@ -1,6 +1,6 @@
 ﻿using System;
 using Lamar.IoC.Instances;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Resolvers
 {

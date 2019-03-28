@@ -3,7 +3,7 @@ using System.Linq;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;

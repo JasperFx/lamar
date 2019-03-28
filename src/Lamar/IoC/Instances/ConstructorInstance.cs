@@ -9,10 +9,11 @@ using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 using LamarCompiler;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
-using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances

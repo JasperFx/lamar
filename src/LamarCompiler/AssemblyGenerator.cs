@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using LamarCompiler.Model;
-using LamarCompiler.Util;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using LamarCodeGeneration.Util;
+
 #if !NET461
 using System.Runtime.Loader;
 #endif
@@ -90,7 +92,7 @@ namespace LamarCompiler
 		{
 			return HintPaths?
 				.Select(findFile(assembly))
-				.FirstOrDefault(file => StringExtensions.IsNotEmpty(file));
+				.FirstOrDefault(file => !string.IsNullOrWhiteSpace(file));
 		}
 
 		private static Func<string, string> findFile(Assembly assembly)

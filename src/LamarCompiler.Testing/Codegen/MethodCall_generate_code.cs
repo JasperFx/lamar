@@ -3,8 +3,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Baseline;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using Shouldly;
 using Xunit;
 

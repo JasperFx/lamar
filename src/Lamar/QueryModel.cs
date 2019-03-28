@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lamar.IoC;
 using Lamar.Scanning.Conventions;
-using LamarCompiler.Util;
+using LamarCodeGeneration.Util;
 
 namespace Lamar
 {

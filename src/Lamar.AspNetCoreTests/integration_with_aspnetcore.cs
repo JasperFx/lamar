@@ -23,6 +23,7 @@ using Shouldly;
 using Xunit;
 using Baseline;
 using Lamar.IoC.Instances;
+using LamarCodeGeneration;
 using LamarCompiler;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;

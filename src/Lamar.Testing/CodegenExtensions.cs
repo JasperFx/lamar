@@ -1,3 +1,4 @@
+using LamarCodeGeneration;
 using LamarCompiler;
 
 namespace Lamar.Testing

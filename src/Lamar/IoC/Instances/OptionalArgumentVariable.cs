@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 
 namespace Lamar.IoC.Instances
 {

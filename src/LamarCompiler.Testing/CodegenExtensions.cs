@@ -1,3 +1,5 @@
+using LamarCodeGeneration;
+
 namespace LamarCompiler.Testing
 {
     public static class CodegenExtensions

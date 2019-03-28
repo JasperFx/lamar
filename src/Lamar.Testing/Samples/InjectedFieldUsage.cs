@@ -1,7 +1,8 @@
 ﻿using System;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 using Xunit;
 using Xunit.Abstractions;
 

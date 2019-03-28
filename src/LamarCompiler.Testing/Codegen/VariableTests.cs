@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using LamarCompiler.Model;
+using LamarCodeGeneration.Model;
 using Shouldly;
 using Xunit;
 

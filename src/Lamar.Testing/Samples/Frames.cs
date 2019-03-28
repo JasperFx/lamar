@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using LamarCodeGeneration;
+using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler;
-using LamarCompiler.Frames;
-using LamarCompiler.Model;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using StructureMap.Testing.Widget3;
 using Xunit;
