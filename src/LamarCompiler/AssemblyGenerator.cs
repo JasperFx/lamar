@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
+using System.Threading.Tasks;
+using LamarCompiler.Model;
 using LamarCompiler.Util;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -169,6 +170,40 @@ namespace LamarCompiler
 				return _context.LoadFromStream(stream);
 			}
 		}
+
+		public void Compile(GeneratedAssembly generatedAssembly, IServiceVariableSource services = null)
+		{
+			var code = generatedAssembly.GenerateCode(services);
+
+			var generator1 = new AssemblyGenerator();
+			generator1.ReferenceAssembly(GetType().Assembly);
+			generator1.ReferenceAssembly(typeof(Task).Assembly);
+
+			foreach (var assembly1 in generatedAssembly.Generation.Assemblies)
+			{
+				generator1.ReferenceAssembly(assembly1);
+			}
+
+			foreach (var assembly2 in _assemblies)
+			{
+				generator1.ReferenceAssembly(assembly2);
+			}
+
+			var assemblies = generatedAssembly.GeneratedTypes
+				.SelectMany(x => x.AssemblyReferences())
+				.Distinct().ToArray();
+
+			assemblies
+				.Each(x => generator1.ReferenceAssembly(x));
+            
+			var generator = generator1;
+
+			var assembly = generator.Generate(code);
+
+			generatedAssembly.AttachAssembly(assembly);
+		}
+		
+		
 	}
 
 	internal interface ILamarAssemblyLoadContext

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Lamar.IoC;
 using LamarCompiler;
+using LamarCompiler.Model;
 
 namespace Lamar
 {
@@ -142,17 +143,7 @@ namespace Lamar
         /// <returns></returns>
         string WhatDidIScan();
 
-        /// <summary>
-        /// Use Lamar's inline object construction inside of the generated methods
-        /// </summary>
-        /// <param name="assembly"></param>
-        void CompileWithInlineServices(GeneratedAssembly assembly);
 
-        /// <summary>
-        /// Use Lamar's inline object construction inside of the generated methods
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <returns></returns>
-        string GenerateCodeWithInlineServices(GeneratedAssembly assembly);
+        IServiceVariableSource CreateServiceVariableSource();
     }
 }

@@ -9,6 +9,7 @@ using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.Scanning;
 using LamarCompiler;
+using LamarCompiler.Model;
 using LamarCompiler.Util;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -304,10 +305,13 @@ namespace Lamar.IoC
             }
         }
 
-        public void CompileWithInlineServices(GeneratedAssembly assembly)
+
+        public IServiceVariableSource CreateServiceVariableSource()
         {
-            assembly.CompileAll(new ServiceVariableSource(ServiceGraph));
+            return new ServiceVariableSource(ServiceGraph);
         }
+        
+        
 
         public string GenerateCodeWithInlineServices(GeneratedAssembly assembly)
         {

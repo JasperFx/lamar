@@ -20,9 +20,10 @@ namespace LamarRest
                 var generatedType = new GeneratedServiceType(generatedAssembly, type);
 
                 var container = (IContainer)serviceGraph.RootScope;
-                
-                container.CompileWithInlineServices(generatedAssembly);
 
+                var services = container.CreateServiceVariableSource();
+                new AssemblyGenerator().Compile(generatedAssembly, services);
+                
                 return new ServiceFamily(
                     type, 
                     new IDecoratorPolicy[0], 

@@ -17,28 +17,7 @@ namespace Lamar
     public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope, ISupportRequiredService
     // ENDSAMPLE
     {
-        private static Task _warmup;
-        
-        public static Task Warmup()
-        {
-            if (_warmup == null)
-            {
-                _warmup = Task.Factory.StartNew(() =>
-                {
-                    var generatedAssembly = new GeneratedAssembly(new GenerationRules("Lamar.Generated"));
-                    generatedAssembly.AddType("Tracer", typeof(IStub));
-                    
-                    
-                    generatedAssembly.CompileAll();
 
-                    _warmup = Task.CompletedTask;
-                });
-            }
-
-            return _warmup;
-        }
-        
-        
         private bool _isDisposing;
 
         public new static Container Empty()

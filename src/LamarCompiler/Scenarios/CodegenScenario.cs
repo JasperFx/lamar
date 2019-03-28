@@ -49,7 +49,7 @@ namespace LamarCompiler.Scenarios
 
             configuration(generatedType, method);
             
-            assembly.CompileAll();
+            new AssemblyGenerator().Compile(assembly);
             
             return new CodegenResult<TObject>(generatedType.CreateInstance<TObject>(), generatedType.SourceCode);
         }

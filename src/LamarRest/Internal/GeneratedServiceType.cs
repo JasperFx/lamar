@@ -21,8 +21,9 @@ namespace LamarRest.Internal
         {
             var assembly = new GeneratedAssembly(new GenerationRules("LamarRest"));
             var generatedType = new GeneratedServiceType(assembly, serviceType);
-            
-            container.CompileWithInlineServices(assembly);
+
+            var services = container.CreateServiceVariableSource();
+            new AssemblyGenerator().Compile(assembly, services);
 
             return generatedType;
         }

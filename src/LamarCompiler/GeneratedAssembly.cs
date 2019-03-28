@@ -45,14 +45,8 @@ namespace LamarCompiler
             return generatedType;
         }
 
-        public void CompileAll(IServiceVariableSource services = null)
+        public void AttachAssembly(Assembly assembly)
         {
-            var code = GenerateCode(services);
-
-            var generator = buildGenerator(Generation);
-
-            var assembly = generator.Generate(code);
-
             var generated = assembly.GetExportedTypes().ToArray();
 
             foreach (var generatedType in GeneratedTypes)
@@ -105,32 +99,6 @@ namespace LamarCompiler
 
                 return code;
             }
-        }
-
-        private AssemblyGenerator buildGenerator(GenerationRules generation)
-        {
-            var generator = new AssemblyGenerator();
-            generator.ReferenceAssembly(GetType().Assembly);
-            generator.ReferenceAssembly(typeof(Task).Assembly);
-
-            foreach (var assembly in generation.Assemblies)
-            {
-                generator.ReferenceAssembly(assembly);
-            }
-
-            foreach (var assembly in _assemblies)
-            {
-                generator.ReferenceAssembly(assembly);
-            }
-
-            var assemblies = GeneratedTypes
-                .SelectMany(x => x.AssemblyReferences())
-                .Distinct().ToArray();
-
-            assemblies
-                .Each(x => generator.ReferenceAssembly(x));
-
-            return generator;
         }
 
         private void attachSourceCodeToChains(ref string code)
