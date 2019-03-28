@@ -24,6 +24,7 @@ using Xunit;
 using Baseline;
 using Lamar.IoC.Instances;
 using LamarCompiler;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Xunit.Abstractions;
@@ -418,6 +419,10 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .AddInMemoryClients(Config.GetClients());
             services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
 
+            services.AddHealthChecks();
+            
+            services.AddHealthChecksUI();
+
             services.AddAuthentication()
                 .AddIdentityServerAuthentication(options =>
                 {
@@ -436,6 +441,31 @@ namespace Lamar.Testing.AspNetCoreIntegration
         public void Configure(IApplicationBuilder app)
         {
             app.UseIdentityServer();
+            
+            app.UseHealthChecks("/hc",
+                new HealthCheckOptions
+                {
+                    Predicate = hc => true,
+                });
+
+            app.UseHealthChecks("/hc-cache",
+                new HealthCheckOptions
+                {
+                    Predicate = hc => hc.Tags.Contains("cache"),
+                });
+
+            app.UseHealthChecks("/hc-db",
+                new HealthCheckOptions
+                {
+                    Predicate = hc => hc.Tags.Contains("database"),
+                });
+
+            app.UseHealthChecks("/hc-domain",
+                new HealthCheckOptions
+                {
+                    Predicate = hc => hc.Tags.Contains("domainservice"),
+                });
+
 
             app.Run(c =>
             {
