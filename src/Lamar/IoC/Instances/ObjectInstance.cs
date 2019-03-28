@@ -3,7 +3,6 @@ using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances

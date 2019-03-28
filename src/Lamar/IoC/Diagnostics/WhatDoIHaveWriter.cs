@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using LamarCodeGeneration;
-using LamarCompiler;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Diagnostics

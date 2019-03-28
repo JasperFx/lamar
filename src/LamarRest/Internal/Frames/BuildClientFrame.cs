@@ -4,7 +4,6 @@ using System.Net.Http;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using Microsoft.Extensions.Configuration;
 
 namespace LamarRest.Internal.Frames

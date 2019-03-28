@@ -5,7 +5,6 @@ using Lamar.Scanning.Conventions;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 using LamarCodeGeneration.Util;
 

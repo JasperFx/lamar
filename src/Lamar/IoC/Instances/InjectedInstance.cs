@@ -7,7 +7,6 @@ using LamarCodeGeneration;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances

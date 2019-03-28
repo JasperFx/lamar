@@ -12,7 +12,6 @@ using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar

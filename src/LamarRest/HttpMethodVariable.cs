@@ -1,7 +1,6 @@
 using System.Net.Http;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 
 namespace LamarRest
 {

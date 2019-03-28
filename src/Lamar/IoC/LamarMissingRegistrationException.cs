@@ -1,6 +1,5 @@
 ﻿using System;
 using LamarCodeGeneration;
-using LamarCompiler;
 
 namespace Lamar.IoC
 {

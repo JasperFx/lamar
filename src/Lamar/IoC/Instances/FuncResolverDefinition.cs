@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Instances

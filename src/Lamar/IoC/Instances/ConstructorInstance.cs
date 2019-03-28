@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using Lamar.IoC.Frames;
-using Lamar.IoC.Resolvers;
 using Lamar.IoC.Setters;
-using Lamar.Scanning.Conventions;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances

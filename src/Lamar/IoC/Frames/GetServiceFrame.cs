@@ -2,7 +2,6 @@
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 
 namespace Lamar.IoC.Frames
 {

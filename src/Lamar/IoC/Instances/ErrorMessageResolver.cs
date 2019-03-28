@@ -2,7 +2,6 @@
 using System.Linq;
 using Lamar.IoC.Resolvers;
 using LamarCodeGeneration;
-using LamarCompiler;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Instances

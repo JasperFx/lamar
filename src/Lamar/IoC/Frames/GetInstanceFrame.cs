@@ -8,7 +8,6 @@ using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
-using LamarCompiler;
 
 namespace Lamar.IoC.Frames
 {

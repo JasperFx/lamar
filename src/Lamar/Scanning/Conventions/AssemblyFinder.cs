@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LamarCompiler;
+#if NETSTANDARD2_0
+using System.Runtime.Loader;
+#endif
 
 namespace Lamar.Scanning.Conventions
 {
@@ -89,4 +91,83 @@ namespace Lamar.Scanning.Conventions
             return FindAssemblies(file => { }, includeExeFiles: includeExeFiles).Where(filter);
         }
     }
+		
+        internal interface ILamarAssemblyLoadContext
+        {
+            Assembly LoadFromStream(Stream assembly);
+            Assembly LoadFromAssemblyName(AssemblyName assemblyName);
+            Assembly LoadFromAssemblyPath(string assemblyName);
+        }
+
+#if !NET461
+	public sealed class CustomAssemblyLoadContext : AssemblyLoadContext, ILamarAssemblyLoadContext
+	{
+		protected override Assembly Load(AssemblyName assemblyName)
+		{
+			return Assembly.Load(assemblyName);
+		}
+
+		Assembly ILamarAssemblyLoadContext.LoadFromAssemblyName(AssemblyName assemblyName)
+		{
+			return Load(assemblyName);
+		}
+	}
+
+	public sealed class AssemblyLoadContextWrapper : ILamarAssemblyLoadContext
+	{
+		private readonly AssemblyLoadContext ctx;
+
+		public AssemblyLoadContextWrapper(AssemblyLoadContext ctx)
+		{
+			this.ctx = ctx;
+		}
+
+		public Assembly LoadFromStream(Stream assembly)
+		{
+			return ctx.LoadFromStream(assembly);
+		}
+
+		public Assembly LoadFromAssemblyName(AssemblyName assemblyName)
+		{
+			return ctx.LoadFromAssemblyName(assemblyName);
+		}
+
+		public Assembly LoadFromAssemblyPath(string assemblyName)
+		{
+			return ctx.LoadFromAssemblyPath(assemblyName);
+		}
+	}
+#else
+        public class CustomAssemblyLoadContext : ILamarAssemblyLoadContext
+        {
+            public Assembly LoadFromStream(Stream assembly)
+            {
+                if (assembly is MemoryStream memStream)
+                {
+                    return Assembly.Load(memStream.ToArray());
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    assembly.CopyTo(stream);
+                    return Assembly.Load(stream.ToArray());
+                }
+            }
+		
+            Assembly ILamarAssemblyLoadContext.LoadFromAssemblyName(AssemblyName assemblyName)
+            {
+                return Assembly.Load(assemblyName);
+            }
+
+            public Assembly LoadFromAssemblyPath(string assemblyName)
+            {
+                return Assembly.LoadFrom(assemblyName);
+            }
+
+            public Assembly LoadFromAssemblyName(string assemblyName)
+            {
+                return Assembly.Load(assemblyName);
+            }
+        }
+#endif
 }

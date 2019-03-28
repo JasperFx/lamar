@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
 using Lamar.Scanning.Conventions;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 using LamarCodeGeneration.Util;
 

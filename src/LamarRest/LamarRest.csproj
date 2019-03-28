@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LamarCompiler\LamarCompiler.csproj" />
     <ProjectReference Include="..\Lamar\Lamar.csproj" />
   </ItemGroup>
 
