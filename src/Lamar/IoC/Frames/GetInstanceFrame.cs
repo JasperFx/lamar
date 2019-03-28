@@ -1,15 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using Lamar.IoC.Instances;
 using LamarCompiler;
+using LamarCompiler.Expressions;
 using LamarCompiler.Frames;
 using LamarCompiler.Model;
+using LamarCompiler.Util;
 
 namespace Lamar.IoC.Frames
 {
     
     // SAMPLE: GetInstanceFrame
-    public class GetInstanceFrame : SyncFrame
+    public class GetInstanceFrame : SyncFrame, IResolverFrame
     {
+        private static readonly MethodInfo _resolveMethod =
+            ReflectionHelper.GetMethod<Instance>(x => x.Resolve(null));
+        
+        
+        
         private Variable _scope;
         private readonly string _name;
 
@@ -33,6 +43,27 @@ namespace Lamar.IoC.Frames
         }
         
         public ServiceVariable Variable { get; }
+        
+        public void WriteExpressions(LambdaDefinition definition)
+        {
+            var scope = definition.Scope();
+            var expr = definition.ExpressionFor(Variable);
+
+            var instance = Variable.Instance;
+
+            var @call = Expression.Call(Expression.Constant(instance), _resolveMethod, scope);
+            var assign = Expression.Assign(expr, Expression.Convert(@call, Variable.VariableType));
+            definition.Body.Add(assign);
+
+            if (Next is IResolverFrame next)
+            {
+                next.WriteExpressions(definition);
+            }
+            else
+            {
+                throw new InvalidCastException($"{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}");
+            }
+        }
     }
     // ENDSAMPLE
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using LamarCompiler.Expressions;
 using LamarCompiler.Frames;
 using LamarCompiler.Util;
 
@@ -146,6 +148,11 @@ namespace LamarCompiler.Model
             {
                 return ((VariableType != null ? VariableType.GetHashCode() : 0) * 397) ^ (Usage != null ? Usage.GetHashCode() : 0);
             }
+        }
+
+        public virtual Expression ToVariableExpression(LambdaDefinition definition)
+        {
+            return Expression.Variable(VariableType, Usage);
         }
     }
 }

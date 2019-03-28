@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Lamar.IoC;
 using Lamar.IoC.Enumerables;
-using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Lazy;
 using Lamar.IoC.Resolvers;
@@ -85,17 +84,6 @@ namespace Lamar
                 policy.Apply(services);
             }
 
-            var sets = services.FindAndRemovePolicies<CachedResolverSet>();
-            foreach (var resolverSet in sets)
-            {
-                if (resolverSet.TryLoadResolvers(out var dict))
-                {
-                    foreach (var pair in dict)
-                    {
-                        CachedResolverTypes.Add(pair.Key, pair.Value);
-                    }
-                }
-            }
 
             services.Add(new ScopeInstance<Scope>());
             services.Add(new ScopeInstance<IServiceProvider>());

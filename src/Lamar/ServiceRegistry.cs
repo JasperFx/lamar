@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
@@ -317,7 +315,6 @@ namespace Lamar
                 if (policy is IFamilyPolicy fp) _parent.AddSingleton(fp);
                 if (policy is IRegistrationPolicy rp) _parent.AddSingleton(rp);
                 if (policy is IDecoratorPolicy dp) _parent.AddSingleton(dp);
-                if (policy is CachedResolverSet @set) _parent.AddSingleton(@set);
                 if (policy is ISetterPolicy sp) _parent.AddSingleton(sp);
             }
 

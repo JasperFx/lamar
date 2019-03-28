@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LamarCompiler.Model
 {
@@ -6,5 +7,6 @@ namespace LamarCompiler.Model
     {
         bool Matches(Type type);
         Variable Create(Type type);
+
     }
 }

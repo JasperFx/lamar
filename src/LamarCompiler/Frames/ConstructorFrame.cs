@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
 using LamarCompiler.Model;
 using LamarCompiler.Util;
 
@@ -36,7 +34,7 @@ namespace LamarCompiler.Frames
             PropertyName = property.Name;
             PropertyType = property.PropertyType;
         }
-        
+
         public SetterArg(PropertyInfo property, Variable variable)
         {
             PropertyName = property.Name;
@@ -44,9 +42,9 @@ namespace LamarCompiler.Frames
             Variable = variable;
         }
 
-        public string PropertyName { get; private set; }
+        public string PropertyName { get; }
         public Variable Variable { get; private set; }
-        public Type PropertyType { get; private set; }
+        public Type PropertyType { get; }
 
         public string Assignment()
         {
@@ -56,44 +54,40 @@ namespace LamarCompiler.Frames
 
         internal void FindVariable(IMethodVariables chain)
         {
-            if (Variable == null)
-            {
-                Variable = chain.FindVariable(PropertyType);
-            }
+            if (Variable == null) Variable = chain.FindVariable(PropertyType);
         }
     }
-    
+
     public class ConstructorFrame : SyncFrame
     {
         public ConstructorFrame(ConstructorInfo ctor) : this(ctor.DeclaringType, ctor)
         {
-
         }
 
-        public ConstructorFrame(Type builtType, ConstructorInfo ctor) 
+        public ConstructorFrame(Type builtType, ConstructorInfo ctor)
         {
             Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor));
             Parameters = new Variable[ctor.GetParameters().Length];
-            
-            
+
+
             BuiltType = builtType;
             Variable = new Variable(BuiltType, this);
         }
-        
-        public ConstructorFrame(Type builtType, ConstructorInfo ctor, Func<ConstructorFrame, Variable> variableSource) 
+
+        public ConstructorFrame(Type builtType, ConstructorInfo ctor, Func<ConstructorFrame, Variable> variableSource)
         {
             Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor));
             Parameters = new Variable[ctor.GetParameters().Length];
-            
-            
+
+
             BuiltType = builtType;
             Variable = variableSource(this);
         }
 
-        public Type BuiltType { get;  }
-        
+        public Type BuiltType { get; }
+
         public Type DeclaredType { get; set; }
-        
+
         public ConstructorInfo Ctor { get; }
 
         public Variable[] Parameters { get; set; }
@@ -101,11 +95,11 @@ namespace LamarCompiler.Frames
         public FramesCollection ActivatorFrames { get; } = new FramesCollection();
 
         public ConstructorCallMode Mode { get; set; } = ConstructorCallMode.Variable;
-        
+
         public IList<SetterArg> Setters { get; } = new List<SetterArg>();
-        
+
         /// <summary>
-        /// The variable set by invoking this frame. 
+        ///     The variable set by invoking this frame.
         /// </summary>
         public Variable Variable { get; protected set; }
 
@@ -117,30 +111,28 @@ namespace LamarCompiler.Frames
                 case ConstructorCallMode.Variable:
                     writer.Write(Declaration() + ";");
                     ActivatorFrames.Write(method, writer);
-                    
+
                     Next?.GenerateCode(method, writer);
                     break;
-                    
+
                 case ConstructorCallMode.ReturnValue:
                     if (ActivatorFrames.Any())
                     {
                         writer.Write(Declaration() + ";");
                         ActivatorFrames.Write(method, writer);
-                    
+
                         writer.Write($"return {Variable.Usage};");
                         Next?.GenerateCode(method, writer);
-                        
-                        
                     }
                     else
                     {
                         writer.Write($"return {Invocation()};");
                         Next?.GenerateCode(method, writer);
                     }
-                    
+
 
                     break;
-                    
+
                 case ConstructorCallMode.UsingNestedVariable:
                     writer.UsingBlock(Declaration(), w =>
                     {
@@ -154,18 +146,15 @@ namespace LamarCompiler.Frames
 
         public string Declaration()
         {
-            return DeclaredType == null 
-                ? $"var {Variable.Usage} = {Invocation()}" 
+            return DeclaredType == null
+                ? $"var {Variable.Usage} = {Invocation()}"
                 : $"{DeclaredType.FullNameInCode()} {Variable.Usage} = {Invocation()}";
         }
 
         public string Invocation()
         {
             var invocation = $"new {BuiltType.FullNameInCode()}({Parameters.Select(x => x.Usage).Join(", ")})";
-            if (Setters.Any())
-            {
-                invocation += $"{{{Setters.Select(x => x.Assignment()).Join(", ")}}}";
-            }
+            if (Setters.Any()) invocation += $"{{{Setters.Select(x => x.Assignment()).Join(", ")}}}";
 
             return invocation;
         }
@@ -173,47 +162,31 @@ namespace LamarCompiler.Frames
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
         {
             var parameters = Ctor.GetParameters();
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                
+            for (var i = 0; i < parameters.Length; i++)
                 if (Parameters[i] == null)
                 {
                     var parameter = parameters[i];
                     Parameters[i] = chain.FindVariable(parameter.ParameterType);
                 }
-            }
 
-            foreach (var parameter in Parameters)
-            {
-                yield return parameter;
-            }
+            foreach (var parameter in Parameters) yield return parameter;
 
-            foreach (var setter in Setters)
-            {
-                setter.FindVariable(chain);
-            }
+            foreach (var setter in Setters) setter.FindVariable(chain);
 
-            foreach (var setter in Setters)
-            {
-                yield return setter.Variable;
-            }
+            foreach (var setter in Setters) yield return setter.Variable;
 
 
             if (ActivatorFrames.Any())
             {
                 var standin = new StandinMethodVariables(Variable, chain);
-                
+
                 foreach (var frame in ActivatorFrames)
-                {
-                    foreach (var variable in frame.FindVariables(standin))
-                    {
-                        yield return variable;
-                    }
-                }
+                foreach (var variable in frame.FindVariables(standin))
+                    yield return variable;
             }
         }
-        
-        
+
+
         public class StandinMethodVariables : IMethodVariables
         {
             private readonly Variable _current;
@@ -253,7 +226,8 @@ namespace LamarCompiler.Frames
         {
         }
 
-        public ConstructorFrame(Expression<Func<T>> expression) : base(typeof(T), ConstructorFinderVisitor<T>.Find(expression))
+        public ConstructorFrame(Expression<Func<T>> expression) : base(typeof(T),
+            ConstructorFinderVisitor<T>.Find(expression))
         {
         }
 
@@ -261,7 +235,7 @@ namespace LamarCompiler.Frames
         {
             var property = ReflectionHelper.GetProperty(expression);
             var setter = new SetterArg(property, variable);
-            
+
             Setters.Add(setter);
         }
     }

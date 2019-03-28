@@ -22,7 +22,6 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
 using Baseline;
-using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using LamarCompiler;
 using Microsoft.EntityFrameworkCore;
@@ -90,28 +89,11 @@ namespace Lamar.Testing.AspNetCoreIntegration
             }
         }
 
-        //[Fact]
-        public void record_cached_set()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseApplicationInsights()
-                .UseStartup<Startup>();
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-
-                container.Model.ExportResolverCode<AspNetResolverSet>("../../../Internal/Resolvers");
-            }
 
 
 
-        }
+
+
 
         [Fact]
         public void see_singleton_registrations()
@@ -354,6 +336,42 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
             }
         }
+        
+        
+        
+        
+        [Fact]
+        public void can_build_resolvers_for_everything()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                var instances = container.Model.AllInstances.Select(x => x.Instance).Where(x => !x.ServiceType.IsOpenGeneric()).OfType<GeneratedInstance>().ToArray();
+
+
+
+                foreach (var instance in instances)
+                {
+                    _output.WriteLine($"{instance.ServiceType} / {instance.ImplementationType}");
+                    instance.BuildFuncResolver(container).ShouldNotBeNull();
+                }
+            }
+
+        }
+
+        
+        
+        
 
     }
 
@@ -387,13 +405,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
         public IFeatureCollection Features { get; } = new FeatureCollection();
     }
 
-    public class AspNetResolverSet : CachedResolverSet
-    {
-        public override bool Include(GeneratedInstance instance)
-        {
-            return true;
-        }
-    }
 
     public class CachedStartup
     {

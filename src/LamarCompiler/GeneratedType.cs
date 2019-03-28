@@ -8,8 +8,15 @@ using LamarCompiler.Util;
 
 namespace LamarCompiler
 {
+    public interface IGeneratedType
+    {
+        IList<Setter> Setters { get; }
+        IList<InjectedField> AllInjectedFields { get; }
+        GenerationRules Rules { get; }
+    }
+
     [DebuggerDisplay("GeneratedType: {BaseType}")]
-    public class GeneratedType : IVariableSource
+    public class GeneratedType : IVariableSource, IGeneratedType
     {
         private readonly IList<Type> _interfaces = new List<Type>();
         private readonly IList<GeneratedMethod> _methods = new List<GeneratedMethod>();

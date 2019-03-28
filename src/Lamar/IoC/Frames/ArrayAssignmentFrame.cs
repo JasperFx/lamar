@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Lamar.IoC.Enumerables;
 using Lamar.Scanning.Conventions;
 using LamarCompiler;
+using LamarCompiler.Expressions;
 using LamarCompiler.Frames;
 using LamarCompiler.Model;
 using LamarCompiler.Util;
 
 namespace Lamar.IoC.Frames
 {
-    public class ArrayAssignmentFrame<T> : SyncFrame
+    public class ArrayAssignmentFrame<T> : SyncFrame, IResolverFrame
     {
         public ArrayAssignmentFrame(ArrayInstance<T> instance, Variable[] elements)
         {
             Elements = elements;
             Variable = new ServiceVariable(instance, this);
-            if (typeof(T).MustBeBuiltWithFunc())
-            {
-                Variable.OverrideType(typeof(object[]));
-            }
-            
+
             ElementType = typeof(T);
         }
 
@@ -37,7 +35,7 @@ namespace Lamar.IoC.Frames
         {
             var elements = Elements.Select(x => x.Usage).Join(", ");
 
-            var arrayType = ElementType.MustBeBuiltWithFunc() ? "object" : ElementType.FullNameInCode();
+            var arrayType = ElementType.FullNameInCode();
 
             if (ReturnCreated)
             {
@@ -55,6 +53,28 @@ namespace Lamar.IoC.Frames
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
         {
             return Elements;
+        }
+
+        public void WriteExpressions(LambdaDefinition definition)
+        {
+            var init = Expression.NewArrayInit(ElementType, Elements.Select(definition.ExpressionFor));
+            var expr = definition.ExpressionFor(Variable);
+
+            var assign = Expression.Assign(expr, init);
+            definition.Body.Add(assign);
+
+            if (Next == null)
+            {
+                definition.Body.Add(expr);
+            }
+            else if (Next is IResolverFrame next)
+            {
+                next.WriteExpressions(definition);
+            }
+            else
+            {
+                throw new InvalidCastException($"{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}");
+            }
         }
     }
 }

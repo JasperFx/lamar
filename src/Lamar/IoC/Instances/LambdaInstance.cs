@@ -23,8 +23,6 @@ namespace Lamar.IoC.Instances
         {
             return new LambdaInstance(typeof(T), s => factory(s), lifetime);
         }
-
-
     }
     
     public class LambdaInstance<TContainer, TReturn> : Instance

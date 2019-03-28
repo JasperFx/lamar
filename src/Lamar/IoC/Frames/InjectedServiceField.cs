@@ -1,7 +1,12 @@
-﻿using Lamar.IoC.Instances;
+﻿using System;
+using System.Linq.Expressions;
+using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 using LamarCompiler;
+using LamarCompiler.Expressions;
 using LamarCompiler.Model;
+using LamarCompiler.Util;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Frames
 {
@@ -9,7 +14,7 @@ namespace Lamar.IoC.Frames
     {
         private bool _isOnlyOne;
 
-        public InjectedServiceField(Instance instance) : base(instance.ServiceType.MustBeBuiltWithFunc() ? typeof(object) : instance.ServiceType,
+        public InjectedServiceField(Instance instance) : base(instance.ServiceType,
             instance.DefaultArgName())
         {
             Instance = instance;
@@ -31,21 +36,24 @@ namespace Lamar.IoC.Frames
             }
         }
 
-        public override string CtorArgDeclaration
-        {
-            get
-            {
-                if (Instance.ServiceType.MustBeBuiltWithFunc())
-                {
-                    return $"[Lamar.Named(\"{Instance.Name}\", \"{Instance.ServiceType.FullNameInCode()}\")] object {CtorArg}";
-                }
-
-                return IsOnlyOne
-                    ? $"{ArgType.FullNameInCode()} {CtorArg}"
-                    : $"[Lamar.Named(\"{Instance.Name}\")] {ArgType.FullNameInCode()} {CtorArg}";
-            }
-        }
+        public override string CtorArgDeclaration =>
+            IsOnlyOne
+                ? $"{ArgType.FullNameInCode()} {CtorArg}"
+                : $"[Lamar.Named(\"{Instance.Name}\")] {ArgType.FullNameInCode()} {CtorArg}";
 
         public Instance Instance { get; }
+
+        public override Expression ToVariableExpression(LambdaDefinition definition)
+        {
+            if (Instance.Lifetime == ServiceLifetime.Singleton)
+            {
+                var scope = definition.Context.As<Scope>();
+                var @object = Instance.QuickResolve(scope);
+                return Expression.Constant(@object);
+            }
+            
+            // This needs to be inlined singletons
+            throw new NotSupportedException();
+        }
     }
 }

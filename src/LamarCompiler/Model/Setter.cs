@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq.Expressions;
+using LamarCompiler.Expressions;
 
 namespace LamarCompiler.Model
 {
@@ -36,6 +38,13 @@ namespace LamarCompiler.Model
             
             var property = @object.GetType().GetProperty(Usage);
             property.SetValue(@object, InitialValue);
+        }
+
+        public override Expression ToVariableExpression(LambdaDefinition definition)
+        {
+            if (InitialValue != null) return Expression.Constant(InitialValue, VariableType);
+            
+            throw new InvalidOperationException("No initial value to create an expression");
         }
     }
 }

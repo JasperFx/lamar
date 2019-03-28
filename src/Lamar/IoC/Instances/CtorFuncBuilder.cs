@@ -11,6 +11,7 @@ using LamarCompiler.Util;
 
 namespace Lamar.IoC.Instances
 {
+    [Obsolete("Think this can go away after moving to Expressions")]
     public static class CtorFuncBuilder
     {
         private static readonly Type[] _openTypes =
@@ -75,40 +76,14 @@ namespace Lamar.IoC.Instances
             {
                 var parameter = parameters[i];
 
-                if (parameter.ParameterType.MustBeBuiltWithFunc())
-                {
-                    arguments[i] = Expression.Parameter(typeof(object));
-
-                    if (parameter.ParameterType.IsEnumerable())
-                    {
-                        var elementType = parameter.ParameterType.DetermineElementType();
-                        var coerceMethod = (parameter.ParameterType.IsArray ? _coerceToArray : _coerceToList)
-                            .MakeGenericMethod(elementType);
-
-                        ctorParams[i] = Expression.Call(coerceMethod, arguments[i]);
-                    }
-                    else
-                    {
-                        ctorParams[i] = Expression.Convert(arguments[i], parameter.ParameterType);
-                    }
-
-                    parameterTypes.Add(typeof(object));
-                }
-                else
-                {
-                    ctorParams[i] = arguments[i] = Expression.Parameter(parameter.ParameterType);
-                    parameterTypes.Add(parameter.ParameterType);
-                }
+                ctorParams[i] = arguments[i] = Expression.Parameter(parameter.ParameterType);
+                parameterTypes.Add(parameter.ParameterType);
             }
 
-            var parameterType = serviceType.MustBeBuiltWithFunc() ? typeof(object) : serviceType;
+            var parameterType = serviceType;
             parameterTypes.Add(parameterType);
 
             var funcType = openType.MakeGenericType(parameterTypes.ToArray());
-
-            if (funcType.MustBeBuiltWithFunc())
-                throw new InvalidOperationException(
-                    $"The Func of signature {funcType.NameInCode()} is not publicly accessible for type {serviceType.FullNameInCode()}");
 
 
             var callCtor = Expression.New(ctor, ctorParams);

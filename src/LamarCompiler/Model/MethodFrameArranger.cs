@@ -10,17 +10,17 @@ namespace LamarCompiler.Model
 
     internal class MethodFrameArranger : IMethodVariables
     {
-        private readonly GeneratedMethod _method;
-        private readonly GeneratedType _type;
+        private readonly IGeneratedMethod _method;
+        private readonly IGeneratedType _type;
         private readonly Dictionary<Type, Variable> _variables = new Dictionary<Type, Variable>();
         private readonly IServiceVariableSource _services;
 
-        public MethodFrameArranger(GeneratedMethod method, GeneratedType type, IServiceVariableSource services) : this(method, type)
+        public MethodFrameArranger(IGeneratedMethod method, IGeneratedType type, IServiceVariableSource services) : this(method, type)
         {
             _services = services;
         }
 
-        public MethodFrameArranger(GeneratedMethod method, GeneratedType type)
+        public MethodFrameArranger(IGeneratedMethod method, IGeneratedType type)
         {
             _method = method;
             _type = type;
@@ -125,7 +125,7 @@ namespace LamarCompiler.Model
             }
 
             // To get injected fields
-            yield return _type;
+            if (_type is IVariableSource fields) yield return fields;
 
             if (variableSource == VariableSource.All && _services != null)
             {

@@ -8,24 +8,6 @@ namespace Lamar.Scanning.Conventions
 {
     public static class TypeExtensions
     {
-        public static bool MustBeBuiltWithFunc(this Type type)
-        {
-            if (type.IsNotPublic) return true;
-
-            if (type.IsGenericType && type.GetGenericArguments().Any(x => x.MustBeBuiltWithFunc())) return true;
-
-	        bool IsNestedWithinNonPublic(Type typeToCheck)
-	        {
-				if (typeToCheck.IsNotPublic || typeToCheck.IsNested && !typeToCheck.IsNestedPublic)
-				{
-			        return true;
-		        }
-
-		        return typeToCheck.DeclaringType != null && IsNestedWithinNonPublic(typeToCheck.DeclaringType);
-	        }			
-
-            return IsNestedWithinNonPublic(type);
-        }
 
         public static bool CanBeCreated(this Type type)
         {

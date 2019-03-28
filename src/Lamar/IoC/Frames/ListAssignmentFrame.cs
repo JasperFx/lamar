@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Lamar.IoC.Enumerables;
 using Lamar.Scanning.Conventions;
 using LamarCompiler;
+using LamarCompiler.Expressions;
 using LamarCompiler.Frames;
 using LamarCompiler.Model;
 using LamarCompiler.Util;
 
 namespace Lamar.IoC.Frames
 {
-    public class ListAssignmentFrame<T> : Frame
+    public class ListAssignmentFrame<T> : Frame, IResolverFrame
     {
         public ListAssignmentFrame(ListInstance<T> instance, Variable[] elements) : base(false)
         {
             ElementType = typeof(T);
             Variable = new ServiceVariable(instance, this);
-
-            if (ElementType.MustBeBuiltWithFunc())
-            {
-                Variable.OverrideType(typeof(object[]));
-            }
 
             Elements = elements;
         }
@@ -34,9 +31,7 @@ namespace Lamar.IoC.Frames
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            var declaration = ElementType.MustBeBuiltWithFunc()
-                ? "object[]"
-                : $"{typeof(List<>).Namespace}.List<{ElementType.FullNameInCode()}>";
+            var declaration = $"{typeof(List<>).Namespace}.List<{ElementType.FullNameInCode()}>";
             
             var elements = Elements.Select(x => x.Usage).Join(", ");
             if (ReturnCreated)
@@ -53,6 +48,39 @@ namespace Lamar.IoC.Frames
         public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
         {
             return Elements;
+        }
+
+        public void WriteExpressions(LambdaDefinition definition)
+        {
+
+            var listType = typeof(List<>).MakeGenericType(typeof(T));
+            var ctor = listType.GetConstructors().Single(x => x.GetParameters().Length == 0);
+            var addMethod = listType.GetMethod("Add");
+            
+            var expr = definition.ExpressionFor(Variable);
+            
+
+            var assign = Expression.Assign(expr, Expression.New(ctor));
+            definition.Body.Add(assign);
+
+            foreach (var variable in Elements)
+            {
+                var add = Expression.Call(expr, addMethod, definition.ExpressionFor(variable));
+                definition.Body.Add(add);
+            }
+
+            if (Next == null)
+            {
+                definition.Body.Add(expr);
+            }
+            else if (Next is IResolverFrame next)
+            {
+                next.WriteExpressions(definition);
+            }
+            else
+            {
+                throw new InvalidCastException($"{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}");
+            }
         }
     }
 }

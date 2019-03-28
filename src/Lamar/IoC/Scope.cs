@@ -95,8 +95,7 @@ namespace Lamar.IoC
         internal ServiceGraph ServiceGraph { get; set;}
 
 
-        // TODO -- hide this from the public class?
-        public IList<IDisposable> Disposables { get; } = new List<IDisposable>();
+        public List<IDisposable> Disposables { get; } = new List<IDisposable>();
 
         internal readonly Dictionary<int, object> Services = new Dictionary<int, object>();
 
@@ -357,6 +356,21 @@ namespace Lamar.IoC
             {
                 Disposables.Add(disposable);
             }
+        }
+
+        public Func<string, T> FactoryByNameFor<T>()
+        {
+            return GetInstance<T>;
+        }
+        
+        public Func<T> FactoryFor<T>()
+        {
+            return GetInstance<T>;
+        }
+
+        public Lazy<T> LazyFor<T>()
+        {
+            return new Lazy<T>(GetInstance<T>);
         }
     }
 }

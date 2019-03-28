@@ -27,11 +27,7 @@ namespace Lamar.IoC.Instances
             var typeName = GetResolverTypeName();
 
 
-            var buildType = ServiceType.MustBeBuiltWithFunc() || ImplementationType.MustBeBuiltWithFunc()
-                ? typeof(object)
-                : ServiceType;
-
-            var resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(buildType));
+            var resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(ServiceType));
 
             var method = resolverType.MethodFor("Build");
 
@@ -54,6 +50,7 @@ namespace Lamar.IoC.Instances
             yield return ImplementationType.Assembly;
         }
 
+        [Obsolete("This will go away when Lamar switches to Expressions")]
         public void GenerateResolver(GeneratedAssembly generatedAssembly)
         {
             if (_resolverType != null) return; // got some kind of loop in here we need to short circuit
@@ -63,11 +60,7 @@ namespace Lamar.IoC.Instances
             var typeName = (ServiceType.FullNameInCode() + "_" + Name).Sanitize();
 
 
-            var buildType = ServiceType.MustBeBuiltWithFunc() || ImplementationType.MustBeBuiltWithFunc()
-                ? typeof(object)
-                : ServiceType;
-
-            _resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(buildType));
+            _resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(ServiceType));
 
             foreach (var relatedAssembly in relatedAssemblies())
             {
@@ -105,13 +98,78 @@ namespace Lamar.IoC.Instances
             return generateVariableForBuilding(variables, mode, isRoot);
         }
 
+        public Func<Scope, object> BuildFuncResolver(Scope scope)
+        {
+            var root = scope.Root;
+            var def = new FuncResolverDefinition(this, root);
+            var resolver = def.BuildResolver();
+
+            if (Lifetime == ServiceLifetime.Scoped)
+            {
+                var locker = new object();
+                
+                return s =>
+                {
+                    if (s.Services.TryGetValue(Hash, out object service))
+                    {
+                        return service;
+                    }
+
+                    lock (locker)
+                    {
+                        if (s.Services.TryGetValue(Hash, out service))
+                        {
+                            return service;
+                        }
+
+                        service = resolver(s);
+                        s.Services.Add(Hash, service);
+
+                        return service;
+                    }
+                    
+
+                };
+            }
+            
+            if (Lifetime == ServiceLifetime.Singleton)
+            {
+                var locker = new object();
+                
+                return s =>
+                {
+                    if (root.Services.TryGetValue(Hash, out object service))
+                    {
+                        return service;
+                    }
+
+                    lock (locker)
+                    {
+                        if (root.Services.TryGetValue(Hash, out service))
+                        {
+                            return service;
+                        }
+
+                        service = resolver(root);
+                        root.Services.Add(Hash, service);
+
+                        return service;
+                    }
+                    
+
+                };
+            }
+
+
+            return resolver;
+        }
+
         public abstract Frame CreateBuildFrame();
         protected abstract Variable generateVariableForBuilding(ResolverVariables variables, BuildMode mode, bool isRoot);
 
         private readonly object _locker = new object();
-        protected IResolver _resolver;
+        protected Func<Scope, object> _resolver;
 
-        internal IResolver Resolver => _resolver;
 
         public override Func<Scope, object> ToResolver(Scope topScope)
         {
@@ -126,24 +184,23 @@ namespace Lamar.IoC.Instances
                 }
             }
 
-            return scope => _resolver.Resolve(scope);
+            return _resolver;
         }
 
         public override object Resolve(Scope scope)
         {
-            if (_resolver == null)
+            if (_resolver != null) return _resolver(scope);
+            
+            lock (_locker)
             {
-                lock (_locker)
+                if (_resolver == null)
                 {
-                    if (_resolver == null)
-                    {
-                        buildResolver(scope);
-                    }
+                    buildResolver(scope);
                 }
             }
 
 
-            return _resolver.Resolve(scope);
+            return _resolver(scope);
         }
 
         private void buildResolver(Scope scope)
@@ -152,35 +209,15 @@ namespace Lamar.IoC.Instances
 
             if (ErrorMessages.Any() || Dependencies.Any(x => x.ErrorMessages.Any()))
             {
-                _resolver = new ErrorMessageResolver(this);
+                var errorResolver = new ErrorMessageResolver(this);
+                _resolver = errorResolver.Resolve;
+                
             }
             else
             {
-                if (scope.ServiceGraph.CachedResolverTypes.TryGetValue(GetResolverTypeName(), out var resolverType))
-                {
-                    _resolver = (IResolver) scope.Root.QuickBuild(resolverType);
-                }
-                else
-                {
-                    var assembly = scope.ServiceGraph.ToGeneratedAssembly();
-                    GenerateResolver(assembly);
-
-                    if (_resolverType == null)
-                    {
-                        _resolver = new ErrorMessageResolver(this);
-                    }
-                    else
-                    {
-                        assembly.CompileAll();
-
-                        _resolver = (IResolver) scope.Root.QuickBuild(_resolverType.CompiledType);
-                        _resolverType.ApplySetterValues(_resolver);
-                    }
-                }
+                _resolver = BuildFuncResolver(scope);
             }
 
-            _resolver.Hash = GetHashCode();
-            _resolver.Name = Name;
         }
 
         internal override string GetBuildPlan(Scope rootScope)

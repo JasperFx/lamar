@@ -9,7 +9,15 @@ using LamarCompiler.Util;
 
 namespace LamarCompiler
 {
-    public class GeneratedMethod
+    public interface IGeneratedMethod
+    {
+        FramesCollection Frames { get; }
+        Argument[] Arguments { get; }
+        IList<Variable> DerivedVariables { get; }
+        IList<IVariableSource> Sources { get; }
+    }
+
+    public class GeneratedMethod : IGeneratedMethod
     {
         public static GeneratedMethod For<TReturn>(string name, params Argument[] arguments)
         {

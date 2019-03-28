@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lamar.IoC.Exports;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 
@@ -99,8 +98,5 @@ namespace Lamar
         /// </summary>
         IEnumerable<AssemblyScanner> Scanners { get; }
 
-        void ExportResolverCode<T>(string path) where T : CachedResolverSet, new();
-
-        void ExportResolverCode(CachedResolverSet resolverSet, string path);
     }
 }

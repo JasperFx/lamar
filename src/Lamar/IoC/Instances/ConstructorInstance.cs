@@ -41,8 +41,6 @@ namespace Lamar.IoC.Instances
         public static readonly string NoPublicConstructorCanBeFilled =
             "Cannot fill the dependencies of any of the public constructors";
 
-        private CtorArg[] _arguments = new CtorArg[0];
-        private ObjectInstance _func;
 
 
         public ConstructorInstance(Type serviceType, Type implementationType, ServiceLifetime lifetime) : base(
@@ -53,7 +51,7 @@ namespace Lamar.IoC.Instances
 
         public ConstructorInfo Constructor { get; set; }
 
-
+        public CtorArg[] Arguments { get; private set; } = new CtorArg[0];
 
         public static ConstructorInstance For<T>(ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
@@ -98,7 +96,7 @@ namespace Lamar.IoC.Instances
         private readonly object _locker = new object();
         public override object QuickResolve(Scope scope)
         {
-            if (_resolver != null) return _resolver.Resolve(scope);
+            if (_resolver != null) return _resolver(scope);
 
             if (Lifetime == ServiceLifetime.Singleton)
             {
@@ -119,7 +117,7 @@ namespace Lamar.IoC.Instances
                 return cached;
             }
             
-            var values = _arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
+            var values = Arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
             var service = Activator.CreateInstance(ImplementationType, values);
 
             foreach (var setter in _setters)
@@ -190,43 +188,23 @@ namespace Lamar.IoC.Instances
             // being created here, make the dependencies all be Dependency mode
             var dependencyMode = isRoot && mode == BuildMode.Build ? BuildMode.Dependency : mode;
 
-            var ctorParameters = _arguments.Select(arg => arg.Resolve(variables, dependencyMode)).ToArray();
+            var ctorParameters = Arguments.Select(arg => arg.Resolve(variables, dependencyMode)).ToArray();
             var setterParameters = _setters.Select(arg => arg.Resolve(variables, dependencyMode)).ToArray();
 
             
-            if (_func == null)
-            {
-                return new InstanceConstructorFrame(this, disposalTracking, ctorParameters, setterParameters).Variable;
-            }
-
-            var funcArg = variables.Resolve(_func, BuildMode.Dependency);
-            return new CallFuncBuilderFrame(this, disposalTracking, funcArg, ctorParameters).Variable;
-
-
+            return new InstanceConstructorFrame(this, disposalTracking, ctorParameters, setterParameters).Variable;
         }
 
 
         public override Frame CreateBuildFrame()
         {
             var variables = new ResolverVariables();
-            var ctorParameters = _arguments.Select(arg => arg.Resolve(variables, BuildMode.Dependency)).ToArray();
+            var ctorParameters = Arguments.Select(arg => arg.Resolve(variables, BuildMode.Dependency)).ToArray();
 
             var setterParameters = _setters.Select(arg => arg.Resolve(variables, BuildMode.Dependency)).ToArray();
             
             variables.MakeNamesUnique();
 
-            if (_func != null)
-            {
-                var funcArg = variables.Resolve(_func, BuildMode.Dependency);
-
-                return new CallFuncBuilderFrame(this, DisposeTracking.None, funcArg, ctorParameters)
-                {
-                    ReturnCreated = true
-                };
-            }
-            
-            
-            
             return new InstanceConstructorFrame(this, DisposeTracking.None, ctorParameters, setterParameters)
             {
                 Mode = ConstructorCallMode.ReturnValue
@@ -270,19 +248,11 @@ namespace Lamar.IoC.Instances
             {
                 buildOutConstructorArguments(services);
 
-                if (ImplementationType.MustBeBuiltWithFunc())
-                {
-                    var (func, funcType) = CtorFuncBuilder.LambdaTypeFor(ServiceType, ImplementationType, Constructor);
-                    _func = new ObjectInstance(funcType, func);
-
-                    services.Inject(_func);
-                }
-
                 findSetters(services);
             }
 
 
-            return _arguments.Select(x => x.Instance).Concat(_setters.Select(x => x.Instance));
+            return Arguments.Select(x => x.Instance).Concat(_setters.Select(x => x.Instance));
         }
         
         private readonly List<InjectedSetter> _setters = new List<InjectedSetter>();
@@ -316,12 +286,12 @@ namespace Lamar.IoC.Instances
 
         private void buildOutConstructorArguments(ServiceGraph services)
         {
-            _arguments = Constructor.GetParameters()
+            Arguments = Constructor.GetParameters()
                 .Select(x => determineArgument(services, x))
                 .Where(x => x.Instance != null).ToArray();
 
 
-            foreach (var argument in _arguments)
+            foreach (var argument in Arguments)
             {
                 argument.Instance.CreatePlan(services);
             }
