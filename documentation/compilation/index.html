@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - LamarCompiler</title>
+        <title>Lamar - LamarCodeGeneration & LamarCompiler</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li class="active">LamarCompiler</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li class="active">LamarCodeGeneration &amp; LamarCompiler</li></ol>
       </nav>
     </div>
 
@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 2.0.0</h3>
+            <h3>Lamar 3.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -74,17 +74,17 @@
 
           <!--right-->
           <div class="col-md-9">
-              <h1>LamarCompiler</h1>
+              <h1>LamarCodeGeneration & LamarCompiler</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--title:LamarCompiler-->
-<p>Underneath Lamar the IoC container is a standalone library named <code>LamarCompiler</code> that can be used by itself as a code generation and in memory compilation of C# via Roslyn. The <a href="https://jasperfx.github.io">Jasper application framework</a>
+                <!--title:LamarCodeGeneration & LamarCompiler-->
+<p>Underneath Lamar the IoC container is a standalone library named <code>LamarCodeGeneration</code> that can be used by itself as a code generation and Lambda compilation tool. As of Lamar v3.0, there's also a separate library called <code>LamarCompiler</code> that is a tiny helper to do in memory compilation of C# via Roslyn. The <a href="https://jasperfx.github.io">Jasper application framework</a>
 heavily uses this capability as its <a href="https://jeremydmiller.com/2018/01/16/introducing-bluemilk-structuremaps-replacement-jaspers-special-sauce/">&quot;Special Sauce&quot;</a> (Lamar was originally built
 under the project name &quot;BlueMilk&quot;). See also <a href="https://jeremydmiller.com/2018/05/16/roslyn-powered-code-weaving-middleware/">Roslyn Powered Code Weaving Middleware</a> for more information about how Jasper
 uses Lamar for its efficient middleware strategy.</p>
-<ul class="table-of-contents"><li><a href="/lamar/documentation/compilation/assemblygenerator">Compiling Code with AssemblyGenerator</a></li><li><a href="/lamar/documentation/compilation/sourcewriter">Generating Code with ISourceWriter</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a><ul><li><a href="/lamar/documentation/compilation/frames/variables">Working with Variables</a></li><li><a href="/lamar/documentation/compilation/frames/frame">Building Custom Frames</a></li><li><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a></li><li><a href="/lamar/documentation/compilation/frames/injected-fields">Injected Fields</a></li></ul></li></ul>
+<ul class="table-of-contents"><li><a href="/lamar/documentation/compilation/assemblygenerator">Compiling Code with AssemblyGenerator</a></li><li><a href="/lamar/documentation/compilation/sourcewriter">Generating Code with ISourceWriter</a></li><li><a href="/lamar/documentation/compilation/frames">The &quot;Frame&quot; Model</a><ul><li><a href="/lamar/documentation/compilation/frames/variables">Working with Variables</a></li><li><a href="/lamar/documentation/compilation/frames/frame">Building Custom Frames</a></li><li><a href="/lamar/documentation/compilation/frames/extension-methods">Extension Methods for Names in Code</a></li><li><a href="/lamar/documentation/compilation/frames/injected-fields">Injected Fields</a></li></ul></li></ul>
 
               </div>
 
@@ -110,8 +110,8 @@ uses Lamar for its efficient middleware strategy.</p>
 
 
     <footer>
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lamar/content/prism.js"></script>
         <script type="text/javascript" src="/lamar/content/sidebar.js"></script>

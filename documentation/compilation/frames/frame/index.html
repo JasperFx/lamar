@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCompiler</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a></li><li class="active">Building Custom Frames</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCodeGeneration &amp; LamarCompiler</a></li><li><a href="/lamar/documentation/compilation/frames">The &quot;Frame&quot; Model</a></li><li class="active">Building Custom Frames</li></ol>
       </nav>
     </div>
 
@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 2.0.0</h3>
+            <h3>Lamar 3.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -81,7 +81,7 @@
               <div id="main-pane">
                 <!--title:Building Custom Frames-->
 <div class="alert-info alert"><p><strong>Note!</strong>
-If you're going to get into Lamar's code generation model, you probably want to be familiar and comfortable with both string interpolation
+If you're going to get into LamarCodeGeneration's model, you probably want to be familiar and comfortable with both string interpolation
 in C# and the recent <code>nameof</code> operator.</p>
 </div>
 <p>To build a custom frame, you first need to create a new class that subclasses <code>Frame</code>, with these other more specific subclasses to start from as well:</p>
@@ -112,7 +112,7 @@ either passing a frame into a variable as its creator like this line from the <c
 <p>The other main thing you need to know is how to locate <code>Variable</code> objects your <code>Frame</code> needs to use. You accomplish that by
 overriding the <code>FindVariables()</code> method. Take this example below that is used within Lamar to generate code that resolves a service
 by calling a <a href="https://en.wikipedia.org/wiki/Service_locator_pattern">service locator</a> method on a Lamar <code>Scope</code> (a nested container most likely) object:</p>
-<pre><code class="language-csharp">&#xA;public class GetInstanceFrame : SyncFrame&#xA;{&#xA;    private Variable _scope;&#xA;    private readonly string _name;&#xA;&#xA;    public GetInstanceFrame(Instance instance)&#xA;    {&#xA;        Variable = new ServiceVariable(instance, this, ServiceDeclaration.ServiceType);&#xA;        &#xA;        _name = instance.Name;&#xA;    }&#xA;&#xA;    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)&#xA;    {&#xA;        writer.Write($&quot;var {Variable.Usage} = {_scope.Usage}.{nameof(Scope.GetInstance)}&lt;{Variable.VariableType.FullNameInCode()}&gt;(\&quot;{_name}\&quot;);&quot;);&#xA;        Next?.GenerateCode(method, writer);&#xA;    }&#xA;&#xA;    public override IEnumerable&lt;Variable&gt; FindVariables(IMethodVariables chain)&#xA;    {&#xA;        _scope = chain.FindVariable(typeof(Scope));&#xA;        yield return _scope;&#xA;    }&#xA;    &#xA;    public ServiceVariable Variable { get; }&#xA;}&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public class GetInstanceFrame : SyncFrame, IResolverFrame&#xA;{&#xA;    private static readonly MethodInfo _resolveMethod =&#xA;        ReflectionHelper.GetMethod&lt;Instance&gt;(x =&gt; x.Resolve(null));&#xA;    &#xA;    &#xA;    &#xA;    private Variable _scope;&#xA;    private readonly string _name;&#xA;&#xA;    public GetInstanceFrame(Instance instance)&#xA;    {&#xA;        Variable = new ServiceVariable(instance, this, ServiceDeclaration.ServiceType);&#xA;        &#xA;        _name = instance.Name;&#xA;    }&#xA;&#xA;    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)&#xA;    {&#xA;        writer.Write($&quot;var {Variable.Usage} = {_scope.Usage}.{nameof(Scope.GetInstance)}&lt;{Variable.VariableType.FullNameInCode()}&gt;(\&quot;{_name}\&quot;);&quot;);&#xA;        Next?.GenerateCode(method, writer);&#xA;    }&#xA;&#xA;    public override IEnumerable&lt;Variable&gt; FindVariables(IMethodVariables chain)&#xA;    {&#xA;        _scope = chain.FindVariable(typeof(Scope));&#xA;        yield return _scope;&#xA;    }&#xA;    &#xA;    public ServiceVariable Variable { get; }&#xA;    &#xA;    public void WriteExpressions(LambdaDefinition definition)&#xA;    {&#xA;        var scope = definition.Scope();&#xA;        var expr = definition.ExpressionFor(Variable);&#xA;&#xA;        var instance = Variable.Instance;&#xA;&#xA;        var @call = Expression.Call(Expression.Constant(instance), _resolveMethod, scope);&#xA;        var assign = Expression.Assign(expr, Expression.Convert(@call, Variable.VariableType));&#xA;        definition.Body.Add(assign);&#xA;&#xA;        if (Next is IResolverFrame next)&#xA;        {&#xA;            next.WriteExpressions(definition);&#xA;        }&#xA;        else&#xA;        {&#xA;            throw new InvalidCastException($&quot;{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}&quot;);&#xA;        }&#xA;    }&#xA;}&#xA;</code></pre>
 <p>When you write a <code>FindVariables()</code> method, be sure to keep a reference to any variable you need for later, and return that variable as part of the enumeration from this method. Lamar uses the dependency relationship between frames, the variables they depend on, and the creators of those variables to
 correctly order and fill in any missing frames prior to generating code through the <code>GenerateCode()</code> method.</p>
 
@@ -140,8 +140,8 @@ correctly order and fill in any missing frames prior to generating code through 
 
 
     <footer>
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lamar/content/prism.js"></script>
         <script type="text/javascript" src="/lamar/content/sidebar.js"></script>

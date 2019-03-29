@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 2.0.0</h3>
+            <h3>Lamar 3.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -85,7 +85,7 @@ As such, it supports much of the syntax of StructureMap's <code>IContainer</code
 <p>Because most new server side development in .Net today is targeting ASP.Net Core, Lamar was purposely designed and built to maximize compliance
 with the underlying <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.0">IoC behavior assumed by ASP.Net Core</a>. To reduce friction in Lamar usage, Lamar <strong>directly implements</strong> the core ASP.Net Core abstractions for dependency injection as shown in the samples below:</p>
 <p>Lamar's <code>Container</code> class subclasses another class in Lamar called <code>Scope</code> that you probably won't interact with much directly:</p>
-<pre><code class="language-csharp">&#xA;public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope, ISupportRequiredService&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope,&#xA;        ISupportRequiredService&#xA;</code></pre>
 <p><code>Scope</code> itself directly implements several other ASP.Net Core related interfaces:</p>
 <pre><code class="language-csharp">&#xA;public class Scope : IServiceContext&#xA;</code></pre>
 <p><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope?view=aspnetcore-2.1">IServiceScope</a>, <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.isupportrequiredservice?view=aspnetcore-2.1">ISupportRequiredService</a>, <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory?view=aspnetcore-2.1">IServiceScopeFactory</a> are all ASP.Net Core DI abstractions.</p>
@@ -116,8 +116,8 @@ with the underlying <a href="https://docs.microsoft.com/en-us/aspnet/core/fundam
 
 
     <footer>
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lamar/content/prism.js"></script>
         <script type="text/javascript" src="/lamar/content/sidebar.js"></script>

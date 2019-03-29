@@ -37,7 +37,7 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/compilation/frames" title="Lamar's "Frame" Model">Previous</a></li>
+            <li><a href="/lamar/documentation/compilation/frames" title="The "Frame" Model">Previous</a></li>
             <li><a href="/lamar/documentation/compilation/frames/frame" title="Building Custom Frames">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCompiler</a></li><li><a href="/lamar/documentation/compilation/frames">Lamar&#x27;s &quot;Frame&quot; Model</a></li><li class="active">Working with Variables</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCodeGeneration &amp; LamarCompiler</a></li><li><a href="/lamar/documentation/compilation/frames">The &quot;Frame&quot; Model</a></li><li class="active">Working with Variables</li></ol>
       </nav>
     </div>
 
@@ -62,14 +62,14 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 2.0.0</h3>
+            <h3>Lamar 3.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
             <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames/frame">Building Custom Frames</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/frames">Lamar's "Frame" Model</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/frames">The "Frame" Model</a></p>
           </div><!--/left-->
 
           <!--right-->
@@ -80,7 +80,7 @@
 
               <div id="main-pane">
                 <!--title:Working with Variables-->
-<p>The <code>Variable</code> class in Lamar models the CLR type and usage of a value within a generated method.</p>
+<p>The <code>Variable</code> class in LamarCodeGeneration models the CLR type and usage of a value within a generated method.</p>
 <p>Here are some samples of creating variable objects with a variable type and name:</p>
 <pre><code class="language-csharp">&#xA;// Create a connection for the type SqlConnection &#xA;// with the name &quot;conn&quot;&#xA;var conn = Variable.For&lt;SqlConnection&gt;(&quot;conn&quot;);&#xA;&#xA;// Pretty well the same thing above&#xA;var conn2 = new Variable(typeof(SqlConnection), &quot;conn2&quot;);&#xA;&#xA;// Create a variable with the default name&#xA;// for the type&#xA;var conn3 = Variable.For&lt;SqlConnection&gt;();&#xA;conn3.Usage.ShouldBe(&quot;sqlConnection&quot;);&#xA;</code></pre>
 <h2 id="default-naming">Default Naming</h2>
@@ -109,7 +109,7 @@ an example of doing that with the <code>HttpResponse</code> type from ASP.Net Co
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/compilation/frames">Lamar's "Frame" Model</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/compilation/frames">The "Frame" Model</a>
 
                 </span>
                 <span class="pull-right">
@@ -127,8 +127,8 @@ an example of doing that with the <code>HttpResponse</code> type from ASP.Net Co
 
 
     <footer>
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lamar/content/prism.js"></script>
         <script type="text/javascript" src="/lamar/content/sidebar.js"></script>

@@ -37,7 +37,7 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/compilation" title="LamarCompiler">Previous</a></li>
+            <li><a href="/lamar/documentation/compilation" title="LamarCodeGeneration & LamarCompiler">Previous</a></li>
             <li><a href="/lamar/documentation/compilation/sourcewriter" title="Generating Code with ISourceWriter">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCompiler</a></li><li class="active">Compiling Code with AssemblyGenerator</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCodeGeneration &amp; LamarCompiler</a></li><li class="active">Compiling Code with AssemblyGenerator</li></ol>
       </nav>
     </div>
 
@@ -62,14 +62,14 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 2.0.0</h3>
+            <h3>Lamar 3.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
             <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/sourcewriter">Generating Code with ISourceWriter</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation">LamarCompiler</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation">LamarCodeGeneration & LamarCompiler</a></p>
           </div><!--/left-->
 
           <!--right-->
@@ -86,7 +86,7 @@ might very well wish to bypass that admittedly complicated model and just use th
 that are shown in this page.</p>
 </div>
 <p>If all you want to do is take some C# code and compile that in memory to a new, in memory assembly, you can use
-the <code>Lamar.Compilation.AssemblyGenerator</code> class.</p>
+the <code>LamarCompiler.AssemblyGenerator</code> class in the LamarCompiler library.</p>
 <p>Let's say that you have a simple interface in your system like this:</p>
 <pre><code class="language-csharp">&#xA;public interface IOperation&#xA;{&#xA;    int Calculate(int one, int two);&#xA;}&#xA;</code></pre>
 <p>Next, let's use <code>AssemblyGenerator</code> to compile code with a custom implementation of <code>IOperation</code> that we've generated
@@ -110,7 +110,7 @@ all its code generation utilities:</p>
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/compilation">LamarCompiler</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/compilation">LamarCodeGeneration & LamarCompiler</a>
 
                 </span>
                 <span class="pull-right">
@@ -128,8 +128,8 @@ all its code generation utilities:</p>
 
 
     <footer>
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lamar/content/prism.js"></script>
         <script type="text/javascript" src="/lamar/content/sidebar.js"></script>

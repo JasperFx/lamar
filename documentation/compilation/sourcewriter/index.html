@@ -38,7 +38,7 @@
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
             <li><a href="/lamar/documentation/compilation/assemblygenerator" title="Compiling Code with AssemblyGenerator">Previous</a></li>
-            <li><a href="/lamar/documentation/compilation/frames" title="Lamar's "Frame" Model">Next</a></li>
+            <li><a href="/lamar/documentation/compilation/frames" title="The "Frame" Model">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCompiler</a></li><li class="active">Generating Code with ISourceWriter</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/compilation">LamarCodeGeneration &amp; LamarCompiler</a></li><li class="active">Generating Code with ISourceWriter</li></ol>
       </nav>
     </div>
 
@@ -62,13 +62,13 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 2.0.0</h3>
+            <h3>Lamar 3.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames">Lamar's "Frame" Model</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/compilation/frames">The "Frame" Model</a></p>
             <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/compilation/assemblygenerator">Compiling Code with AssemblyGenerator</a></p>
           </div><!--/left-->
 
@@ -80,10 +80,13 @@
 
               <div id="main-pane">
                 <!--title:Generating Code with ISourceWriter-->
+<div class="alert-info alert"><p><strong>Note!</strong>
+As of Lamar v3.0, all of the code compilation is contained in the LamarCodeGeneration Nuget, and can be used independently of Lamar itself.</p>
+</div>
 <p>This code was originally written and proven out in the related <a href="https://jasperfx.github.io/marten">Marten</a> and described in a
 post titled <a href="https://jeremydmiller.com/2015/11/11/using-roslyn-for-runtime-code-generation-in-marten/">Using Roslyn for Runtime Code Generation in Marten</a>.
 This code was ripped out of Marten itself, but it's happily running now in Lamar a couple years later.</p>
-<p>Lamar provides the <code>Lamar.Compilation.ISourceWriter</code> service -- and a lot of related extension methods -- to help write common code constructs and
+<p>Lamar provides the <code>LamarCodeGeneration.ISourceWriter</code> service -- and a lot of related extension methods -- to help write common code constructs and
 maintain legible code indention just like you'd use if you were writing the code in an editor or IDE.</p>
 <h2 id="the-basics">The Basics</h2>
 <p>To dip our toes into source generation, let's write a simple method to a string that would just write out &quot;Hello&quot; to the console:</p>
@@ -122,7 +125,7 @@ All the usages in this section are from extension methods in the <code>Lamar.Com
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames">Lamar's "Frame" Model</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/compilation/frames">The "Frame" Model</a>
 
                 </span>
               </nav>
@@ -135,8 +138,8 @@ All the usages in this section are from extension methods in the <code>Lamar.Com
 
 
     <footer>
-        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lamar/content/prism.js"></script>
         <script type="text/javascript" src="/lamar/content/sidebar.js"></script>
