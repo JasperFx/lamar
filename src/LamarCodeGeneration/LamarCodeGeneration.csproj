@@ -37,5 +37,9 @@
         <HintPath>..\..\..\..\..\..\Library\Frameworks\Mono.framework\Versions\5.12.0\lib\mono\xbuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ValueTuple.dll</HintPath>
       </Reference>
     </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    </ItemGroup>
 
 </Project>
