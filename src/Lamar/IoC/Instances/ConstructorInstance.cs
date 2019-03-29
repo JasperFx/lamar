@@ -294,17 +294,28 @@ namespace Lamar.IoC.Instances
         }
 
 
-        private CtorArg determineArgument(ServiceGraph services, ParameterInfo x)
+        private CtorArg determineArgument(ServiceGraph services, ParameterInfo parameter)
         {
-            var dependencyType = x.ParameterType;
-            var instance = findInlineDependency(x.Name, dependencyType) ?? services.FindDefault(dependencyType);
+            var dependencyType = parameter.ParameterType;
+            var instance = findInstanceForConstructorParameter(services, parameter, dependencyType);
 
-            if (instance == null && x.IsOptional && x.DefaultValue == null)
+            return new CtorArg(parameter, instance);
+        }
+
+        private Instance findInstanceForConstructorParameter(ServiceGraph services, ParameterInfo parameter, Type dependencyType)
+        {
+            var instance = findInlineDependency(parameter.Name, dependencyType);
+            if (instance != null) return instance;
+
+            if (parameter.IsOptional)
             {
-                instance = new NullInstance(dependencyType);
+                return parameter.DefaultValue == null
+                    ? (Instance) new NullInstance(dependencyType)
+                    : new ObjectInstance(parameter.ParameterType, parameter.DefaultValue);
             }
-            
-            return new CtorArg(x, instance);
+      
+            return services.FindDefault(dependencyType);
+
         }
 
         private Instance findInlineDependency(string name, Type dependencyType)
