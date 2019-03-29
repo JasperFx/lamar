@@ -21,23 +21,11 @@
     <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
         <DefineConstants>$(DefineConstants);NET461</DefineConstants>
     </PropertyGroup>
-    
-    <ItemGroup>
-      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3.osx\1.1.2\runtimes\osx-x64\native\libe_sqlite3.dylib">
-        <Link>libe_sqlite3.dylib</Link>
-      </Content>
-    </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
         <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
     </ItemGroup>
-    
-    <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
-      <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-        <HintPath>..\..\..\..\..\..\Library\Frameworks\Mono.framework\Versions\5.12.0\lib\mono\xbuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ValueTuple.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-    
+
     <ItemGroup>
       <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
