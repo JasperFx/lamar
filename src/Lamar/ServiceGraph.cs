@@ -411,13 +411,26 @@ namespace Lamar
             return new Scope(registry).ServiceGraph;
         }
 
+        private readonly IList<Type> _lookingFor = new List<Type>();
+        
         public ServiceFamily TryToCreateMissingFamily(Type serviceType)
         {
+            if (_lookingFor.Contains(serviceType))
+            {
+                throw new InvalidOperationException($"Detected some kind of bi-directional dependency while trying to discover and plan a missing service registration. Examining types: {_lookingFor.Select(x => x.FullNameInCode()).Join(", ")}");
+            }
+            
+            _lookingFor.Add(serviceType);
+            
             // TODO -- will need to make this more formal somehow
             if (serviceType.IsSimple() || serviceType.IsDateTime() || serviceType == typeof(TimeSpan) || serviceType.IsValueType || serviceType == typeof(DateTimeOffset)) return new ServiceFamily(serviceType, DecoratorPolicies);
 
 
-            return FamilyPolicies.FirstValue(x => x.Build(serviceType, this));
+            var found = FamilyPolicies.FirstValue(x => x.Build(serviceType, this));
+
+            _lookingFor.Remove(serviceType);
+
+            return found;
         }
 
         internal void ClearPlanning()
