@@ -1,10 +1,14 @@
 <!--title:Generating Code with ISourceWriter-->
 
+<[info]>
+As of Lamar v3.0, all of the code compilation is contained in the LamarCodeGeneration Nuget, and can be used independently of Lamar itself.
+<[/info]>
+
 This code was originally written and proven out in the related [Marten](https://jasperfx.github.io/marten) and described in a 
 post titled [Using Roslyn for Runtime Code Generation in Marten](https://jeremydmiller.com/2015/11/11/using-roslyn-for-runtime-code-generation-in-marten/).
 This code was ripped out of Marten itself, but it's happily running now in Lamar a couple years later.
 
-Lamar provides the `Lamar.Compilation.ISourceWriter` service -- and a lot of related extension methods -- to help write common code constructs and 
+Lamar provides the `LamarCodeGeneration.ISourceWriter` service -- and a lot of related extension methods -- to help write common code constructs and 
 maintain legible code indention just like you'd use if you were writing the code in an editor or IDE. 
 
 ## The Basics

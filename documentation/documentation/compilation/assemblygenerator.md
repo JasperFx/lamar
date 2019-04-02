@@ -7,7 +7,7 @@ that are shown in this page.
 <[/info]>
 
 If all you want to do is take some C# code and compile that in memory to a new, in memory assembly, you can use
-the `Lamar.Compilation.AssemblyGenerator` class.
+the `LamarCompiler.AssemblyGenerator` class in the LamarCompiler library.
 
 Let's say that you have a simple interface in your system like this:
 

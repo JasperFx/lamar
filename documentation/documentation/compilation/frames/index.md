@@ -1,4 +1,4 @@
-<!--title:Lamar's "Frame" Model-->
+<!--title:The "Frame" Model-->
 
 
 The purpose of the "frames" model is to be able to generate dynamic methods by declaring a list of logical operations in generated code via Frame objects, then let Lamar handle:

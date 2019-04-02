@@ -1,6 +1,6 @@
 <!--title:Working with Variables-->
 
-The `Variable` class in Lamar models the CLR type and usage of a value within a generated method. 
+The `Variable` class in LamarCodeGeneration models the CLR type and usage of a value within a generated method. 
 
 Here are some samples of creating variable objects with a variable type and name:
 

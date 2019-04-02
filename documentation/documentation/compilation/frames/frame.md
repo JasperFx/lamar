@@ -1,7 +1,7 @@
 <!--title:Building Custom Frames-->
 
 <[info]>
-If you're going to get into Lamar's code generation model, you probably want to be familiar and comfortable with both string interpolation
+If you're going to get into LamarCodeGeneration's model, you probably want to be familiar and comfortable with both string interpolation
 in C# and the recent `nameof` operator.
 <[/info]>
 
