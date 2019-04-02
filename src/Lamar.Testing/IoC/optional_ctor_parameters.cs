@@ -53,7 +53,19 @@ namespace Lamar.Testing.IoC
             container.GetInstance<ClockUsingGuy>()
                 .Clock.ShouldBeOfType<AClock>();
         }
-        
+
+        [Fact]
+        public void override_default_with_registered_service()
+        {
+            var container = Container.For(x =>
+            {
+                x.For<IClock>().Use<AClock>();
+            });
+
+            container.GetInstance<ClockUsingGuy>()
+                .Clock.ShouldBeOfType<AClock>();
+        }
+
         public class Clock : IClock
         {
             public int Hours { get; }
