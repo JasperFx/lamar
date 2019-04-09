@@ -123,7 +123,15 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
 
         }
-        
+
+        [Fact]
+        public void retrieve_as_collection()
+        {
+            container.GetInstance<ICollection<IWidget>>()
+                     .Select(x => x.GetType())
+                     .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
+        }
+
         [Fact]
         public void retrieve_as_array()
         {
@@ -187,6 +195,7 @@ namespace StructureMap.Testing.Acceptance
         [InlineData(typeof(WidgetListHolder))]
         [InlineData(typeof(WidgetIListHolder))]
         [InlineData(typeof(WidgetIEnumerableHolder))]
+        [InlineData(typeof(WidgetICollectionHolder))]
         public void can_use_as_a_dependency(Type concreteType)
         {
             container.GetInstance(concreteType).As<IWidgetHolder>()
@@ -241,5 +250,14 @@ namespace StructureMap.Testing.Acceptance
             Widgets = widgets.ToArray();
         }
     }
-    
+
+    public class WidgetICollectionHolder : IWidgetHolder
+    {
+        public IWidget[] Widgets { get; }
+
+        public WidgetICollectionHolder(ICollection<IWidget> widgets)
+        {
+            Widgets = widgets.ToArray();
+        }
+    }
 }
