@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Testing", "src\Lamar.Testing\Lamar.Testing.csproj", "{865C14C3-4B54-46EC-B394-9BAD73905086}"
 EndProject
@@ -41,15 +41,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApp", "src\UserApp\User
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bug-124-Widgets", "Bug-124-Widgets", "{317DED50-F632-48EB-8E02-E1B6739B35E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Aspect.Logger", "src\Aspect.Logger\Widget.Aspect.Logger.csproj", "{A367AE1C-B39D-438B-BADD-3B7E368DDF97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Aspect.Logger", "src\Aspect.Logger\Widget.Aspect.Logger.csproj", "{A367AE1C-B39D-438B-BADD-3B7E368DDF97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Instance", "Widget.Instance\Widget.Instance.csproj", "{6F721733-9012-4434-A830-2F5E9A6A926B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Instance", "Widget.Instance\Widget.Instance.csproj", "{6F721733-9012-4434-A830-2F5E9A6A926B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Core", "Widget.Core\Widget.Core.csproj", "{178C596D-65D9-42F9-927C-DF63F348DCA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Core", "Widget.Core\Widget.Core.csproj", "{178C596D-65D9-42F9-927C-DF63F348DCA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Registration", "Widget.Registration\Widget.Registration.csproj", "{39F01E1B-0549-422A-A60F-747C1CDF0C08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Registration", "Widget.Registration\Widget.Registration.csproj", "{39F01E1B-0549-422A-A60F-747C1CDF0C08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarCodeGeneration", "src\LamarCodeGeneration\LamarCodeGeneration.csproj", "{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarCodeGeneration", "src\LamarCodeGeneration\LamarCodeGeneration.csproj", "{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AutoFactory", "src\Lamar.AutoFactory\Lamar.AutoFactory.csproj", "{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AutoFactory.Testing", "src\Lamar.AutoFactory.Testing\Lamar.AutoFactory.Testing.csproj", "{EFB244CD-F185-4052-A4B5-4A869682D616}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +149,14 @@ Global
 		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
