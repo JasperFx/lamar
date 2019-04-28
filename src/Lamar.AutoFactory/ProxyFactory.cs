@@ -1,5 +1,6 @@
-using System;
 using Castle.DynamicProxy;
+using Lamar;
+using Lamar.AutoFactory;
 
 namespace Lamar.AutoFactory
 {

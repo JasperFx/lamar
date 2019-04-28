@@ -1,5 +1,7 @@
-using System;
 using Castle.DynamicProxy;
+using System;
+using Lamar.IoC.Instances;
+using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.AutoFactory
@@ -61,6 +63,12 @@ namespace Lamar.AutoFactory
 
                 return proxyFactory.Create();
             };
+        }
+
+        public static bool HasExplicitName(this Instance instance)
+        {
+            // NOTE: I suspect this is a bit too naive
+            return !instance.Name.Equals("default") && !instance.Name.Equals(Variable.DefaultArgName(instance.ImplementationType));
         }
     }
 }

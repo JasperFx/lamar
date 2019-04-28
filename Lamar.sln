@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarCodeGeneration", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AutoFactory", "src\Lamar.AutoFactory\Lamar.AutoFactory.csproj", "{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AutoFactory.Testing", "src\Lamar.AutoFactory.Testing\Lamar.AutoFactory.Testing.csproj", "{EFB244CD-F185-4052-A4B5-4A869682D616}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,10 @@ Global
 		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2250C640-88AF-4DA5-A1D1-7BC3717E1D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFB244CD-F185-4052-A4B5-4A869682D616}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

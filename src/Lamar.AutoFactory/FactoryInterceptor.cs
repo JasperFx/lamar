@@ -1,5 +1,6 @@
-using System;
+using System.Linq;
 using Castle.DynamicProxy;
+using Lamar;
 
 namespace Lamar.AutoFactory
 {
@@ -31,13 +32,13 @@ namespace Lamar.AutoFactory
                         : _container.TryGetInstance(methodDefinition.InstanceType);
                     break;
 
-                // TODO: When named instances are supported?
-                //case AutoFactoryMethodType.GetNames:
-                //    invocation.ReturnValue = _container.Model.AllInstances
-                //        .Where(x => x.PluginType == methodDefinition.InstanceType)
-                //        .Select(x => x.Instance.HasExplicitName() ? x.Name : string.Empty)
-                //        .ToList();
-                //    break;
+                
+                case AutoFactoryMethodType.GetNames:
+                    invocation.ReturnValue = _container.Model.AllInstances
+                        .Where(x => x.ServiceType == methodDefinition.InstanceType)
+                        .Select(x => x.Instance.HasExplicitName() ? x.Name : string.Empty)
+                        .ToList();
+                    break;
             }
         }
     }
