@@ -96,9 +96,9 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, Widget>();
 
 
-            theCode.ShouldContain("var widget = new Lamar.Testing.IoC.Acceptance.Widget();");
+            theCode.ShouldContain("var inline_widget = new Lamar.Testing.IoC.Acceptance.Widget();");
             theCode.ShouldContain("var messageTracker = new Lamar.Testing.IoC.Acceptance.MessageTracker();");
-            theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(messageTracker, widget);");
+            theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(messageTracker, inline_widget);");
         }
 
         [Fact]
@@ -160,10 +160,10 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddTransient<IWidget, Widget>();
             theServices.AddSingleton(new MessageTracker());
 
-            theCode.ShouldContain("var widget1 = new Lamar.Testing.IoC.Acceptance.Widget();");
-            theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(_messageTracker, widget2);");
-            theCode.ShouldContain("var widget2 = new Lamar.Testing.IoC.Acceptance.Widget();");
-            theCode.ShouldContain("var widgetUser = new Lamar.Testing.IoC.Acceptance.WidgetUser(widget1);");
+            theCode.ShouldContain("var inline_widget1 = new Lamar.Testing.IoC.Acceptance.Widget();");
+            theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(_messageTracker, inline_widget2);");
+            theCode.ShouldContain("var inline_widget2 = new Lamar.Testing.IoC.Acceptance.Widget();");
+            theCode.ShouldContain("var widgetUser = new Lamar.Testing.IoC.Acceptance.WidgetUser(inline_widget1);");
         }
         
         
@@ -177,9 +177,9 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, Widget>();
             theServices.AddSingleton(new MessageTracker());
 
-            theCode.ShouldContain("var widget = new Lamar.Testing.IoC.Acceptance.Widget();");
-            theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(_messageTracker, widget);");
-            theCode.ShouldContain("var widgetUser = new Lamar.Testing.IoC.Acceptance.WidgetUser(widget);");
+            theCode.ShouldContain("var inline_widget = new Lamar.Testing.IoC.Acceptance.Widget();");
+            theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(_messageTracker, inline_widget);");
+            theCode.ShouldContain("var widgetUser = new Lamar.Testing.IoC.Acceptance.WidgetUser(inline_widget);");
         }
 
         [Fact]

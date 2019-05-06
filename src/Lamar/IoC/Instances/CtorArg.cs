@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Lamar.IoC.Frames;
 using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {
@@ -22,7 +23,14 @@ namespace Lamar.IoC.Instances
 
         public Variable Resolve(ResolverVariables variables, BuildMode mode)
         {
-            return variables.Resolve(Instance, mode);
+            var variable = variables.Resolve(Instance, mode);
+            
+            if (Parameter.Name.EqualsIgnoreCase(variable.Usage))
+            {
+                variable.OverrideName("inline_" + variable.Usage);
+            }
+
+            return variable;
         }
     }
 }

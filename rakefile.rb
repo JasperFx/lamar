@@ -33,6 +33,7 @@ task :test => [:compile] do
 	sh "dotnet test src/LamarCompiler.Testing/LamarCompiler.Testing.csproj"
 	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj"
 	sh "dotnet test src/Lamar.AspNetCoreTests/Lamar.AspNetCoreTests.csproj"
+	sh "dotnet test src/Lamar.Microsoft.Exentions.Hosting.Tests/Lamar.Microsoft.Exentions.Hosting.Tests.csproj"
 end
 
 desc "Pack up the nupkg file"
