@@ -52,8 +52,14 @@ namespace Lamar.IoC.Instances
 
             var invokeMethod = _setter.InitialValue.GetType().GetMethod("Invoke");
             var invoke = Expression.Call(Expression.Constant(_setter.InitialValue), invokeMethod, scope);
+
+            Expression cast = invoke;
+            if (invoke.Type != variableExpr.Type)
+            {
+                cast = Expression.Convert(invoke, variableExpr.Type);
+            }
             
-            definition.Body.Add(Expression.Assign(variableExpr, invoke));
+            definition.Body.Add(Expression.Assign(variableExpr, cast));
             
             if (    !Variable.VariableType.IsValueType)
             {

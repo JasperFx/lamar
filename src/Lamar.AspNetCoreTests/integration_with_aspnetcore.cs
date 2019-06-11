@@ -232,6 +232,48 @@ namespace Lamar.Testing.AspNetCoreIntegration
             }
         }
 
+        public class Bug159
+        {
+            Bug159(IMessageMaker msg)
+            {
+            }
+
+            public class Startup
+            {
+                public void ConfigureContainer(ServiceRegistry services)
+                {
+                    services.Add(new ServiceDescriptor(
+                        typeof(IMessageMaker),
+                        sp => new MessageMaker("Bug159"),
+                        ServiceLifetime.Transient)
+                    );
+                }
+
+                public void Configure(IApplicationBuilder app)
+                {
+                }
+            }
+        }
+
+        [Fact]
+        public void bug_159_register_service_using_ServiceDescriptor_instance()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Bug159.Startup>();
+
+
+            using (var host = builder.Build())
+            {
+                var service = host.Services.GetRequiredService<Bug159>();
+            }
+        }
+
         [Fact]
         public void can_assert_configuration_is_valid_config_only()
         {
