@@ -49,12 +49,11 @@ namespace Lamar.IoC.Instances
             var variableExpr = Expression.Variable(Variable.VariableType, Variable.Usage);
             definition.RegisterExpression(Variable, variableExpr);
 
-
             var invokeMethod = _setter.InitialValue.GetType().GetMethod("Invoke");
             var invoke = Expression.Call(Expression.Constant(_setter.InitialValue), invokeMethod, scope);
 
             Expression cast = invoke;
-            if (invoke.Type != variableExpr.Type)
+            if (!variableExpr.Type.IsAssignableFrom(invoke.Type))
             {
                 cast = Expression.Convert(invoke, variableExpr.Type);
             }
