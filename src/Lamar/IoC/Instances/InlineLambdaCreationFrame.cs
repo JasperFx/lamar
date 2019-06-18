@@ -49,18 +49,22 @@ namespace Lamar.IoC.Instances
             var variableExpr = Expression.Variable(Variable.VariableType, Variable.Usage);
             definition.RegisterExpression(Variable, variableExpr);
 
-
             var invokeMethod = _setter.InitialValue.GetType().GetMethod("Invoke");
-            var invoke = Expression.Call(Expression.Constant(_setter.InitialValue), invokeMethod, scope);
-            
+            Expression invoke = Expression.Call(Expression.Constant(_setter.InitialValue), invokeMethod, scope);
+
+            // If the factory returns type object, assume it can be cast to our service type.
+            if (invokeMethod.ReturnType == typeof(object))
+            {
+                invoke = Expression.Convert(invoke, Variable.VariableType);
+            }
+
             definition.Body.Add(Expression.Assign(variableExpr, invoke));
             
-            if (    !Variable.VariableType.IsValueType)
+            if (!Variable.VariableType.IsValueType)
             {
                 definition.TryRegisterDisposable(variableExpr);
             }
             
-
             if (Next is IResolverFrame next)
             {
                 next.WriteExpressions(definition);
