@@ -35,7 +35,7 @@ namespace Lamar
         }
     }
 
-    public class ServiceRegistry : List<ServiceDescriptor>, IServiceCollection
+    public partial class ServiceRegistry : List<ServiceDescriptor>, IServiceCollection
     {
         public static ServiceRegistry For(Action<ServiceRegistry> configuration)
         {
@@ -406,8 +406,11 @@ namespace Lamar
 
             return policies;
         }
-        
 
+        public InverseInstanceExpression<T> Use<T>() where T : class
+        {
+            return new InverseInstanceExpression<T>(this);
+        }
     }
 
     public enum DynamicAssemblySharing
