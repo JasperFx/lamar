@@ -233,7 +233,7 @@ namespace LamarCodeGeneration.Util
         public static bool IsSimple(this Type type)
         {
             var typeInfo = type.GetTypeInfo();
-            return typeInfo.IsPrimitive || IsString(type) || typeInfo.IsEnum;
+            return typeInfo.IsPrimitive || IsString(type) || typeInfo.IsEnum || type == typeof(Uri);
         }
 
         public static bool IsConcrete(this Type type)
