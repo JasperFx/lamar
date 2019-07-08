@@ -145,7 +145,6 @@ namespace Lamar.IoC.Instances
             try
             {
                 services.StartingToPlan(this);
-
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -412,6 +413,7 @@ namespace Lamar
         }
 
         private readonly IList<Type> _lookingFor = new List<Type>();
+
         
         public ServiceFamily TryToCreateMissingFamily(Type serviceType)
         {

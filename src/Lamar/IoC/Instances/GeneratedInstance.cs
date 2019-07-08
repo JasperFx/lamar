@@ -15,8 +15,6 @@ namespace Lamar.IoC.Instances
 {
     public abstract class GeneratedInstance : Instance
     {
-        private GeneratedType _resolverType;
-
         protected GeneratedInstance(Type serviceType, Type implementationType, ServiceLifetime lifetime) : base(serviceType, implementationType, lifetime)
         {
         }
@@ -49,29 +47,7 @@ namespace Lamar.IoC.Instances
             yield return ImplementationType.Assembly;
         }
 
-        [Obsolete("This will go away when Lamar switches to Expressions")]
-        public void GenerateResolver(GeneratedAssembly generatedAssembly)
-        {
-            if (_resolverType != null) return; // got some kind of loop in here we need to short circuit
-
-            if (ErrorMessages.Any() || Dependencies.SelectMany(x => x.ErrorMessages).Any()) return;
-
-            var typeName = (ServiceType.FullNameInCode() + "_" + Name).Sanitize();
-
-
-            _resolverType = generatedAssembly.AddType(typeName, ResolverBaseType.MakeGenericType(ServiceType));
-
-            foreach (var relatedAssembly in relatedAssemblies())
-            {
-                generatedAssembly.ReferenceAssembly(relatedAssembly);
-            }
-
-            var method = _resolverType.MethodFor("Build");
-
-            var frame = CreateBuildFrame();
-
-            method.Frames.Add(frame);
-        }
+        private int count = 0;
 
         public sealed override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
         {
@@ -92,13 +68,14 @@ namespace Lamar.IoC.Instances
                 return new GetInstanceFrame(this).Variable;
             }
 
-
+            
 
             return generateVariableForBuilding(variables, mode, isRoot);
         }
 
         public Func<Scope, object> BuildFuncResolver(Scope scope)
         {
+
             var root = scope.Root;
             var def = new FuncResolverDefinition(this, root);
             var resolver = def.BuildResolver();
@@ -206,38 +183,36 @@ namespace Lamar.IoC.Instances
         {
             if (_resolver != null) return;
 
-            if (ErrorMessages.Any() || Dependencies.Any(x => x.ErrorMessages.Any()))
+            lock (_locker)
             {
-                var errorResolver = new ErrorMessageResolver(this);
-                _resolver = errorResolver.Resolve;
+                if (_resolver != null) return;
                 
+                if (ErrorMessages.Any() || Dependencies.Any(x => x.ErrorMessages.Any()))
+                {
+                    var errorResolver = new ErrorMessageResolver(this);
+                    _resolver = errorResolver.Resolve;
+                
+                }
+                else
+                {
+                    _resolver = BuildFuncResolver(scope);
+                }
             }
-            else
-            {
-                _resolver = BuildFuncResolver(scope);
-            }
+
+
 
         }
 
         internal override string GetBuildPlan(Scope rootScope)
         {
-            if (_resolverType == null)
-            {
-                var (name, code) = GenerateResolverClassCode(rootScope.ServiceGraph.ToGeneratedAssembly());
-                return code;
-            }
-
-            if (_resolverType != null)
-            {
-                return _resolverType.SourceCode;
-            }
-
             if (ErrorMessages.Any())
             {
                 return "Errors!" + Environment.NewLine + ErrorMessages.Join(Environment.NewLine);
             }
+            
+            var (name, code) = GenerateResolverClassCode(rootScope.ServiceGraph.ToGeneratedAssembly());
+            return code;
 
-            return ToString();
         }
 
         public Type ResolverBaseType

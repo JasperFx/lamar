@@ -39,7 +39,7 @@ namespace Lamar.IoC.Enumerables
             var dependencyMode = isRoot && mode == BuildMode.Build ? BuildMode.Dependency : mode;
             
             var elements = _elements.Select(x => variables.Resolve(x, dependencyMode)).ToArray();
-            
+
             return new ListAssignmentFrame<T>(this, elements).Variable;
         }
 
