@@ -16,6 +16,7 @@ namespace Lamar.IoC.Frames
 
             _scope = new Variable(typeof(IServiceScope), this);
             Provider = new Variable(typeof(IServiceProvider), this);
+            Wraps = true;
         }
 
         public ServiceScopeFactoryCreation(Variable factory) : this()
