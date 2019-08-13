@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lamar.Scanning.Conventions;
@@ -351,7 +352,7 @@ namespace Lamar.Testing.Scanning.Conventions
                 {
                     var redTypes = container.GetAllInstances<IOpenGeneric<string>>();
 
-                    redTypes.Count.ShouldBe(1);
+                    redTypes.Count.ShouldBe(2);
                 }
             }
 
@@ -368,6 +369,26 @@ namespace Lamar.Testing.Scanning.Conventions
                 {
                     var redType = container.GetInstance<IOpenGeneric<string>>();
                     redType.ShouldBeOfType<StringOpenGeneric>();
+                }
+            }
+
+            [Fact]
+            public void it_can_connect_open_types_to_open_generics()
+            {
+                var container = new Container(c => c.Scan(s =>
+                {
+                    s.AddAllTypesOf(typeof(IOpenGeneric<>));
+                    s.TheCallingAssembly();
+                }));
+
+                using (container)
+                {
+                    var types = container
+                        .GetAllInstances<IOpenGeneric<string>>()
+                        .Select(x => x.GetType());
+
+                    types.ShouldContain(typeof(StringOpenGeneric));
+                    types.ShouldContain(typeof(ConcreteOpenGeneric<string>));
                 }
             }
         }
