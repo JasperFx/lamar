@@ -51,8 +51,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Registration", "Widg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarCodeGeneration", "src\LamarCodeGeneration\LamarCodeGeneration.csproj", "{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Microsoft.Exentions.Hosting.Tests", "src\Lamar.Microsoft.Exentions.Hosting.Tests\Lamar.Microsoft.Exentions.Hosting.Tests.csproj", "{6D49B21C-8E52-47CF-A819-686DA374BD31}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lamar.Diagnostics", "src\Lamar.Diagnostics\Lamar.Diagnostics.csproj", "{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}"
 EndProject
 Global
@@ -149,10 +147,6 @@ Global
 		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D49B21C-8E52-47CF-A819-686DA374BD31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D49B21C-8E52-47CF-A819-686DA374BD31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D49B21C-8E52-47CF-A819-686DA374BD31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D49B21C-8E52-47CF-A819-686DA374BD31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Release|Any CPU.ActiveCfg = Release|Any CPU

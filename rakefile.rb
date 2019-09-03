@@ -1,6 +1,6 @@
 COMPILE_TARGET = ENV['config'].nil? ? "debug" : ENV['config']
 RESULTS_DIR = "results"
-BUILD_VERSION = '3.0.0'
+BUILD_VERSION = '3.1.0'
 
 tc_build_number = ENV["BUILD_NUMBER"]
 build_revision = tc_build_number || Time.new.strftime('5%H%M')
@@ -33,7 +33,6 @@ task :test => [:compile] do
 	sh "dotnet test src/LamarCompiler.Testing/LamarCompiler.Testing.csproj"
 	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj"
 	sh "dotnet test src/Lamar.AspNetCoreTests/Lamar.AspNetCoreTests.csproj"
-	sh "dotnet test src/Lamar.Microsoft.Exentions.Hosting.Tests/Lamar.Microsoft.Exentions.Hosting.Tests.csproj"
 end
 
 desc "Pack up the nupkg file"
@@ -41,6 +40,7 @@ task :pack => [:compile] do
     sh "dotnet pack src/LamarCodeGeneration/LamarCodeGeneration.csproj -o ./../../artifacts --configuration Release"
 	sh "dotnet pack src/LamarCompiler/LamarCompiler.csproj -o ./../../artifacts --configuration Release"
 	sh "dotnet pack src/Lamar/Lamar.csproj -o ./../../artifacts --configuration Release"
+	sh "dotnet pack src/Lamar.Diagnostics/Lamar.Diagnostics.csproj -o ./../../artifacts --configuration Release"
 	sh "dotnet pack src/Lamar.Microsoft.DependencyInjection/Lamar.Microsoft.DependencyInjection.csproj -o ./../../artifacts --configuration Release"
 end
 
