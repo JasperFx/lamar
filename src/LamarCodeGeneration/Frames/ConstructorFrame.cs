@@ -76,7 +76,7 @@ namespace LamarCodeGeneration.Frames
 
         public ConstructorFrame(Type builtType, ConstructorInfo ctor, Func<ConstructorFrame, Variable> variableSource)
         {
-            Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor));
+            Ctor = ctor ?? throw new ArgumentNullException(nameof(ctor), $"No usable constructor for type '{builtType.FullNameInCode()}'");
             Parameters = new Variable[ctor.GetParameters().Length];
 
 

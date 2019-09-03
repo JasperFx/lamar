@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -7,11 +6,11 @@ using Xunit.Abstractions;
 
 namespace Lamar.Testing.IoC.Diagnostics
 {
-    public class WhatDoIHave_Smoke_Tester
+    public class HowDoIBuild_smoke_tests
     {
-        private readonly ITestOutputHelper _output;
+                private readonly ITestOutputHelper _output;
 
-        public WhatDoIHave_Smoke_Tester(ITestOutputHelper output)
+        public HowDoIBuild_smoke_tests(ITestOutputHelper output)
         {
             _output = output;
         }
@@ -19,18 +18,15 @@ namespace Lamar.Testing.IoC.Diagnostics
         [Fact]
         public void empty_container()
         {
-            // SAMPLE: whatdoihave-simple
             var container = Container.Empty();
-            var report = container.WhatDoIHave();
+            var report = container.HowDoIBuild();
 
             Console.WriteLine(report);
-            // ENDSAMPLE
         }
 
         [Fact]
         public void display_one_service_for_an_interface()
         {
-            // SAMPLE: what_do_i_have_container
             var container = new Container(x =>
             {
                 x.For<IEngine>().Use<Hemi>().Named("The Hemi");
@@ -46,13 +42,10 @@ namespace Lamar.Testing.IoC.Diagnostics
 
                 x.For<IEngine>().UseIfNone<VTwelve>();
             });
-            // ENDSAMPLE
 
-            // SAMPLE: whatdoihave_everything
-            Console.WriteLine(container.WhatDoIHave());
-            // ENDSAMPLE
+            Console.WriteLine(container.HowDoIBuild());
             
-            _output.WriteLine(container.WhatDoIHave());
+            _output.WriteLine(container.HowDoIBuild());
         }
 
 
@@ -74,7 +67,7 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<IEngine>().Add(new InlineFour());
             });
 
-            Console.WriteLine(container.GetNestedContainer().WhatDoIHave());
+            Console.WriteLine(container.GetNestedContainer().HowDoIBuild());
         }
 
 
@@ -97,31 +90,27 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<IWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-assembly
-            Console.WriteLine(container.WhatDoIHave(assembly: typeof(IWidget).Assembly));
-            // ENDSAMPLE
+            Console.WriteLine(container.HowDoIBuild(assembly: typeof(IWidget).Assembly));
         }
 
         [Fact]
         public void filtering_examples()
         {
-            // SAMPLE: whatdoihave-filtering
             var container = Container.Empty();
 
             // Filter by the Assembly of the Plugin Type
-            var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);
+            var byAssembly = container.HowDoIBuild(assembly: typeof(IWidget).Assembly);
 
             // Only report on the specified Plugin Type
-            var byPluginType = container.WhatDoIHave(typeof(IWidget));
+            var byPluginType = container.HowDoIBuild(typeof(IWidget));
 
             // Filter to Plugin Type's in the named namespace
             // The 'IsInNamespace' test will include child namespaces
-            var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget");
+            var byNamespace = container.HowDoIBuild(@namespace: "StructureMap.Testing.Widget");
 
             // Filter by a case insensitive string.Contains() match
             // against the Plugin Type name
-            var byType = container.WhatDoIHave(typeName: "Widget");
-            // ENDSAMPLE
+            var byType = container.HowDoIBuild(typeName: "Widget");
         }
 
         [Fact]
@@ -143,9 +132,7 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<IWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-plugintype
-            Console.WriteLine(container.WhatDoIHave(typeof(IWidget)));
-            // ENDSAMPLE
+            Console.WriteLine(container.HowDoIBuild(typeof(IWidget)));
         }
 
         [Fact]
@@ -169,9 +156,7 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<AWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-type
-            Console.WriteLine(container.WhatDoIHave(typeName: "Widget"));
-            // ENDSAMPLE
+            Console.WriteLine(container.HowDoIBuild(typeName: "Widget"));
         }
 
 
@@ -196,68 +181,7 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<AWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-namespace
-            Console.WriteLine(container.WhatDoIHave(@namespace: "System"));
-            // ENDSAMPLE
-        }
-    }
-
-    public interface IAutomobile
-    {
-    }
-
-    public interface IEngine
-    {
-    }
-
-    public class NamedEngine : IEngine
-    {
-        private readonly string _name;
-
-        public NamedEngine(string name)
-        {
-            _name = name;
-        }
-
-        public string Name
-        {
-            get { return _name; }
-        }
-    }
-
-    public class VEight : IEngine
-    {
-    }
-
-    public class StraightSix : IEngine
-    {
-    }
-
-    public class Hemi : IEngine
-    {
-    }
-
-    public class FourFiftyFour : IEngine
-    {
-    }
-
-    public class VTwelve : IEngine
-    {
-    }
-
-    public class Rotary : IEngine
-    {
-    }
-
-    public class PluginElectric : IEngine
-    {
-    }
-
-    public class InlineFour : IEngine
-    {
-        public override string ToString()
-        {
-            return "I'm an inline 4!";
+            Console.WriteLine(container.HowDoIBuild(@namespace: "System"));
         }
     }
 }

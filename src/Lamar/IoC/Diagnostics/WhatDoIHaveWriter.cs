@@ -2,47 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Diagnostics
 {
-    public class ModelQuery
+    public enum WhatDoIHaveDisplay
     {
-        public string Namespace;
-        public Type ServiceType;
-        public Assembly Assembly;
-        public string TypeName;
-
-        public IEnumerable<IServiceFamilyConfiguration> Query(IModel model)
-        {
-            var enumerable = model.ServiceTypes;
-
-            if (Namespace.IsNotEmpty())
-            {
-                enumerable = enumerable.Where(x => x.ServiceType.IsInNamespace(Namespace));
-            }
-
-            if (ServiceType != null)
-            {
-                enumerable = enumerable.Where(x => x.ServiceType == ServiceType);
-            }
-
-            if (Assembly != null)
-            {
-                enumerable = enumerable.Where(x => x.ServiceType.GetTypeInfo().Assembly == Assembly);
-            }
-
-            if (TypeName.IsNotEmpty())
-            {
-                enumerable = enumerable.Where(x => x.ServiceType.Name.ToLower().Contains(TypeName.ToLower()));
-            }
-
-            return enumerable;
-        }
+        Summary,
+        BuildPlan
     }
-
+    
     public class WhatDoIHaveWriter
     {
         private readonly IModel _graph;
@@ -52,7 +22,7 @@ namespace Lamar.IoC.Diagnostics
             _graph = graph;
         }
 
-        public string GetText(ModelQuery query, string title = null)
+        public string GetText(ModelQuery query, string title = null, WhatDoIHaveDisplay display = WhatDoIHaveDisplay.Summary)
         {
             using (var writer = new StringWriter())
             {
@@ -67,21 +37,52 @@ namespace Lamar.IoC.Diagnostics
 
                 var serviceTypes = query.Query(model);
 
-                writeContentsOfServiceTypes(serviceTypes, writer);
+                writeContentsOfServiceTypes(serviceTypes, writer, display);
 
                 return writer.ToString();
             }
         }
 
         private void writeContentsOfServiceTypes(IEnumerable<IServiceFamilyConfiguration> serviceTypes,
-            StringWriter writer)
+            StringWriter writer, WhatDoIHaveDisplay display)
+        {
+            if (display == WhatDoIHaveDisplay.Summary)
+            {
+                writeSummary(serviceTypes, writer);
+            }
+            else
+            {
+                writeBuildPlan(serviceTypes, writer);
+            }
+        }
+
+        private static void writeBuildPlan(IEnumerable<IServiceFamilyConfiguration> serviceTypes, StringWriter writer)
+        {
+            foreach (var serviceType in serviceTypes.Where(x => !x.ServiceType.IsOpenGeneric()))
+            {
+                writer.WriteLine("------------------------------------------------------------------------");
+                writer.WriteLine($"Service Type: {serviceType.ServiceType.FullNameInCode()}");
+
+                foreach (var instance in serviceType.Instances)
+                {
+                    writer.WriteLine($"Implementation Type: {instance.ImplementationType.FullNameInCode()}");
+                    writer.WriteLine($"Instance Name: '{instance.Name}'");
+                    writer.WriteLine();
+                    writer.WriteLine(instance.DescribeBuildPlan());
+                    writer.WriteLine();
+                }
+            }
+        }
+
+        private void writeSummary(IEnumerable<IServiceFamilyConfiguration> serviceTypes, StringWriter writer)
         {
             var reportWriter = new TextReportWriter(5);
 
             reportWriter.AddDivider('=');
             reportWriter.AddText("ServiceType", "Namespace", "Lifecycle", "Description", "Name");
 
-            serviceTypes.Where(x => x.Instances.Any()).OrderBy(x => x.ServiceType.Name).Each(svc => writeServiceType(svc, reportWriter));
+            serviceTypes.Where(x => x.Instances.Any()).OrderBy(x => x.ServiceType.Name)
+                .Each(svc => writeServiceType(svc, reportWriter));
 
             reportWriter.AddDivider('=');
 

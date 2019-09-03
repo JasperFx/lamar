@@ -189,6 +189,29 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
             }
         }
+        
+        [Fact]
+        public void how_do_i_build_with_everything()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .UseStartup<Startup>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                
+
+                _output.WriteLine(container.HowDoIBuild());
+            }
+
+
+        }
 
         [Fact]
         public void bug_103_multithreaded_access_to_options()

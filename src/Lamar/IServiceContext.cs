@@ -122,7 +122,7 @@ namespace Lamar
         IEnumerable GetAllInstances(Type serviceType);
 
         /// <summary>
-        /// Returns a report detailing the complete configuration of all PluginTypes and Instances
+        /// Returns a report detailing the complete configuration of all service families and Instances
         /// </summary>
         /// <param name="serviceType">Optional parameter to filter the results down to just this plugin type.</param>
         /// <param name="assembly">Optional parameter to filter the results down to only plugin types from this
@@ -143,5 +143,16 @@ namespace Lamar
 
 
         IServiceVariableSource CreateServiceVariableSource();
+
+        /// <summary>
+        /// Returns a report detailing the "build plan" for all the matching types
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <param name="assembly"></param>
+        /// <param name="namespace"></param>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        string HowDoIBuild(Type serviceType = null, Assembly assembly = null, string @namespace = null,
+            string typeName = null);
     }
 }

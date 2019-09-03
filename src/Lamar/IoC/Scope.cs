@@ -263,6 +263,21 @@ namespace Lamar.IoC
                 TypeName = typeName
             });
         }
+        
+        public string HowDoIBuild(Type serviceType = null, Assembly assembly = null, string @namespace = null,
+            string typeName = null)
+        {
+            assertNotDisposed();
+
+            var writer = new WhatDoIHaveWriter(Model);
+            return writer.GetText(new ModelQuery
+            {
+                Assembly = assembly,
+                Namespace = @namespace,
+                ServiceType = serviceType,
+                TypeName = typeName
+            }, display: WhatDoIHaveDisplay.BuildPlan);
+        }
 
         /// <summary>
         /// Returns a textual report of all the assembly scanners used to build up this Container
