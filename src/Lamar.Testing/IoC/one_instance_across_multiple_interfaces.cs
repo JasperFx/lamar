@@ -19,7 +19,7 @@ namespace Lamar.Testing.IoC
             var instanceA = container.GetInstance<IServiceA>();
             var instanceB = container.GetInstance<IServiceB>();
 
-            Assert.Same(instanceA, instanceB);
+            instanceA.ShouldBeTheSameAs(instanceB);
         }
 
         //ENDSAMPLE
@@ -38,7 +38,7 @@ namespace Lamar.Testing.IoC
             var instanceA = container.GetInstance<IServiceA>();
             var instanceB = container.GetInstance<IServiceB>();
 
-            Assert.NotSame(instanceA, instanceB);
+            instanceA.ShouldNotBeTheSameAs(instanceB);
         }
 
         [Fact]
@@ -65,17 +65,17 @@ namespace Lamar.Testing.IoC
             var instanceA2 = scope2.GetInstance<IServiceA>();
             var instanceB2 = scope2.GetInstance<IServiceB>();
 
-            Assert.Same(instanceA, instanceB);
-            Assert.Same(instanceA1, instanceB1);
-            Assert.Same(instanceA2, instanceB2);
+            instanceA.ShouldBeTheSameAs(instanceB);
+            instanceA1.ShouldBeTheSameAs(instanceB1);
+            instanceA2.ShouldBeTheSameAs(instanceB2);
 
-            Assert.NotSame(instanceA, instanceA1);
-            Assert.NotSame(instanceA, instanceA2);
-            Assert.NotSame(instanceA1, instanceA2);
+            instanceA.ShouldNotBeTheSameAs(instanceA1);
+            instanceA.ShouldNotBeTheSameAs(instanceA2);
+            instanceA1.ShouldNotBeTheSameAs(instanceA2);
 
-            Assert.NotSame(instanceB, instanceB1);
-            Assert.NotSame(instanceB, instanceB2);
-            Assert.NotSame(instanceB1, instanceB2);
+            instanceB.ShouldNotBeTheSameAs(instanceB1);
+            instanceB.ShouldNotBeTheSameAs(instanceB2);
+            instanceB1.ShouldNotBeTheSameAs(instanceB2);
         }
 
         [Fact]
@@ -100,11 +100,11 @@ namespace Lamar.Testing.IoC
             var instanceA2 = container.GetInstance<IServiceA>("Group2");
             var instanceB2 = container.GetInstance<IServiceB>("Group2");
 
-            Assert.Same(instanceA1, instanceB1);
-            Assert.Same(instanceA2, instanceB2);
+            instanceA1.ShouldBeTheSameAs(instanceB1);
+            instanceA2.ShouldBeTheSameAs(instanceB2);
 
-            Assert.NotSame(instanceA1, instanceA2);
-            Assert.NotSame(instanceB1, instanceB2);
+            instanceA1.ShouldNotBeTheSameAs(instanceA2);
+            instanceB1.ShouldNotBeTheSameAs(instanceB2);
         }
 
         private interface IServiceA
