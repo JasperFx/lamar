@@ -75,7 +75,7 @@ namespace Lamar
                 }
                 else
                 {
-                    instance = instanceExpression.Use(c => (TService)c.GetInstance(typeof(TImpl), _name));
+                    instance = instanceExpression.Use(c => (TService)c.GetInstance(typeof(TImpl), _name)).Named(_name);
                 }
 
                 instance.Lifetime = _lifetime;
