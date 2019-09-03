@@ -65,6 +65,12 @@ namespace Lamar.Testing
             return (T)actual;
         }
 
+        public static object ShouldBeTheSameAs(this object actual, object expected)
+        {
+            ReferenceEquals(actual, expected).ShouldBeTrue();
+            return expected;
+        }
+
         public static object ShouldNotBeTheSameAs(this object actual, object expected)
         {
             ReferenceEquals(actual, expected).ShouldBeFalse();
