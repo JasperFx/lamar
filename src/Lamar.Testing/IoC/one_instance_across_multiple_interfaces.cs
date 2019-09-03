@@ -4,6 +4,7 @@ namespace Lamar.Testing.IoC
 {
     public class one_instance_across_multiple_interfaces
     {
+        //SAMPLE: inverse-registration
         [Fact]
         public void when_singleton_both_interfaces_give_same_instance()
         {
@@ -20,6 +21,8 @@ namespace Lamar.Testing.IoC
 
             Assert.Same(instanceA, instanceB);
         }
+
+        //ENDSAMPLE
 
         [Fact]
         public void when_transient_both_interfaces_give_new_instance()

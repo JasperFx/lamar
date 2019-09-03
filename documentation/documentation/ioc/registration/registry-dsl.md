@@ -75,6 +75,24 @@ You can also register named instances with the following shorthand:
 
 <[sample:named-instances-shorthand]>
 
+## Inverse Registrations with Use().For()
+
+In some scenarios, a type may implement multiple interfaces.
+You could register this with a separate `For().Use()` line for each interface, but if
+the type is to be a singleton, then registering it this way will give you a 
+*different* singleton instance for each interface. To use the same instance across multiple
+interfaces, you can use the reverse syntax.
+
+<[sample:inverse-registration]>
+
+The same thing works for scoped registrations; using `.Scoped()` in place of `.Singleton()` in
+the above sample would result in the same instance being returned when resolving any one of the 
+registered interfaces for the duration of the scope.
+
+A transient registration can also be made using `.Transient()`, in which case the behaviour is exactly
+the same as with the more usual `For().Use()` syntax; it's just a convenient shorthand in the
+case of a type that implements many interfaces.
+
 [1]: http://martinfowler.com/bliki/FluentInterface.html
 [2]: http://en.wikipedia.org/wiki/Closure_%28computer_programming%29
 
