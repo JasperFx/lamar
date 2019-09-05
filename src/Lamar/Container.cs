@@ -57,7 +57,7 @@ namespace Lamar
         }
 
 
-        public void AssertConfigurationIsValid(AssertMode mode = AssertMode.Full)
+        public void AssertConfigurationIsValid(AssertMode mode = AssertMode.Full, bool showKnownRegistrationsOnError = true)
         {
             using (var writer = new StringWriter())
             {
@@ -65,13 +65,16 @@ namespace Lamar
 
                 if (!hasErrors && mode == AssertMode.Full) hasErrors = buildAndValidateAll(writer);
 
-                if (hasErrors)
+                if (hasErrors && showKnownRegistrationsOnError)
                 {
                     writer.WriteLine();
                     writer.WriteLine();
                     writer.WriteLine("The known registrations are:");
                     writer.WriteLine(WhatDoIHave());
+                }
 
+                if (hasErrors)
+                {
                     throw new ContainerValidationException(writer.ToString());
                 }
             }
