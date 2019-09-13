@@ -1,7 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>Adds diagnostic checks to the command line of your Lamar-enabled ASP.Net Core app</Description>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <Authors>Jeremy D. Miller</Authors>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+        <DebugType>portable</DebugType>
+        <AssemblyName>Lamar.Diagnostics</AssemblyName>
+        <PackageId>Lamar.Diagnostics</PackageId>
+        <PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
+        <PackageProjectUrl>http://jasperfx.github.io/lamar</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE</PackageLicenseUrl>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+        <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+        <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+        <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     </PropertyGroup>
 
     <ItemGroup>
