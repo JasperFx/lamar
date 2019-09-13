@@ -54,20 +54,15 @@ namespace Lamar.IoC.Frames
         {
 
             var listType = typeof(List<>).MakeGenericType(typeof(T));
-            var ctor = listType.GetConstructors().Single(x => x.GetParameters().Length == 0);
-            var addMethod = listType.GetMethod("Add");
+            var ctor = listType.GetConstructors().Single(x => x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType.IsEnumerable());
+
+            var initArray = Expression.NewArrayInit(ElementType, Elements.Select(definition.ExpressionFor));
             
             var expr = definition.ExpressionFor(Variable);
             
 
-            var assign = Expression.Assign(expr, Expression.New(ctor));
+            var assign = Expression.Assign(expr, Expression.New(ctor, initArray));
             definition.Body.Add(assign);
-
-            foreach (var variable in Elements)
-            {
-                var add = Expression.Call(expr, addMethod, definition.ExpressionFor(variable));
-                definition.Body.Add(add);
-            }
 
             if (Next == null)
             {

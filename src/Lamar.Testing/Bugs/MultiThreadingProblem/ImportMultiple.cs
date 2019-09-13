@@ -8,7 +8,7 @@ namespace Lamar.Testing.Bugs.MultiThreadingProblem
         protected static int counter;
 
         public ImportMultiple1(
-            ISimpleAdapter[] adapters)
+            IList<ISimpleAdapter> adapters)
         {
             if (adapters == null)
             {
