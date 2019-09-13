@@ -27,6 +27,7 @@ namespace Lamar.Testing.IoC.Diagnostics
         [Fact]
         public void display_one_service_for_an_interface()
         {
+            // SAMPLE: using-HowDoIBuild
             var container = new Container(x =>
             {
                 x.For<IEngine>().Use<Hemi>().Named("The Hemi");
@@ -44,6 +45,7 @@ namespace Lamar.Testing.IoC.Diagnostics
             });
 
             Console.WriteLine(container.HowDoIBuild());
+            // ENDSAMPLE
             
             _output.WriteLine(container.HowDoIBuild());
         }

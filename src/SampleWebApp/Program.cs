@@ -18,6 +18,7 @@ namespace WebApplication4
     {
         public static Task<int> Main(string[] args)
         {
+            // SAMPLE: using-oakton-aspnetcore
             var registry = new ServiceRegistry();
             registry.Scan(x =>
             {
@@ -36,7 +37,7 @@ namespace WebApplication4
                 .UseKestrel()
                 .UseStartup<Startup>()
                 .RunOaktonCommands(args);
-
+            // ENDSAMPLE
             
 
         }

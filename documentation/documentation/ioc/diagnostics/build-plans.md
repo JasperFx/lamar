@@ -3,6 +3,17 @@
 As part of the diagnostics, you can preview the generated code that Lamar has used to resolve a service to completely understand how that object and all of its
 dependencies are built out.
 
+## HowDoIBuild()
+
+New for Lamar 3.1.0 is a convenience method similar to `WhatDoIHave()` that prints out the build plans:
+
+<[sample:using-HowDoIBuild]>
+
+This method also provides the same kind of filtering as the <[linkto:documentation/ioc/diagnostics/whatdoihave;title=WhatDoIHave()]> operation.
+
+
+## Querying for Specific Build Plans
+
 Let's say you have a container configured like this:
 
 <[sample:container-for-build-plan]>
