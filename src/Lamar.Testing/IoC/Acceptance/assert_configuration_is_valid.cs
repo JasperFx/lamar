@@ -1,6 +1,8 @@
 ﻿using System;
+using Baseline;
 using Lamar.IoC;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 using Xunit.Abstractions;
@@ -45,6 +47,8 @@ namespace Lamar.Testing.IoC.Acceptance
                 
                 ex.Message.ShouldContain("IWidget is not registered");
             
+                ex.WhatDidIScan.IsEmpty().ShouldBeFalse();
+                ex.WhatDoIHave.IsEmpty().ShouldBeFalse();
             
             _output.WriteLine(ex.Message);
             

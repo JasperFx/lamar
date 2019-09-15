@@ -67,12 +67,7 @@ namespace Lamar
 
                 if (hasErrors)
                 {
-                    writer.WriteLine();
-                    writer.WriteLine();
-                    writer.WriteLine("The known registrations are:");
-                    writer.WriteLine(WhatDoIHave());
-
-                    throw new ContainerValidationException(writer.ToString());
+                    throw new ContainerValidationException(writer.ToString(), WhatDoIHave(), WhatDidIScan());
                 }
             }
         }
