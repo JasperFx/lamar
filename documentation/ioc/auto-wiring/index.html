@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.0.0</h3>
+            <h3>Lamar 3.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -92,10 +92,8 @@ as arguments:</p>
 instead of forcing you to explicitly configure all the dependencies for <code>ShippingScreenPresenter</code>, Lamar can infer from
 the public <a href="/lamar/documentation/ioc/registration/constructor-selection">constructor function</a>
 what dependencies <code>ShippingScreenPresenter</code> needs and uses the defaults of both to build it out.</p>
-<p>Looking at the <p class="bg-warning" style="padding:5px"><b>Unknown topic key 'diagnostics/build-plans'</b><small> -- CTRL+SHIFT+R to force refresh the topic tree</small></p> for <code>ShippingScreenPresenter</code>:</p>
+<p>Looking at the <a href="/lamar/documentation/ioc/diagnostics/build-plans">build plan</a> for <code>ShippingScreenPresenter</code>:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void ShowBuildPlan()&#xA;{&#xA;    var container = new Container(_ =&gt;&#xA;    {&#xA;        _.For&lt;IShippingService&gt;().Use&lt;InternalShippingService&gt;();&#xA;        _.For&lt;IRepository&gt;().Use&lt;SimpleRepository&gt;();&#xA;    });&#xA;&#xA;    // Just proving that we can build ShippingScreenPresenter;)&#xA;    container.GetInstance&lt;ShippingScreenPresenter&gt;().ShouldNotBeNull();&#xA;&#xA;    var buildPlan = container.Model.For&lt;ShippingScreenPresenter&gt;().Default.DescribeBuildPlan();&#xA;&#xA;    // _output is the xUnit ITestOutputHelper here&#xA;    _output.WriteLine(buildPlan);&#xA;}&#xA;</code></pre>
-<p>give us:</p>
-<p>TODO -- fill in this build plan</p>
 
               </div>
 

@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.0.0</h3>
+            <h3>Lamar 3.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -82,6 +82,11 @@
                 <!--Title: Build Plans-->
 <p>As part of the diagnostics, you can preview the generated code that Lamar has used to resolve a service to completely understand how that object and all of its
 dependencies are built out.</p>
+<h2 id="howdoibuild">HowDoIBuild()</h2>
+<p>New for Lamar 3.1.0 is a convenience method similar to <code>WhatDoIHave()</code> that prints out the build plans:</p>
+<pre><code class="language-csharp">&#xA;var container = new Container(x =&gt;&#xA;{&#xA;    x.For&lt;IEngine&gt;().Use&lt;Hemi&gt;().Named(&quot;The Hemi&quot;);&#xA;&#xA;    x.For&lt;IEngine&gt;().Add&lt;VEight&gt;().Singleton().Named(&quot;V8&quot;);&#xA;    x.For&lt;IEngine&gt;().Add&lt;FourFiftyFour&gt;();&#xA;    x.For&lt;IEngine&gt;().Add&lt;StraightSix&gt;().Scoped();&#xA;&#xA;    x.For&lt;IEngine&gt;().Add(c =&gt; new Rotary()).Named(&quot;Rotary&quot;);&#xA;    x.For&lt;IEngine&gt;().Add(c =&gt; c.GetService&lt;PluginElectric&gt;());&#xA;&#xA;    x.For&lt;IEngine&gt;().Add(new InlineFour());&#xA;&#xA;    x.For&lt;IEngine&gt;().UseIfNone&lt;VTwelve&gt;();&#xA;});&#xA;&#xA;Console.WriteLine(container.HowDoIBuild());&#xA;</code></pre>
+<p>This method also provides the same kind of filtering as the <a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a> operation.</p>
+<h2 id="querying-for-specific-build-plans">Querying for Specific Build Plans</h2>
 <p>Let's say you have a container configured like this:</p>
 <pre><code class="language-csharp">&#xA;container = new Container(x =&gt;&#xA;{&#xA;    x.For(typeof(IService&lt;&gt;)).Add(typeof(Service&lt;&gt;));&#xA;    x.For(typeof(IService&lt;&gt;)).Add(typeof(Service2&lt;&gt;));&#xA;&#xA;    x.For&lt;IWidget&gt;().Use&lt;AWidget&gt;().Singleton();&#xA;&#xA;    x.AddTransient&lt;Rule, DefaultRule&gt;();&#xA;    x.AddTransient&lt;Rule, ARule&gt;();&#xA;    x.AddSingleton&lt;Rule&gt;(new ColorRule(&quot;red&quot;));&#xA;&#xA;    x.AddScoped&lt;IThing, Thing&gt;();&#xA;    &#xA;&#xA;    x.For&lt;IEngine&gt;().Use&lt;PushrodEngine&gt;();&#xA;&#xA;    x.For&lt;Startable1&gt;().Use&lt;Startable1&gt;().Singleton();&#xA;    x.For&lt;Startable2&gt;().Use&lt;Startable2&gt;();&#xA;    x.For&lt;Startable3&gt;().Use&lt;Startable3&gt;();&#xA;});&#xA;</code></pre>
 <p>And you have a concrete type like this one:</p>

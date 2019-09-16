@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.0.0</h3>
+            <h3>Lamar 3.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -93,6 +93,88 @@ The <code>Startup.ConfigureServices(ServiceRegistry)</code> convention does not 
 provides.</p>
 <p>And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.</p>
+<h2 id="extended-command-line-diagnostics-for-asp.net-core">Extended Command Line Diagnostics for ASP.Net Core</h2>
+<p>New with the Lamar 3.1.0 release is a separate Nuget package named <em>Lamar.Diagnostics</em> that can be used to add easy access to the <a href="/lamar/documentation/ioc/diagnostics">Lamar diagnostics</a> for your ASP.Net Core application from the command line.</p>
+<p>First, you need to be using the <a href="https://jasperfx.github.io/oakton/documentation/aspnetcore/">Oakton.AspNetCore</a> package to execute commands in your ASP.Net Core application like this:</p>
+<pre><code class="language-csharp">&#xA;var registry = new ServiceRegistry();&#xA;registry.Scan(x =&gt;&#xA;{&#xA;    x.Assembly(typeof(Program).Assembly);&#xA;    x.WithDefaultConventions();&#xA;});&#xA;&#xA;var builder = new WebHostBuilder();&#xA;return builder&#xA;    // Replaces the built in DI container&#xA;    // with Lamar&#xA;    .UseLamar(registry)&#xA;&#xA;    // Normal ASP.Net Core bootstrapping&#xA;    .UseUrls(&quot;http://localhost:5002&quot;)&#xA;    .UseKestrel()&#xA;    .UseStartup&lt;Startup&gt;()&#xA;    .RunOaktonCommands(args);&#xA;</code></pre>
+<p>Including this <em>Lamar.Diagnostics</em> Nuget into your ASP.Net Core application will add some additional Lamar diagnostic commands. If you open a command line tool to the root directory of your ASP.Net Core project
+with the <em>Lamar.Diagnostics</em> and <em>Oakton.AspNetCore</em> Nuget installed and type the command for CLI usage <code>dotnet run -- ?</code> or <code>dotnet run -- help</code>, you'll get something like this:</p>
+<pre><code>Searching 'Lamar.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' for commands
+
+  -----------------------------------------------------------------------------------
+    Available commands:
+  -----------------------------------------------------------------------------------
+         check-env -&gt; Execute all environment checks against the application
+    lamar-scanning -&gt; Runs Lamar's type scanning diagnostics
+    lamar-services -&gt; List all the registered Lamar services
+    lamar-validate -&gt; Runs all the Lamar container validations
+               run -&gt; Runs the configured AspNetCore application
+  -----------------------------------------------------------------------------------
+</code></pre>
+<p>As you can see, there are three additional commands specific for the <a href="/lamar/documentation/ioc/diagnostics">built in Lamar diagnostics</a>. All of these commands support the <a href="https://jasperfx.github.io/oakton/documentation/aspnetcore/">Oakton.AspNetCore</a> flags for overriding the ASP.Net Core hosting environment name, configuration settings, and default log level.</p>
+<div class="alert-info alert"><p><strong>Note!</strong>
+When all of these commands execute, they <em>do</em> build the underlying <code>IWebHost</code> for your application, but they do <strong>not</strong> start the Kestrel server or run any of your application <code>IHostedService</code> registrations. Your application will be
+torn down and disposed as part of the command execution as well.</p>
+</div>
+<h2 id="lamar-services">lamar-services</h2>
+<p>This command displays the output of Lamar's <a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a> function against the underlying Lamar container of the configured ASP.Net Core application. The basic usage is <code>dotnet run -- lamar-services</code>.</p>
+<p>The full usage is shown below:</p>
+<pre><code> Usages for 'lamar-services' (List all the registered Lamar services)
+  lamar-services [-f, --file &lt;file&gt;] [-n, --namespace &lt;namespace&gt;] [-a, --assembly &lt;assembly&gt;] [-t, --type &lt;type&gt;] [-b, --build-plans] [-e, --environment &lt;environment&gt;] [-v, --verbose] [-l, --log-level &lt;logleve&gt;] [----config:&lt;prop&gt; &lt;value&gt;]
+
+  ----------------------------------------------------------------------------------------------------------------------------------------
+    Flags
+  ----------------------------------------------------------------------------------------------------------------------------------------
+                  [-f, --file &lt;file&gt;] -&gt; Optional file to write the results
+        [-n, --namespace &lt;namespace&gt;] -&gt; Optionally filter the results to only types in this namespace
+          [-a, --assembly &lt;assembly&gt;] -&gt; Optionally filter the results to only types in this assembly
+                  [-t, --type &lt;type&gt;] -&gt; Optionally filter the results to only this named type. Can be either a type name or a full name
+                  [-b, --build-plans] -&gt; Show the full build plans
+    [-e, --environment &lt;environment&gt;] -&gt; Use to override the ASP.Net Environment name
+                      [-v, --verbose] -&gt; Write out much more information at startup and enables console logging
+          [-l, --log-level &lt;logleve&gt;] -&gt; Override the log level
+          [----config:&lt;prop&gt; &lt;value&gt;] -&gt; Overwrite individual configuration items
+  ----------------------------------------------------------------------------------------------------------------------------------------
+</code></pre>
+<p>The output can be filtered by using the <code>--namespace [namespace name]</code> or <code>--assembly [assembly name]</code> flags if you're only looking for certain registrations.
+The <code>--type [type name]</code> flag can help you look for specific types. This flag can either match against a type's full name or just the type name and looks for both service types and implementation types.</p>
+<p>You can write the results to a text file instead by specifying a file location with the <code>--file [file name]</code> flag.</p>
+<p>Lastly, you can instead write out the <a href="/lamar/documentation/ioc/diagnostics/build-plans">Build Plans</a> with the same filtering options using the <code>--build-plans</code> flag.</p>
+<h2 id="lamar-scanning">lamar-scanning</h2>
+<p>The <code>lamar-scanning</code> command gives you quick access to the <a href="/lamar/documentation/ioc/diagnostics/type-scanning">Type Scanning Diagnostics</a> functionality in Lamar.</p>
+<p>Using the command <code>dotnet run -- lamar-scanning</code> command on the sample application shown earlier in this page results in this output:</p>
+<pre><code>Searching 'Lamar.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' for commands
+All Scanners
+================================================================
+
+Assemblies
+----------
+* SampleWebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Conventions
+--------
+* Default I[Name]/[Name] registration convention
+
+
+No problems were encountered in exporting types from Assemblies
+</code></pre>
+<p>Any type scanning errors detected during application bootstrapping will be shown in the output. If there are any errors, this command will fail by returning a non-zero
+return code. You could use this command as part of your continuous integration process to catch any kind of assembly loading problems found in type scanning.</p>
+<h2 id="lamar-validate">lamar-validate</h2>
+<p>The <code>lamar-validate</code> command will build your ASP.Net Core application (the <code>IWebHost</code>), then use Lamar's <a href="/lamar/documentation/ioc/diagnostics/validating-container-configuration">built in container validation</a> to verify
+that the container can successfully build all known registrations. All validation errors will be reported, and the command will fail if there are any errors detected. This command can be used in continuous integration builds as another type of check on the system.</p>
+<p>In its default usage, <code>dotnet run -- lamar-validate</code> will only validate the container configuration. If you use the <code>dotnet run -- lamar-validate Full</code> usage, the command will also execute any Lamar <a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a>.</p>
+<h2 id="adding-lamar-environment-checks">Adding Lamar Environment Checks</h2>
+<p>You can also add Lamar's container validation and its own environment tests to the <em>Oakton.AspNetCore</em> environment check functionality with the following usage of the <code>IServiceCollection.CheckLamarConfiguration()</code> extension method from <em>Lamar.Diagnostics</em> as shown below
+in a sample <code>Startup.ConfigureContainer()</code> method:</p>
+<pre><code class="language-csharp">&#xA;public class Startup&#xA;{&#xA;    // Take in Lamar&#x27;s ServiceRegistry instead of IServiceCollection&#xA;    // as your argument, but fear not, it implements IServiceCollection&#xA;    // as well&#xA;    public void ConfigureContainer(ServiceRegistry services)&#xA;    {&#xA;        // Supports ASP.Net Core DI abstractions&#xA;        services.AddMvc();&#xA;        services.AddLogging();&#xA;&#xA;        // Also exposes Lamar specific registrations&#xA;        // and functionality&#xA;        services.Scan(s =&gt;&#xA;        {&#xA;            s.TheCallingAssembly();&#xA;            s.WithDefaultConventions();&#xA;        });&#xA;        &#xA;        &#xA;        // This adds Lamar&#x27;s validation to the &#xA;        // Oakton.AspNetCore environment check support&#xA;        services.CheckLamarConfiguration();&#xA;    }&#xA;&#xA;    public void Configure(IApplicationBuilder app)&#xA;    {&#xA;        app.UseMvc();&#xA;    }&#xA;}&#xA;</code></pre>
+<p>Now, when you run the <code>dotnet run -- check-env</code> command for your application, you <em>should</em> see a check for the Lamar container:</p>
+<pre><code>Searching 'Lamar.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' for commands
+Running Environment Checks
+   1.) Success: Lamar IoC Service Registrations
+All environment checks are good!
+
+</code></pre>
 
               </div>
 

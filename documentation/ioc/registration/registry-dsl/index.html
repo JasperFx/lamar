@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.0.0</h3>
+            <h3>Lamar 3.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -123,6 +123,19 @@ name instances. To retrieve a specific implementation:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void SimpleCaseWithNamedInstance()&#xA;{&#xA;    container = new Container(x =&gt; { x.For&lt;IWidget&gt;().Add&lt;AWidget&gt;().Named(&quot;MyInstance&quot;); });&#xA;    // retrieve an instance by name&#xA;    var widget = (AWidget)container.GetInstance&lt;IWidget&gt;(&quot;MyInstance&quot;);&#xA;    widget.ShouldNotBeNull();&#xA;}&#xA;&#xA;</code></pre>
 <p>You can also register named instances with the following shorthand:</p>
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void A_concrete_type_is_available_by_name_when_it_is_added_by_the_shorthand_mechanism()&#xA;{&#xA;    IContainer container = new Container(r =&gt; r.For&lt;IAddTypes&gt;().AddInstances(x =&gt;&#xA;    {&#xA;        x.Type&lt;RedAddTypes&gt;().Named(&quot;Red&quot;);&#xA;        x.Type&lt;GreenAddTypes&gt;().Named(&quot;Green&quot;);&#xA;        x.Type&lt;BlueAddTypes&gt;().Named(&quot;Blue&quot;);&#xA;        x.Type&lt;PurpleAddTypes&gt;();&#xA;    }));&#xA;    // retrieve the instances by name&#xA;    container.GetInstance&lt;IAddTypes&gt;(&quot;Red&quot;).IsType&lt;RedAddTypes&gt;();&#xA;    container.GetInstance&lt;IAddTypes&gt;(&quot;Green&quot;).IsType&lt;GreenAddTypes&gt;();&#xA;    container.GetInstance&lt;IAddTypes&gt;(&quot;Blue&quot;).IsType&lt;BlueAddTypes&gt;();&#xA;}&#xA;&#xA;</code></pre>
+<h2 id="inverse-registrations-with-use.for">Inverse Registrations with Use().For()</h2>
+<p>In some scenarios, a type may implement multiple interfaces.
+You could register this with a separate <code>For().Use()</code> line for each interface, but if
+the type is to be a singleton, then registering it this way will give you a
+<em>different</em> singleton instance for each interface. To use the same instance across multiple
+interfaces, you can use the reverse syntax.</p>
+<pre><code class="language-csharp">&#xA;[Fact]&#xA;public void when_singleton_both_interfaces_give_same_instance()&#xA;{&#xA;    var container = new Container(services =&gt;&#xA;    {&#xA;        services.Use&lt;Implementation&gt;()&#xA;            .Singleton()&#xA;            .For&lt;IServiceA&gt;()&#xA;            .For&lt;IServiceB&gt;();&#xA;    });&#xA;&#xA;    var instanceA = container.GetInstance&lt;IServiceA&gt;();&#xA;    var instanceB = container.GetInstance&lt;IServiceB&gt;();&#xA;&#xA;    instanceA.ShouldBeTheSameAs(instanceB);&#xA;}&#xA;&#xA;</code></pre>
+<p>The same thing works for scoped registrations; using <code>.Scoped()</code> in place of <code>.Singleton()</code> in
+the above sample would result in the same instance being returned when resolving any one of the
+registered interfaces for the duration of the scope.</p>
+<p>A transient registration can also be made using <code>.Transient()</code>, in which case the behaviour is exactly
+the same as with the more usual <code>For().Use()</code> syntax; it's just a convenient shorthand in the
+case of a type that implements many interfaces.</p>
 
               </div>
 
