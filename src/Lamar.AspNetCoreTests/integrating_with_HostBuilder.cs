@@ -160,7 +160,7 @@ namespace Lamar.AspNetCoreTests
 
         public class MyServiceConfig
         {
-            public String Greeting { get; set; } = "Go Away!";
+            public String Greeting { get; set; } = "Hello World!";
         }
 
         public class MyServiceImpl : BackgroundService
