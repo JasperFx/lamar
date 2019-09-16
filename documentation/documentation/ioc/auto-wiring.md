@@ -18,11 +18,9 @@ instead of forcing you to explicitly configure all the dependencies for `Shippin
 the public <[linkto:documentation/ioc/registration/constructor-selection;title=constructor function]>
 what dependencies `ShippingScreenPresenter` needs and uses the defaults of both to build it out.
 
-Looking at the <[linkto:diagnostics/build-plans;title=build plan]> for `ShippingScreenPresenter`:
+Looking at the <[linkto:documentation/ioc/diagnostics/build-plans;title=build plan]> for `ShippingScreenPresenter`:
 
 <[sample:ShippingScreenPresenter-build-plan]>
 
-give us:
 
-TODO -- fill in this build plan
 

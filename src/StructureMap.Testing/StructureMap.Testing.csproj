@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lamar\Lamar.csproj" />
     <ProjectReference Include="..\StructureMap\StructureMap.csproj" />
     <ProjectReference Include="..\StructureMap.Testing.Widget\StructureMap.Testing.Widget.csproj" />
     <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />

@@ -32,5 +32,5 @@ The textual report will show:
 
 `WhatDidIScan()` does not at this time show any type filters or exclusions that may be part of the assembly scanner. 
 
-See also: <[linkto:registration/auto-registration-and-conventions]>
+See also: <[linkto:documentation/ioc/registration/auto-registration-and-conventions]>
 
