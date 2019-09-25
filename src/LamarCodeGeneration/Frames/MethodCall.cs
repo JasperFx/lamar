@@ -47,7 +47,7 @@ namespace LamarCodeGeneration.Frames
             Type returnType = correctedReturnType(method.ReturnType);
             if (returnType != null)
             {
-#if NETSTANDARD2_0
+#if !NET461
                 
 
                 if (returnType.IsValueTuple())
@@ -66,7 +66,7 @@ namespace LamarCodeGeneration.Frames
 
                     ReturnVariable = new Variable(returnType, name, this); 
                     
-#if NETSTANDARD2_0
+#if !NET461
                 }
 #endif
             }
@@ -204,7 +204,7 @@ namespace LamarCodeGeneration.Frames
             var isDisposable = false;
             if (shouldAssignVariableToReturnValue(method))
             {
-#if NETSTANDARD2_0
+#if !NET461
                 returnValue = ReturnVariable.VariableType.IsValueTuple() ? $"{ReturnVariable.Usage} = {returnValue}" : $"var {ReturnVariable.Usage} = {returnValue}";
                 #else
                 returnValue = $"var {ReturnVariable.Usage} = {returnValue}";

@@ -1,83 +1,113 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Hosting;
+#endif
+using System;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
+using Microsoft.Extensions.Hosting;
+
 
 namespace Lamar.Microsoft.DependencyInjection
 {
-    public enum  LoggingAndOptionResolving
-    {
-        /// <summary>
-        /// Resolve IOptions<T> and ILogger<T> with idiomatic constructor construction. Use this if you
-        /// are trying to decorate the ILogger interface
-        /// </summary>
-        AspNetCore,
-        
-        /// <summary>
-        /// Use Lamar's optimized IOptions<T> and ILogger<T> resolution policies
-        /// </summary>
-        Lamar
-    }
-    
+
     public static class WebHostBuilderExtensions
     {
-        public static IWebHostBuilder UseLamar(this IWebHostBuilder builder)
+        #if NETSTANDARD2_0
+        public static IWebHostBuilder UseLamar<T>(this IWebHostBuilder builder, Action<WebHostBuilderContext, T> configure = null) where T : ServiceRegistry, new()
         {
-            return UseLamar(builder, LoggingAndOptionResolving.Lamar);
+            return builder.ConfigureServices((context, services) =>
+            {
+                var registry = new T();
+                configure?.Invoke(context, registry);
+
+                services.AddLamar(registry);
+            });
         }
         
-        public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, LoggingAndOptionResolving resolving)
+        public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, Action<WebHostBuilderContext, ServiceRegistry> configure = null)
         {
-            return UseLamar(builder, registry: null, resolving:resolving);
+            return builder.UseLamar<ServiceRegistry>(configure);
         }
-
+        
         public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, ServiceRegistry registry)
         {
-            return UseLamar(builder, registry: registry, resolving:LoggingAndOptionResolving.Lamar);
+            return builder.ConfigureServices((context, services) => { services.AddLamar(registry); });
+        }
+        #endif
+        
+
+        /// <summary>
+        /// Shortcut to replace the built in DI container with Lamar using the extra service registrations
+        /// in the ServiceRegistry
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IHostBuilder UseLamar(this IHostBuilder builder, ServiceRegistry registry)
+        {
+            return 
+                
+                
+                builder
+                    .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory())
+                    .UseServiceProviderFactory<IServiceCollection>(new LamarServiceProviderFactory())
+                    
+                    .ConfigureServices((context, x) => x.AddLamar(registry));
+            
+        }
+        
+        /// <summary>
+        /// Shortcut to replace the built in DI container with Lamar using service registrations
+        /// dependent upon the application's environment and configuration
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IHostBuilder UseLamar(this IHostBuilder builder, Action<HostBuilderContext, ServiceRegistry> configure = null)
+        {
+            return builder.UseLamar<ServiceRegistry>(configure);
         }
 
-        public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, ServiceRegistry registry, LoggingAndOptionResolving resolving)
+
+        /// <summary>
+        /// Shortcut to replace the built in DI container with Lamar using the extra service registrations
+        /// in the "T" ServiceRegistry
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="configure">Add additional service registrations</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IHostBuilder UseLamar<T>(this IHostBuilder builder, Action<HostBuilderContext, T> configure = null) where T : ServiceRegistry, new()
         {
-            return builder.ConfigureServices(services => { services.AddLamar(registry, resolving); });
+            return builder
+                .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory())
+                .ConfigureServices((context, services) =>
+            {
+                var registry = new T();
+                
+                configure?.Invoke(context, registry);
+                
+                services.AddLamar(registry);
+            });
         }
+        
 
-        public static IServiceCollection AddLamar(this IServiceCollection services)
-        {
-            return AddLamar(services, registry: null, resolving: LoggingAndOptionResolving.Lamar);
-        }
 
-        public static IServiceCollection AddLamar<T>(this IServiceCollection services, LoggingAndOptionResolving resolving = LoggingAndOptionResolving.Lamar) where T : ServiceRegistry, new()
-        {
-            return services.AddLamar(new T(), resolving);
-        }
-
-        public static IServiceCollection AddLamar(this IServiceCollection services, LoggingAndOptionResolving resolving)
-        {
-            return AddLamar(services, registry: null, resolving: resolving);
-        }
-
-        public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry)
-        {
-            return AddLamar(services, registry: registry, resolving: LoggingAndOptionResolving.Lamar);
-        }
-
-        public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry,
-            LoggingAndOptionResolving resolving)
+        /// <summary>
+        /// Overrides the internal DI container with Lamar, optionally using a Lamar ServiceRegistry
+        /// for additional service registrations
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry = null)
 
         {
+            
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
 
             registry = registry ?? new ServiceRegistry();
-
-            registry.For<LoggerFilterOptions>().Use(c => c.GetInstance<IOptions<LoggerFilterOptions>>().Value);
-            
-            if (resolving == LoggingAndOptionResolving.Lamar)
-            {
-                registry.Policies.Add(new LoggerPolicy());
-                registry.Policies.Add(new OptionsPolicy());
-            }
 
             foreach (var descriptor in registry)
             {
