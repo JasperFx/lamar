@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Baseline;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
-using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.GenericWidgets;
 using StructureMap.Testing.Widget;
