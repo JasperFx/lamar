@@ -6,9 +6,9 @@ using Oakton.AspNetCore;
 namespace Lamar.Diagnostics
 {
     [Description("Runs Lamar's type scanning diagnostics", Name = "lamar-scanning")]
-    public class LamarScanningCommand : OaktonCommand<AspNetCoreInput>
+    public class LamarScanningCommand : OaktonCommand<NetCoreInput>
     {
-        public override bool Execute(AspNetCoreInput input)
+        public override bool Execute(NetCoreInput input)
         {
             using (var host = input.BuildHost())
             {

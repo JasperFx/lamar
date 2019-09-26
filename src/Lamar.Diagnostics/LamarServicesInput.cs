@@ -10,7 +10,7 @@ using Oakton.AspNetCore;
 namespace Lamar.Diagnostics
 {
     
-    public class LamarServicesInput : AspNetCoreInput
+    public class LamarServicesInput : NetCoreInput
     {
         [Description("Optional file to write the results")]
         public string FileFlag { get; set; }
