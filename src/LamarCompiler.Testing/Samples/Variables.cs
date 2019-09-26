@@ -1,16 +1,19 @@
 ﻿using System;
-using System.Data.SqlClient;
 using LamarCodeGeneration.Model;
-#if !NETCOREAPP3_0
+using LamarCompiler.Testing.Codegen;
+using Shouldly;
+using Xunit;
+#if NETCOREAPP2_0
 using Microsoft.AspNetCore.Http;
 #endif
-using Shouldly;
-using StructureMap.Testing.Widget;
-using StructureMap.Testing.Widget3;
-using Xunit;
 
-namespace Lamar.Testing.Samples
+namespace LamarCompiler.Testing.Samples
 {
+    public interface IService{}
+    public class WhateverService : IService{}
+    
+    public class SqlConnection{}
+    
     public class Variables
     {
         [Fact]
@@ -49,7 +52,7 @@ namespace Lamar.Testing.Samples
             // ENDSAMPLE
 
 
-#if !NETCOREAPP3_0
+#if NETCOREAPP2_0
             // SAMPLE: variable-dependencies
             var context = Variable.For<HttpContext>();
             var response = new Variable(typeof(HttpResponse), $"{context.Usage}.{nameof(HttpContext.Response)}");

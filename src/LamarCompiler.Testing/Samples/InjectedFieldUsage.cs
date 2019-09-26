@@ -2,11 +2,10 @@
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
-using LamarCompiler;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Lamar.Testing.Samples
+namespace LamarCompiler.Testing.Samples
 {
     public class InjectedFieldUsage
     {

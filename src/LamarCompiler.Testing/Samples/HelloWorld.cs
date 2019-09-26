@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
-using LamarCompiler;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Lamar.Testing.Samples
+namespace LamarCompiler.Testing.Samples
 {
     public interface IGreeter
     {
@@ -20,6 +19,7 @@ namespace Lamar.Testing.Samples
         {
             _output = output;
         }
+#if !NET461
 
         [Fact]
         public void say_hello()
@@ -32,7 +32,7 @@ namespace Lamar.Testing.Samples
                 w.Write(@"
 
 
-public class HelloWorld : Lamar.Testing.Samples.IGreeter
+public class HelloWorld : LamarCompiler.Testing.Samples.IGreeter
 {
     public string Greetings()
     {
@@ -48,6 +48,7 @@ public class HelloWorld : Lamar.Testing.Samples.IGreeter
             _output.WriteLine(greeter.Greetings());
             
         }
+#endif
 
 
 

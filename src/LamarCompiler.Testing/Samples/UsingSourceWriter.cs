@@ -1,10 +1,9 @@
 ﻿using System;
 using LamarCodeGeneration;
-using LamarCompiler;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Lamar.Testing.Samples
+namespace LamarCompiler.Testing.Samples
 {
     public class UsingSourceWriter
     {

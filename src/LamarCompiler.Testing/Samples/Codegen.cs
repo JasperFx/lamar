@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using LamarCodeGeneration;
-using LamarCompiler;
 using Shouldly;
 using Xunit;
 
-namespace Lamar.Testing.Samples
+namespace LamarCompiler.Testing.Samples
 {
     // SAMPLE: IOperation
     public interface IOperation
@@ -39,7 +38,7 @@ namespace Lamar.Testing.Samples
             // Compile and generate a new .Net Assembly object
             // in memory
             var assembly = generator.Generate(@"
-using Lamar.Testing.Samples;
+using LamarCompiler.Testing.Samples;
 
 namespace Generated
 {
