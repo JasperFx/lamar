@@ -41,11 +41,11 @@ end
 
 desc "Pack up the nupkg file"
 task :pack => [:compile] do
-    sh "dotnet pack src/LamarCodeGeneration/LamarCodeGeneration.csproj -o ./../../artifacts --configuration Release"
-	sh "dotnet pack src/LamarCompiler/LamarCompiler.csproj -o ./../../artifacts --configuration Release"
-	sh "dotnet pack src/Lamar/Lamar.csproj -o ./../../artifacts --configuration Release"
-	sh "dotnet pack src/Lamar.Diagnostics/Lamar.Diagnostics.csproj -o ./../../artifacts --configuration Release"
-	sh "dotnet pack src/Lamar.Microsoft.DependencyInjection/Lamar.Microsoft.DependencyInjection.csproj -o ./../../artifacts --configuration Release"
+    sh "dotnet pack src/LamarCodeGeneration/LamarCodeGeneration.csproj -o ./artifacts --configuration Release"
+	sh "dotnet pack src/LamarCompiler/LamarCompiler.csproj -o ./artifacts --configuration Release"
+	sh "dotnet pack src/Lamar/Lamar.csproj -o ./artifacts --configuration Release"
+	sh "dotnet pack src/Lamar.Diagnostics/Lamar.Diagnostics.csproj -o ./artifacts --configuration Release"
+	sh "dotnet pack src/Lamar.Microsoft.DependencyInjection/Lamar.Microsoft.DependencyInjection.csproj -o ./artifacts --configuration Release"
 end
 
 desc "Try to run commands"
