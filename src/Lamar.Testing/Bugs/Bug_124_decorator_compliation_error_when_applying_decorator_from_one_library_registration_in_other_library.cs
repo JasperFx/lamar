@@ -1,11 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Baseline;
-using Microsoft.Extensions.Options;
 using Shouldly;
-using StructureMap.Testing.Acceptance;
-using StructureMap.Testing.Widget;
 using Widget.Core.Interfaces;
 using Widget.Aspect.Logger;
 using Widget.Instance;

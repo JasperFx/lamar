@@ -1,8 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Lamar.IoC.Instances;
+#if !NETCOREAPP3_0
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http.Features;
+#endif
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -156,6 +158,14 @@ namespace Lamar.Testing.IoC
             guy.Number.ShouldBe(11);
         }
     }
+
+#if NETCOREAPP3_0
+    public interface IServer{}
+    
+    public interface IHttpApplication<T>{}
+    
+    public interface IFeatureCollection{}
+#endif
 
     public class NulloServer : IServer
     {
