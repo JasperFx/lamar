@@ -1,5 +1,8 @@
 <!--title:Integration with ASP.Net Core-->
 
+<[info]>
+As of Lamar.Microsoft.DependencyInjection 4.0, Lamar successfully support .Net Core 3 and ASP.Net Core 3.0.
+<[/info]>
 
 To use Lamar within ASP.Net Core applications, also install the [Lamar.Microsoft.DependencyInjection](https://www.nuget.org/packages/Lamar.Microsoft.DependencyInjection/) library from Nuget to your ASP.Net Core project (and you can thank Microsoft for the clumsy naming convention, thank you).
 
@@ -23,6 +26,10 @@ And that is that, you're ready to run your ASP.Net Core application with Lamar h
 HTTP requests.
 
 ## Extended Command Line Diagnostics for ASP.Net Core
+
+<[info]>
+If you are targeting .Net Core 3.0 and/or `netstandard2.1`, use the newly consolidated [HostBuilder](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0) instead of the previous `IWebHostBuilder`.
+<[/info]>
 
 New with the Lamar 3.1.0 release is a separate Nuget package named *Lamar.Diagnostics* that can be used to add easy access to the <[linkto:documentation/ioc/diagnostics;title=Lamar diagnostics]> for your ASP.Net Core application from the command line.
 
