@@ -80,6 +80,9 @@
 
               <div id="main-pane">
                 <!--title:Integration with ASP.Net Core-->
+<div class="alert-info alert"><p><strong>Note!</strong>
+As of Lamar.Microsoft.DependencyInjection 4.0, Lamar successfully support .Net Core 3 and ASP.Net Core 3.0.</p>
+</div>
 <p>To use Lamar within ASP.Net Core applications, also install the <a href="https://www.nuget.org/packages/Lamar.Microsoft.DependencyInjection/">Lamar.Microsoft.DependencyInjection</a> library from Nuget to your ASP.Net Core project (and you can thank Microsoft for the clumsy naming convention, thank you).</p>
 <p>With that Nuget installed, your normal ASP.Net Core bootstrapping changes just slightly. When you bootstrap your <code>IWebHostBuilder</code> object
 that configures ASP.Net Core, you also need to call the <code>UseLamar()</code> method as shown below:</p>
@@ -94,6 +97,9 @@ provides.</p>
 <p>And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.</p>
 <h2 id="extended-command-line-diagnostics-for-asp.net-core">Extended Command Line Diagnostics for ASP.Net Core</h2>
+<div class="alert-info alert"><p><strong>Note!</strong>
+If you are targeting .Net Core 3.0 and/or <code>netstandard2.1</code>, use the newly consolidated <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0">HostBuilder</a> instead of the previous <code>IWebHostBuilder</code>.</p>
+</div>
 <p>New with the Lamar 3.1.0 release is a separate Nuget package named <em>Lamar.Diagnostics</em> that can be used to add easy access to the <a href="/lamar/documentation/ioc/diagnostics">Lamar diagnostics</a> for your ASP.Net Core application from the command line.</p>
 <p>First, you need to be using the <a href="https://jasperfx.github.io/oakton/documentation/aspnetcore/">Oakton.AspNetCore</a> package to execute commands in your ASP.Net Core application like this:</p>
 <pre><code class="language-csharp">&#xA;var registry = new ServiceRegistry();&#xA;registry.Scan(x =&gt;&#xA;{&#xA;    x.Assembly(typeof(Program).Assembly);&#xA;    x.WithDefaultConventions();&#xA;});&#xA;&#xA;var builder = new WebHostBuilder();&#xA;return builder&#xA;    // Replaces the built in DI container&#xA;    // with Lamar&#xA;    .UseLamar(registry)&#xA;&#xA;    // Normal ASP.Net Core bootstrapping&#xA;    .UseUrls(&quot;http://localhost:5002&quot;)&#xA;    .UseKestrel()&#xA;    .UseStartup&lt;Startup&gt;()&#xA;    .RunOaktonCommands(args);&#xA;</code></pre>
