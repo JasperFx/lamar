@@ -5,6 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Baseline;
 using Lamar.Microsoft.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -168,7 +172,66 @@ namespace Lamar.AspNetCoreTests
             }
         }
 
-        public class MyServiceRegistry : ServiceRegistry
+		[Fact]
+		public void can_see_endpoints_when_controllers_added_from_ServiceRegistry()
+		{
+			var builder = new HostBuilder()
+				.ConfigureWebHostDefaults(webBuilder =>
+				{
+					webBuilder.Configure(app =>
+					{
+						app.UseRouting();
+						app.UseEndpoints(endpoints =>
+						{
+							endpoints.MapControllers();
+						});						
+					});
+
+					// this works
+					//webBuilder.ConfigureServices(services =>
+					//{
+					//	services.AddControllers();
+					//});
+				})
+				.ConfigureServices((context, services) =>
+				{
+					// This is needed because of https://github.com/aspnet/Logging/issues/691
+					services.AddSingleton<ILoggerFactory, LoggerFactory>(sp =>
+						new LoggerFactory(
+							sp.GetRequiredService<IEnumerable<ILoggerProvider>>(),
+							sp.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
+						)
+					);
+				})
+				// this also works
+				//.ConfigureContainer<ServiceRegistry>(container =>
+				//{
+				//	container.AddControllers();
+				//})
+				.UseLamar<MyControllerRegistry>();
+
+			using (var host = builder.Start())
+			{
+				
+				var container = host.Services.ShouldBeOfType<Container>();
+				var service = host.Services.GetService<EndpointDataSource>();
+
+				_output.WriteLine(container.WhatDoIHave());
+				service.ShouldNotBeNull();
+				service.Endpoints.Count().ShouldBeGreaterThan(0);
+			}
+		}
+
+		public class MyControllerRegistry : ServiceRegistry
+		{
+			public MyControllerRegistry()
+			{				
+				// this fails
+				this.AddControllers();
+			}			
+		}		
+
+		public class MyServiceRegistry : ServiceRegistry
         {
             public MyServiceRegistry()
             {
