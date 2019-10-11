@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.Scanning
 {
     public class CallingAssembly
     {
+        /// <summary>
+        /// Method is used to get the stack trace in english
+        /// </summary>
+        /// <returns>Stack trace in english</returns>
+        private static string GetStackTraceInEnglish()
+        {
+            var currentUiCulture = Thread.CurrentThread.CurrentUICulture;
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            string trace = Environment.StackTrace;
+            Thread.CurrentThread.CurrentUICulture = currentUiCulture;
+            return trace;
+        }
+
         internal static Assembly Find()
         {
-            string trace = Environment.StackTrace;
-
-
+            string trace = GetStackTraceInEnglish();
 
             var parts = trace.Split('\n');
 
