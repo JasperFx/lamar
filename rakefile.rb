@@ -42,6 +42,7 @@ end
 desc "Pack up the nupkg file"
 task :pack => [:compile] do
     sh "dotnet pack src/LamarCodeGeneration/LamarCodeGeneration.csproj -o ./artifacts --configuration Release"
+    sh "dotnet pack src/LamarCodeGeneration.Commands/LamarCodeGeneration.Commands.csproj -o ./artifacts --configuration Release"
 	sh "dotnet pack src/LamarCompiler/LamarCompiler.csproj -o ./artifacts --configuration Release"
 	sh "dotnet pack src/Lamar/Lamar.csproj -o ./artifacts --configuration Release"
 	sh "dotnet pack src/Lamar.Diagnostics/Lamar.Diagnostics.csproj -o ./artifacts --configuration Release"
@@ -56,6 +57,16 @@ task :commands do
         sh "dotnet run -- lamar-services"
         sh "dotnet run -- lamar-validate ConfigOnly"
 	end
+	
+    Dir.chdir "src/GeneratorTarget" do
+        sh "dotnet run -- ?"
+        sh "dotnet run -- codegen"
+        sh "dotnet run -- codegen preview"
+        sh "dotnet run -- codegen write"
+        sh "dotnet run -- write"
+        sh "dotnet run -- codegen test"
+        sh "dotnet run -- codegen delete"
+    end
 end
 
 

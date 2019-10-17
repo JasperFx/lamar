@@ -50,6 +50,7 @@ namespace LamarCodeGeneration
         public void WriteGeneratedCode(Action<string> onFileWritten, string directory = null)
         {
             directory = directory ?? _rules.GeneratedCodeOutputPath.ToFullPath();
+            new FileSystem().CreateDirectory(directory);
 
 
             foreach (var generator in _generators)
@@ -71,6 +72,11 @@ namespace LamarCodeGeneration
             return code;
         }
 
+        /// <summary>
+        /// Attempts to generate all the known code types in the system
+        /// </summary>
+        /// <param name="withAssembly"></param>
+        /// <exception cref="GeneratorCompilationFailureException"></exception>
         public void TryBuildAndCompileAll(Action<GeneratedAssembly, IServiceVariableSource> withAssembly)
         {
             foreach (var generator in _generators)
@@ -89,11 +95,15 @@ namespace LamarCodeGeneration
             }
         }
 
-        public void LoadPrebuiltTypes(Assembly assembly)
+        /// <summary>
+        /// Attach pre-built types in the application assembly
+        /// </summary>
+        /// <param name="assembly">The assembly containing the pre-built types. If null, this falls back to the entry assembly of the running application</param>
+        public void LoadPrebuiltTypes(Assembly assembly = null)
         {
             foreach (var generator in _generators)
             {
-                generator.AttachPreBuiltTypes(assembly, _services);
+                generator.AttachPreBuiltTypes(assembly ?? _rules.ApplicationAssembly, _services);
             }
         }
 

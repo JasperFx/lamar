@@ -15,8 +15,10 @@ namespace GeneratorTarget
             using (var host = input.BuildHost())
             {
                 var generator = host.Services.GetRequiredService<DynamicCodeBuilder>();
-                generator.TryBuildAndCompileAll((a, s) => new AssemblyGenerator().Compile(a, s));
-                generator.AttachAllCompiledTypes(host.Services);
+                //generator.TryBuildAndCompileAll((a, s) => new AssemblyGenerator().Compile(a, s));
+                //generator.AttachAllCompiledTypes(host.Services);
+                
+                generator.LoadPrebuiltTypes();
 
                 var writers = host.Services.As<IContainer>().Model.GetAllPossible<ConsoleWriterGenerator>();
 
