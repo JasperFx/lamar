@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LamarCodeGeneration\LamarCodeGeneration.csproj" />
+      <ProjectReference Include="..\LamarCompiler\LamarCompiler.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Oakton.AspNetCore" Version="2.0.0" />
+    </ItemGroup>
+
+</Project>
