@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Hosting;
 #endif
 using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 
 namespace Lamar.Microsoft.DependencyInjection
@@ -103,7 +106,11 @@ namespace Lamar.Microsoft.DependencyInjection
         public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry = null)
 
         {
-            
+            services.AddSingleton<ILoggerFactory, LoggerFactory>(sp =>
+                new LoggerFactory(
+                    sp.GetRequiredService<IEnumerable<ILoggerProvider>>(),
+                    sp.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
+                ));
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
 
