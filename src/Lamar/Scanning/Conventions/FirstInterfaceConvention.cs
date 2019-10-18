@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
+using BaselineTypeDiscovery;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.Scanning.Conventions
@@ -12,12 +12,9 @@ namespace Lamar.Scanning.Conventions
             foreach (var type in types.FindTypes(TypeClassification.Concretes).Where(x => x.GetConstructors().Any()))
             {
                 var interfaceType = type.GetInterfaces().FirstOrDefault(x => x != typeof(IDisposable));
-                if (interfaceType != null && !interfaceType.HasAttribute<LamarIgnoreAttribute>() && !type.IsOpenGeneric())
-                {
-                    services.AddType(interfaceType, type);
-                }
+                if (interfaceType != null && !interfaceType.HasAttribute<LamarIgnoreAttribute>() &&
+                    !type.IsOpenGeneric()) services.AddType(interfaceType, type);
             }
-
         }
 
         public override string ToString()

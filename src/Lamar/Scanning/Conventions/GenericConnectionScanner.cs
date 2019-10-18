@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BaselineTypeDiscovery;
 using LamarCodeGeneration;
-using Microsoft.Extensions.DependencyInjection;
 using LamarCodeGeneration.Util;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
 {
@@ -18,55 +19,39 @@ namespace Lamar.Scanning.Conventions
             _openType = openType;
 
             if (!_openType.IsOpenGeneric())
-            {
-                throw new InvalidOperationException("This scanning convention can only be used with open generic types");
-            }
+                throw new InvalidOperationException(
+                    "This scanning convention can only be used with open generic types");
         }
 
-        public override string ToString()
-        {
-            return "Connect all implementations of open generic type " + _openType.FullNameInCode();
-        }
-
-        public void ScanTypes(TypeSet types, ServiceRegistry services)
+        public void ScanTypes(
+            TypeSet types, ServiceRegistry services)
         {
             foreach (var type in types.AllTypes())
             {
                 var interfaceTypes = type.FindInterfacesThatClose(_openType).ToArray();
                 if (!interfaceTypes.Any()) continue;
 
-                if (type.IsConcrete())
-                {
-                    _concretions.Add(type);
-                }
+                if (type.IsConcrete()) _concretions.Add(type);
 
-                foreach (var interfaceType in interfaceTypes)
-                {
-                    _interfaces.Fill(interfaceType);
-                }
+                foreach (var interfaceType in interfaceTypes) _interfaces.Fill(interfaceType);
             }
 
 
             foreach (var @interface in _interfaces)
             {
                 var exactMatches = _concretions.Where(x => x.CanBeCastTo(@interface)).ToArray();
-                foreach (var type in exactMatches)
-                {
-                    services.AddTransient(@interface, type);
-                }
+                foreach (var type in exactMatches) services.AddTransient(@interface, type);
 
-                if (!@interface.IsOpenGeneric())
-                {
-                    addConcretionsThatCouldBeClosed(@interface, services);
-                }
+                if (!@interface.IsOpenGeneric()) addConcretionsThatCouldBeClosed(@interface, services);
             }
 
             var concretions = services.ConnectedConcretions();
-            foreach (var type in _concretions)
-            {
-                concretions.Fill(type);
-            }
+            foreach (var type in _concretions) concretions.Fill(type);
+        }
 
+        public override string ToString()
+        {
+            return "Connect all implementations of open generic type " + _openType.FullNameInCode();
         }
 
         private void addConcretionsThatCouldBeClosed(Type @interface, IServiceCollection services)
@@ -77,7 +62,6 @@ namespace Lamar.Scanning.Conventions
                 {
                     try
                     {
-
                         services.AddTransient(@interface, type.MakeGenericType(@interface.GetGenericArguments()));
                     }
                     catch (Exception)

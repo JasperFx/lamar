@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using BaselineTypeDiscovery;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;

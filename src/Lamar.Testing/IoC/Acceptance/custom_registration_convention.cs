@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using BaselineTypeDiscovery;
 using Lamar.Scanning;
 using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +46,7 @@ namespace Lamar.Testing.IoC.Acceptance
                     
                 };
             }
+
 
         }
 

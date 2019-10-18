@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using BaselineTypeDiscovery;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;
@@ -16,11 +17,6 @@ namespace Lamar.Scanning.Conventions
             _serviceType = serviceType;
         }
 
-        public bool Matches(Type type)
-        {
-            return Instance.CanBeCastTo(type, _serviceType) && type.GetConstructors().Any() && type.CanBeCreated();
-        }
-
         public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
             if (_serviceType.IsOpenGeneric())
@@ -34,12 +30,14 @@ namespace Lamar.Scanning.Conventions
                 {
                     var serviceType = determineLeastSpecificButValidType(_serviceType, type);
                     var instance = services.AddType(serviceType, type);
-                    if (instance != null)
-                    {
-                        instance.Name = _namePolicy(type);
-                    }
+                    if (instance != null) instance.Name = _namePolicy(type);
                 });
             }
+        }
+
+        public bool Matches(Type type)
+        {
+            return Instance.CanBeCastTo(type, _serviceType) && type.GetConstructors().Any() && type.CanBeCreated();
         }
 
         private static Type determineLeastSpecificButValidType(Type pluginType, Type type)

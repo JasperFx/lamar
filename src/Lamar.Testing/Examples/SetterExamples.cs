@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using BaselineTypeDiscovery;
 using Lamar.Scanning;
 using Lamar.Scanning.Conventions;
 using Microsoft.Win32;

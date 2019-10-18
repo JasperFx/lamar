@@ -8,7 +8,6 @@ namespace Lamar.Scanning.Conventions
 {
     public static class TypeExtensions
     {
-
         public static bool CanBeCreated(this Type type)
         {
             return type.IsConcrete() && type.GetConstructors().Any();
@@ -30,29 +29,22 @@ namespace Lamar.Scanning.Conventions
             if (!TPluggedType.IsConcrete()) yield break;
 
             if (templateType.GetTypeInfo().IsInterface)
-            {
                 foreach (
                     var interfaceType in
                     TPluggedType.GetInterfaces()
-                        .Where(type => type.GetTypeInfo().IsGenericType && (type.GetGenericTypeDefinition() == templateType)))
-                {
+                        .Where(type =>
+                            type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == templateType))
                     yield return interfaceType;
-                }
-            }
             else if (TPluggedType.GetTypeInfo().BaseType.GetTypeInfo().IsGenericType &&
-                     (TPluggedType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == templateType))
-            {
+                     TPluggedType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == templateType)
                 yield return TPluggedType.GetTypeInfo().BaseType;
-            }
 
             if (TPluggedType.GetTypeInfo().BaseType == typeof(object)) yield break;
 
-            foreach (var interfaceType in rawFindInterfacesThatCloses(TPluggedType.GetTypeInfo().BaseType, templateType))
-            {
-                yield return interfaceType;
-            }
+            foreach (var interfaceType in rawFindInterfacesThatCloses(TPluggedType.GetTypeInfo().BaseType, templateType)
+            ) yield return interfaceType;
         }
-        
+
         public static bool CouldCloseTo(this Type openConcretion, Type closedInterface)
         {
             var openInterface = closedInterface.GetGenericTypeDefinition();

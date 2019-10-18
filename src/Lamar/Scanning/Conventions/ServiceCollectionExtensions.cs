@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Lamar.IoC.Instances;
-using Microsoft.Extensions.DependencyInjection;
 using LamarCodeGeneration.Util;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
 {
     [LamarIgnore]
     public class ConnectedConcretions : List<Type>
     {
-        
     }
-    
+
     public static class ServiceCollectionExtensions
     {
         public static bool HasScanners(this IEnumerable<ServiceDescriptor> services)
         {
             return services.Any(x => x.ServiceType == typeof(AssemblyScanner));
         }
-        
+
         public static ConnectedConcretions ConnectedConcretions(this IServiceCollection services)
         {
             var concretions = services.FirstOrDefault(x => x.ServiceType == typeof(ConnectedConcretions))
@@ -34,9 +32,9 @@ namespace Lamar.Scanning.Conventions
 
             return concretions;
         }
-        
+
         /// <summary>
-        /// Add a registration via Lamar's intrinsic Instance type
+        ///     Add a registration via Lamar's intrinsic Instance type
         /// </summary>
         /// <param name="services"></param>
         /// <param name="instance"></param>
@@ -56,14 +54,14 @@ namespace Lamar.Scanning.Conventions
 
             return false;
         }
-        
+
         public static Instance AddType(this IServiceCollection services, Type serviceType, Type implementationType)
         {
             var hasAlready = services.Any(x => x.Matches(serviceType, implementationType));
             if (!hasAlready)
             {
                 var instance = new ConstructorInstance(serviceType, implementationType, ServiceLifetime.Transient);
-                
+
                 services.Add(instance);
 
                 return instance;
@@ -89,6 +87,5 @@ namespace Lamar.Scanning.Conventions
                 .Select(x => x.ImplementationType)
                 .ToArray();
         }
-
     }
 }

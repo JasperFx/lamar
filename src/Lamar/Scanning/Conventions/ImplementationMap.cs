@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
+using BaselineTypeDiscovery;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.Scanning.Conventions
@@ -9,16 +9,15 @@ namespace Lamar.Scanning.Conventions
     {
         public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
-            var interfaces = types.FindTypes(TypeClassification.Interfaces | TypeClassification.Closed).Where(x => x != typeof(IDisposable));
-            var concretes = types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x => x.GetConstructors().Any()).ToArray();
+            var interfaces = types.FindTypes(TypeClassification.Interfaces | TypeClassification.Closed)
+                .Where(x => x != typeof(IDisposable));
+            var concretes = types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed)
+                .Where(x => x.GetConstructors().Any()).ToArray();
 
             interfaces.Each(@interface =>
             {
                 var implementors = concretes.Where(x => x.CanBeCastTo(@interface)).ToArray();
-                if (implementors.Count() == 1)
-                {
-                    services.AddType(@interface, implementors.Single());
-                }
+                if (implementors.Count() == 1) services.AddType(@interface, implementors.Single());
             });
         }
 

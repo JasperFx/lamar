@@ -4,21 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using BaselineTypeDiscovery;
 using LamarCodeGeneration.Util;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 #pragma warning disable 1591
+
+[assembly:IgnoreAssembly]
 
 namespace Lamar.Scanning.Conventions
 {
     [LamarIgnore]
     public class AssemblyScanner : IAssemblyScanner
     {
-        private readonly ServiceRegistry _parent;
         private readonly List<Assembly> _assemblies = new List<Assembly>();
         private readonly CompositeFilter<Type> _filter = new CompositeFilter<Type>();
-        private Task<TypeSet> _typeFinder;
+        private readonly ServiceRegistry _parent;
 
         public AssemblyScanner(ServiceRegistry parent)
         {
@@ -26,6 +26,10 @@ namespace Lamar.Scanning.Conventions
 
             Exclude(type => type.HasAttribute<LamarIgnoreAttribute>());
         }
+
+        public List<IRegistrationConvention> Conventions { get; } = new List<IRegistrationConvention>();
+
+        public Task<TypeSet> TypeFinder { get; private set; }
 
 
         public string Description { get; set; }
@@ -41,8 +45,6 @@ namespace Lamar.Scanning.Conventions
         {
             Assembly(AssemblyLoader.ByName(assemblyName));
         }
-
-        public List<IRegistrationConvention> Conventions { get; } = new List<IRegistrationConvention>();
 
         public void Convention<T>() where T : IRegistrationConvention, new()
         {
@@ -127,7 +129,7 @@ namespace Lamar.Scanning.Conventions
             {
                 Overwrites = behavior
             };
-            
+
             With(convention);
         }
 
@@ -150,6 +152,94 @@ namespace Lamar.Scanning.Conventions
             With(convention);
         }
 
+        public void LookForRegistries()
+        {
+            Convention<FindRegistriesScanner>();
+        }
+
+
+        public void TheCallingAssembly()
+        {
+            if (_parent.GetType().Assembly != typeof(ServiceRegistry).Assembly)
+            {
+                Assembly(_parent.GetType().Assembly);
+                return;
+            }
+
+            var callingAssembly = CallingAssembly.Find();
+
+            if (callingAssembly != null)
+                Assembly(callingAssembly);
+            else
+                throw new InvalidOperationException(
+                    "Could not determine the calling assembly, you may need to explicitly call IAssemblyScanner.Assembly()");
+        }
+
+        public void AssembliesFromApplicationBaseDirectory()
+        {
+            AssembliesFromApplicationBaseDirectory(a => true);
+        }
+
+        public void AssembliesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter)
+        {
+            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter,
+                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); });
+
+            foreach (var assembly in assemblies) Assembly(assembly);
+        }
+
+        /// <summary>
+        ///     Choosing option will direct Jasper to *also* scan files ending in '*.exe'
+        /// </summary>
+        /// <param name="scanner"></param>
+        /// <param name="assemblyFilter"></param>
+        /// <param name="includeExeFiles"></param>
+        public void AssembliesAndExecutablesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter = null)
+        {
+            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter,
+                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true);
+
+            foreach (var assembly in assemblies) Assembly(assembly);
+        }
+
+        public void AssembliesAndExecutablesFromPath(string path)
+        {
+            var assemblies = AssemblyFinder.FindAssemblies(path,
+                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true);
+
+            foreach (var assembly in assemblies) Assembly(assembly);
+        }
+
+        public void AssembliesFromPath(string path)
+        {
+            var assemblies = AssemblyFinder.FindAssemblies(path,
+                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false);
+
+            foreach (var assembly in assemblies) Assembly(assembly);
+        }
+
+        public void AssembliesAndExecutablesFromPath(string path,
+            Func<Assembly, bool> assemblyFilter)
+        {
+            var assemblies = AssemblyFinder.FindAssemblies(path,
+                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true)
+                .Where(assemblyFilter);
+
+
+            foreach (var assembly in assemblies) Assembly(assembly);
+        }
+
+        public void AssembliesFromPath(string path,
+            Func<Assembly, bool> assemblyFilter)
+        {
+            var assemblies = AssemblyFinder.FindAssemblies(path,
+                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false)
+                .Where(assemblyFilter);
+
+
+            foreach (var assembly in assemblies) Assembly(assembly);
+        }
+
         public void Describe(StringWriter writer)
         {
             writer.WriteLine(Description);
@@ -167,26 +257,15 @@ namespace Lamar.Scanning.Conventions
         public void Start()
         {
             if (!Conventions.Any())
-            {
-                throw new InvalidOperationException($"There are no {nameof(IRegistrationConvention)}'s in this scanning operation. ");
-            }
+                throw new InvalidOperationException(
+                    $"There are no {nameof(IRegistrationConvention)}'s in this scanning operation. ");
 
-            _typeFinder = TypeRepository.FindTypes(_assemblies, type => _filter.Matches(type));
+            TypeFinder = TypeRepository.FindTypes(_assemblies, type => _filter.Matches(type));
         }
-
-        public Task<TypeSet> TypeFinder => _typeFinder;
 
         public void ApplyRegistrations(ServiceRegistry services)
         {
-            foreach (var convention in Conventions)
-            {
-                convention.ScanTypes(_typeFinder.Result, services);
-            }
-        }
-        
-        public void LookForRegistries()
-        {
-            Convention<FindRegistriesScanner>();
+            foreach (var convention in Conventions) convention.ScanTypes(TypeFinder.Result, services);
         }
 
         public bool Contains(string assemblyName)
@@ -195,125 +274,7 @@ namespace Lamar.Scanning.Conventions
                 .Select(assembly => new AssemblyName(assembly.FullName))
                 .Any(aName => aName.Name == assemblyName);
         }
-
-
-        public void TheCallingAssembly()
-        {
-            if (_parent.GetType().Assembly != typeof(ServiceRegistry).Assembly)
-            {
-                Assembly(_parent.GetType().Assembly);
-                return;
-            }
-            
-            var callingAssembly = CallingAssembly.Find();
-
-            if (callingAssembly != null)
-            {
-                Assembly(callingAssembly);
-            }
-            else
-            {
-                throw new InvalidOperationException("Could not determine the calling assembly, you may need to explicitly call IAssemblyScanner.Assembly()");
-            }
-        }
-
-        public void AssembliesFromApplicationBaseDirectory()
-        {
-            AssembliesFromApplicationBaseDirectory(a => true);
-        }
-
-        public void AssembliesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter)
-        {
-            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, txt =>
-            {
-                Console.WriteLine("Jasper could not load assembly from file " + txt);
-            }, includeExeFiles: false);
-
-            foreach (var assembly in assemblies)
-            {
-                Assembly(assembly);
-            }
-        }
-
-        /// <summary>
-        /// Choosing option will direct Jasper to *also* scan files ending in '*.exe'
-        /// </summary>
-        /// <param name="scanner"></param>
-        /// <param name="assemblyFilter"></param>
-        /// <param name="includeExeFiles"></param>
-        public void AssembliesAndExecutablesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter = null)
-        {
-            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, txt =>
-            {
-                Console.WriteLine("Jasper could not load assembly from file " + txt);
-            }, includeExeFiles: true);
-
-            foreach (var assembly in assemblies)
-            {
-                Assembly(assembly);
-            }
-        }
-
-        public void AssembliesAndExecutablesFromPath(string path)
-        {
-            var assemblies = AssemblyFinder.FindAssemblies(path, txt =>
-            {
-                Console.WriteLine("Jasper could not load assembly from file " + txt);
-            }, includeExeFiles: true);
-
-            foreach (var assembly in assemblies)
-            {
-                Assembly(assembly);
-            }
-        }
-
-        public void AssembliesFromPath(string path)
-        {
-            var assemblies = AssemblyFinder.FindAssemblies(path, txt =>
-            {
-                Console.WriteLine("Jasper could not load assembly from file " + txt);
-            }, includeExeFiles: false);
-
-            foreach (var assembly in assemblies)
-            {
-                Assembly(assembly);
-            }
-        }
-
-        public void AssembliesAndExecutablesFromPath(string path,
-            Func<Assembly, bool> assemblyFilter)
-        {
-            var assemblies = AssemblyFinder.FindAssemblies(path, txt =>
-            {
-                Console.WriteLine("Jasper could not load assembly from file " + txt);
-            }, includeExeFiles: true).Where(assemblyFilter);
-
-
-            foreach (var assembly in assemblies)
-            {
-                Assembly(assembly);
-            }
-        }
-
-        public void AssembliesFromPath(string path,
-            Func<Assembly, bool> assemblyFilter)
-        {
-            var assemblies = AssemblyFinder.FindAssemblies(path, txt =>
-            {
-                Console.WriteLine("Jasper could not load assembly from file " + txt);
-            }, includeExeFiles: false).Where(assemblyFilter);
-
-
-            foreach (var assembly in assemblies)
-            {
-                Assembly(assembly);
-            }
-        }
-
-
     }
-
-
 }
 
 #pragma warning restore 1591
