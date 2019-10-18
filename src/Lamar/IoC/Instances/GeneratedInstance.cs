@@ -47,7 +47,6 @@ namespace Lamar.IoC.Instances
             yield return ImplementationType.Assembly;
         }
 
-        private int count = 0;
 
         public sealed override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
         {

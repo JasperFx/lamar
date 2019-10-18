@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Oakton.AspNetCore" Version="2.1.0" />
+      <PackageReference Include="Oakton.AspNetCore" Version="2.1.2" />
     </ItemGroup>
 
 </Project>
