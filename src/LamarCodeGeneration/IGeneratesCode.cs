@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using LamarCodeGeneration.Model;
 
 namespace LamarCodeGeneration
@@ -7,9 +8,9 @@ namespace LamarCodeGeneration
     public interface IGeneratesCode
     {
         IServiceVariableSource AssemblyTypes(GenerationRules rules, GeneratedAssembly assembly);
-        void AttachPreBuiltTypes(Assembly assembly, IServiceProvider services);
+        Task AttachPreBuiltTypes(GenerationRules rules, Assembly assembly, IServiceProvider services);
 
-        void AttachGeneratedTypes(IServiceProvider services);
+        Task AttachGeneratedTypes(GenerationRules rules, IServiceProvider services);
         
         /// <summary>
         /// This is strictly for diagnostics to identify the code generating strategy

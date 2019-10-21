@@ -99,22 +99,29 @@ namespace LamarCodeGeneration
         /// Attach pre-built types in the application assembly
         /// </summary>
         /// <param name="assembly">The assembly containing the pre-built types. If null, this falls back to the entry assembly of the running application</param>
-        public void LoadPrebuiltTypes(Assembly assembly = null)
+        public async Task LoadPrebuiltTypes(Assembly assembly = null)
         {
             foreach (var generator in _generators)
             {
-                generator.AttachPreBuiltTypes(assembly ?? _rules.ApplicationAssembly, _services);
+                await generator.AttachPreBuiltTypes(_rules, assembly ?? _rules.ApplicationAssembly, _services);
             }
         }
 
         public string[] CodeTypes => _generators.Select(x => x.CodeType).ToArray();
 
 
-        public void AttachAllCompiledTypes(IServiceProvider services)
+        /// <summary>
+        /// Allow each IGeneratesCode service to find and create objects from the newly
+        /// compiled assembly
+        /// compiled assembly
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public async Task AttachAllCompiledTypes(IServiceProvider services)
         {
             foreach (var generatesCode in _generators)
             {
-                generatesCode.AttachGeneratedTypes(services);
+                await generatesCode.AttachGeneratedTypes(_rules, services);
             }
         }
     }

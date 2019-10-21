@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Baseline;
 using Lamar;
 using Lamar.IoC.Instances;
@@ -39,7 +40,7 @@ namespace GeneratorTarget
             return null;
         }
 
-        public void AttachPreBuiltTypes(Assembly assembly, IServiceProvider services)
+        public Task AttachPreBuiltTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
         {
             var type = assembly.GetExportedTypes().FirstOrDefault(x => x.Name == TypeName);
             if (type == null)
@@ -48,11 +49,14 @@ namespace GeneratorTarget
             }
 
             _writer = Activator.CreateInstance(type).As<IConsoleWriter>();
+
+            return Task.CompletedTask;
         }
 
-        public void AttachGeneratedTypes(IServiceProvider services)
+        public Task AttachGeneratedTypes(GenerationRules rules, IServiceProvider services)
         {
             _writer = services.As<IContainer>().GetInstance(_generatedType.CompiledType).As<IConsoleWriter>();
+            return Task.CompletedTask;
         }
 
         public string CodeType { get; }
