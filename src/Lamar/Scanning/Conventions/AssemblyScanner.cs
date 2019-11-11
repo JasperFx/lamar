@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using BaselineTypeDiscovery;
 using LamarCodeGeneration.Util;
+using Microsoft.Extensions.DependencyInjection;
 
 #pragma warning disable 1591
 
@@ -65,12 +66,22 @@ namespace Lamar.Scanning.Conventions
 
         public FindAllTypesFilter AddAllTypesOf<TPluginType>()
         {
-            return AddAllTypesOf(typeof(TPluginType));
+            return AddAllTypesOf(typeof(TPluginType), ServiceLifetime.Transient);
+        }
+
+        public FindAllTypesFilter AddAllTypesOf<TPluginType>(ServiceLifetime lifetime)
+        {
+            return AddAllTypesOf(typeof(TPluginType), lifetime);
         }
 
         public FindAllTypesFilter AddAllTypesOf(Type pluginType)
         {
-            var filter = new FindAllTypesFilter(pluginType);
+            return AddAllTypesOf(pluginType, ServiceLifetime.Transient);
+        }
+
+        public FindAllTypesFilter AddAllTypesOf(Type pluginType, ServiceLifetime lifetime)
+        {
+            var filter = new FindAllTypesFilter(pluginType, lifetime);
             With(filter);
 
             return filter;
@@ -119,13 +130,23 @@ namespace Lamar.Scanning.Conventions
 
         public void WithDefaultConventions()
         {
-            var convention = new DefaultConventionScanner();
+            WithDefaultConventions(ServiceLifetime.Transient);
+        }
+
+        public void WithDefaultConventions(ServiceLifetime lifetime)
+        {
+            var convention = new DefaultConventionScanner(lifetime);
             With(convention);
         }
 
         public void WithDefaultConventions(OverwriteBehavior behavior)
         {
-            var convention = new DefaultConventionScanner
+            WithDefaultConventions(behavior, ServiceLifetime.Transient);
+        }
+
+        public void WithDefaultConventions(OverwriteBehavior behavior, ServiceLifetime lifetime)
+        {
+            var convention = new DefaultConventionScanner(lifetime)
             {
                 Overwrites = behavior
             };
@@ -135,20 +156,34 @@ namespace Lamar.Scanning.Conventions
 
         public void ConnectImplementationsToTypesClosing(Type openGenericType)
         {
-            var convention = new GenericConnectionScanner(openGenericType);
+            ConnectImplementationsToTypesClosing(openGenericType, ServiceLifetime.Transient);
+        }
+
+        public void ConnectImplementationsToTypesClosing(Type openGenericType, ServiceLifetime lifetime)
+        {
+            var convention = new GenericConnectionScanner(openGenericType, lifetime);
             With(convention);
         }
 
-
         public void RegisterConcreteTypesAgainstTheFirstInterface()
         {
-            var convention = new FirstInterfaceConvention();
+            RegisterConcreteTypesAgainstTheFirstInterface(ServiceLifetime.Transient);
+        }
+
+        public void RegisterConcreteTypesAgainstTheFirstInterface(ServiceLifetime lifetime)
+        {
+            var convention = new FirstInterfaceConvention(lifetime);
             With(convention);
         }
 
         public void SingleImplementationsOfInterface()
         {
-            var convention = new ImplementationMap();
+            SingleImplementationsOfInterface(ServiceLifetime.Transient);
+        }
+
+        public void SingleImplementationsOfInterface(ServiceLifetime lifetime)
+        {
+            var convention = new ImplementationMap(lifetime);
             With(convention);
         }
 

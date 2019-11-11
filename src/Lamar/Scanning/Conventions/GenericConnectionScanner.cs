@@ -13,10 +13,12 @@ namespace Lamar.Scanning.Conventions
         private readonly IList<Type> _concretions = new List<Type>();
         private readonly IList<Type> _interfaces = new List<Type>();
         private readonly Type _openType;
+        private readonly ServiceLifetime _lifetime;
 
-        public GenericConnectionScanner(Type openType)
+        public GenericConnectionScanner(Type openType, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             _openType = openType;
+            _lifetime = lifetime;
 
             if (!_openType.IsOpenGeneric())
                 throw new InvalidOperationException(
@@ -40,7 +42,7 @@ namespace Lamar.Scanning.Conventions
             foreach (var @interface in _interfaces)
             {
                 var exactMatches = _concretions.Where(x => x.CanBeCastTo(@interface)).ToArray();
-                foreach (var type in exactMatches) services.AddTransient(@interface, type);
+                foreach (var type in exactMatches) services.Add(new ServiceDescriptor(@interface, type, _lifetime));
 
                 if (!@interface.IsOpenGeneric()) addConcretionsThatCouldBeClosed(@interface, services);
             }
@@ -62,7 +64,7 @@ namespace Lamar.Scanning.Conventions
                 {
                     try
                     {
-                        services.AddTransient(@interface, type.MakeGenericType(@interface.GetGenericArguments()));
+                        services.Add(new ServiceDescriptor(@interface, type.MakeGenericType(@interface.GetGenericArguments()), _lifetime));
                     }
                     catch (Exception)
                     {

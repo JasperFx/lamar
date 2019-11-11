@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Lamar.Scanning.Conventions;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -67,6 +68,23 @@ namespace Lamar.Testing.Scanning.Conventions
             container.GetInstance<IFinder<string>>().ShouldBeOfType<StringFinder>();
             container.GetInstance<IFinder<int>>().ShouldBeOfType<IntFinder>();
             container.GetInstance<IFinder<double>>().ShouldBeOfType<DoubleFinder>();
+        }
+
+        [Theory]
+        [InlineData(ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        public void connect_implementations_with_lifetime(ServiceLifetime lifetime)
+        {
+            var container = new Container(x => x.Scan(o =>
+            {
+                o.TheCallingAssembly();
+                o.ConnectImplementationsToTypesClosing(typeof(IFinder<>), lifetime);
+            }));
+
+            container.Model.For<IFinder<string>>().Default.Lifetime.ShouldBe(lifetime);
+            container.Model.For<IFinder<int>>().Default.Lifetime.ShouldBe(lifetime);
+            container.Model.For<IFinder<double>>().Default.Lifetime.ShouldBe(lifetime);
         }
 
         [Fact]
@@ -137,6 +155,23 @@ namespace Lamar.Testing.Scanning.Conventions
             container.Model.For<Muppet>().Default.ImplementationType.ShouldBe(typeof(Grover));
         }
 
+        [Theory]
+        [InlineData(ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        public void single_implementation_with_lifetime(ServiceLifetime lifetime)
+        {
+            var container = Container.For(_ =>
+            {
+                _.Scan(x =>
+                {
+                    x.AssemblyContainingType<IShoes>();
+                    x.SingleImplementationsOfInterface(lifetime);
+                });
+            });
+
+            container.Model.For<Muppet>().Default.Lifetime.ShouldBe(lifetime);
+        }
 
         [Fact]
         public void use_default_scanning()
@@ -153,6 +188,26 @@ namespace Lamar.Testing.Scanning.Conventions
 
             container.Model.For<IShoes>().Default.ImplementationType.ShouldBe(typeof(Shoes));
             container.Model.For<IShorts>().Default.ImplementationType.ShouldBe(typeof(Shorts));
+        }
+
+        [Theory]
+        [InlineData(ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        public void use_default_scanning_with_lifetime(ServiceLifetime lifetime)
+        {
+            var container = Container.For(_ =>
+            {
+                _.Scan(x =>
+                {
+                    x.AssemblyContainingType<IShoes>();
+                    x.WithDefaultConventions(lifetime);
+                });
+
+            });
+
+            container.Model.For<IShoes>().Default.Lifetime.ShouldBe(lifetime);
+            container.Model.For<IShorts>().Default.Lifetime.ShouldBe(lifetime);
         }
 
         [Fact]
@@ -261,7 +316,21 @@ namespace Lamar.Testing.Scanning.Conventions
                 .ShouldBeOfType<MyNameIsNotConventionallyRelatedToMyInterface>();
         }
 
+        [Theory]
+        [InlineData(ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        public void single_implementation_with_lifetime(ServiceLifetime lifetime)
+        {
+            var container = new Container(registry => registry.Scan(x =>
+            {
+                x.TheCallingAssembly();
+                x.IncludeNamespaceContainingType<SingleImplementationScannerTester>();
+                x.SingleImplementationsOfInterface(lifetime);
+            }));
 
+            container.Model.For<IOnlyHaveASingleConcreteImplementation>().Default.Lifetime.ShouldBe(lifetime);
+        }
 
     }
 
@@ -317,7 +386,28 @@ namespace Lamar.Testing.Scanning.Conventions
         {
             container.GetAllInstances<OtherType>().Count.ShouldBe(2);
         }
-        
+
+        [Theory]
+        [InlineData(ServiceLifetime.Transient)]
+        [InlineData(ServiceLifetime.Singleton)]
+        [InlineData(ServiceLifetime.Scoped)]
+        public void add_all_types_with_lifetime(ServiceLifetime lifetime)
+        {
+            var container = new Container(registry =>
+            {
+                registry.For<INormalType>();
+                registry.Scan(x =>
+                {
+                    x.TheCallingAssembly();
+                    x.AddAllTypesOf<TypeIWantToFind>(lifetime);
+                    x.AddAllTypesOf<OtherType>(lifetime);
+                });
+            });
+
+            container.Model.For<TypeIWantToFind>().Default.Lifetime.ShouldBe(lifetime);
+            container.Model.For<OtherType>().Default.Lifetime.ShouldBe(lifetime);
+        }
+
         public interface IOpenGeneric<T>
         {
             void Nop();

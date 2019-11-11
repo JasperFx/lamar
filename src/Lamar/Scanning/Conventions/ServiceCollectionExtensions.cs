@@ -55,12 +55,12 @@ namespace Lamar.Scanning.Conventions
             return false;
         }
 
-        public static Instance AddType(this IServiceCollection services, Type serviceType, Type implementationType)
+        public static Instance AddType(this IServiceCollection services, Type serviceType, Type implementationType, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             var hasAlready = services.Any(x => x.Matches(serviceType, implementationType));
             if (!hasAlready)
             {
-                var instance = new ConstructorInstance(serviceType, implementationType, ServiceLifetime.Transient);
+                var instance = new ConstructorInstance(serviceType, implementationType, lifetime);
 
                 services.Add(instance);
 
