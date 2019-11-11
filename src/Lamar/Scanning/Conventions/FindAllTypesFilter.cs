@@ -4,6 +4,7 @@ using BaselineTypeDiscovery;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
 {
@@ -11,17 +12,19 @@ namespace Lamar.Scanning.Conventions
     {
         private readonly Type _serviceType;
         private Func<Type, string> _namePolicy = type => type.NameInCode();
+        private readonly ServiceLifetime _lifetime;
 
-        public FindAllTypesFilter(Type serviceType)
+        public FindAllTypesFilter(Type serviceType, ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             _serviceType = serviceType;
+            _lifetime = lifetime;
         }
 
         public void ScanTypes(TypeSet types, ServiceRegistry services)
         {
             if (_serviceType.IsOpenGeneric())
             {
-                var scanner = new GenericConnectionScanner(_serviceType);
+                var scanner = new GenericConnectionScanner(_serviceType, _lifetime);
                 scanner.ScanTypes(types, services);
             }
             else
@@ -29,7 +32,7 @@ namespace Lamar.Scanning.Conventions
                 types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(Matches).Each(type =>
                 {
                     var serviceType = determineLeastSpecificButValidType(_serviceType, type);
-                    var instance = services.AddType(serviceType, type);
+                    var instance = services.AddType(serviceType, type, _lifetime);
                     if (instance != null) instance.Name = _namePolicy(type);
                 });
             }

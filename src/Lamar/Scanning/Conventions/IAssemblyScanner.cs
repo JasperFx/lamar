@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 
@@ -42,9 +43,25 @@ namespace Lamar.Scanning.Conventions
 
         /// <summary>
         ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
+        ///     with the specified lifetime
+        /// </summary>
+        /// <typeparam name="TPluginType"></typeparam>
+        /// <param name="lifetime"></param>
+        FindAllTypesFilter AddAllTypesOf<TPluginType>(ServiceLifetime lifetime);
+
+        /// <summary>
+        ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
         /// </summary>
         /// <param name="pluginType"></param>
         FindAllTypesFilter AddAllTypesOf(Type pluginType);
+
+        /// <summary>
+        ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
+        ///     with the specified lifetime
+        /// </summary>
+        /// <param name="pluginType"></param>
+        /// <param name="lifetime"></param>
+        FindAllTypesFilter AddAllTypesOf(Type pluginType, ServiceLifetime lifetime);
 
         /// <summary>
         ///     Exclude types that match the Predicate from being scanned
@@ -112,6 +129,14 @@ namespace Lamar.Scanning.Conventions
         void WithDefaultConventions();
 
         /// <summary>
+        ///     Adds the DefaultConventionScanner to the scanning operations with the specified lifetime.
+        ///     I.e., a concrete class named "Something" that implements "ISomething" will be automatically
+        ///     added to PluginType "ISomething"
+        /// </summary>
+        /// <param name="lifetime"></param>
+        void WithDefaultConventions(ServiceLifetime lifetime);
+
+        /// <summary>
         ///     Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
         ///     class named "Something" that implements "ISomething" will be automatically
         ///     added to PluginType "ISomething"
@@ -120,10 +145,26 @@ namespace Lamar.Scanning.Conventions
         void WithDefaultConventions(OverwriteBehavior behavior);
 
         /// <summary>
+        ///     Adds the DefaultConventionScanner to the scanning operations with the specified lifetime.
+        ///     I.e., a concrete class named "Something" that implements "ISomething" will be automatically
+        ///     added to PluginType "ISomething"
+        /// </summary>
+        /// <param name="behavior">Define whether or not Lamar should overwrite any existing registrations. Default is IfNew</param>
+        /// <param name="lifetime">The <see cref="ServiceLifetime"/> to use</param>
+        void WithDefaultConventions(OverwriteBehavior behavior, ServiceLifetime lifetime);
+
+        /// <summary>
         ///     Automatically registers all concrete types without primitive arguments
         ///     against its first interface, if any
         /// </summary>
         void RegisterConcreteTypesAgainstTheFirstInterface();
+
+        /// <summary>
+        ///     Automatically registers all concrete types without primitive arguments
+        ///     against its first interface, if any, using the specified lifetime
+        /// </summary>
+        /// <param name="lifetime"></param>
+        void RegisterConcreteTypesAgainstTheFirstInterface(ServiceLifetime lifetime);
 
         /// <summary>
         ///     Directs the scanning to automatically register any type that is the single
@@ -131,6 +172,14 @@ namespace Lamar.Scanning.Conventions
         ///     The filters apply
         /// </summary>
         void SingleImplementationsOfInterface();
+
+        /// <summary>
+        ///     Directs the scanning to automatically register any type that is the single
+        ///     implementation of an interface against that interface, using the specified lifetime.
+        ///     The filters apply
+        /// </summary>
+        /// <param name="lifetime"></param>
+        void SingleImplementationsOfInterface(ServiceLifetime lifetime);
 
         void TheCallingAssembly();
         void AssembliesFromApplicationBaseDirectory();
@@ -145,6 +194,14 @@ namespace Lamar.Scanning.Conventions
         /// <param name="openGenericType"></param>
         void ConnectImplementationsToTypesClosing(Type openGenericType);
 
+        /// <summary>
+        ///     Scans for PluginType's and Concrete Types that close the given open generic type
+        /// </summary>
+        /// <example>
+        /// </example>
+        /// <param name="openGenericType"></param>
+        /// <param name="lifetime"></param>
+        void ConnectImplementationsToTypesClosing(Type openGenericType, ServiceLifetime lifetime);
 
         /// <summary>
         ///     Choosing option will direct StructureMap to *also* scan files ending in '*.exe'

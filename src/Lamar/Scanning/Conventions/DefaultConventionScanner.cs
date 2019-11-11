@@ -8,6 +8,13 @@ namespace Lamar.Scanning.Conventions
 {
     public class DefaultConventionScanner : IRegistrationConvention
     {
+        private readonly ServiceLifetime _lifetime;
+
+        public DefaultConventionScanner(ServiceLifetime lifetime = ServiceLifetime.Transient)
+        {
+            _lifetime = lifetime;
+        }
+
         public OverwriteBehavior Overwrites { get; set; } = OverwriteBehavior.NewType;
 
         public void ScanTypes(TypeSet types, ServiceRegistry services)
@@ -17,7 +24,7 @@ namespace Lamar.Scanning.Conventions
             {
                 var serviceType = FindPluginType(type);
                 if (serviceType != null && ShouldAdd(services, serviceType, type))
-                    services.AddTransient(serviceType, type);
+                    services.Add(new ServiceDescriptor(serviceType, type, _lifetime));
             }
         }
 
