@@ -2,7 +2,7 @@
 
 namespace StructureMap.Docs.samples
 {
-// SAMPLE: foobar-registry
+// SAMPLE: foobar-registry-structuremap
     public class FooBarRegistry : Registry
     {
         public FooBarRegistry()
