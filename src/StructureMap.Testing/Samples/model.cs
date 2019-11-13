@@ -13,7 +13,7 @@ namespace StructureMap.Docs.samples
     }
 
 
-// SAMPLE: foobar-model
+// SAMPLE: foobar-model-structuremap
     public interface IBar
     {
     }
