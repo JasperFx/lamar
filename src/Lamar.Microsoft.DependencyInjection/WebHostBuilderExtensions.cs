@@ -1,21 +1,16 @@
-﻿#if NETSTANDARD2_0
-using Microsoft.AspNetCore.Hosting;
-#endif
+﻿using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 
 namespace Lamar.Microsoft.DependencyInjection
 {
 
     public static class WebHostBuilderExtensions
     {
-        #if NETSTANDARD2_0
         public static IWebHostBuilder UseLamar<T>(this IWebHostBuilder builder, Action<WebHostBuilderContext, T> configure = null) where T : ServiceRegistry, new()
         {
             return builder.ConfigureServices((context, services) =>
@@ -36,8 +31,6 @@ namespace Lamar.Microsoft.DependencyInjection
         {
             return builder.ConfigureServices((context, services) => { services.AddLamar(registry); });
         }
-        #endif
-        
 
         /// <summary>
         /// Shortcut to replace the built in DI container with Lamar using the extra service registrations
