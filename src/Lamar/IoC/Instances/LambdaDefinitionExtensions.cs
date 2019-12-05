@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,7 +13,7 @@ namespace Lamar.IoC.Instances
         private static readonly MethodInfo _getDisposables =
             ReflectionHelper.GetProperty<Scope>(x => x.Disposables).GetGetMethod();
 
-        private static readonly MethodInfo _add = ReflectionHelper.GetMethod<List<IDisposable>>(x => x.Add(null));
+        private static readonly MethodInfo _add = ReflectionHelper.GetMethod<ConcurrentBag<IDisposable>>(x => x.Add(null));
 
         private static readonly MethodInfo _tryRegisterDisposable =
             ReflectionHelper.GetMethod<Scope>(x => x.TryAddDisposable(null));
