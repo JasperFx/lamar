@@ -113,7 +113,7 @@ namespace Lamar.IoC
             if (_hasDisposed) return;
             _hasDisposed = true;
 
-            foreach (var disposable in Disposables)
+            foreach (var disposable in Disposables.Distinct())
             {
                 disposable.SafeDispose();
             }
