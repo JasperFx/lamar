@@ -62,6 +62,20 @@ namespace Lamar.Testing.IoC.Acceptance
             var guy = container.QuickBuild<GuyWithWidgetSetterAttribute>();
             guy.Widget.ShouldBeOfType<AWidget>();
         }
+
+        [Fact]
+        public void buildup_with_setter_attribute()
+        {
+            var container = Container.For(_ =>
+            {
+                _.For<IWidget>().Use<AWidget>().Lifetime = ServiceLifetime.Transient;
+            });
+            
+            var guy = new GuyWithWidgetSetterAttribute();
+            container.BuildUp(guy);
+
+            guy.Widget.ShouldBeOfType<AWidget>();
+        }
         
         [Theory]
         [InlineData(ServiceLifetime.Transient, ServiceLifetime.Transient)]
