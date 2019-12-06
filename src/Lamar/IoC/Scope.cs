@@ -236,6 +236,17 @@ namespace Lamar.IoC
             return ServiceGraph.FindAll(typeof(T)).Select(x => x.QuickResolve(this)).OfType<T>().ToList();
         }
 
+        public void BuildUp(object target)
+        {
+            var objectType = target.GetType();
+            var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
+            var setters = constructorInstance.FindSetters(ServiceGraph);
+
+            foreach (var setter in setters)
+            {
+                setter.ApplyQuickBuildProperties(target, this);
+            }
+        }
 
         public IReadOnlyList<T> GetAllInstances<T>()
         {
