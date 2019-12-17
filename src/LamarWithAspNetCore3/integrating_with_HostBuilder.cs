@@ -34,6 +34,34 @@ namespace Lamar.AspNetCoreTests
             }
         }
 
+        public class DefaultRegistry : ServiceRegistry
+        {
+            public DefaultRegistry()
+            {
+                Scan(_ =>
+                {
+                    _.TheCallingAssembly();
+                    _.ConnectImplementationsToTypesClosing(typeof(IInterface<,>));
+                });
+            }
+
+        }
+
+        public interface IInterface<T, P> { }
+        public abstract class BaseClass<T, P> : IInterface<T, P> { }
+        // If you comment out TestClass, the test passes
+        public class TestClass<K> : BaseClass<SomeType, bool> { }
+        public class SomeType { }
+
+        [Fact]
+        public void open_generic_types_issue()
+        {
+            var builder = new HostBuilder().UseLamar<DefaultRegistry>();
+            using (var host = builder.Build())
+            {
+            }
+        }
+
         [Fact]
         public void use_lamar_with_registry_type()
         {
