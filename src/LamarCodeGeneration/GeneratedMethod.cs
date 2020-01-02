@@ -36,9 +36,11 @@ namespace LamarCodeGeneration
 
         private AsyncMode _asyncMode = AsyncMode.None;
         private Frame _top;
+        private MethodInfo _parentMethod;
 
         public GeneratedMethod(MethodInfo method)
         {
+            _parentMethod = method;
             ReturnType = method.ReturnType;
             Arguments = method.GetParameters().Select(x => new Argument(x)).ToArray();
             MethodName = method.Name;
@@ -61,7 +63,6 @@ namespace LamarCodeGeneration
         /// </summary>
         public string MethodName { get; }
         
-        
         public bool Overrides { get; set; }
 
         /// <summary>
@@ -71,6 +72,13 @@ namespace LamarCodeGeneration
         {
             get => _asyncMode;
             set => _asyncMode = value;
+        }
+
+        public bool WillGenerate()
+        {
+            if (_parentMethod != null && _parentMethod.IsVirtual && !Frames.Any()) return false;
+
+            return true;
         }
         
         public Argument[] Arguments { get; }

@@ -159,7 +159,7 @@ namespace LamarCodeGeneration
             writeSetters(writer);
 
 
-            foreach (var method in _methods)
+            foreach (var method in _methods.Where(x => x.WillGenerate()))
             {
                 writer.BlankLine();
                 method.WriteMethod(writer);
@@ -227,7 +227,7 @@ namespace LamarCodeGeneration
 
         public void ArrangeFrames(IServiceVariableSource services = null)
         {
-            foreach (var method in _methods) method.ArrangeFrames(this, services);
+            foreach (var method in _methods.Where(x => x.WillGenerate())) method.ArrangeFrames(this, services);
         }
 
         public IEnumerable<Assembly> AssemblyReferences()
