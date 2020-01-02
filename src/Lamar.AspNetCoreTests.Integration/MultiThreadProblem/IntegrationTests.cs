@@ -30,18 +30,6 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
             });
         }
 
-        [Fact]
-        public async void ExecutesInParallel_WithoutExceptions()
-        {
-            var client = _factory.CreateClient();
-            var tasks = new List<Task>();
-            for (int i = 0; i < 5; i++)
-            {
-                tasks.Add(client.GetAsync("Book/InsertAndReturn"));
-            }
-
-            await Task.WhenAll(tasks);
-        }
     }
 
     public class IntegrationTestsLamar : IClassFixture<CustomWebApplicationFactory<LamarStartup>>
@@ -53,7 +41,7 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
             factory.UseLamar = true;
             _factory = factory.WithWebHostBuilder(builder =>
             {
-                builder.UseSolutionRelativeContentRoot(@"src\Lamar.AspNetCoreTests.Integration");
+                builder.UseSolutionRelativeContentRoot(@"src/Lamar.AspNetCoreTests.Integration");
                 builder.ConfigureTestServices(services =>
                 {
                     services.AddControllers();

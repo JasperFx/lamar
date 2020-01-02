@@ -36,6 +36,7 @@ task :test => [:compile] do
 	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj --framework netcoreapp2.1"
 	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj --framework netcoreapp3.0"
 	sh "dotnet test src/Lamar.AspNetCoreTests/Lamar.AspNetCoreTests.csproj"
+	sh "dotnet test src/Lamar.AspNetCoreTests.Integration/Lamar.AspNetCoreTests.Integration.csproj"
 	sh "dotnet test src/LamarWithAspNetCore3/LamarWithAspNetCore3.csproj"
 end
 
