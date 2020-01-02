@@ -54,12 +54,22 @@ namespace LamarCodeGeneration.Expressions
         {
             if (!Body.Any()) throw new InvalidOperationException("There are no Body expressions for this LambdaDefinition");
 
-            
-            var body = Body.Count > 1 ? Expression.Block(Body) : Body.Single();
-            
-            var lambda = Expression.Lambda<TFunc>(body, Arguments);
+            if (Body.Count == 1)
+            {
+                var lambda = Expression.Lambda<TFunc>(Body.Single(), Arguments);
 
-            return lambda.CompileFast<TFunc>();
+                return lambda.CompileFast<TFunc>();
+            }
+            else
+            {
+                var variables = _variables.Values.OfType<ParameterExpression>().Where(x => x.Name != "scope");
+                var body = Expression.Block(variables, Body);
+                var lambda = Expression.Lambda<TFunc>(body, Arguments);
+
+                return lambda.CompileFast<TFunc>();
+            }
+            
+
         }
         
         public IList<Expression> Body { get; } = new List<Expression>();
