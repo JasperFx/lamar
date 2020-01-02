@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using System;
+using System.Threading.Tasks;
 using Baseline;
 using Lamar;
 using Lamar.Testing;
@@ -178,6 +179,20 @@ namespace StructureMap.Testing.Pipeline
 
             disposableDependent.WasDisposed.ShouldBeTrue();
             disposableDependent.ChildDisposable.WasDisposed.ShouldBeTrue();
+        }
+        
+        [Fact]
+        public void should_work_when_get_disposables_in_parallel()
+        {
+            var container = new Container(x => { x.For<I1>().Use(_ => new C1Yes()).Transient(); });
+
+            Parallel.For(0, 1000,
+                (i) =>
+                {
+                    container.GetInstance<DisposableDependent>();
+                });
+            
+            container.Dispose();
         }
         
         [Fact]
