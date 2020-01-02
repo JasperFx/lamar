@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -388,6 +389,12 @@ namespace Lamar.IoC
             {
                 Disposables.Add(disposable);
             }
+        }
+        
+        public object AddDisposable(object @object)
+        {
+            Disposables.Add((IDisposable) @object);
+            return @object;
         }
 
         public Func<string, T> FactoryByNameFor<T>()
