@@ -246,11 +246,26 @@ namespace LamarCompiler.Testing.Codegen
             var @call = new MethodCall(typeof(MethodCallTarget), nameof(MethodCallTarget.ReturnAndOuts));
             @call.Arguments[0] = new Variable(typeof(string), "input");
             @call.IsLocal = true;
-            
+
             var writer = new SourceWriter();
             @call.GenerateCode(new GeneratedMethod("Go", typeof(void)), writer);
             
             writer.Code().Trim().ShouldBe("var result_of_ReturnAndOuts = ReturnAndOuts(input, out var string, out var int32);");
+        }
+
+        [Fact]
+        public void write_comment_text_if_exists()
+        {
+            var @call = new MethodCall(typeof(MethodCallTarget), nameof(MethodCallTarget.ReturnAndOuts));
+            @call.Arguments[0] = new Variable(typeof(string), "input");
+            @call.IsLocal = true;
+
+            @call.CommentText = "Hey.";
+            
+            var writer = new SourceWriter();
+            @call.GenerateCode(new GeneratedMethod("Go", typeof(void)), writer);
+            
+            writer.Code().Trim().ShouldStartWith("// Hey.");
         }
         
 

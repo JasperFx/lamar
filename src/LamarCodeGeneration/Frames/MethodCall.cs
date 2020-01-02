@@ -86,6 +86,12 @@ namespace LamarCodeGeneration.Frames
             }
             
         }
+        
+        /// <summary>
+        /// Optional text to write as a descriptive comment
+        /// in the generated code
+        /// </summary>
+        public string CommentText { get; set; }
 
         private Type correctedReturnType(Type type)
         {
@@ -192,6 +198,11 @@ namespace LamarCodeGeneration.Frames
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
+            if (CommentText.IsNotEmpty())
+            {
+                writer.WriteComment(CommentText);
+            }
+            
             var invokeMethod = invocationCode();
 
             var returnValue = "";
