@@ -125,11 +125,11 @@ namespace Lamar.IoC.Instances
             {
                 if (Lifetime == ServiceLifetime.Singleton)
                 {
-                    scope.Root.Disposables.Fill(disposable);
+                    scope.Root.Disposables.Add(disposable);
                 }
                 else
                 {
-                    scope.Disposables.Fill(disposable);
+                    scope.Disposables.Add(disposable);
                 }
                 
             }

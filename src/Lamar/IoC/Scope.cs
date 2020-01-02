@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,7 +98,7 @@ namespace Lamar.IoC
         internal ServiceGraph ServiceGraph { get; set;}
 
 
-        public List<IDisposable> Disposables { get; } = new List<IDisposable>();
+        public ConcurrentBag<IDisposable> Disposables { get; } = new ConcurrentBag<IDisposable>();
 
         internal readonly Dictionary<int, object> Services = new Dictionary<int, object>();
 
@@ -112,7 +113,7 @@ namespace Lamar.IoC
             if (_hasDisposed) return;
             _hasDisposed = true;
 
-            foreach (var disposable in Disposables)
+            foreach (var disposable in Disposables.Distinct())
             {
                 disposable.SafeDispose();
             }
