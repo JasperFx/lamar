@@ -222,7 +222,7 @@ namespace Lamar
 
         private ServiceFamily buildClosedGenericType(Type serviceType, IServiceCollection services)
         {
-            var closed = services.Where(x => x.ServiceType == serviceType).Select(Instance.For);
+            var closed = services.Where(x => x.ServiceType == serviceType && !x.ImplementationType.IsOpenGeneric()).Select(Instance.For);
 
             var templated = services
                 .Where(x => x.ServiceType.IsOpenGeneric() && serviceType.Closes(x.ServiceType))
