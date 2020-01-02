@@ -5,6 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Baseline;
 using Lamar.Microsoft.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -196,6 +199,59 @@ namespace Lamar.AspNetCoreTests
             }
         }
 
+        [Fact]
+        public void use_setter_injection_with_controller()
+        {
+            using (var host = Host.CreateDefaultBuilder()
+                .UseLamar()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<LamarStartup>();
+                }).Build())
+            {
+                // Do it the idiomatic Lamar way first
+                var container = host.Services.As<IContainer>();
+
+                var text = container.WhatDoIHave(serviceType:typeof(ISetter));
+                
+                var controller = container.GetInstance<WeatherForecastController>();
+                controller.setter.ShouldNotBeNull();
+            }
+        }
+
+        public class LamarStartup
+        {
+            public void ConfigureContainer(ServiceRegistry services)
+            {
+                services.Scan(scanner =>
+                {
+                    scanner.AssemblyContainingType<ISetter>();
+                    //scanner.TheCallingAssembly();
+                    scanner.WithDefaultConventions();
+                    scanner.SingleImplementationsOfInterface();
+                });
+            
+                services.Policies.SetAllProperties(y => y.OfType<ISetter>());
+            }
+
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            {
+                // debug
+                var container = (IContainer)app.ApplicationServices;
+                var plan = container.Model.For<WeatherForecastController>().Default.DescribeBuildPlan();
+                Console.WriteLine(plan); // this shows both inline AND setter in the build plan
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+            }
+        }
+
         public class MyServiceRegistry : ServiceRegistry
         {
             public MyServiceRegistry()
@@ -231,6 +287,27 @@ namespace Lamar.AspNetCoreTests
             {
                 _logger.LogInformation("Greeting: {Greeting}", _options.Greeting);
                 return Task.CompletedTask;
+            }
+        }
+        
+        public interface ISetter
+        {
+
+        }
+
+        public class Setter : ISetter
+        {
+
+        }
+        
+        public class WeatherForecastController : ControllerBase
+        {
+            [SetterProperty] // doesn't help
+            public ISetter setter { get; set; } // always null, with, or without attribute
+
+            public WeatherForecastController() // this works
+            {
+
             }
         }
     }
