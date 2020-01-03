@@ -144,6 +144,14 @@ namespace Lamar.IoC
 
             if (resolver == null)
             {
+                if (ServiceGraph.Families.TryGetValue(serviceType, out var family))
+                {
+                    if (family.CannotBeResolvedMessage.IsNotEmpty())
+                    {
+                        throw new LamarMissingRegistrationException(family);
+                    }
+                }
+                
                 throw new LamarMissingRegistrationException(serviceType);
             }
 

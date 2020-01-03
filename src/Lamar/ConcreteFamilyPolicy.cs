@@ -28,9 +28,16 @@ namespace Lamar
             
             if (!IsReallyPublic(type)) return null;
 
-            if (serviceGraph.CouldBuild(type))
+            if (serviceGraph.CouldBuild(type, out var message))
             {
                 return new ServiceFamily(type, serviceGraph.DecoratorPolicies, new ConstructorInstance(type, type, ServiceLifetime.Transient));
+            }
+            else
+            {
+                var empty = new ServiceFamily(type, new IDecoratorPolicy[0], new Instance[0]);
+                empty.CannotBeResolvedMessage = message;
+
+                return empty;
             }
 
             return null;

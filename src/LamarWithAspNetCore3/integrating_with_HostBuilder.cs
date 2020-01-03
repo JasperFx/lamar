@@ -8,6 +8,7 @@ using Lamar.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -310,5 +311,26 @@ namespace Lamar.AspNetCoreTests
 
             }
         }
+        
+        [ApiController]
+        [Route("[controller]")]
+        public class MyController : ControllerBase
+        {
+            [HttpGet("helloworld")]
+            public string GetHelloWorld()
+            {
+                return "Hello World!";
+            }
+        }
+        
+        public class MyControllerRegistry : ServiceRegistry
+        {
+            public MyControllerRegistry()
+            {				
+                // this fails
+                this.AddControllers();
+            }			
+        }
+
     }
 }

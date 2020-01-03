@@ -181,6 +181,9 @@ namespace Lamar
         public Instance Default { get; private set; }
 
         public IReadOnlyDictionary<string, Instance> Instances => _instances;
+        
+        // Used internally to explain why the service type cannot be resolved
+        public string CannotBeResolvedMessage { get; set; }
 
 
         /// <summary>
