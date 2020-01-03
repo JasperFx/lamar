@@ -206,6 +206,15 @@ namespace Lamar.IoC.Instances
 
         public Instance[] Dependencies { get; protected set; } = new Instance[0];
 
+        /// <summary>
+        /// Is this instance known to be dependent upon the dependencyType?
+        /// </summary>
+        /// <param name="dependencyType"></param>
+        /// <returns></returns>
+        public bool DependsOn(Type dependencyType)
+        {
+            return Dependencies.Any(x => x.ServiceType == dependencyType || x.ImplementationType == dependencyType);
+        }
 
         public bool IsDefault { get; set; } = false;
 
