@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Runtime Roslyn Compilation and Code Generation Chicanery</Description>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.1.1</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <DebugType>portable</DebugType>
@@ -17,17 +17,17 @@
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.3.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="3.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="3.4.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' "> 
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LamarCodeGeneration\LamarCodeGeneration.csproj" />
