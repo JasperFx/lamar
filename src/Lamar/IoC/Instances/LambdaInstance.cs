@@ -37,7 +37,9 @@ namespace Lamar.IoC.Instances
         }
 
 
-        public override bool RequiresServiceProvider { get; } = true;
+        // This is important. If the lambda instance is a singleton, it's injected as a singleton
+        // to an object constructor and does not need the ServiceProvider
+        public override bool RequiresServiceProvider => Lifetime != ServiceLifetime.Singleton;
         public string Description { get; set; }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
