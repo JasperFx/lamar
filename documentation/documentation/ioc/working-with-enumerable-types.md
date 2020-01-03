@@ -1,7 +1,9 @@
 <!--Title: Working with Enumerable Types-->
 <!--Url: working-with-enumerable-types-->
 
-
+<[warning]>
+Be aware that the Lamar registrations and execution plans for enumerable types that are not explicitly registered are created on the first usage **and will not appear in the WhatDoIHave() output until they are used as either a dependency for another service or directly through a service location call for the first time**. This is normal, as expected behavior.
+<[/warning]>
 
 While you can certainly use *any* `IEnumerable` type as a plugin type with your own explicit configuration, 
 Lamar has *some* built in support for these specific enumerable types:

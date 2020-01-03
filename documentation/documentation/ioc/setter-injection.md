@@ -2,9 +2,13 @@
 <!--Url: setter-injection-->
 
 
-<div class="alert alert-info"><b>Note!</b>
+<[info]>
 In all cases, *Setter Injection* is an opt-in feature in Lamar that has to be explicitly enabled on a case by case basis.
-</div>
+<[/info]>
+
+<[warning]>
+All the *Setter Injection* rules and attributes are ignored at runtime if Lamar does not know how to resolve the property type. If setter injection is not working for you, try to look at the <[linkto:documentation/ioc/diagnostics/whatdoihave]> output and <[linkto:documentation/ioc/diagnostics/type-scanning]>.
+<[/warning]>
 
 Lamar can inject dependencies into public setter properties as part of its construction process using the _Setter Injection_ form of Dependency Injection. However, the Lamar team strongly recommends using constructor injection wherever possible instead of setter injection. That being said,
 there are few cases where setter injection is probably easier (inheritance hierarchies), not to mention legacy or third party tools that

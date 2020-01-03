@@ -25,6 +25,15 @@ provides.
 And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.
 
+## ASP.Net Core v3.*
+
+The set up with ASP.Net Core v3 isn't really any different, but there's a known *gotcha* with the `AddControllers()` call as shown below:
+
+<sample:integration-with-mvc3>
+
+To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to `IHostBuilder.ConfigureWebHostDefaults()`. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.
+
+
 ## Extended Command Line Diagnostics for ASP.Net Core
 
 <[info]>

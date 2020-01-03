@@ -28,6 +28,10 @@ Any given call to `ServiceRegistry.Scan()` consists of three different things:
 
 ## Scan the Calling Assembly
 
+<[warning]>
+If you are having any issues with the type scanning using the `TheCallingAssembly()` method, just replace that call with an explicit `Assembly("assembly name")` or `AssemblyContainingType<T>()` call instead of relying on Lamar to walk up the call stack to determine the entry assembly. 
+<[/warning]>
+
 One of the easiest ways to register types is by scanning the assembly your
 registry is placed in. 
 
@@ -36,8 +40,6 @@ find them.
 
 <[sample:scan-calling-assembly]>
 
-**Note that this method is an extension method in the Lamar.Net4 assembly and cannot be used
-if you target PCL compliance.**
 
 ## Search for Assemblies on the File System
 
