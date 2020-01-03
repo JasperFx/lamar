@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.1.0</h3>
+            <h3>Lamar 4.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -96,7 +96,7 @@ In our example we are composing our application's object graph by connecting abs
 <p>The recommended way of using the <a href="/lamar/documentation/ioc/registration/registry-dsl">ServiceRegistry DSL</a> is by defining one or more <code>ServiceRegistry</code> classes. Typically, you would subclass the <code>ServiceRegistry</code> class,
 then use the Fluent API methods exposed by the <code>ServiceRegistry</code> class to describe a <code>Container</code> configuration.</p>
 <p>Here's a sample <code>ServiceRegistry</code> class used to configure the same types as in our previous example:</p>
-<pre><code class="language-csharp">&#xA;public class FooBarRegistry : Registry&#xA;{&#xA;    public FooBarRegistry()&#xA;    {&#xA;        For&lt;IFoo&gt;().Use&lt;Foo&gt;();&#xA;        For&lt;IBar&gt;().Use&lt;Bar&gt;();&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;public class FooBarRegistry : ServiceRegistry&#xA;{&#xA;    public FooBarRegistry()&#xA;    {&#xA;        For&lt;IFoo&gt;().Use&lt;Foo&gt;();&#xA;        For&lt;IBar&gt;().Use&lt;Bar&gt;();&#xA;    }&#xA;}&#xA;&#xA;</code></pre>
 <p>When you set up a <code>Container</code> , you need to simply direct the <code>Container</code> to use the configuration in that <code>ServiceRegistry</code> class.</p>
 <pre><code class="language-csharp">&#xA;// Example #1&#xA;            var container1 = new Container(new FooBarRegistry());&#xA;&#xA;// Example #2&#xA;            var container2 = new Container(c =&gt; { c.AddRegistry&lt;FooBarRegistry&gt;(); });&#xA;&#xA;// Example #3 -- create a container for a single Registry&#xA;            var container3 = Container.For&lt;FooBarRegistry&gt;();&#xA;</code></pre>
 <div class="alert-info alert"><p><strong>Note!</strong>

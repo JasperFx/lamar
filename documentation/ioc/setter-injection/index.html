@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.1.0</h3>
+            <h3>Lamar 4.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -81,8 +81,11 @@
               <div id="main-pane">
                 <!--Title: Setter Injection-->
 <!--Url: setter-injection-->
-<div class="alert alert-info"><b>Note!</b>
-In all cases, *Setter Injection* is an opt-in feature in Lamar that has to be explicitly enabled on a case by case basis.
+<div class="alert-info alert"><p><strong>Note!</strong>
+In all cases, <em>Setter Injection</em> is an opt-in feature in Lamar that has to be explicitly enabled on a case by case basis.</p>
+</div>
+<div class="alert-warning alert"><p><strong>Note!</strong>
+All the <em>Setter Injection</em> rules and attributes are ignored at runtime if Lamar does not know how to resolve the property type. If setter injection is not working for you, try to look at the <a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a> output and <a href="/lamar/documentation/ioc/diagnostics/type-scanning">Type Scanning Diagnostics</a>.</p>
 </div>
 <p>Lamar can inject dependencies into public setter properties as part of its construction process using the <em>Setter Injection</em> form of Dependency Injection. However, the Lamar team strongly recommends using constructor injection wherever possible instead of setter injection. That being said,
 there are few cases where setter injection is probably easier (inheritance hierarchies), not to mention legacy or third party tools that

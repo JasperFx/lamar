@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.1.0</h3>
+            <h3>Lamar 4.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -81,6 +81,9 @@
               <div id="main-pane">
                 <!--Title: Working with Enumerable Types-->
 <!--Url: working-with-enumerable-types-->
+<div class="alert-warning alert"><p><strong>Note!</strong>
+Be aware that the Lamar registrations and execution plans for enumerable types that are not explicitly registered are created on the first usage <strong>and will not appear in the WhatDoIHave() output until they are used as either a dependency for another service or directly through a service location call for the first time</strong>. This is normal, as expected behavior.</p>
+</div>
 <p>While you can certainly use <em>any</em> <code>IEnumerable</code> type as a plugin type with your own explicit configuration,
 Lamar has <em>some</em> built in support for these specific enumerable types:</p>
 <ol>

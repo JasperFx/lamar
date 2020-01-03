@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 3.1.0</h3>
+            <h3>Lamar 4.1.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -96,6 +96,10 @@ The <code>Startup.ConfigureServices(ServiceRegistry)</code> convention does not 
 provides.</p>
 <p>And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.</p>
+<h2 id="asp.net-core-v3">ASP.Net Core v3.*</h2>
+<p>The set up with ASP.Net Core v3 isn't really any different, but there's a known <em>gotcha</em> with the <code>AddControllers()</code> call as shown below:</p>
+<p><a href="sample:integration-with-mvc3">sample:integration-with-mvc3</a></p>
+<p>To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to <code>IHostBuilder.ConfigureWebHostDefaults()</code>. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.</p>
 <h2 id="extended-command-line-diagnostics-for-asp.net-core">Extended Command Line Diagnostics for ASP.Net Core</h2>
 <div class="alert-info alert"><p><strong>Note!</strong>
 If you are targeting .Net Core 3.0 and/or <code>netstandard2.1</code>, use the newly consolidated <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0">HostBuilder</a> instead of the previous <code>IWebHostBuilder</code>.</p>
