@@ -353,7 +353,32 @@ namespace Lamar.Testing.AspNetCoreIntegration
             }
         }
 
-        
+        [Fact]
+        public void can_assert_configuration_is_valid_with_service_that_requires_IServiceScopeFactory()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseApplicationInsights()
+                .ConfigureServices(services =>
+                {
+                    // AddHealthChecks configures DefaultHealthCheckService which depends on IServiceScopeFactory
+                    services.AddHealthChecks();
+                })
+                .UseStartup<Startup>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+                if (errors.Any()) throw new Exception(errors.Join(", "));
+                container.AssertConfigurationIsValid();
+            }
+        }
         
         [Fact]
         public void use_in_app_with_ambigious_references()
