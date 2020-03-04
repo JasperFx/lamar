@@ -29,7 +29,7 @@ HTTP requests.
 
 The set up with ASP.Net Core v3 isn't really any different, but there's a known *gotcha* with the `AddControllers()` call as shown below:
 
-<sample:integration-with-mvc3>
+<[sample:integration-with-mvc3]>
 
 To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to `IHostBuilder.ConfigureWebHostDefaults()`. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.
 
