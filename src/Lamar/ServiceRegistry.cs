@@ -263,10 +263,14 @@ namespace Lamar
             Add(descriptor);
         }
 
-
         public void IncludeRegistry<T>() where T : ServiceRegistry, new()
         {
             this.AddRange(new T());
+        }
+
+        public void IncludeRegistry<T>(T serviceRegistry) where T : ServiceRegistry
+        {
+            this.AddRange(serviceRegistry);
         }
 
         /// <summary>
