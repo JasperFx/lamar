@@ -429,6 +429,11 @@ namespace Lamar
         {
             return new InverseInstanceExpression<T>(this);
         }
+
+        public ProvidedInstanceInverseInstanceExpression<T> Use<T>(T instance) where T : class
+        {
+            return new ProvidedInstanceInverseInstanceExpression<T>(this, instance);
+        }
     }
 
     public enum DynamicAssemblySharing
