@@ -33,6 +33,11 @@ The set up with ASP.Net Core v3 isn't really any different, but there's a known 
 
 To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to `IHostBuilder.ConfigureWebHostDefaults()`. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.
 
+## Worker Service Core v3.*
+
+To set up for a worker service, you'll use the same ConfigureContainer() albeit with a different signature.
+
+<sample:startup-worker-service>
 
 ## Extended Command Line Diagnostics for ASP.Net Core
 
