@@ -237,17 +237,22 @@ namespace Lamar.Scanning.Conventions
             foreach (var assembly in assemblies) Assembly(assembly);
         }
 
+        [Obsolete("It is very strongly recommended to use the overload with an Assembly filter to improve performance")]
         public void AssembliesAndExecutablesFromPath(string path)
         {
-            var assemblies = AssemblyFinder.FindAssemblies(path,
-                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true);
+            var assemblies = AssemblyFinder.FindAssemblies(a => true, path,
+                txt =>
+                {
+                    Console.WriteLine("Jasper could not load assembly from file " + txt);
+                }, true);
 
             foreach (var assembly in assemblies) Assembly(assembly);
         }
 
+        [Obsolete("It is very strongly recommended to use the overload with an Assembly filter to improve performance")]
         public void AssembliesFromPath(string path)
         {
-            var assemblies = AssemblyFinder.FindAssemblies(path,
+            var assemblies = AssemblyFinder.FindAssemblies(a => true, path,
                 txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false);
 
             foreach (var assembly in assemblies) Assembly(assembly);
@@ -256,9 +261,8 @@ namespace Lamar.Scanning.Conventions
         public void AssembliesAndExecutablesFromPath(string path,
             Func<Assembly, bool> assemblyFilter)
         {
-            var assemblies = AssemblyFinder.FindAssemblies(path,
-                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true)
-                .Where(assemblyFilter);
+            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, path,
+                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true);
 
 
             foreach (var assembly in assemblies) Assembly(assembly);
@@ -267,9 +271,8 @@ namespace Lamar.Scanning.Conventions
         public void AssembliesFromPath(string path,
             Func<Assembly, bool> assemblyFilter)
         {
-            var assemblies = AssemblyFinder.FindAssemblies(path,
-                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false)
-                .Where(assemblyFilter);
+            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, path,
+                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false);
 
 
             foreach (var assembly in assemblies) Assembly(assembly);
