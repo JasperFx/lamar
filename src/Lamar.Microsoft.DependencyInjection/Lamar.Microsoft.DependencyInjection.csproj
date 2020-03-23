@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Lamar Adapter for ASP.Net Core</Description>
-    <VersionPrefix>4.1.0</VersionPrefix>
+    <VersionPrefix>4.1.1</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <DebugType>portable</DebugType>
@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="[2.1.0,3.0)" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.1.0,3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.1.0,4.0)" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="[3.0.0,4.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.0.0,4.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="[3.0.0,4.0.0)" />
