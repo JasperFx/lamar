@@ -97,6 +97,8 @@ namespace Lamar.Testing.IoC
             user.Widget.ShouldBeOfType<AWidget>();
         }
         
+        public class TestClass{}
+        
         [Fact]
         public void do_not_pick_up_concrete_type_with_no_usable_ctor()
         {

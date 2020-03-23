@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
+using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Resolvers
@@ -38,7 +41,7 @@ namespace Lamar.IoC.Resolvers
         }
     }
     
-    public class CastRootScopeFrame : SyncFrame
+    public class CastRootScopeFrame : SyncFrame, IResolverFrame
     {
         private Variable _scope;
 
@@ -59,6 +62,14 @@ namespace Lamar.IoC.Resolvers
         {
             _scope = chain.FindVariable(typeof(Scope));
             yield return _scope;
+        }
+
+        public void WriteExpressions(LambdaDefinition definition)
+        {
+            var variableExpr = definition.RegisterExpression(Variable);
+            definition.Body.Add(Expression.Assign(variableExpr, Expression.Convert(definition.ExpressionFor(_scope), Variable.VariableType)));
+            
+            Next?.As<IResolverFrame>().WriteExpressions(definition);
         }
     }
     
