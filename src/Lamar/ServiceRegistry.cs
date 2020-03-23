@@ -4,6 +4,7 @@ using System.Linq;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
+using LamarCodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
@@ -118,6 +119,19 @@ namespace Lamar
                 var instance = new ConstructorInstance(_serviceType, implementationType, ServiceLifetime.Transient);
                 _parent.Add(instance);
                 return instance;
+            }
+
+            /// <summary>
+            /// Register a custom Instance
+            /// </summary>
+            /// <param name="instance"></param>
+            /// <exception cref="ArgumentOutOfRangeException"></exception>
+            public void Use(Instance instance)
+            {
+                if (instance.ServiceType != _serviceType) 
+                    throw new ArgumentOutOfRangeException(nameof(instance), $"The Instance.ServiceType {instance.ServiceType.FullNameInCode()} was not {_serviceType.FullNameInCode()}");
+                
+                _parent.Add(instance);
             }
 
             /// <summary>
