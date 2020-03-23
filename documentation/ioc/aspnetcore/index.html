@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 4.1.0</h3>
+            <h3>Lamar 4.2.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -98,8 +98,11 @@ provides.</p>
 HTTP requests.</p>
 <h2 id="asp.net-core-v3">ASP.Net Core v3.*</h2>
 <p>The set up with ASP.Net Core v3 isn't really any different, but there's a known <em>gotcha</em> with the <code>AddControllers()</code> call as shown below:</p>
-<p><a href="sample:integration-with-mvc3">sample:integration-with-mvc3</a></p>
+<pre><code class="language-csharp">&#xA;public class Program&#xA;{&#xA;    public static void Main(string[] args)&#xA;    {&#xA;        CreateHostBuilder(args).Build().Run();&#xA;    }&#xA;&#xA;    public static IHostBuilder CreateHostBuilder(string[] args) =&gt;&#xA;        Host.CreateDefaultBuilder(args)&#xA;            &#xA;            // Add Lamar&#xA;            .UseLamar()&#xA;            &#xA;            &#xA;            &#xA;            .ConfigureWebHostDefaults(webBuilder =&gt;&#xA;            {&#xA;                webBuilder.UseStartup&lt;Startup&gt;();&#xA;&#xA;                webBuilder.ConfigureServices(services =&gt;&#xA;                {&#xA;                    // This is important, the call to AddControllers()&#xA;                    // cannot be made before the usage of ConfigureWebHostDefaults&#xA;                    services.AddControllers();&#xA;                });&#xA;            });&#xA;}&#xA;</code></pre>
 <p>To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to <code>IHostBuilder.ConfigureWebHostDefaults()</code>. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.</p>
+<h2 id="worker-service-core-v3">Worker Service Core v3.*</h2>
+<p>To set up for a worker service, you'll use the same ConfigureContainer() albeit with a different signature.</p>
+<p><a href="sample:startup-worker-service">sample:startup-worker-service</a></p>
 <h2 id="extended-command-line-diagnostics-for-asp.net-core">Extended Command Line Diagnostics for ASP.Net Core</h2>
 <div class="alert-info alert"><p><strong>Note!</strong>
 If you are targeting .Net Core 3.0 and/or <code>netstandard2.1</code>, use the newly consolidated <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0">HostBuilder</a> instead of the previous <code>IWebHostBuilder</code>.</p>
