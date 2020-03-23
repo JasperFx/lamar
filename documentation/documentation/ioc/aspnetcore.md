@@ -37,7 +37,7 @@ To play it safe, add any registrations or configuration directly related to MVC 
 
 To set up for a worker service, you'll use the same ConfigureContainer() albeit with a different signature.
 
-<sample:startup-worker-service>
+<[sample:startup-worker-service]>
 
 ## Extended Command Line Diagnostics for ASP.Net Core
 
