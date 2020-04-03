@@ -19,7 +19,7 @@ namespace LamarCompiler.Testing.Samples
         {
             _output = output;
         }
-#if !NET461
+#if !NET4x
 
         [Fact]
         public void say_hello()

@@ -434,7 +434,7 @@ namespace LamarCodeGeneration.Util
             return type.GetTypeInfo().GetCustomAttributes<T>().FirstOrDefault();
         }
         
-        #if !NET461
+        #if !NET4x
         private static readonly Type[] _tupleTypes = new Type[]
         {
             typeof(ValueTuple<>),
