@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using LamarCodeGeneration.Util;
 
-#if !NET461
+#if !NET4x
 using System.Runtime.Loader;
 #endif
 
@@ -215,7 +215,7 @@ namespace LamarCompiler
 		Assembly LoadFromAssemblyPath(string assemblyName);
 	}
 
-#if !NET461
+#if !NET4x
 	public sealed class CustomAssemblyLoadContext : AssemblyLoadContext, ILamarAssemblyLoadContext
 	{
 		protected override Assembly Load(AssemblyName assemblyName)
