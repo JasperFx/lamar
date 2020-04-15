@@ -25,7 +25,7 @@ namespace Lamar.Testing.IoC.Acceptance
         // ENDSAMPLE
 
         [Fact]
-        public void add_consumed_service_laster()
+        public void add_consumed_service_later()
         {
             var container = new Container(_ =>
             {
