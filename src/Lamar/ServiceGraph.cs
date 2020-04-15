@@ -168,6 +168,10 @@ namespace Lamar
 
         private void planResolutionStrategies()
         {
+            foreach (var instance in AllInstances().Where(x => x.HasPlanned && !x.PlanningSucceeded).ToArray())
+            {
+                instance.Reset();
+            }
             while (AllInstances().Where(x => !x.ServiceType.IsOpenGeneric()).Any(x => !x.HasPlanned))
             {
                 foreach (var instance in AllInstances().Where(x => !x.HasPlanned).ToArray())
@@ -456,7 +460,6 @@ namespace Lamar
 
                 registry
                     .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
-
                     .GroupBy(x => x.ServiceType)
                     .Each(group =>
                     {
