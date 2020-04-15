@@ -23,7 +23,23 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<WhateverService>();
         }
         // ENDSAMPLE
-        
+
+        [Fact]
+        public void add_consumed_service_laster()
+        {
+            var container = new Container(_ =>
+            {
+                _.AddTransient<WidgetUser>();
+            });
+            container.Configure(services =>
+            {
+                services.AddTransient<IWidget, RedWidget>();
+            });
+            var instance = container.GetInstance<WidgetUser>();
+            instance.ShouldBeOfType<WidgetUser>();
+            instance.Widget.ShouldBeOfType<RedWidget>();
+        }
+
         [Fact]
         public void add_to_existing_family()
         {

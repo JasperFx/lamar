@@ -138,6 +138,8 @@ namespace Lamar.IoC.Instances
 
         public bool HasPlanned { get; protected internal set; }
 
+        public bool PlanningSucceeded { get; protected internal set; }
+
         public void CreatePlan(ServiceGraph services)
         {
             if (HasPlanned) return;
@@ -184,7 +186,16 @@ namespace Lamar.IoC.Instances
             }
 
             services.ClearPlanning();
+
+            PlanningSucceeded = ErrorMessages.Count == 0;
             HasPlanned = true;
+        }
+
+        internal virtual void Reset()
+        {
+            HasPlanned = false;
+            PlanningSucceeded = false;
+            ErrorMessages.Clear();
         }
 
 
