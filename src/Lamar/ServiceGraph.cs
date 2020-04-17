@@ -166,12 +166,16 @@ namespace Lamar
 
         private bool _inPlanning = false;
 
-        private void planResolutionStrategies()
+        private void resetInstancePlanning()
         {
-            foreach (var instance in AllInstances().Where(x => x.HasPlanned && !x.PlanningSucceeded).ToArray())
+            foreach (var instance in AllInstances())
             {
                 instance.Reset();
             }
+        }
+
+        private void planResolutionStrategies()
+        {
             while (AllInstances().Where(x => !x.ServiceType.IsOpenGeneric()).Any(x => !x.HasPlanned))
             {
                 foreach (var instance in AllInstances().Where(x => !x.HasPlanned).ToArray())
@@ -478,6 +482,8 @@ namespace Lamar
                             _families.Add(@group.Key, family);
                         }
                     });
+
+                resetInstancePlanning();
 
                 buildOutMissingResolvers();
             

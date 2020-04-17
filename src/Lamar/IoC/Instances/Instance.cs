@@ -191,7 +191,7 @@ namespace Lamar.IoC.Instances
             HasPlanned = true;
         }
 
-        internal virtual void Reset()
+        public virtual void Reset()
         {
             HasPlanned = false;
             PlanningSucceeded = false;
