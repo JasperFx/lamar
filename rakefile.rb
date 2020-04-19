@@ -31,10 +31,7 @@ task :test => [:compile] do
 	Dir.mkdir RESULTS_DIR
 
 	sh "dotnet test src/LamarCompiler.Testing/LamarCompiler.Testing.csproj"
-	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj --framework net461"
-	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj --framework netcoreapp2.0"
-	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj --framework netcoreapp2.1"
-	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj --framework netcoreapp3.0"
+	sh "dotnet test src/Lamar.Testing/Lamar.Testing.csproj"
 	sh "dotnet test src/Lamar.AspNetCoreTests/Lamar.AspNetCoreTests.csproj"
 	sh "dotnet test src/Lamar.AspNetCoreTests.Integration/Lamar.AspNetCoreTests.Integration.csproj"
 	sh "dotnet test src/LamarWithAspNetCore3/LamarWithAspNetCore3.csproj"
