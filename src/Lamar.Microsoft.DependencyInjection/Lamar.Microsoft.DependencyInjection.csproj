@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Lamar Adapter for ASP.Net Core</Description>
-    <VersionPrefix>4.1.5</VersionPrefix>
+    <VersionPrefix>4.3.0</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <DebugType>portable</DebugType>
