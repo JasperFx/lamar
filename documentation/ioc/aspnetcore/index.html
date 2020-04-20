@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 4.2.0</h3>
+            <h3>Lamar 4.3.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -102,7 +102,7 @@ HTTP requests.</p>
 <p>To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to <code>IHostBuilder.ConfigureWebHostDefaults()</code>. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.</p>
 <h2 id="worker-service-core-v3">Worker Service Core v3.*</h2>
 <p>To set up for a worker service, you'll use the same ConfigureContainer() albeit with a different signature.</p>
-<p><a href="sample:startup-worker-service">sample:startup-worker-service</a></p>
+<pre><code class="language-csharp">&#xA;&#x9;&#x9;public static IHostBuilder CreateHostBuilder(string[] args) =&gt;&#xA;&#x9;&#x9;&#x9;Host.CreateDefaultBuilder(args)&#xA;&#x9;&#x9;&#x9;&#x9;.UseLamar()&#xA;&#x9;&#x9;&#x9;&#x9;.ConfigureServices((hostContext, services) =&gt;&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;services.AddHostedService&lt;Worker&gt;();&#xA;&#x9;&#x9;&#x9;&#x9;})&#xA;&#x9;&#x9;&#x9;&#x9;.ConfigureContainer&lt;Lamar.ServiceRegistry&gt;((context, services) =&gt;&#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// Also exposes Lamar specific registrations&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;// and functionality&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;services.Scan(s =&gt;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.TheCallingAssembly();&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;s.WithDefaultConventions();&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;});&#xA;&#x9;&#x9;&#x9;&#x9;});&#xA;</code></pre>
 <h2 id="extended-command-line-diagnostics-for-asp.net-core">Extended Command Line Diagnostics for ASP.Net Core</h2>
 <div class="alert-info alert"><p><strong>Note!</strong>
 If you are targeting .Net Core 3.0 and/or <code>netstandard2.1</code>, use the newly consolidated <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0">HostBuilder</a> instead of the previous <code>IWebHostBuilder</code>.</p>
