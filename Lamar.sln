@@ -65,7 +65,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lamar.AspNetCoreTests.Integ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithAspNetCoreMvc3", "src\LamarWithAspNetCoreMvc3\LamarWithAspNetCoreMvc3.csproj", "{5AA571C7-51E5-4479-8A52-5A6E375D4895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWorkerApp", "SampleWorkerApp\SampleWorkerApp.csproj", "{4BC5BF87-952E-4599-800A-D9C193ABF24A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWorkerApp", "src\SampleWorkerApp\SampleWorkerApp.csproj", "{66440A95-D026-4935-B65D-84E9394D5E22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -189,10 +189,10 @@ Global
 		{5AA571C7-51E5-4479-8A52-5A6E375D4895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AA571C7-51E5-4479-8A52-5A6E375D4895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AA571C7-51E5-4479-8A52-5A6E375D4895}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BC5BF87-952E-4599-800A-D9C193ABF24A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BC5BF87-952E-4599-800A-D9C193ABF24A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BC5BF87-952E-4599-800A-D9C193ABF24A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BC5BF87-952E-4599-800A-D9C193ABF24A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66440A95-D026-4935-B65D-84E9394D5E22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66440A95-D026-4935-B65D-84E9394D5E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66440A95-D026-4935-B65D-84E9394D5E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66440A95-D026-4935-B65D-84E9394D5E22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
