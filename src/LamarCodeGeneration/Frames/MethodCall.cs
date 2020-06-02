@@ -216,9 +216,9 @@ namespace LamarCodeGeneration.Frames
             if (shouldAssignVariableToReturnValue(method))
             {
 #if !NET4x
-                returnValue = ReturnVariable.VariableType.IsValueTuple() ? $"{ReturnVariable.Usage} = {returnValue}" : $"var {ReturnVariable.Usage} = {returnValue}";
+                returnValue = ReturnVariable.VariableType.IsValueTuple() ? $"{ReturnVariable.Usage} = {returnValue}" : $"{ReturnVariable.AssignmentUsage} = {returnValue}";
                 #else
-                returnValue = $"var {ReturnVariable.Usage} = {returnValue}";
+                returnValue = $"{ReturnVariable.AssignmentUsage} = {returnValue}";
 #endif
                 
                 

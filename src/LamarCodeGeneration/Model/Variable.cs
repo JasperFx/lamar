@@ -68,6 +68,12 @@ namespace LamarCodeGeneration.Model
         public Type VariableType { get; }
         public virtual string Usage { get; protected set; }
 
+        /// <summary>
+        /// How the variable is used within assignments. Default is
+        /// $"var {Usage}"
+        /// </summary>
+        public virtual string AssignmentUsage => $"var {Usage}";
+
         public virtual string ArgumentDeclaration => Usage;
         
         /// <summary>
