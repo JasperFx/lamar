@@ -47,7 +47,7 @@ namespace LamarCodeGeneration.Frames
             Type returnType = correctedReturnType(method.ReturnType);
             if (returnType != null)
             {
-#if !NET4x
+#if !NET461 && !NET48
                 
 
                 if (returnType.IsValueTuple())
@@ -66,7 +66,7 @@ namespace LamarCodeGeneration.Frames
 
                     ReturnVariable = new Variable(returnType, name, this); 
                     
-#if !NET4x
+#if !NET461 && !NET48
                 }
 #endif
             }

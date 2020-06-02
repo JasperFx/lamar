@@ -5,6 +5,7 @@ using Xunit;
 
 namespace LamarCompiler.Testing.Codegen
 {
+#if !NET461 && !NET48
     public class when_building_a_method_call_for_a_task_of_tuple
     {
         private readonly MethodCall theCall= MethodCall.For<MethodTarget>(x => x.AsyncReturnTuple());
@@ -28,4 +29,5 @@ namespace LamarCompiler.Testing.Codegen
             theCall.Creates.ShouldHaveTheSameElementsAs(Variable.For<Red>(), Variable.For<Blue>(), Variable.For<Green>());
         }
     }
+#endif
 }

@@ -180,7 +180,8 @@ namespace LamarCompiler.Testing.Codegen
                 .ShouldBe("var disposableThing = await target.AsyncDisposable();");
 
         }
-        
+
+#if !NET461 && !NET48
         [Fact]
         public void generate_code_for_a_method_that_returns_a_tuple()
         {
@@ -199,6 +200,7 @@ namespace LamarCompiler.Testing.Codegen
             usage.ShouldContain("(var red, var blue, var green) = await target.AsyncReturnTuple();");
             usage.ShouldNotContain("var (var red, var blue, var green) = await target.AsyncReturnTuple();");
         }
+#endif
         
 
     }

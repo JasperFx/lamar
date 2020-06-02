@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
-    <ProjectReference Include="..\src\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
+    <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
   </ItemGroup>
 </Project>
