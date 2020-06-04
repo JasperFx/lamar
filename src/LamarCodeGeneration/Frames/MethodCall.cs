@@ -209,6 +209,12 @@ namespace LamarCodeGeneration.Frames
 
             if (IsAsync)
             {
+                #if NET461 || NET48
+                if (method.AsyncMode == AsyncMode.AsyncTask)
+                {
+                    invokeMethod = invokeMethod + ".ConfigureAwait(false)";
+                }
+#endif
                 returnValue = method.AsyncMode == AsyncMode.ReturnFromLastNode ? "return " : "await ";
             }
 
@@ -248,6 +254,8 @@ namespace LamarCodeGeneration.Frames
             }
 
             var callingCode = $"{methodName}({Arguments.Select(x => x.ArgumentDeclaration).Join(", ")})";
+            
+            
             var target = determineTarget();
             var invokeMethod = $"{target}{callingCode}";
             return invokeMethod;
@@ -259,7 +267,12 @@ namespace LamarCodeGeneration.Frames
         /// <returns></returns>
         public string InvocationCode()
         {
+#if NET461 || NET48
+            return IsAsync ? "await " + invocationCode() + ".ConfigureAwait(false)" : invocationCode();
+#else
             return IsAsync ? "await " + invocationCode() : invocationCode();
+#endif
+
         }
 
         /// <summary>
@@ -274,8 +287,14 @@ namespace LamarCodeGeneration.Frames
             }
 
             return IsAsync
+#if NET461 || NET48
+                ? $"var {ReturnVariable.Usage} = await {InvocationCode()}.ConfigureAwait(false)"
+                : $"var {ReturnVariable.Usage} = {InvocationCode()}.ConfigureAwait(false)";
+#else
                 ? $"var {ReturnVariable.Usage} = await {InvocationCode()}"
                 : $"var {ReturnVariable.Usage} = {InvocationCode()}";
+#endif
+
 
         }
 

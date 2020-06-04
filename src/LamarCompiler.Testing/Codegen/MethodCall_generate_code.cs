@@ -105,8 +105,23 @@ namespace LamarCompiler.Testing.Codegen
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             WriteMethod(x => x.GoAsync())
                 .Single()
+#if NET461 || NET48
+                .ShouldBe("await target.GoAsync().ConfigureAwait(false);");
+#else
                 .ShouldBe("await target.GoAsync();");
+#endif
         }
+
+#if NET461 || NET48
+        [Fact]
+        public void return_task_as_async_with_configure_await_in_full_framework()
+        {
+            theMethod.AsyncMode = AsyncMode.AsyncTask;
+            WriteMethod(x => x.GoAsync())
+                .Single()
+                .ShouldBe("await target.GoAsync().ConfigureAwait(false);");
+        }
+#endif
         
         [Fact]
         public void return_async_value_with_return_from_last_node()
@@ -129,7 +144,11 @@ namespace LamarCompiler.Testing.Codegen
                     x.Arguments[0] = Variable.For<Arg2>();
                     x.Arguments[1] = Variable.For<Arg3>();
                 }).Single()
+#if NET461 || NET48
+                .ShouldBe("var arg1 = await target.OtherAsync(arg2, arg3).ConfigureAwait(false);");
+#else
                 .ShouldBe("var arg1 = await target.OtherAsync(arg2, arg3);");
+#endif
         }
         
         [Fact]
@@ -166,7 +185,11 @@ namespace LamarCompiler.Testing.Codegen
         {
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             var lines = WriteMethod(x => x.AsyncDisposable());
+#if NET461 || NET48
+            lines[0].ShouldBe("using (var disposableThing = await target.AsyncDisposable().ConfigureAwait(false))");
+#else
             lines[0].ShouldBe("using (var disposableThing = await target.AsyncDisposable())");
+#endif
             lines.ShouldContain("{");
             lines.ShouldContain("}");
         }
@@ -177,7 +200,11 @@ namespace LamarCompiler.Testing.Codegen
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             WriteMethod(x => x.AsyncDisposable(), x => x.DisposalMode = DisposalMode.None)
                 .Single()
+#if NET461 || NET48
+                .ShouldBe("var disposableThing = await target.AsyncDisposable().ConfigureAwait(false);");
+#else
                 .ShouldBe("var disposableThing = await target.AsyncDisposable();");
+#endif
 
         }
 
