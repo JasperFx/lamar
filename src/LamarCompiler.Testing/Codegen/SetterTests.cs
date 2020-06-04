@@ -18,7 +18,7 @@ namespace LamarCompiler.Testing.Codegen
         [Fact]
         public void readonly_with_initial_value_of_variable()
         {
-            var setter = Setter.ReadOnly("Color", new StringConstant("red"));
+            var setter = Setter.ReadOnly("Color", Constant.ForString("red"));
 
             setter.ToDeclaration().ShouldBe("public string Color {get;} = \"red\";");
         }
@@ -26,9 +26,21 @@ namespace LamarCompiler.Testing.Codegen
         [Fact]
         public void const_with_initial_value_of_variable()
         {
-            var setter = Setter.Constant("Color", new StringConstant("red"));
+            var setter = Setter.Constant("Color", Constant.ForString("red"));
 
             setter.ToDeclaration().ShouldBe("public const string Color = \"red\";");
         }
+        [Fact]
+        public void const_with_initial_value_of_variable_using_enum()
+        {
+            var setter = Setter.Constant("Color", Constant.ForEnum(Color.red));
+
+            setter.ToDeclaration().ShouldBe("public const LamarCompiler.Testing.Codegen.Color Color = LamarCompiler.Testing.Codegen.Color.red;");
+        }
+    }
+
+    public enum Color
+    {
+        red, blue, green
     }
 }
