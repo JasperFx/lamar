@@ -147,7 +147,7 @@ namespace LamarCodeGeneration.Frames
         public string Declaration()
         {
             return DeclaredType == null
-                ? $"var {Variable.Usage} = {Invocation()}"
+                ? $"{Variable.AssignmentUsage} = {Invocation()}"
                 : $"{DeclaredType.FullNameInCode()} {Variable.Usage} = {Invocation()}";
         }
 
