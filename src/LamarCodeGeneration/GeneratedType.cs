@@ -42,7 +42,7 @@ namespace LamarCodeGeneration
 
         public Type BaseType { get; private set; }
 
-        public InjectedField[] BaseConstructorArguments { get; private set; } = new InjectedField[0];
+        public Variable[] BaseConstructorArguments { get; private set; } = new InjectedField[0];
         
         public IList<InjectedField> AllInjectedFields { get; } = new List<InjectedField>();
 
@@ -57,12 +57,12 @@ namespace LamarCodeGeneration
 
         bool IVariableSource.Matches(Type type)
         {
-            return BaseConstructorArguments.Any(x => x.ArgType == type);
+            return AllInjectedFields.Any(x => x.VariableType == type);
         }
 
         Variable IVariableSource.Create(Type type)
         {
-            return BaseConstructorArguments.FirstOrDefault(x => x.ArgType == type);
+            return AllInjectedFields.FirstOrDefault(x => x.ArgType == type);
         }
 
         public GeneratedType InheritsFrom<T>()
@@ -80,10 +80,12 @@ namespace LamarCodeGeneration
 
             if (ctors.Length == 1)
             {
-                BaseConstructorArguments = ctors.Single().GetParameters()
+                var baseArguments = ctors.Single().GetParameters()
                     .Select(x => new InjectedField(x.ParameterType, x.Name)).ToArray();
 
-                AllInjectedFields.AddRange(BaseConstructorArguments);
+                BaseConstructorArguments = baseArguments.Select(x => x.ToBaseCtorVariable()).ToArray();
+                
+                AllInjectedFields.AddRange(baseArguments);
             }
 
 
@@ -186,7 +188,7 @@ namespace LamarCodeGeneration
             var ctorArgs = args.Select(x => x.CtorArgDeclaration).Join(", ");
             var declaration = $"BLOCK:public {TypeName}({ctorArgs})";
             if (BaseConstructorArguments.Any())
-                declaration = $"{declaration} : base({BaseConstructorArguments.Select(x => x.CtorArg).Join(", ")})";
+                declaration = $"{declaration} : base({BaseConstructorArguments.Select(x => x.Usage).Join(", ")})";
 
             writer.Write(declaration);
 

@@ -29,5 +29,10 @@ namespace LamarCodeGeneration.Model
         {
             writer.Write($"{Usage} = {CtorArg};");
         }
+
+        public Variable ToBaseCtorVariable()
+        {
+            return new Variable(ArgType, CtorArg);
+        }
     }
 }
