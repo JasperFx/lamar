@@ -239,6 +239,13 @@ namespace LamarCodeGeneration.Frames
             {
                 writer.Write($"{returnValue}{invokeMethod};");
 
+                // This is just to make the generated code a little
+                // easier to read
+                if (CommentText.IsNotEmpty())
+                {
+                    writer.BlankLine();
+                }
+                
                 Next?.GenerateCode(method, writer);
             }
 
