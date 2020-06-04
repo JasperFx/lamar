@@ -13,5 +13,10 @@ namespace LamarCodeGeneration.Model
         {
             return new Variable(typeof(string), "\"" + value + "\"");
         }
+
+        public static Variable ForType(Type type)
+        {
+            return new Variable(typeof(Type), $"typeof({type.FullNameInCode()})");
+        }
     }
 }
