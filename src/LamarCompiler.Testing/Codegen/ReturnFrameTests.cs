@@ -1,5 +1,7 @@
 using System.Linq;
+using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Model;
 using LamarCompiler.Scenarios;
 using Shouldly;
 using Xunit;
@@ -46,10 +48,15 @@ namespace LamarCompiler.Testing.Codegen
             result.LinesOfCode.ShouldContain("return arg1;");
             result.Object.Create(5).ShouldBe(5);
         }
+
+        
+        
     }
 
     public interface ISimpleAction
     {
         void Go();
     }
+
+
 }

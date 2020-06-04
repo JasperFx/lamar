@@ -258,5 +258,17 @@ namespace LamarCodeGeneration
                 setter.SetInitialValue(builtObject);
             }
         }
+
+        public void UseConstantForBaseCtor(Variable variable)
+        {
+            var index = BaseConstructorArguments.GetFirstIndex(v => v.VariableType == variable.VariableType);
+            if (index < 0)
+            {
+                throw new InvalidOperationException("No base constructor arguments of type " + variable.VariableType.FullNameInCode());
+            }
+
+            BaseConstructorArguments[index] = variable;
+            AllInjectedFields.RemoveAt(index);
+        }
     }
 }
