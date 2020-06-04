@@ -25,6 +25,7 @@ namespace LamarCodeGeneration.Frames
         public Variable ReturnedVariable { get; private set; }
 
 
+
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
             var code = ReturnedVariable == null ? "return;" : $"return {ReturnedVariable.Usage};";

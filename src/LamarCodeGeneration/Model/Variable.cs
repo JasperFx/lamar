@@ -9,6 +9,7 @@ using LamarCodeGeneration.Util;
 
 namespace LamarCodeGeneration.Model
 {
+
     public class Variable
     {
         public static Variable[] VariablesForProperties<T>(string rootArgName)

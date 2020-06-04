@@ -97,5 +97,13 @@ namespace LamarCodeGeneration
             }
         }
 
+        /// <summary>
+        /// Add a frame that just writes out "return null;"
+        /// </summary>
+        public FramesCollection ReturnNull()
+        {
+            Add(new ReturnFrame(new Variable(typeof(void), "null")));
+            return this;
+        }
     }
 }

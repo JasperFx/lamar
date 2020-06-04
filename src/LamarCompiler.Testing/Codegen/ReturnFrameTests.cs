@@ -26,6 +26,15 @@ namespace LamarCompiler.Testing.Codegen
         }
         
         [Fact]
+        public void return_null()
+        {
+            var result = CodegenScenario.ForBuilds<string, string>(m => m.Frames.ReturnNull());
+
+            result.LinesOfCode.ShouldContain("return null;");
+            result.Object.Create("foo").ShouldBeNull();
+        }
+        
+        [Fact]
         public void return_explicit_variable()
         {
             var result = CodegenScenario.ForBuilds<int, int>(m =>
