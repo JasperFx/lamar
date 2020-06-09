@@ -150,6 +150,8 @@ namespace LamarCodeGeneration
 
         public void Write(ISourceWriter writer)
         {
+
+            
             writeDeclaration(writer);
 
             if (AllInjectedFields.Any())
@@ -270,5 +272,8 @@ namespace LamarCodeGeneration
             BaseConstructorArguments[index] = variable;
             AllInjectedFields.RemoveAt(index);
         }
+        
+        
+
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
 
 namespace LamarCodeGeneration
 {
@@ -15,9 +14,7 @@ namespace LamarCodeGeneration
         /// <returns></returns>
         public FramesCollection Return(Type returnType)
         {
-            var frame = new ReturnFrame(returnType);
-
-            Add(frame);
+            Code("return {0};", new Use(returnType));
             return this;
         }
 
@@ -26,11 +23,9 @@ namespace LamarCodeGeneration
         /// </summary>
         /// <param name="returnVariable"></param>
         /// <returns></returns>
-        public FramesCollection Return(Variable returnVariable)
+        public FramesCollection Return(object returnValue)
         {
-            var frame = new ReturnFrame(returnVariable);
-
-            Add(frame);
+            Code("return {0};", returnValue);
             return this;
         }
 
@@ -102,18 +97,48 @@ namespace LamarCodeGeneration
         /// </summary>
         public FramesCollection ReturnNull()
         {
-            Add(new ReturnFrame(new Variable(typeof(void), "null")));
+            Code("return null;");
             return this;
         }
 
         public FramesCollection ThrowNotImplementedException()
         {
-            throw new NotImplementedException();
+            return Throw<NotImplementedException>();
         }
 
         public FramesCollection ThrowNotSupportedException()
         {
-            throw new NotImplementedException();
+            return Throw<NotSupportedException>();
+        }
+        
+        public FramesCollection Throw<T>(params object[] arguments) where T : Exception
+        {
+            var frame = new ThrowExceptionFrame<T>(arguments);
+            Add(frame);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds templated code to the method using the string.Format()
+        /// mechanism
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public ICodeFrame Code(string code, params object[] values)
+        {
+            var frame = new CodeFrame(false, code, values);
+            Add(frame);
+
+            return frame;
+        }
+
+        /// <summary>
+        /// Write out a quick "return;"
+        /// </summary>
+        public void Return()
+        {
+            Code("return;");
         }
     }
 }

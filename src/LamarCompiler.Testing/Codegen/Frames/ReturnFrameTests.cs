@@ -1,19 +1,17 @@
 using System.Linq;
-using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
 using LamarCompiler.Scenarios;
 using Shouldly;
 using Xunit;
 
-namespace LamarCompiler.Testing.Codegen
+namespace LamarCompiler.Testing.Codegen.Frames
 {
     public class ReturnFrameTests
     {
         [Fact]
         public void simple_use_case_no_value()
         {
-            var result = CodegenScenario.ForBaseOf<ISimpleAction>(m => m.Frames.Add(new ReturnFrame()));
+            var result = CodegenScenario.ForBaseOf<ISimpleAction>(m => m.Frames.Return());
             
             result.LinesOfCode.ShouldContain("return;");
         }
