@@ -132,6 +132,21 @@ namespace LamarCodeGeneration
 
             return frame;
         }
+        
+        /// <summary>
+        /// Adds templated code to the method using the string.Format()
+        /// mechanism 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public ICodeFrame CodeAsync(string code, params object[] values)
+        {
+            var frame = new CodeFrame(true, code, values);
+            Add(frame);
+
+            return frame;
+        }
 
         /// <summary>
         /// Write out a quick "return;"

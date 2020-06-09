@@ -30,6 +30,21 @@ namespace LamarCompiler.Testing.Codegen.Frames
             
             result.LinesOfCode.ShouldContain("var x = 22;");
         }
+
+        [Fact]
+        public void writes_with_source_writer_fanciness()
+        {
+            var result = CodegenScenario.ForAction<int>(m =>
+            {
+                m.Frames.Code(@"BLOCK:if (true)
+// Comment
+END
+");
+            });
+            
+            result.Code.ShouldContain("if");
+            result.Code.ShouldNotContain("BLOCK");
+        }
         
         [Fact]
         public void write_text_with_formatted_text()

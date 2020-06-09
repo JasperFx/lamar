@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LamarCodeGeneration.Model;
@@ -22,8 +23,21 @@ namespace LamarCodeGeneration.Frames
 
         public CodeFrame(bool isAsync, string format, params object[] values) : base(isAsync)
         {
+            // This is to do a 
+            var fake = values.Select(x => string.Empty).ToArray();
+            try
+            {
+                var test = string.Format(format, fake);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Invalid code format: " + format, e);
+            }
+            
             _format = format;
             _values = values;
+            
+            
 
             // For dependency ordering later
             uses.AddRange(values.OfType<Variable>());
@@ -35,7 +49,8 @@ namespace LamarCodeGeneration.Frames
             var substitutions = _values.Select(CodeFormatter.Write).ToArray();
             var code = string.Format(_format, substitutions);
             
-            writer.WriteLine(code);
+            // TODO -- It's important to use Write() and not WriteLine() here.
+            writer.Write(code);
             Next?.GenerateCode(method, writer);
         }
 
