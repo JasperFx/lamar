@@ -105,5 +105,15 @@ namespace LamarCodeGeneration
             Add(new ReturnFrame(new Variable(typeof(void), "null")));
             return this;
         }
+
+        public FramesCollection ThrowNotImplementedException()
+        {
+            throw new NotImplementedException();
+        }
+
+        public FramesCollection ThrowNotSupportedException()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

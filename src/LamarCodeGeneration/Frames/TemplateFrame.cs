@@ -6,6 +6,7 @@ using LamarCodeGeneration.Util;
 
 namespace LamarCodeGeneration.Frames
 {
+    [Obsolete("Prefer TemplatedFrame")]
     public abstract class TemplateFrame : SyncFrame
     {
         private readonly IList<VariableProxy> _proxies = new List<VariableProxy>();
