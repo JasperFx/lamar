@@ -54,6 +54,12 @@ namespace LamarCodeGeneration
                 generatedType.FindType(generated);
             }
         }
+        
+        /// <summary>
+        /// Extra namespaces to be written out as using blocks
+        /// in the generated code
+        /// </summary>
+        public IList<string> Namespaces { get; } = new List<string>();
 
         public string GenerateCode(IServiceVariableSource services = null)
         {
@@ -63,11 +69,7 @@ namespace LamarCodeGeneration
                 generatedType.ArrangeFrames(services);
             }
 
-            var namespaces = GeneratedTypes
-                            .SelectMany(x => x.AllInjectedFields)
-                            .Select(x => x.ArgType.Namespace)
-                            .Concat(new string[] {typeof(Task).Namespace})
-                            .Distinct().ToList();
+            var namespaces = AllReferencedNamespaces();
 
             using (var writer = new SourceWriter())
             {
@@ -99,6 +101,17 @@ namespace LamarCodeGeneration
 
                 return code;
             }
+        }
+
+        public List<string> AllReferencedNamespaces()
+        {
+            var namespaces = GeneratedTypes
+                .SelectMany(x => x.AllInjectedFields)
+                .Select(x => x.ArgType.Namespace)
+                .Concat(new string[] {typeof(Task).Namespace})
+                .Concat(Namespaces)
+                .Distinct().ToList();
+            return namespaces;
         }
 
         private void attachSourceCodeToChains(ref string code)
