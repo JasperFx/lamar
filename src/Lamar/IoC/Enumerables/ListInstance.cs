@@ -13,6 +13,7 @@ namespace Lamar.IoC.Enumerables
 {
     public class ListInstance<T> : GeneratedInstance
     {
+        private readonly IList<Instance> _inlines = new List<Instance>();
         private Instance[] _elements;
         
         public ListInstance(Type serviceType) : base(serviceType, typeof(List<T>), ServiceLifetime.Transient)
@@ -45,7 +46,11 @@ namespace Lamar.IoC.Enumerables
 
         protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
-            _elements = services.FindAll(typeof(T));
+            if (_inlines.Any())
+                _elements = _inlines.ToArray();
+            else
+                _elements = services.FindAll(typeof(T));
+
             return _elements;
         }
 
@@ -53,6 +58,18 @@ namespace Lamar.IoC.Enumerables
         {
             return _elements.Select(x => x.QuickResolve(scope).As<T>()).ToList();
         }
+
+        /// <summary>
+        /// Adds an inline dependency
+        /// </summary>
+        /// <param name="instance"></param>
+        public void AddInline(Instance instance)
+        {
+            instance.Parent = this;
+            _inlines.Add(instance);
+        }
+
+        public IList<Instance> InlineDependencies => _inlines;
 
         public override string ToString()
         {
