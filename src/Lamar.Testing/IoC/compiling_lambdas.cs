@@ -1,10 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Lamar.IoC.Instances;
-#if !NETCOREAPP3_0
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Http.Features;
-#endif
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -159,13 +155,10 @@ namespace Lamar.Testing.IoC
         }
     }
 
-#if NETCOREAPP3_0
+
     public interface IServer{}
     
-    public interface IHttpApplication<T>{}
-    
-    public interface IFeatureCollection{}
-#endif
+
 
     public class NulloServer : IServer
     {
@@ -174,17 +167,12 @@ namespace Lamar.Testing.IoC
             throw new System.NotImplementedException();
         }
 
-        public Task StartAsync<TContext>(IHttpApplication<TContext> application, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        public IFeatureCollection Features { get; }
     }
     
     public class BigGuy

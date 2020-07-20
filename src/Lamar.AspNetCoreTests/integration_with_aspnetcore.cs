@@ -53,21 +53,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
         }
 
         [Fact]
-        public void trouble_shoot_kestrel_setup_problems()
-        {
-            var container = new Container(services =>
-            {
-                //services.TryAddSingleton<ITransportFactory, LibuvTransportFactory>();
-
-                services.AddTransient<IConfigureOptions<KestrelServerOptions>, KestrelServerOptionsSetup>();
-                //services.AddSingleton<IServer, KestrelServer>();
-                services.AddOptions();
-            });
-
-            container.GetInstance<IOptions<KestrelServerOptions>>();
-        }
-
-        [Fact]
         public void integration_with_ef()
         {
             var container = new Container(_ =>
@@ -105,7 +90,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
             using (var host = builder.Start())
@@ -136,7 +120,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
+
                 .UseStartup<Startup>();
 
             var failures = new List<Type>();
@@ -199,7 +183,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
             using (var host = builder.Start())
@@ -222,7 +205,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
 
@@ -287,7 +269,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Bug159.Startup>();
 
 
@@ -306,7 +287,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
 
@@ -334,7 +314,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
 
@@ -361,7 +340,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .UseLamar()
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .ConfigureServices(services =>
                 {
                     // AddHealthChecks configures DefaultHealthCheckService which depends on IServiceScopeFactory
@@ -389,7 +367,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .UseMetrics()
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
             var failures = new List<Type>();
@@ -440,7 +417,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 .UseUrls("http://localhost:5002")
                 .UseServer(new NulloServer())
-                .UseApplicationInsights()
                 .UseStartup<Startup>();
 
 
@@ -518,14 +494,8 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 {
                     options.Authority = "auth";
                     options.RequireHttpsMetadata = true;
-                })
-
-
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = "something";
-                    facebookOptions.AppSecret = "else";
                 });
+
         }
 
         public void Configure(IApplicationBuilder app)
@@ -582,13 +552,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 {
                     options.Authority = "auth";
                     options.RequireHttpsMetadata = true;
-                })
-
-
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = "something";
-                    facebookOptions.AppSecret = "else";
                 });
 
 
