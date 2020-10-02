@@ -8,7 +8,8 @@ namespace LamarCodeGeneration.Model
     {
         ReadWrite,
         ReadOnly,
-        Constant
+        Constant,
+        StaticReadOnly
     }
     
     public class Setter : Variable
@@ -18,6 +19,15 @@ namespace LamarCodeGeneration.Model
             return new Setter(value.VariableType, name)
             {
                 Type = SetterType.ReadOnly,
+                ReadOnlyValue = value
+            };
+        }
+        
+        public static Setter StaticReadOnly(string name, Variable value)
+        {
+            return new Setter(value.VariableType, name)
+            {
+                Type = SetterType.StaticReadOnly,
                 ReadOnlyValue = value
             };
         }
@@ -59,6 +69,9 @@ namespace LamarCodeGeneration.Model
                 
                 case SetterType.ReadOnly:
                     return $"public {VariableType.FullNameInCode()} {PropName} {{get;}} = {ReadOnlyValue.Usage};";
+                
+                case SetterType.StaticReadOnly:
+                    return $"public static {VariableType.FullNameInCode()} {PropName} {{get;}} = {ReadOnlyValue.Usage};";
             }
 
             throw new NotSupportedException();

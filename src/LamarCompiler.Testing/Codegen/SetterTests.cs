@@ -24,6 +24,14 @@ namespace LamarCompiler.Testing.Codegen
         }
         
         [Fact]
+        public void staticreadonly_with_initial_value_of_variable()
+        {
+            var setter = Setter.StaticReadOnly("Color", Constant.ForString("red"));
+
+            setter.ToDeclaration().ShouldBe("public static string Color {get;} = \"red\";");
+        }
+        
+        [Fact]
         public void const_with_initial_value_of_variable()
         {
             var setter = Setter.Constant("Color", Constant.ForString("red"));
