@@ -70,27 +70,27 @@ namespace LamarCodeGeneration.Frames
             HandlerType = handlerType;
             Method = method;
 
-            Type returnType = correctedReturnType(method.ReturnType);
-            if (returnType != null)
+            ReturnType = correctedReturnType(method.ReturnType);
+            if (ReturnType != null)
             {
 #if !NET461 && !NET48
                 
 
-                if (returnType.IsValueTuple())
+                if (ReturnType.IsValueTuple())
                 {
-                    var values = returnType.GetGenericArguments().Select(x => new Variable(x, this)).ToArray();
+                    var values = ReturnType.GetGenericArguments().Select(x => new Variable(x, this)).ToArray();
                 
-                    ReturnVariable = new ValueTypeReturnVariable(returnType, values);
+                    ReturnVariable = new ValueTypeReturnVariable(ReturnType, values);
                 }
                 else
                 {
 #endif
-                    var name = returnType.IsSimple() || returnType == typeof(object) || returnType == typeof(object[])
+                    var name = ReturnType.IsSimple() || ReturnType == typeof(object) || ReturnType == typeof(object[])
                         ? "result_of_" + method.Name
-                        : Variable.DefaultArgName(returnType);
+                        : Variable.DefaultArgName(ReturnType);
                     
 
-                    ReturnVariable = new Variable(returnType, name, this); 
+                    ReturnVariable = new Variable(ReturnType, name, this); 
                     
 #if !NET461 && !NET48
                 }
@@ -112,7 +112,9 @@ namespace LamarCodeGeneration.Frames
             }
             
         }
-        
+
+        public Type ReturnType { get; }
+
         /// <summary>
         /// Optional text to write as a descriptive comment
         /// in the generated code

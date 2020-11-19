@@ -21,6 +21,8 @@ namespace LamarCompiler.Testing.Codegen
             @call.ReturnVariable.VariableType.ShouldBe(typeof(string));
             @call.ReturnVariable.Usage.ShouldBe("result_of_GetValue");
             @call.ReturnVariable.Creator.ShouldBeSameAs(@call);
+            
+            @call.ReturnType.ShouldBe(typeof(string));
         }
 
         [Fact]
