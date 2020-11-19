@@ -15,6 +15,26 @@ namespace LamarCodeGeneration.Frames
         None
     
     }
+
+    public enum ReturnAction
+    {
+        /// <summary>
+        /// The value built by the MethodCall should be like 'return Method()'
+        /// </summary>
+        Return,
+        
+        /// <summary>
+        /// The value built by the MethodCall should be assigned to the ReturnVariable
+        /// like 'x = Method();'
+        /// </summary>
+        Assign,
+        
+        /// <summary>
+        /// The value built by the MethodCall should be assigned to the ReturnVariable
+        /// like 'var x = Method();`
+        /// </summary>
+        Initialize
+    }
     
     public class MethodCall : Frame
     {
@@ -22,7 +42,13 @@ namespace LamarCodeGeneration.Frames
 
         public Type HandlerType { get; }
         public MethodInfo Method { get; }
-        
+
+
+        public void AssignResultTo(Variable variable)
+        {
+            ReturnVariable = variable;
+            ReturnAction = ReturnAction.Assign;
+        }
         
         public Variable ReturnVariable { get; private set; }
 
@@ -128,6 +154,11 @@ namespace LamarCodeGeneration.Frames
         public Variable[] Arguments { get; }
 
         public DisposalMode DisposalMode { get; set; } = DisposalMode.UsingBlock;
+        
+        /// <summary>
+        /// How should the ReturnVariable handled within the generated code? Initialize is the default.
+        /// </summary>
+        public ReturnAction ReturnAction { get; set; } = ReturnAction.Initialize;
 
         public bool TrySetArgument(Variable variable)
         {
@@ -184,16 +215,46 @@ namespace LamarCodeGeneration.Frames
         }
 
 
-        private bool shouldAssignVariableToReturnValue(GeneratedMethod method)
+        private string returnActionCode(GeneratedMethod method)
+        {
+            if (IsAsync && method.AsyncMode == AsyncMode.ReturnFromLastNode)
+            {
+                return "return ";
+            }
+            
+            if (ReturnVariable == null)
+            {
+                return string.Empty;
+            }
+
+#if !NET4x
+            if (ReturnVariable.VariableType.IsValueTuple())
+            {
+                return $"{ReturnVariable.Usage} = ";
+            }
+#endif
+
+
+            switch (ReturnAction)
+            {
+                case ReturnAction.Initialize:
+                    return $"var {ReturnVariable.Usage} = ";
+                case ReturnAction.Assign:
+                    return $"{ReturnVariable.Usage} = ";
+                case ReturnAction.Return:
+                    return "return ";
+            }
+            
+            throw new ArgumentOutOfRangeException();
+        }
+
+        private bool shouldWriteInUsingBlock(GeneratedMethod method)
         {
             if (ReturnVariable == null) return false;
 
-            if (IsAsync && method.AsyncMode == AsyncMode.ReturnFromLastNode)
-            {
-                return false;
-            }
+            if (IsAsync && method.AsyncMode == AsyncMode.ReturnFromLastNode) return false;
 
-            return true;
+            return ReturnVariable.VariableType.CanBeCastTo<IDisposable>() && DisposalMode == DisposalMode.UsingBlock;
         }
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
@@ -203,41 +264,15 @@ namespace LamarCodeGeneration.Frames
                 writer.WriteComment(CommentText);
             }
             
-            var invokeMethod = invocationCode();
+            var invokeMethod = InvocationCode(method);
 
-            var returnValue = "";
-
-            if (IsAsync)
+            if (shouldWriteInUsingBlock(method))
             {
-                #if NET461 || NET48
-                if (method.AsyncMode == AsyncMode.AsyncTask)
-                {
-                    invokeMethod = invokeMethod + ".ConfigureAwait(false)";
-                }
-#endif
-                returnValue = method.AsyncMode == AsyncMode.ReturnFromLastNode ? "return " : "await ";
-            }
-
-            var isDisposable = false;
-            if (shouldAssignVariableToReturnValue(method))
-            {
-#if !NET4x
-                returnValue = ReturnVariable.VariableType.IsValueTuple() ? $"{ReturnVariable.Usage} = {returnValue}" : $"{ReturnVariable.AssignmentUsage} = {returnValue}";
-                #else
-                returnValue = $"{ReturnVariable.AssignmentUsage} = {returnValue}";
-#endif
-                
-                
-                isDisposable = ReturnVariable.VariableType.CanBeCastTo<IDisposable>();
-            }
-
-            if (isDisposable && DisposalMode == DisposalMode.UsingBlock)
-            {
-                writer.UsingBlock($"{returnValue}{invokeMethod}", w => Next?.GenerateCode(method, writer));
+                writer.UsingBlock($"{returnActionCode(method)}{invokeMethod}", w => Next?.GenerateCode(method, writer));
             }
             else
             {
-                writer.Write($"{returnValue}{invokeMethod};");
+                writer.Write($"{returnActionCode(method)}{invokeMethod};");
 
                 // This is just to make the generated code a little
                 // easier to read
@@ -265,6 +300,7 @@ namespace LamarCodeGeneration.Frames
             
             var target = determineTarget();
             var invokeMethod = $"{target}{callingCode}";
+   
             return invokeMethod;
         }
 
@@ -272,21 +308,29 @@ namespace LamarCodeGeneration.Frames
         /// Code to invoke the method without any assignment to a variable
         /// </summary>
         /// <returns></returns>
-        public string InvocationCode()
+        public string InvocationCode(GeneratedMethod method)
         {
-#if NET461 || NET48
-            return IsAsync ? "await " + invocationCode() + ".ConfigureAwait(false)" : invocationCode();
-#else
-            return IsAsync ? "await " + invocationCode() : invocationCode();
-#endif
+            var code = invocationCode();
+            
 
+
+            if (IsAsync && method.AsyncMode != AsyncMode.ReturnFromLastNode)
+            {
+#if NET461 || NET48
+                code = $"await {code}.ConfigureAwait(false)";
+                #else
+                code = $"await {code}";
+#endif
+            }
+
+            return code;
         }
 
         /// <summary>
         /// Code to invoke the method and set a variable to the returned value
         /// </summary>
         /// <returns></returns>
-        public string AssignmentCode()
+        public string AssignmentCode(GeneratedMethod method)
         {
             if (ReturnVariable == null)
             {
@@ -295,11 +339,11 @@ namespace LamarCodeGeneration.Frames
 
             return IsAsync
 #if NET461 || NET48
-                ? $"var {ReturnVariable.Usage} = await {InvocationCode()}.ConfigureAwait(false)"
-                : $"var {ReturnVariable.Usage} = {InvocationCode()}.ConfigureAwait(false)";
+                ? $"var {ReturnVariable.Usage} = await {InvocationCode(method)}.ConfigureAwait(false)"
+                : $"var {ReturnVariable.Usage} = {InvocationCode(method)}.ConfigureAwait(false)";
 #else
-                ? $"var {ReturnVariable.Usage} = await {InvocationCode()}"
-                : $"var {ReturnVariable.Usage} = {InvocationCode()}";
+                ? $"var {ReturnVariable.Usage} = await {InvocationCode(method)}"
+                : $"var {ReturnVariable.Usage} = {InvocationCode(method)}";
 #endif
 
 

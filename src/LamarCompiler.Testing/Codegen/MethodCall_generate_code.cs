@@ -174,7 +174,8 @@ namespace LamarCompiler.Testing.Codegen
         public void async_disposable_return_from_last_node()
         {
             theMethod.AsyncMode = AsyncMode.ReturnFromLastNode;
-            WriteMethod(x => x.AsyncDisposable())
+            var lines = WriteMethod(x => x.AsyncDisposable());
+            lines
                 .Single()
                 .ShouldBe("return target.AsyncDisposable();");
                 
@@ -228,8 +229,74 @@ namespace LamarCompiler.Testing.Codegen
             usage.ShouldNotContain("var (var red, var blue, var green) = await target.AsyncReturnTuple();");
         }
 #endif
-        
 
+
+        [Fact]
+        public void generate_code_for_assigning_variable_sync()
+        {
+            Variable assign = Variable.For<int>("number");
+            var code = WriteMethod(x => x.Add(0, 0), m =>
+            {
+                m.AssignResultTo(assign);
+                m.Arguments[0] = Variable.For<int>("x");
+                m.Arguments[1] = Variable.For<int>("y");
+
+                m.ReturnAction = ReturnAction.Assign;
+            });
+            
+            code[0].ShouldBe("number = target.Add(x, y);");
+        }
+        
+        [Fact]
+        public void generate_code_for_returning_variable_sync()
+        {
+            Variable assign = Variable.For<int>("number");
+            var code = WriteMethod(x => x.Add(0, 0), m =>
+            {
+                m.ReturnAction = ReturnAction.Return;
+                m.Arguments[0] = Variable.For<int>("x");
+                m.Arguments[1] = Variable.For<int>("y");
+
+            });
+            
+            code[0].ShouldBe("return target.Add(x, y);");
+        }
+        
+        [Fact]
+        public void generate_code_for_assigning_variable_async()
+        {
+            Variable assign = Variable.For<int>("number");
+            var code = WriteMethod(x => x.AddAsync(0, 0), m =>
+            {
+                m.AssignResultTo(assign);
+                m.Arguments[0] = Variable.For<int>("x");
+                m.Arguments[1] = Variable.For<int>("y");
+
+            });
+#if NET461 || NET48
+            code[0].ShouldBe("number = await target.AddAsync(x, y).ConfigureAwait(false);");
+#else
+            code[0].ShouldBe("number = await target.AddAsync(x, y);");
+            #endif
+        }
+        
+        [Fact]
+        public void generate_code_for_returning_variable_async()
+        {
+            Variable assign = Variable.For<int>("number");
+            var code = WriteMethod(x => x.AddAsync(0, 0), m =>
+            {
+                m.ReturnAction = ReturnAction.Return;
+                m.Arguments[0] = Variable.For<int>("x");
+                m.Arguments[1] = Variable.For<int>("y");
+
+            });
+#if NET461 || NET48
+            code[0].ShouldBe("return await target.AddAsync(x, y).ConfigureAwait(false);");
+#else
+            code[0].ShouldBe("return await target.AddAsync(x, y);");
+            #endif
+        }
     }
     
     public class Blue{}
@@ -277,6 +344,11 @@ namespace LamarCompiler.Testing.Codegen
         public int Add(int x, int y)
         {
             return x + y;
+        }
+        
+        public Task<int> AddAsync(int x, int y)
+        {
+            return Task.FromResult(x + y);
         }
         
         public void Go()
