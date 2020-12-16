@@ -1,25 +1,33 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFrameworks>netcoreapp3.0;net5.0</TargetFrameworks>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-        <PackageReference Include="xunit" Version="2.4.0" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-        <PackageReference Include="coverlet.collector" Version="1.0.1" />
-        <PackageReference Include="Shouldly" Version="3.0.0" />
+      <FrameworkReference Include="Microsoft.AspNetCore.App" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+      <PackageReference Include="xunit" Version="2.4.0" />
+      <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+      <PackageReference Include="coverlet.collector" Version="1.0.1" />
+      <PackageReference Include="Shouldly" Version="3.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Baseline" Version="1.5.0" />
       <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
       <ProjectReference Include="..\StructureMap.Testing.Widget\StructureMap.Testing.Widget.csproj" />
     </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+    <PackageReference Include="Baseline" Version="1.5.0" />
+  </ItemGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+      <PackageReference Include="Baseline" Version="2.1.1" />
+    </ItemGroup>
+  
     <ItemGroup>
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -19,7 +19,7 @@ namespace Lamar.IoC.Diagnostics
 
             if (Namespace.IsNotEmpty())
             {
-                enumerable = enumerable.Where(x => TypeExtensions.IsInNamespace(x.ServiceType, Namespace));
+                enumerable = enumerable.Where(x => LamarCodeGeneration.Util.TypeExtensions.IsInNamespace(x.ServiceType, Namespace));
             }
 
             if (ServiceType != null)

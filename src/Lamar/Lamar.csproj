@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-    <VersionPrefix>4.4.0</VersionPrefix>
+    <VersionPrefix>4.4.1</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFrameworks>net461;net48;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net461;net48;netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar</AssemblyName>
     <PackageId>Lamar</PackageId>
@@ -42,5 +42,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.0.0, 5.9.0)" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[5.0.0, 5.9.0)" />
   </ItemGroup>
 </Project>
