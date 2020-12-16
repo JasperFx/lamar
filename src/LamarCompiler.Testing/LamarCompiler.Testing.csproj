@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net48;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net461;net48;netcoreapp2.1;netcoreapp3.0;net5.0</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -15,6 +15,10 @@
     <PackageReference Include="Baseline" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Baseline" Version="2.1.1" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\LamarCompiler\LamarCompiler.csproj" />
     <ProjectReference Include="..\Lamar\Lamar.csproj" />

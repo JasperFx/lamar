@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <Description>Code Generation Chicanery for .Net</Description>
-        <VersionPrefix>2.5.0</VersionPrefix>
+        <VersionPrefix>2.5.1</VersionPrefix>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>net461;net48;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net461;net48;netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration</AssemblyName>
         <PackageId>LamarCodeGeneration</PackageId>
