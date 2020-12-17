@@ -16,30 +16,33 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="BaselineTypeDiscovery" Version="1.1.0" />
-  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\LamarCodeGeneration\LamarCodeGeneration.csproj" />
   </ItemGroup>
+  
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net48' ">
     <DefineConstants>$(DefineConstants);NET4x</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="BaselineTypeDiscovery" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[2.0.0, 3.0.0)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+    <PackageReference Include="BaselineTypeDiscovery" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[2.0.0, 5.9.0)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="BaselineTypeDiscovery" Version="1.1.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[2.0.0, 5.9.0)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
+    <PackageReference Include="BaselineTypeDiscovery" Version="1.1.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.0.0, 5.9.0)" />
   </ItemGroup>
