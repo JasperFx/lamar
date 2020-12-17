@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 4.3.0</h3>
+            <h3>Lamar 5.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -85,7 +85,7 @@ overloads of the <code>ServiceRegistry.For().Use(object)</code> and <code>Servic
 <pre><code class="language-csharp">&#xA;[Fact]&#xA;public void should_be_able_to_resolve_from_the_generic_family_expression()&#xA;{&#xA;    var widget = new AWidget();&#xA;    var container = new Container(x =&gt; x.For(typeof(IWidget)).Use(widget).Named(&quot;mine&quot;));&#xA;&#xA;    container.GetInstance&lt;IWidget&gt;(&quot;mine&quot;).ShouldBeTheSameAs(widget);&#xA;}&#xA;&#xA;</code></pre>
 <p>Injecting an existing object into the <code>Container</code> makes it a de facto singleton, but the <code>Container</code> treats it with a
 special scope called <code>ObjectLifecycle</code> if you happen to look into the <a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a> diagnostics.</p>
-<p>StructureMap will attempt to call the <code>IDisposable.Dispose()</code> on any objects that are directly injected into a <code>Container</code>
+<p>Lamar will attempt to call the <code>IDisposable.Dispose()</code> on any objects that are directly injected into a <code>Container</code>
 that implement <code>IDisposable</code> when the <code>Container</code> itself is disposed.</p>
 
               </div>

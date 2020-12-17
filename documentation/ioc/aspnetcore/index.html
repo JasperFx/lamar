@@ -62,7 +62,7 @@
       <div class="row">
           <!--left-->
           <div class="col-md-3" id="leftCol">
-            <h3>Lamar 4.3.0</h3>
+            <h3>Lamar 5.0.0</h3>
             <br />
 
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -109,7 +109,7 @@ If you are targeting .Net Core 3.0 and/or <code>netstandard2.1</code>, use the n
 </div>
 <p>New with the Lamar 3.1.0 release is a separate Nuget package named <em>Lamar.Diagnostics</em> that can be used to add easy access to the <a href="/lamar/documentation/ioc/diagnostics">Lamar diagnostics</a> for your ASP.Net Core application from the command line.</p>
 <p>First, you need to be using the <a href="https://jasperfx.github.io/oakton/documentation/aspnetcore/">Oakton.AspNetCore</a> package to execute commands in your ASP.Net Core application like this:</p>
-<pre><code class="language-csharp">&#xA;var registry = new ServiceRegistry();&#xA;registry.Scan(x =&gt;&#xA;{&#xA;    x.Assembly(typeof(Program).Assembly);&#xA;    x.WithDefaultConventions();&#xA;});&#xA;&#xA;var builder = new WebHostBuilder();&#xA;return builder&#xA;    // Replaces the built in DI container&#xA;    // with Lamar&#xA;    .UseLamar(registry)&#xA;&#xA;    // Normal ASP.Net Core bootstrapping&#xA;    .UseUrls(&quot;http://localhost:5002&quot;)&#xA;    .UseKestrel()&#xA;    .UseStartup&lt;Startup&gt;()&#xA;    .RunOaktonCommands(args);&#xA;</code></pre>
+<pre><code class="language-csharp">&#xA;var registry = new ServiceRegistry();&#xA;registry.Scan(x =&gt;&#xA;{&#xA;    x.Assembly(typeof(Program).Assembly);&#xA;    x.WithDefaultConventions();&#xA;});&#xA;&#xA;var builder = new HostBuilder();&#xA;&#xA;return builder&#xA;    // Replaces the built in DI container&#xA;    // with Lamar&#xA;    .UseLamar(registry)&#xA;    .ConfigureWebHostDefaults(x =&gt;&#xA;    {&#xA;        // Normal ASP.Net Core bootstrapping&#xA;        x.UseUrls(&quot;http://localhost:5002&quot;)&#xA;            .UseKestrel()&#xA;            .UseStartup&lt;Startup&gt;();&#xA;    })&#xA;&#xA;&#xA;    .RunOaktonCommands(args);&#xA;</code></pre>
 <p>Including this <em>Lamar.Diagnostics</em> Nuget into your ASP.Net Core application will add some additional Lamar diagnostic commands. If you open a command line tool to the root directory of your ASP.Net Core project
 with the <em>Lamar.Diagnostics</em> and <em>Oakton.AspNetCore</em> Nuget installed and type the command for CLI usage <code>dotnet run -- ?</code> or <code>dotnet run -- help</code>, you'll get something like this:</p>
 <pre><code>Searching 'Lamar.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' for commands
