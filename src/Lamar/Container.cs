@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -184,6 +185,7 @@ namespace Lamar
                 x.Lifetime == ServiceLifetime.Singleton && !x.ServiceType.IsOpenGeneric()))
                 try
                 {
+                    Debug.WriteLine($"Trying to resolve {instance.ServiceType.FullNameInCode()}");
                     var o = instance.Instance.Resolve(this);
 
                     if (o != null)

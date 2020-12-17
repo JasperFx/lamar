@@ -8,7 +8,6 @@ using Lamar.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -118,20 +117,18 @@ namespace Lamar.AspNetCoreTests
                 })
                 .UseLamar();
 
-            using (var host = builder.Start())
+            using var host = builder.Start();
+            var container = host.Services.ShouldBeOfType<Container>();
+
+            var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+            if (errors.Any())
             {
-                var container = host.Services.ShouldBeOfType<Container>();
-
-                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
-                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
-
-                if (errors.Any())
-                {
-                    throw new Exception(errors.Join(", "));
-                }
-
-                container.AssertConfigurationIsValid(AssertMode.ConfigOnly);
+                throw new Exception(errors.Join(", "));
             }
+
+            container.AssertConfigurationIsValid(AssertMode.ConfigOnly);
         }
 
         [Fact]
@@ -150,20 +147,18 @@ namespace Lamar.AspNetCoreTests
                 })
                 .UseLamar();
 
-            using (var host = builder.Start())
+            using var host = builder.Start();
+            var container = host.Services.ShouldBeOfType<Container>();
+
+            var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+            if (errors.Any())
             {
-                var container = host.Services.ShouldBeOfType<Container>();
-
-                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
-                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
-
-                if (errors.Any())
-                {
-                    throw new Exception(errors.Join(", "));
-                }
-
-                container.AssertConfigurationIsValid(AssertMode.Full);
+                throw new Exception(errors.Join(", "));
             }
+
+            container.AssertConfigurationIsValid(AssertMode.Full);
         }
 
         [Fact]
@@ -203,21 +198,17 @@ namespace Lamar.AspNetCoreTests
         [Fact]
         public void use_setter_injection_with_controller()
         {
-            using (var host = Host.CreateDefaultBuilder()
+            using var host = Host.CreateDefaultBuilder()
                 .UseLamar()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<LamarStartup>();
-                }).Build())
-            {
-                // Do it the idiomatic Lamar way first
-                var container = host.Services.As<IContainer>();
+                }).Build();
+            // Do it the idiomatic Lamar way first
+            var container = host.Services.As<IContainer>();
 
-                var text = container.WhatDoIHave(serviceType:typeof(ISetter));
-                
-                var controller = container.GetInstance<WeatherForecastController>();
-                controller.setter.ShouldNotBeNull();
-            }
+            var controller = container.GetInstance<WeatherForecastController>();
+            controller.setter.ShouldNotBeNull();
         }
 
         public class LamarStartup

@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <Description>Code Generation Chicanery for .Net</Description>
-        <VersionPrefix>2.5.1</VersionPrefix>
+        <VersionPrefix>3.0.0</VersionPrefix>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>net461;net48;netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration</AssemblyName>
         <PackageId>LamarCodeGeneration</PackageId>
@@ -17,11 +17,7 @@
         <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
         <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net48' ">
-        <DefineConstants>$(DefineConstants);NET4x</DefineConstants>
-    </PropertyGroup>
-
+    
     <ItemGroup>
       <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
       <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />

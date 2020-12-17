@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Lamar Adapter for ASP.Net Core</Description>
-    <VersionPrefix>4.4.1</VersionPrefix>
+    <VersionPrefix>5.0.0</VersionPrefix>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
     <PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
@@ -19,28 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lamar\Lamar.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.1.0,3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[2.1.0,3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[2.1.0,3.0)" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.1.0,3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[2.1.0,3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[2.1.0,3.0)" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.1.0,4.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[2.1.0,3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[2.1.0,3.0)" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[3.0,5.9)" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="[3.0.0,5.9.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.0.0,5.9.0)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[3.0.0,5.9.0)" />
-  </ItemGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[3.0,5.9)" />

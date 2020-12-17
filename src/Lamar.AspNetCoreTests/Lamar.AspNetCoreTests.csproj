@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
@@ -14,22 +14,13 @@
     <PackageReference Include="Shouldly" Version="3.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.0.0-alpha-0094" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.27" />
-    <PackageReference Include="Baseline" Version="1.5.0" />
-    <PackageReference Include="IdentityServer4" Version="2.3.0" />
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="2.2.0" />
+  <ItemGroup>
+    <PackageReference Include="Baseline" Version="2.1.1" />
   </ItemGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="4.1.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.1.1" />
-    <PackageReference Include="Baseline" Version="2.1.0" />
     <PackageReference Include="IdentityServer4" Version="4.0.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
@@ -40,7 +31,6 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="4.1.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.0-preview1" />
-    <PackageReference Include="Baseline" Version="2.1.1" />
     <PackageReference Include="IdentityServer4" Version="4.0.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />

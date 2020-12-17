@@ -9,6 +9,7 @@ using LamarCodeGeneration.Util;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Oakton.AspNetCore;
 
@@ -26,16 +27,21 @@ namespace WebApplication4
                 x.WithDefaultConventions();
             });
             
-            var builder = new WebHostBuilder();
+            var builder = new HostBuilder();
+            
             return builder
                 // Replaces the built in DI container
                 // with Lamar
                 .UseLamar(registry)
+                .ConfigureWebHostDefaults(x =>
+                {
+                    // Normal ASP.Net Core bootstrapping
+                    x.UseUrls("http://localhost:5002")
+                        .UseKestrel()
+                        .UseStartup<Startup>();
+                })
 
-                // Normal ASP.Net Core bootstrapping
-                .UseUrls("http://localhost:5002")
-                .UseKestrel()
-                .UseStartup<Startup>()
+
                 .RunOaktonCommands(args);
             // ENDSAMPLE
             
