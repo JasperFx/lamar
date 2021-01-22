@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,7 +9,6 @@ using BaselineTypeDiscovery;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using Lamar.Scanning;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
@@ -45,8 +43,6 @@ namespace Lamar.IoC
                 Bootstrapping.MarkStart("Lamar Scope Creation");
             }
 
-
-
             Root = this;
 
             Bootstrapping.MarkStart("Build ServiceGraph");
@@ -63,15 +59,11 @@ namespace Lamar.IoC
             {
                 Bootstrapping.MarkFinished("Lamar Scope Creation");
             }
-
-
         }
 
         protected Scope(){}
         
         public Scope Root { get; protected set; }
-
-        
 
         public Scope(ServiceGraph serviceGraph, Scope root)
         {
@@ -103,18 +95,21 @@ namespace Lamar.IoC
 
         internal readonly Dictionary<int, object> Services = new Dictionary<int, object>();
 
-        
-
         public virtual void Dispose()
         {
-            if (DisposalLock == DisposalLock.Ignore) return;
-
             if (DisposalLock == DisposalLock.ThrowOnDispose) throw new InvalidOperationException("This Container has DisposalLock = DisposalLock.ThrowOnDispose and cannot be disposed until the lock is cleared");
 
             if (_hasDisposed) return;
             _hasDisposed = true;
 
-            foreach (var disposable in Disposables.Distinct())
+            var distinctDisposables = Disposables.Distinct().ToArray();
+            // clear disposables bag to prevent memory leak. current implementation of ConcurrentBag is using thread local storage and in some cases
+            // e.g. an object from Disposables collection is referencing this Scope instance the whole graph can stay in memory after it was disposed
+            while (Disposables.TryTake(out _)) { }
+
+            if (DisposalLock == DisposalLock.Ignore) return;
+
+            foreach (var disposable in distinctDisposables)
             {
                 disposable.SafeDispose();
             }
@@ -209,8 +204,7 @@ namespace Lamar.IoC
             var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
             var ctor = constructorInstance.DetermineConstructor(ServiceGraph, out var message);
             var setters = constructorInstance.FindSetters(ServiceGraph);
-            
-            
+
             if (ctor == null) throw new InvalidOperationException(message);
 
             var dependencies = ctor.GetParameters().Select(x =>
@@ -270,7 +264,6 @@ namespace Lamar.IoC
         }
 
 
-
         public string WhatDoIHave(Type serviceType = null, Assembly assembly = null, string @namespace = null,
             string typeName = null)
         {
@@ -285,7 +278,7 @@ namespace Lamar.IoC
                 TypeName = typeName
             });
         }
-        
+
         public string HowDoIBuild(Type serviceType = null, Assembly assembly = null, string @namespace = null,
             string typeName = null)
         {
@@ -342,13 +335,10 @@ namespace Lamar.IoC
             }
         }
 
-
         public IServiceVariableSource CreateServiceVariableSource()
         {
             return new ServiceVariableSource(ServiceGraph);
         }
-        
-        
 
         public string GenerateCodeWithInlineServices(GeneratedAssembly assembly)
         {
@@ -398,7 +388,7 @@ namespace Lamar.IoC
                 Disposables.Add(disposable);
             }
         }
-        
+
         public object AddDisposable(object @object)
         {
             Disposables.Add((IDisposable) @object);
@@ -409,7 +399,7 @@ namespace Lamar.IoC
         {
             return GetInstance<T>;
         }
-        
+
         public Func<T> FactoryFor<T>()
         {
             return GetInstance<T>;
