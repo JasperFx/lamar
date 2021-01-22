@@ -230,6 +230,23 @@ namespace StructureMap.Testing.Pipeline
             disposableDependent.WasDisposed.ShouldBeTrue();
             disposableDependent.ChildDisposable.WasDisposed.ShouldBeTrue();
         }
+
+        [Theory]
+        [InlineData(DisposalLock.Ignore)]
+        [InlineData(DisposalLock.Unlocked)]
+        public void should_clear_disposables_collection_when_disposed(DisposalLock disposalLock)
+        {
+            var container = new Container(x =>
+            {
+                x.For<Disposable>().Use<Disposable>();
+            });
+
+            var service = container.GetInstance<Disposable>();
+            container.DisposalLock = disposalLock;
+            container.Dispose();
+
+            container.Disposables.ShouldBeEmpty();
+        }
     }
 
     public class DisposableDependent : IDisposable
