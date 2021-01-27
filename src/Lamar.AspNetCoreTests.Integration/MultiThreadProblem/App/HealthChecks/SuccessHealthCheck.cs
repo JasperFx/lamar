@@ -9,14 +9,10 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks
 	public class SuccessHealthCheck : IHealthCheck
 	{
 		private readonly string _registrationName;
-		private readonly HealthCheckTestObjects1 _testObjects1;
-		private readonly HealthCheckTestObjects2 _testObjects2;
 
-		public SuccessHealthCheck(string registrationName, HealthCheckTestObjects1 testObjects1, HealthCheckTestObjects2 testObjects2)
+		public SuccessHealthCheck(string registrationName)
 		{
 			_registrationName = registrationName;
-			_testObjects1 = testObjects1 ?? throw new ArgumentNullException(nameof(testObjects1));
-			_testObjects2 = testObjects2 ?? throw new ArgumentNullException(nameof(testObjects2));
 		}
 
 		public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
@@ -28,11 +24,11 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks
 		}
 	}
 
-	public class HealthCheckTestObjects1
+	public class HealthCheckTestObject1
 	{
 		private readonly HealthCheckTestChild1 _child1;
 
-		public HealthCheckTestObjects1(HealthCheckTestChild1 child1)
+		public HealthCheckTestObject1(HealthCheckTestChild1 child1)
 		{
 			_child1 = child1 ?? throw new ArgumentNullException(nameof(child1));
 		}
@@ -40,9 +36,16 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks
 
 	public class HealthCheckTestChild1
 	{
+		public HealthCheckTestChild1()
+		{
+		}
+	}
+
+	public class HealthCheckTestObject2
+	{
 		private readonly HealthCheckTestChild2 _child2;
 
-		public HealthCheckTestChild1(HealthCheckTestChild2 child2)
+		public HealthCheckTestObject2(HealthCheckTestChild2 child2)
 		{
 			_child2 = child2 ?? throw new ArgumentNullException(nameof(child2));
 		}
@@ -50,36 +53,51 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks
 
 	public class HealthCheckTestChild2
 	{
-		private readonly HealthCheckTestChild3 _child3;
-
-		public HealthCheckTestChild2(HealthCheckTestChild3 child3)
-		{
-			_child3 = child3 ?? throw new ArgumentNullException(nameof(child3));
-		}
-	}
-
-	public class HealthCheckTestChild3
-	{
 		private readonly Context _context;
 
-		public HealthCheckTestChild3(Context context)
+		public HealthCheckTestChild2(Context context)
 		{
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 		}
 	}
 
-	public class HealthCheckTestObjects2
+	public class HealthCheckTestObject3
 	{
-		public HealthCheckTestObjects2()
+		public HealthCheckTestObject3()
 		{
-			// Simulate some cpu bound setup work...
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
-			while (stopWatch.ElapsedMilliseconds < 5000)
+		}
+	}
+
+	public class HealthCheckLock
+	{
+		private object _lock = new object();
+		private long? _result = null;
+
+		public long DoWorkInsideLock()
+		{
+			if (_result != null)
 			{
-				continue;
+				return _result.Value;
 			}
-			stopWatch.Stop();
+
+			lock (_lock)
+			{
+				if (_result != null)
+				{
+					return _result.Value;
+				}
+
+				var stopWatch = new Stopwatch();
+				stopWatch.Start();
+				while (stopWatch.ElapsedMilliseconds < 2000)
+				{
+					continue;
+				}
+				stopWatch.Stop();
+				_result = stopWatch.ElapsedMilliseconds;
+
+				return _result.Value;
+			}
 		}
 	}
 }
