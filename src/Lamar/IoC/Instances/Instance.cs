@@ -234,9 +234,9 @@ namespace Lamar.IoC.Instances
             return scope.Services.TryGetValue(Hash, out service);
         }
 
-        protected void store(Scope scope, object service)
+        protected bool store(Scope scope, object service)
         {
-            scope.Services.Add(Hash, service);
+            return scope.Services.TryAdd(Hash, service);
         }
 
         /// <summary>
