@@ -10,6 +10,10 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.DependencyInjection;
 using Lamar.Microsoft.DependencyInjection;
 using Xunit;
+using Shouldly;
+using Newtonsoft.Json;
+using Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
 {
@@ -50,7 +54,7 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
         }
 
         [Fact]
-        public async void ExecutesInParallel_WithoutExceptions()
+        public async void ControllerRequest_ExecutesInParallel_WithoutExceptions()
         {
             var client = _factory.CreateClient();
             var tasks = new List<Task>();
@@ -60,6 +64,18 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
             }
 
             await Task.WhenAll(tasks);
+        }
+
+        [Fact]
+        public async Task HealthCheckRequest_completes_successfully()
+        {
+            var client = _factory.CreateClient();
+
+            var result = await client.GetAsync("health").ConfigureAwait(false);
+
+            var responseString = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var responseObject = JsonConvert.DeserializeObject<SerializableHealthCheckResult>(responseString);
+            responseObject.Status.ShouldBe(HealthStatus.Healthy);
         }
     }
 }
