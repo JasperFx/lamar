@@ -34,11 +34,12 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App
 			services.For<IOtherService>().Use<OtherService>().Transient();
 			services.For<IContextFactory>().Use<ContextFactory>().Transient();
 
-			services.For<HealthCheckTestObjects1>().Use<HealthCheckTestObjects1>().Scoped();
-			services.For<HealthCheckTestObjects2>().Use<HealthCheckTestObjects2>().Scoped();
+			services.For<HealthCheckLock>().Use<HealthCheckLock>().Scoped();
+			services.For<HealthCheckTestObject1>().Use<HealthCheckTestObject1>().Scoped();
 			services.For<HealthCheckTestChild1>().Use<HealthCheckTestChild1>().Scoped();
+			services.For<HealthCheckTestObject2>().Use<HealthCheckTestObject2>().Scoped();
 			services.For<HealthCheckTestChild2>().Use<HealthCheckTestChild2>().Scoped();
-			services.For<HealthCheckTestChild3>().Use<HealthCheckTestChild3>().Scoped();
+			services.For<HealthCheckTestObject3>().Use<HealthCheckTestObject3>().Scoped();
 		}
 	}
 }

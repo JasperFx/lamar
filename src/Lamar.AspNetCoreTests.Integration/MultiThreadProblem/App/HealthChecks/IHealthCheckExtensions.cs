@@ -39,9 +39,13 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks
 					{
 						// Get some different objects from the service provider to try and trigger any thread
 						// safety issues in the container resolution logic
-						var testObjects1 = serviceProvider.GetRequiredService<HealthCheckTestObjects1>();
-						var testObjects2 = serviceProvider.GetRequiredService<HealthCheckTestObjects2>();
-						return new SuccessHealthCheck(registrationName, testObjects1, testObjects2);
+						var healthCheckLock = serviceProvider.GetRequiredService<HealthCheckLock>();
+						healthCheckLock.DoWorkInsideLock();
+
+						var testObject1 = serviceProvider.GetRequiredService<HealthCheckTestObject1>();
+						var testObject2 = serviceProvider.GetRequiredService<HealthCheckTestObject2>();
+						var testObject3 = serviceProvider.GetRequiredService<HealthCheckTestObject3>();
+						return new SuccessHealthCheck(registrationName);
 					}
 					catch (Exception exc)
 					{

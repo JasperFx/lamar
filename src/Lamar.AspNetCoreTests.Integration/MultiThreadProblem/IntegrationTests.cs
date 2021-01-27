@@ -14,6 +14,7 @@ using Shouldly;
 using Newtonsoft.Json;
 using Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Xunit.Abstractions;
 
 namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
 {
@@ -39,9 +40,12 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
     public class IntegrationTestsLamar : IClassFixture<CustomWebApplicationFactory<LamarStartup>>
     {
         private readonly WebApplicationFactory<LamarStartup> _factory;
+        private readonly ITestOutputHelper _output;
 
-        public IntegrationTestsLamar(CustomWebApplicationFactory<LamarStartup> factory)
+        public IntegrationTestsLamar(CustomWebApplicationFactory<LamarStartup> factory, ITestOutputHelper output)
         {
+            _output = output;
+
             factory.UseLamar = true;
             _factory = factory.WithWebHostBuilder(builder =>
             {
@@ -71,11 +75,28 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem
         {
             var client = _factory.CreateClient();
 
-            var result = await client.GetAsync("health").ConfigureAwait(false);
+            for (int i = 0; i < 20; ++i)
+            {
+                var result = await client.GetAsync("health").ConfigureAwait(false);
 
-            var responseString = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var responseObject = JsonConvert.DeserializeObject<SerializableHealthCheckResult>(responseString);
-            responseObject.Status.ShouldBe(HealthStatus.Healthy);
+                var responseString = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseObject = JsonConvert.DeserializeObject<SerializableHealthCheckResult>(responseString);
+
+                if (responseObject.Status != HealthStatus.Healthy)
+                {
+                    var unhealthyEntries = responseObject.Entries.Where(entry => entry.Status != HealthStatus.Healthy).ToList();
+                    foreach (var unhealthyEntry in unhealthyEntries)
+                    {
+                        _output.WriteLine($"Unhealth Entry ({unhealthyEntry.Name}): {unhealthyEntry.Description}\n{unhealthyEntry.Exception}\n");
+                    }
+
+#if DEBUG
+                    System.Diagnostics.Debugger.Break();
+#endif
+                }
+
+                responseObject.Status.ShouldBe(HealthStatus.Healthy);
+            }
         }
     }
 }
