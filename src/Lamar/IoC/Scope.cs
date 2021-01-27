@@ -101,9 +101,9 @@ namespace Lamar.IoC
 
         public ConcurrentBag<IDisposable> Disposables { get; } = new ConcurrentBag<IDisposable>();
 
-        internal readonly Dictionary<int, object> Services = new Dictionary<int, object>();
+        internal readonly ConcurrentDictionary<int, object> Services = new ConcurrentDictionary<int, object>();
 
-        
+
 
         public virtual void Dispose()
         {

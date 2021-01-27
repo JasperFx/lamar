@@ -98,7 +98,7 @@ namespace Lamar.IoC.Instances
                         }
 
                         service = resolver(s);
-                        s.Services.Add(Hash, service);
+                        s.Services.TryAdd(Hash, service);
 
                         return service;
                     }
@@ -126,7 +126,7 @@ namespace Lamar.IoC.Instances
                         }
 
                         service = resolver(root);
-                        root.Services.Add(Hash, service);
+                        root.Services.TryAdd(Hash, service);
 
                         return service;
                     }
