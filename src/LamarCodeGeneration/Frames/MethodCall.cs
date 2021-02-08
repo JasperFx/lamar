@@ -294,7 +294,7 @@ namespace LamarCodeGeneration.Frames
             var methodName = Method.Name;
             if (Method.IsGenericMethod)
             {
-                methodName += $"<{Method.GetGenericArguments().Select(x => x.FullName).Join(", ")}>";
+                methodName += $"<{Method.GetGenericArguments().Select(x => x.FullNameInCode()).Join(", ")}>";
             }
 
             var callingCode = $"{methodName}({Arguments.Select(x => x.ArgumentDeclaration).Join(", ")})";

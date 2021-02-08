@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -11,6 +12,14 @@ using Xunit;
 
 namespace LamarCompiler.Testing.Codegen
 {
+    public class Loader
+    {
+        public T Load<T>(string id)
+        {
+            return default(T);
+        }
+    }
+    
     public class MethodCall_generate_code
     {
         public readonly GeneratedMethod theMethod = GeneratedMethod.ForNoArg("Foo");
@@ -24,6 +33,41 @@ namespace LamarCompiler.Testing.Codegen
             @call.GenerateCode(theMethod, writer);
 
             return writer.Code().ReadLines().ToArray();
+        }
+
+        [Fact]
+        public void use_generic_argument()
+        {
+            var @call = MethodCall.For<Loader>(x => x.Load<string>("foo"));
+            @call.Target = Variable.For<Loader>("loader");
+            @call.Arguments[0] = Variable.For<string>("x");
+            
+            var writer = new SourceWriter();
+            @call.GenerateCode(theMethod, writer);
+
+            var code = writer.Code().ReadLines().ToArray();
+            
+            code[0].ShouldBe("var result_of_Load = loader.Load<string>(x);");
+        }
+
+        public class MyInnerClass
+        {
+            
+        }
+        
+        [Fact]
+        public void use_generic_argument_with_inner()
+        {
+            var @call = MethodCall.For<Loader>(x => x.Load<MyInnerClass>("foo"));
+            @call.Target = Variable.For<Loader>("loader");
+            @call.Arguments[0] = Variable.For<string>("x");
+            
+            var writer = new SourceWriter();
+            @call.GenerateCode(theMethod, writer);
+
+            var code = writer.Code().ReadLines().ToArray();
+            
+            code[0].ShouldBe("var myInnerClass = loader.Load<LamarCompiler.Testing.Codegen.MethodCall_generate_code.MyInnerClass>(x);");
         }
         
 
@@ -45,14 +89,14 @@ namespace LamarCompiler.Testing.Codegen
         public void call_a_sync_generic_method()
         {
             WriteMethod(x => x.Go<string>()).Single()
-                .ShouldBe("target.Go<System.String>();");
+                .ShouldBe("target.Go<string>();");
         }
         
         [Fact]
         public void call_a_sync_generic_method_with_multiple_arguments()
         {
             WriteMethod(x => x.Go<string, int, bool>()).Single()
-                .ShouldBe("target.Go<System.String, System.Int32, System.Boolean>();");
+                .ShouldBe("target.Go<string, int, bool>();");
         }
         
         [Fact]
