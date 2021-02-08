@@ -108,7 +108,6 @@ namespace LamarCodeGeneration
             var namespaces = GeneratedTypes
                 .SelectMany(x => x.AllInjectedFields)
                 .Select(x => x.ArgType.Namespace)
-                .Concat(new string[] {typeof(Task).Namespace})
                 .Concat(Namespaces)
                 .Distinct().ToList();
             return namespaces;

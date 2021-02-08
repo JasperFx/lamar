@@ -124,7 +124,7 @@ namespace LamarCodeGeneration
             }
             else if ((AsyncMode == AsyncMode.ReturnCompletedTask || AsyncMode == AsyncMode.None) && ReturnType == typeof(Task))
             {
-                writer.Write("return Task.CompletedTask;");
+                writer.Write($"return {typeof(Task).FullNameInCode()}.CompletedTask;");
             }
         }
 

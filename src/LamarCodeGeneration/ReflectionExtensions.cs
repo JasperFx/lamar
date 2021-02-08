@@ -17,7 +17,6 @@ namespace LamarCodeGeneration
             {typeof(long), "long"},
             {typeof(double), "double"},
             {typeof(bool), "bool"},
-            {typeof(Task), "Task"},
             {typeof(object), "object"},
             {typeof(object[]), "object[]"}
         };

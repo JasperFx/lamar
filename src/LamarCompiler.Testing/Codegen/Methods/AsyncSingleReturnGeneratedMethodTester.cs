@@ -37,7 +37,7 @@ namespace LamarCompiler.Testing.Codegen.Methods
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            writer.Write("return Task.FromResult(5);");
+            writer.Write($"return {typeof(Task).FullNameInCode()}.FromResult(5);");
         }
     }
 

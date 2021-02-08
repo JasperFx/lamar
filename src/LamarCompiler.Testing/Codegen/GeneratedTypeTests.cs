@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using Shouldly;
@@ -61,6 +62,23 @@ namespace LamarCompiler.Testing.Codegen
             
             _output.WriteLine(type.SourceCode);
         }
+
+        [Fact]
+        public void can_use_Task_as_the_class_name()
+        {
+            var assembly = new GeneratedAssembly(new GenerationRules());
+            var type = assembly.AddType("Task", typeof(Thing));
+            var method = type.MethodFor("Do").Frames.Code("// stuff");
+            
+            assembly.CompileAll();
+            
+            _output.WriteLine(type.SourceCode);
+        }
+    }
+
+    public abstract class Thing
+    {
+        public abstract System.Threading.Tasks.Task Do();
     }
 
     public abstract class ClassWithGenericParameter<T>
