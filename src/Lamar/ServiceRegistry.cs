@@ -279,16 +279,30 @@ namespace Lamar
 
         private readonly IList<Type> _registryTypes = new List<Type>();
 
+        /// <summary>
+        /// Include the registrations from another ServiceRegistry
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public void IncludeRegistry<T>() where T : ServiceRegistry, new()
         {
             IncludeRegistry(new T());
         }
 
+        /// <summary>
+        /// Include the registrations from another ServiceRegistry
+        /// </summary>
+        /// <param name="serviceRegistry"></param>
+        /// <typeparam name="T"></typeparam>
         public void IncludeRegistry<T>(T serviceRegistry) where T : ServiceRegistry
         {
             Include(serviceRegistry);
         }
 
+        /// <summary>
+        /// Include the registrations from another ServiceRegistry
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Include(ServiceRegistry registry)
         {
             if (registry == null) throw new ArgumentNullException(nameof(registry));

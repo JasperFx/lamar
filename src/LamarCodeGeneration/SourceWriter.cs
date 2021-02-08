@@ -13,7 +13,7 @@ namespace LamarCodeGeneration
 
         public int IndentionLevel
         {
-            get { return _level; }
+            get => _level;
             set
             {
                 _level = value;

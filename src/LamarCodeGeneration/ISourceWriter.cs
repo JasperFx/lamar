@@ -29,5 +29,12 @@
         /// </summary>
         /// <param name="text"></param>
         void WriteLine(string text);
+
+
+        /// <summary>
+        /// Set or read the current indention level for the code
+        /// being generated
+        /// </summary>
+        int IndentionLevel { get; set; }
     }
 }
