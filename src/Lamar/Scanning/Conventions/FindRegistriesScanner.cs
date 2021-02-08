@@ -15,7 +15,7 @@ namespace Lamar.Scanning.Conventions
                 .Each(type =>
                 {
                     var found = Activator.CreateInstance(type).As<ServiceRegistry>();
-                    registry.AddRange(found);
+                    registry.IncludeRegistry(found);
                 });
         }
 

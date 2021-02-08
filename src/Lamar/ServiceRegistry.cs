@@ -277,14 +277,33 @@ namespace Lamar
             Add(descriptor);
         }
 
+        private readonly IList<Type> _registryTypes = new List<Type>();
+
         public void IncludeRegistry<T>() where T : ServiceRegistry, new()
         {
-            this.AddRange(new T());
+            IncludeRegistry(new T());
         }
 
         public void IncludeRegistry<T>(T serviceRegistry) where T : ServiceRegistry
         {
-            this.AddRange(serviceRegistry);
+            Include(serviceRegistry);
+        }
+
+        public void Include(ServiceRegistry registry)
+        {
+            if (registry == null) throw new ArgumentNullException(nameof(registry));
+            var type = registry.GetType();
+            if (type != typeof(ServiceRegistry))
+            {
+                if (_registryTypes.Contains(type)) return;
+                
+                this.AddRange(registry);
+                _registryTypes.Add(type);
+            }
+            else
+            {
+                this.AddRange(registry);
+            }
         }
 
         /// <summary>
