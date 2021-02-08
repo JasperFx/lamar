@@ -77,7 +77,7 @@ namespace LamarCodeGeneration.Util
         {
             if (type == null) return false;
 
-            return type.Namespace.StartsWith(nameSpace);
+            return type.Namespace != null && type.Namespace.StartsWith(nameSpace);
         }
 
         public static bool IsOpenGeneric(this Type type)
