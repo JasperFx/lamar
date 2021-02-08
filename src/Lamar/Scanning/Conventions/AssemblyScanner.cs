@@ -303,7 +303,10 @@ namespace Lamar.Scanning.Conventions
 
         public void ApplyRegistrations(ServiceRegistry services)
         {
-            foreach (var convention in Conventions) convention.ScanTypes(TypeFinder.Result, services);
+            foreach (var convention in Conventions)
+            {
+                convention.ScanTypes(TypeFinder.Result, services);
+            }
         }
 
         public bool Contains(string assemblyName)

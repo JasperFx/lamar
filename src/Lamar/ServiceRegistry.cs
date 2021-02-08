@@ -277,7 +277,7 @@ namespace Lamar
             Add(descriptor);
         }
 
-        private readonly IList<Type> _registryTypes = new List<Type>();
+        internal IList<Type> RegistryTypes { get; set; } = new List<Type>();
 
         /// <summary>
         /// Include the registrations from another ServiceRegistry
@@ -309,10 +309,10 @@ namespace Lamar
             var type = registry.GetType();
             if (type != typeof(ServiceRegistry))
             {
-                if (_registryTypes.Contains(type)) return;
+                if (RegistryTypes.Contains(type)) return;
                 
                 this.AddRange(registry);
-                _registryTypes.Add(type);
+                RegistryTypes.Add(type);
             }
             else
             {

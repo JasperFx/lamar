@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
@@ -13,9 +14,11 @@ namespace Lamar.Scanning.Conventions
             var scanners = new AssemblyScanner[0];
             var registry = new ServiceRegistry(services);
 
+            var registriesEncountered = new List<Type>();
+
             while (registry.HasScanners())
             {
-                var (registry2, operations) = ParseToOperations(registry);
+                var (registry2, operations) = ParseToOperations(registry, registriesEncountered);
 
                 var additional = operations.OfType<AssemblyScanner>().ToArray();
 
@@ -41,10 +44,12 @@ namespace Lamar.Scanning.Conventions
         {
             var scanners = new AssemblyScanner[0];
             var registry = new ServiceRegistry(services);
+            
+            var registriesEncountered = new List<Type>();
 
             while (registry.HasScanners())
             {
-                var (registry2, operations) = ParseToOperations(registry);
+                var (registry2, operations) = ParseToOperations(registry, registriesEncountered);
 
                 var additional = operations.OfType<AssemblyScanner>().ToArray();
 
@@ -68,7 +73,8 @@ namespace Lamar.Scanning.Conventions
             return (registry, scanners);
         }
 
-        internal static (ServiceRegistry, List<object>) ParseToOperations(IServiceCollection services)
+        internal static (ServiceRegistry, List<object>) ParseToOperations(IServiceCollection services,
+            List<Type> registriesEncountered)
         {
             var scanners = services
                 .Where(x => x.ServiceType == typeof(AssemblyScanner))
@@ -83,6 +89,8 @@ namespace Lamar.Scanning.Conventions
             var initial = indexes[0] > 0
                 ? new ServiceRegistry(services.Take(indexes[0]))
                 : new ServiceRegistry();
+
+            initial.RegistryTypes = registriesEncountered;
 
             operations.Add(scanners[0].ImplementationInstance);
 
