@@ -20,7 +20,7 @@ namespace Lamar.Sample.Blazor
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-			// configure Blazor to use Lamar
+            // configure Blazor to use Lamar
             builder.ConfigureContainer<ServiceRegistry>(new LamarServiceProviderFactory(), ConfigureServices);
 
             await builder.Build().RunAsync();
@@ -28,9 +28,9 @@ namespace Lamar.Sample.Blazor
 
         private static void ConfigureServices(ServiceRegistry services)
         {
-			// here you can configure Lamar as normal
-			
-			services.For<IFoo>().Use<Foo>().Singleton();
+            // here you can configure Lamar as normal
+            
+            services.For<IFoo>().Use<Foo>().Singleton();
             services.IncludeRegistry<FooRegistry>();
         }
     }
