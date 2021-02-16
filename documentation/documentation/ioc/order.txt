@@ -1,6 +1,7 @@
 concepts
 bootstrapping
 aspnetcore
+blazor
 registration
 lifetime
 resolving
