@@ -4,7 +4,6 @@ using LamarCodeGeneration;
 using LamarCompiler;
 using Microsoft.Extensions.DependencyInjection;
 using Oakton;
-using Oakton.AspNetCore;
 
 namespace GeneratorTarget
 {

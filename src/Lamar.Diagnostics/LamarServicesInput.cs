@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Baseline;
 using Lamar.IoC.Diagnostics;
 using Oakton;
-using Oakton.AspNetCore;
 
 [assembly:OaktonCommandAssembly]
 
@@ -26,6 +26,10 @@ namespace Lamar.Diagnostics
 
         [Description("Show the full build plans")]
         public bool BuildPlansFlag { get; set; }
+        
+        
+        [Description("Show all information about built in .Net types and instance names")]
+        public bool VerboseFlag { get; set; }
 
 
         public ModelQuery ToModelQuery(IContainer container)
@@ -52,6 +56,18 @@ namespace Lamar.Diagnostics
                 .Distinct();
 
             return assemblies.FirstOrDefault(x => x.GetName().Name.EqualsIgnoreCase(assemblyName));
+        }
+
+        public IEnumerable<IServiceFamilyConfiguration> Query(IContainer container)
+        {
+            var query = ToModelQuery(container);
+            var configurations = query.Query(container.Model);
+            if (!VerboseFlag)
+            {
+                configurations = configurations.Where(x => !LamarServicesCommand.IgnoreIfNotVerbose(x.ServiceType));
+            }
+
+            return configurations;
         }
     }
 }

@@ -1,5 +1,6 @@
+using BaselineTypeDiscovery;
 using Microsoft.Extensions.DependencyInjection;
-using Oakton.AspNetCore.Environment;
+using Oakton.Environment;
 
 namespace Lamar.Diagnostics
 {
@@ -12,6 +13,7 @@ namespace Lamar.Diagnostics
         public static void CheckLamarConfiguration(this IServiceCollection services)
         {
             services.CheckEnvironment("Lamar IoC Service Registrations",s => ((IContainer)s).AssertConfigurationIsValid(AssertMode.Full));
+            services.CheckEnvironment("Lamar IoC Type Scanning", s => TypeRepository.AssertNoTypeScanningFailures());
         }
     }
 }

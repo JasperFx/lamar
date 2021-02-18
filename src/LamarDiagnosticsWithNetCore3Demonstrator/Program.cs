@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Lamar;
+using Lamar.Diagnostics;
 using Lamar.Microsoft.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Oakton.AspNetCore;
+using Oakton;
 
 namespace LamarDiagnosticsWithNetCore3Demonstrator
 {
@@ -14,6 +15,7 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
             return new HostBuilder()
                 .UseLamar((context, services) =>
                 {
+                    services.CheckLamarConfiguration();
                     services.Scan(s =>
                     {
                         s.TheCallingAssembly();

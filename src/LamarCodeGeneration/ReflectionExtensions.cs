@@ -124,17 +124,19 @@ namespace LamarCodeGeneration
         {
             if (Aliases.ContainsKey(type)) return Aliases[type];
             
-            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            if (type.IsGenericType && type.IsGenericTypeDefinition)
             {
-                var cleanName = type.Name.Split('`').First().Replace("+", ".");
+                
+                var parts = type.Name.Split('`');
+                var numberOfArgs = int.Parse(parts[1]) - 1;
+                
+                var cleanName = parts.First().Replace("+", ".");
                 if (type.IsNested)
                 {
                     cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
                 }
                 
-                var args = type.GetGenericArguments().Select(x => x.ShortNameInCode()).Join(", ");
-
-                return $"{cleanName}<{args}>";
+                return $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
             }
 
             if (type.MemberType == MemberTypes.NestedType)

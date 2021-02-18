@@ -1,7 +1,6 @@
 using System;
 using LamarCodeGeneration.Util;
 using Oakton;
-using Oakton.AspNetCore;
 
 namespace Lamar.Diagnostics
 {

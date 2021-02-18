@@ -7,6 +7,12 @@ namespace Lamar.Diagnostics
     [Description("Runs all the Lamar container validations", Name = "lamar-validate")]
     public class LamarValidateCommand : OaktonCommand<ValidateInput>
     {
+        public LamarValidateCommand()
+        {
+            Usage("Full Validation").Arguments();
+            Usage("Validation Mode").Arguments(x => x.Mode);
+        }
+
         public override bool Execute(ValidateInput input)
         {
             using (var host = input.BuildHost())

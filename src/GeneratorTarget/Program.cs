@@ -4,7 +4,6 @@ using LamarCodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Oakton;
-using Oakton.AspNetCore;
 
 [assembly:OaktonCommandAssembly]
 

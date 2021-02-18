@@ -21,7 +21,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Lamar\Lamar.csproj" />
         <PackageReference Include="BaselineTypeDiscovery" Version="1.1.1" />
-        <PackageReference Include="Oakton.AspNetCore" Version="3.0.0" />
+        <PackageReference Include="Oakton" Version="[3.0.0, 4.0.0)" />
     </ItemGroup>
 
 </Project>

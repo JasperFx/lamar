@@ -3,7 +3,7 @@
     <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Baseline" Version="1.5.0" />
+    <PackageReference Include="Baseline" Version="2.1.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.5.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\Widget.Instance\Widget.Instance.csproj" />
     <ProjectReference Include="..\..\Widget.Registration\Widget.Registration.csproj" />
     <ProjectReference Include="..\Aspect.Logger\Widget.Aspect.Logger.csproj" />
+    <ProjectReference Include="..\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
     <ProjectReference Include="..\Lamar\Lamar.csproj" />
     <ProjectReference Include="..\StructureMap.Testing.GenericWidgets\StructureMap.Testing.GenericWidgets.csproj" />
     <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />
@@ -29,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Baseline" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
   </ItemGroup>
   
