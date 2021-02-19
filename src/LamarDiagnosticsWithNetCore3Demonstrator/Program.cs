@@ -44,7 +44,7 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
 
                     services.ForConcreteType<DeepConstructorGuy>();
 
-                    services.ForConcreteType<EngineChoice>();
+                    services.For<EngineChoice>().Add<EngineChoice>();
                     
                     services.For<IService>().Use(new ColorService("red"));
 

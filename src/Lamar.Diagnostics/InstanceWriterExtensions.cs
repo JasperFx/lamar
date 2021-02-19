@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using Baseline;
 using Lamar.IoC.Diagnostics;
+using Lamar.IoC.Enumerables;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,9 +21,48 @@ namespace Lamar.Diagnostics
             {
                 parent.WriteConstructorBuildPlan(input, c, isDefault, prefix);
             }
+            else if (instance is IEnumerableInstance e)
+            {
+                parent.WriteEnumerableInstance(input, e, isDefault, prefix);
+            }
             else
             {
                 parent.WriteSingleInstanceNode(input, instance, isDefault, prefix);
+            }
+        }
+
+        internal static void WriteEnumerableInstance(this TreeNode parent, LamarServicesInput input,
+            IEnumerableInstance instance, bool isDefault, string prefix)
+        {
+            var description = instance.ServiceType.CleanFullName();
+            if (prefix.IsNotEmpty())
+            {
+                description = prefix + description;
+            }
+
+            var top = parent.AddNode(description);
+
+            var number = 0;
+            foreach (var child in instance.Elements)
+            {
+                var elementPrefix = ((++number).ToString()).PadLeft(3) + ". ";
+                
+                switch (child.Lifetime)
+                {
+                    case ServiceLifetime.Transient:
+                        top.WriteBuildPlanNode(input, child, false, elementPrefix );
+                        break;
+                    
+                    case ServiceLifetime.Scoped:
+                        top.AddNode($"{elementPrefix}Resolved from Scope -> {child.ToDescription()}");
+                        break;
+                    
+                    case ServiceLifetime.Singleton:
+                        top.AddNode($"{elementPrefix}Singleton Resolved from Root -> {child.ToDescription()}");
+                        break;
+                }
+                
+                
             }
         }
 

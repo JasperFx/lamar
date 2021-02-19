@@ -11,20 +11,27 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Enumerables
 {
-    public class ArrayInstance<T> : GeneratedInstance
+    internal interface IEnumerableInstance
+    {
+        Instance[] Elements { get; }
+        Type ServiceType { get; }
+    }
+
+    public class ArrayInstance<T> : GeneratedInstance, IEnumerableInstance
     {
         private readonly IList<Instance> _inlines = new List<Instance>();
-        private Instance[] _elements;
 
         public ArrayInstance(Type serviceType) : base(serviceType, typeof(T[]), ServiceLifetime.Transient)
         {
             Name = Variable.DefaultArgName<T[]>();
         }
 
+        public Instance[] Elements { get; private set; }
+
         public override Frame CreateBuildFrame()
         {
             var variables = new ResolverVariables();
-            var elements = _elements.Select(x => variables.Resolve(x, BuildMode.Dependency)).ToArray();
+            var elements = Elements.Select(x => variables.Resolve(x, BuildMode.Dependency)).ToArray();
             
             variables.MakeNamesUnique();
             
@@ -40,7 +47,7 @@ namespace Lamar.IoC.Enumerables
             // being created here, make the dependencies all be Dependency mode
             var dependencyMode = isRoot && mode == BuildMode.Build ? BuildMode.Dependency : mode;
             
-            var elements = _elements.Select(x => variables.Resolve(x, dependencyMode)).ToArray();
+            var elements = Elements.Select(x => variables.Resolve(x, dependencyMode)).ToArray();
             
             return new ArrayAssignmentFrame<T>(this, elements).Variable;
         }
@@ -48,16 +55,16 @@ namespace Lamar.IoC.Enumerables
         protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             if (_inlines.Any())
-                _elements = _inlines.ToArray();
+                Elements = _inlines.ToArray();
             else
-                _elements = services.FindAll(typeof(T));
+                Elements = services.FindAll(typeof(T));
             
-            return _elements;
+            return Elements;
         }
 
         public override object QuickResolve(Scope scope)
         {
-            return _elements.Select(x => x.QuickResolve(scope).As<T>()).ToArray();
+            return Elements.Select(x => x.QuickResolve(scope).As<T>()).ToArray();
         }
 
         /// <summary>
