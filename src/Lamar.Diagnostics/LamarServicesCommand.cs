@@ -277,7 +277,7 @@ namespace Lamar.Diagnostics
         
         public static bool IsLogger(Type type, out Type innerType)
         {
-            if (type.Closes(typeof(ILogger<>)) && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (type.Closes(typeof(ILogger<>)) && type.GetGenericTypeDefinition() == typeof(ILogger<>))
             {
                 innerType = type.GetGenericArguments()[0];
                 return true;
@@ -368,28 +368,35 @@ namespace Lamar.Diagnostics
     {
         public static string CleanFullName(this Type type)
         {
-            if (type.IsOpenGeneric())
+            try
             {
-                var parts = type.FullNameInCode().Split('`');
-                var argCount = int.Parse(parts[1]) - 1;
+                if (type.IsOpenGeneric())
+                {
+                    var parts = type.FullNameInCode().Split('`');
+                    var argCount = int.Parse(parts[1]) - 1;
 
-                return $"{parts[0]}<{"".PadLeft(argCount, ',')}>";
+                    return $"{parts[0]}<{"".PadLeft(argCount, ',')}>";
+                }
+                else if (LamarServicesCommand.IsEnumerable(type, out var elementType))
+                {
+                    return $"IEnumerable<{elementType.FullNameInCode()}>";
+                }
+                else if (LamarServicesCommand.IsOption(type, out var optionType))
+                {
+                    return $"IOptions<{optionType.FullNameInCode()}>";
+                }
+                else if (LamarServicesCommand.IsLogger(type, out var loggedType))
+                {
+                    return $"ILogger<{optionType.FullNameInCode()}>";
+                }
+                else
+                {
+                    return type.FullNameInCode();
+                }
             }
-            else if (LamarServicesCommand.IsEnumerable(type, out var elementType))
+            catch (Exception)
             {
-                return $"IEnumerable<{elementType.FullNameInCode()}>";
-            }
-            else if (LamarServicesCommand.IsOption(type, out var optionType))
-            {
-                return $"IOptions<{optionType.FullNameInCode()}>";
-            }
-            else if (LamarServicesCommand.IsLogger(type, out var loggedType))
-            {
-                return $"ILogger<{optionType.FullNameInCode()}>";
-            }
-            else
-            {
-                return type.FullNameInCode();
+                return type?.FullName;
             }
         }
         
