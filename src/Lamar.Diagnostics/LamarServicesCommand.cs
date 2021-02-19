@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,7 +6,6 @@ using Baseline;
 using Lamar.IoC;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Instances;
-using Lamar.Scanning.Conventions;
 using LamarCodeGeneration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -163,7 +161,7 @@ namespace Lamar.Diagnostics
                     prefix = "[bold]Default[/] " + prefix;
                 }
                 
-                var description = $"{prefix}{DescriptionFor(instance)} named '{instance.Name}'";
+                var description = $"{prefix}{instance.ToDescription()} named '{instance.Name}'";
                 AnsiConsole.MarkupLine(description);
                 Console.WriteLine();
 
@@ -186,97 +184,15 @@ namespace Lamar.Diagnostics
             if (configuration.Instances.Count() == 1)
             {
                 var instance = configuration.Default.Instance;
-                
-                var description = $"[blue]{instance.Lifetime}:[/] {DescriptionFor(instance)}";
-                if (input.VerboseFlag)
-                {
-                    description += $" named '{instance.Name}'";
-                }
-                
-                parent.AddNode(description);
+
+                parent.WriteSingleInstanceNode(input, instance, true);
             }
             else
             {
-                var table = new Table();
-                table.AddColumns("Name", "Description", "Lifetime");
-                foreach (var instance in configuration.Instances)
-                {
-                    if (configuration.Default == instance)
-                    {
-                        table.AddRow(instance.Name.BoldText() + " (Default)", DescriptionFor(instance.Instance).BoldText(),
-                            instance.Lifetime.BoldText());
-                    }
-                    else
-                    {
-                        table.AddRow(instance.Name, DescriptionFor(instance.Instance),
-                            instance.Lifetime.ToString());
-                    }
-                }
-
-                parent.AddNode(table);
+                parent.WriteMultipleInstanceNodes(configuration);
             }
         }
 
-        public static string DescriptionFor(Instance instance)
-        {
-            if (instance.ServiceType.IsOption(out var optionType))
-            {
-                if (instance.ImplementationType.Closes(typeof(OptionsManager<>)))
-                {
-                    return $"IOptions<{optionType.FullNameInCode()}>";
-                }
-            }
-            
-            if (instance.ServiceType.IsLogger(out var loggedType))
-            {
-                if (instance.ImplementationType.Closes(typeof(Logger<>)))
-                {
-                    return $"ILogger<{loggedType.FullNameInCode()}>";
-                }
-            }
 
-            if (instance is ObjectInstance o)
-            {
-                return "User Supplied: " + o.Service?.ToString() ?? "Null";
-            }
-
-            if (instance is ConstructorInstance c)
-            {
-                string text = $"new {c.ImplementationType.CleanFullName()}()";
-            
-                if (c.Constructor != null)
-                {
-                    text = $"new {c.ImplementationType.CleanFullName()}({c.Constructor.GetParameters().Select(x => x.Name).Join(", ")})";
-                }
-
-                return text;
-            }
-
-            return instance.ToString();
-        }
-
-
-        private static readonly IList<Type> _ignoredBaseTypes = new List<Type>
-        {
-            typeof(IValidateOptions<>),
-            typeof(IConfigureOptions<>),
-            typeof(IPostConfigureOptions<>),
-            typeof(IOptionsFactory<>),
-            typeof(IOptionsMonitor<>),
-            typeof(IOptionsMonitorCache<>),
-            typeof(IOptionsChangeTokenSource<>),
-        };
-
-        public static bool IgnoreIfNotVerbose(Type type)
-        {
-            if (_ignoredBaseTypes.Any(type.Closes)) return true;
-
-            if (type.IsEnumerable(out var elementType))
-            {
-                return IgnoreIfNotVerbose(elementType);
-            }
-            
-            return false;
-        }
     }
 }

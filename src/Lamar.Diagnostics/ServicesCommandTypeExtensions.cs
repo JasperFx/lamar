@@ -105,22 +105,20 @@ namespace Lamar.Diagnostics
 
                     return $"{parts[0]}<{"".PadLeft(argCount, ',')}>";
                 }
-                else if (type.IsEnumerable(out var elementType))
+
+                if (type.IsEnumerable(out var elementType))
                 {
                     return $"IEnumerable<{elementType.FullNameInCode()}>";
                 }
-                else if (type.IsOption(out var optionType))
+
+                if (type.IsOption(out var optionType))
                 {
                     return $"IOptions<{optionType.FullNameInCode()}>";
                 }
-                else if (type.IsLogger(out var loggedType))
-                {
-                    return $"ILogger<{loggedType.FullNameInCode()}>";
-                }
-                else
-                {
-                    return type.FullNameInCode();
-                }
+
+                return type.IsLogger(out var loggedType) 
+                    ? $"ILogger<{loggedType.FullNameInCode()}>" 
+                    : type.FullNameInCode();
             }
             catch (Exception)
             {
@@ -133,6 +131,27 @@ namespace Lamar.Diagnostics
             return $"[bold]{data}[/]";
         }
 
+        private static readonly IList<Type> _ignoredBaseTypes = new List<Type>
+        {
+            typeof(IValidateOptions<>),
+            typeof(IConfigureOptions<>),
+            typeof(IPostConfigureOptions<>),
+            typeof(IOptionsFactory<>),
+            typeof(IOptionsMonitor<>),
+            typeof(IOptionsMonitorCache<>),
+            typeof(IOptionsChangeTokenSource<>),
+        };
 
+        public static bool IgnoreIfNotVerbose(this Type type)
+        {
+            if (_ignoredBaseTypes.Any(type.Closes)) return true;
+
+            if (type.IsEnumerable(out var elementType))
+            {
+                return IgnoreIfNotVerbose(elementType);
+            }
+            
+            return false;
+        }
     }
 }

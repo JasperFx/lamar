@@ -64,7 +64,7 @@ namespace Lamar.Diagnostics
             var configurations = query.Query(container.Model);
             if (!VerboseFlag)
             {
-                configurations = configurations.Where(x => !LamarServicesCommand.IgnoreIfNotVerbose(x.ServiceType));
+                configurations = configurations.Where(x => !x.ServiceType.IgnoreIfNotVerbose());
             }
 
             return configurations;
