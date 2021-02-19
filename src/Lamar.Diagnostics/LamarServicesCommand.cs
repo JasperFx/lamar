@@ -134,11 +134,27 @@ namespace Lamar.Diagnostics
             {
                 var instance = configuration.Default.Instance;
 
-                parent.WriteSingleInstanceNode(input, instance,displayMode, true);
+                if (displayMode == WhatDoIHaveDisplay.Summary)
+                {
+                    parent.WriteSingleInstanceNode(input, instance, true);
+                }
+                else
+                {
+                    parent.WriteBuildPlanNode(input, instance, true);
+                }
+            }
+            else if (displayMode == WhatDoIHaveDisplay.Summary)
+            {
+                parent.WriteInstancesTable(configuration, displayMode);
             }
             else
             {
-                parent.WriteMultipleInstanceNodes(configuration, displayMode);
+                foreach (var instanceRef in configuration.Instances)
+                {
+                    var isDefault = configuration.Default.Instance == instanceRef.Instance;
+                    
+                    parent.WriteBuildPlanNode(input, instanceRef.Instance, isDefault);
+                }
             }
         }
 
