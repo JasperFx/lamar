@@ -92,12 +92,9 @@ namespace Lamar.Diagnostics
             IGrouping<Assembly, IServiceFamilyConfiguration> @group, WhatDoIHaveDisplay displayMode,
             IContainer container)
         {
-            if (displayMode == WhatDoIHaveDisplay.Summary)
-            {
-                var rule = new Rule($"[blue]{@group.Key.GetName().Name} ({@group.Key.GetName().Version})[/]")
-                    {Alignment = Justify.Left};
-                AnsiConsole.Render(rule);
-            }
+            var rule = new Rule($"[blue]{@group.Key.GetName().Name} ({@group.Key.GetName().Version})[/]")
+                {Alignment = Justify.Left};
+            AnsiConsole.Render(rule);
 
             var namespaces = @group.GroupBy(x => x.ServiceType.ResolveServiceType().Namespace);
             foreach (var ns in namespaces)
@@ -111,65 +108,17 @@ namespace Lamar.Diagnostics
         private void WriteNamespaceServices(LamarServicesInput input, IGrouping<string, IServiceFamilyConfiguration> ns,
             WhatDoIHaveDisplay displayMode, IContainer container)
         {
-            if (displayMode == WhatDoIHaveDisplay.Summary)
-            {
-                var top = new Tree(ns.Key);
+            var top = new Tree(ns.Key);
 
-                foreach (var configuration in ns)
-                {
-                    var node = top.AddNode(configuration.ServiceType.CleanFullName());
-                    WriteInstances(node, configuration, input, displayMode, container);
-                }
-
-                AnsiConsole.Render(top);
-            }
-            else
+            foreach (var configuration in ns)
             {
-                foreach (var configuration in ns.Where(x => !x.ServiceType.IsOpenGeneric()))
-                {
-                    WriteBuildPlans(configuration, container);
-                    Console.WriteLine();
-                    Console.WriteLine();
-                }
+                var node = top.AddNode(configuration.ServiceType.CleanFullName());
+                WriteInstances(node, configuration, input, displayMode, container);
             }
+
+            AnsiConsole.Render(top);
 
             Console.WriteLine();
-        }
-
-        private void WriteBuildPlans(IServiceFamilyConfiguration configuration, IContainer container)
-        {
-            var instanceRefs = configuration
-                .Instances
-                .Where(x => x.Instance is ConstructorInstance)
-                .ToArray(); 
-            
-            if (!instanceRefs.Any())
-            {
-                return;
-            }
-            
-            AnsiConsole.MarkupLine($"[blue]Service Type[/]: {configuration.ServiceType.CleanFullName()}");
-
-              
-            foreach (var instanceRef in instanceRefs)
-            {
-                var instance = instanceRef.Instance;
-
-                var prefix = $"[blue]{instance.Lifetime}:[/] ";
-                if (instanceRef == configuration.Default)
-                {
-                    prefix = "[bold]Default[/] " + prefix;
-                }
-                
-                var description = $"{prefix}{instance.ToDescription()} named '{instance.Name}'";
-                AnsiConsole.MarkupLine(description);
-                Console.WriteLine();
-
-                var buildPlan = instance.GetBuildPlan((Scope) container);
-                Console.WriteLine(buildPlan);
-                Console.WriteLine();
-            }
-
         }
 
         private void WriteInstances(TreeNode parent, IServiceFamilyConfiguration configuration,
@@ -185,11 +134,11 @@ namespace Lamar.Diagnostics
             {
                 var instance = configuration.Default.Instance;
 
-                parent.WriteSingleInstanceNode(input, instance, true);
+                parent.WriteSingleInstanceNode(input, instance,displayMode, true);
             }
             else
             {
-                parent.WriteMultipleInstanceNodes(configuration);
+                parent.WriteMultipleInstanceNodes(configuration, displayMode);
             }
         }
 

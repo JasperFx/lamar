@@ -1,5 +1,6 @@
 using System.Linq;
 using Baseline;
+using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ namespace Lamar.Diagnostics
     public static class InstanceWriterExtensions
     {
         public static void WriteSingleInstanceNode(this TreeNode parent, LamarServicesInput input, Instance instance,
+            WhatDoIHaveDisplay displayMode,
             bool isDefault)
         {
 
@@ -28,7 +30,8 @@ namespace Lamar.Diagnostics
             parent.AddNode(description);
         }
         
-        public static void WriteMultipleInstanceNodes(this TreeNode parent, IServiceFamilyConfiguration configuration)
+        public static void WriteMultipleInstanceNodes(this TreeNode parent, IServiceFamilyConfiguration configuration,
+            WhatDoIHaveDisplay displayMode)
         {
             var table = new Table();
             table.AddColumns("Name", "Description", "Lifetime");
