@@ -1,6 +1,7 @@
 using System;
 using LamarCodeGeneration.Util;
 using Oakton;
+using Spectre.Console;
 
 namespace Lamar.Diagnostics
 {
@@ -15,6 +16,8 @@ namespace Lamar.Diagnostics
 
         public override bool Execute(ValidateInput input)
         {
+            AnsiConsole.Render(new FigletText("Lamar"){Color = Color.Blue});
+
             using (var host = input.BuildHost())
             {
                 var container = host.Services.As<IContainer>();
