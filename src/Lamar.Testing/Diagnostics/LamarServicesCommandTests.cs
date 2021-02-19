@@ -18,7 +18,7 @@ namespace Lamar.Testing.Diagnostics
         [InlineData(typeof(ILogger<MyThing>), "Lamar.Testing")]
         public void assembly_from_type(Type type, string assemblyName)
         {
-            LamarServicesCommand.AssemblyForType(type).GetName().Name.ShouldBe(assemblyName);
+            type.AssemblyForType().GetName().Name.ShouldBe(assemblyName);
         }
         
         

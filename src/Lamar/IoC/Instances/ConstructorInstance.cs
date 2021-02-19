@@ -207,8 +207,6 @@ namespace Lamar.IoC.Instances
             };
         }
 
-
-
         private DisposeTracking determineDisposalTracking(BuildMode mode)
         {
             if (!ImplementationType.CanBeCastTo<IDisposable>()) return DisposeTracking.None;
@@ -218,10 +216,8 @@ namespace Lamar.IoC.Instances
                 case BuildMode.Inline:
                     return DisposeTracking.WithUsing;
 
-
                 case BuildMode.Dependency:
                     return DisposeTracking.RegisterWithScope;
-
 
                 case BuildMode.Build:
                     return DisposeTracking.None;
@@ -234,19 +230,15 @@ namespace Lamar.IoC.Instances
 
         protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
-
             Constructor = DetermineConstructor(services, out var message);
 
             if (message.IsNotEmpty()) ErrorMessages.Add(message);
 
-
             if (Constructor != null)
             {
                 buildOutConstructorArguments(services);
-
                 findSetters(services);
             }
-
 
             return Arguments.Select(x => x.Instance).Concat(_setters.Select(x => x.Instance));
         }
