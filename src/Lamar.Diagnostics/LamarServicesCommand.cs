@@ -25,7 +25,7 @@ namespace Lamar.Diagnostics
             }
             
             AnsiConsole.Render(new FigletText("Lamar"){Color = Color.Blue});
-            
+
             using (var host = input.BuildHost())
             {
                 var container = (IContainer)host.Services;
@@ -49,8 +49,19 @@ namespace Lamar.Diagnostics
                 {
                     var fullPath = input.FileFlag.ToFullPath();
                     Console.WriteLine("Writing the query results to " + fullPath);
+
+                    var extension = Path.GetExtension(fullPath);
+                    if (extension.EndsWith("htm", StringComparison.OrdinalIgnoreCase) ||
+                        extension.EndsWith("html", StringComparison.OrdinalIgnoreCase))
+                    {
+                        File.WriteAllText(fullPath,AnsiConsole.ExportHtml());
+                    }
+                    else
+                    {
+                        File.WriteAllText(fullPath,AnsiConsole.ExportText());
+                    }
                     
-                    File.WriteAllText(fullPath,AnsiConsole.ExportText());
+                    
                 }
             }
 

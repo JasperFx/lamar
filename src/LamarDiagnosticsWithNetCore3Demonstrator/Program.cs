@@ -15,46 +15,66 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
 {
     class Program
     {
+        // SAMPLE: using-lamar-diagnostics
         static Task<int> Main(string[] args)
         {
+            // Start up your HostBuilder as normal
             return new HostBuilder()
                 .UseLamar((context, services) =>
                 {
+                    // This adds a Container validation
+                    // to the Oakton "check-env" command
                     services.CheckLamarConfiguration();
-                    services.Scan(s =>
-                    {
-                        s.TheCallingAssembly();
-                        s.WithDefaultConventions();
-                    });
                     
-                    services.For<IEngine>().Use<Hemi>().Named("The Hemi");
-
-                    services.For<IEngine>().Add<VEight>().Singleton().Named("V8");
-                    services.For<IEngine>().Add<FourFiftyFour>();
-                    services.For<IEngine>().Add<StraightSix>().Scoped();
-
-                    services.For<IEngine>().Add(c => new Rotary()).Named("Rotary");
-                    services.For<IEngine>().Add(c => c.GetService<PluginElectric>());
-
-                    services.For<IEngine>().Add(new InlineFour());
-
-                    services.For<IWidget>().Use<AWidget>();
-
-                    services.For<AWidget>().Use<AWidget>();
-
-                    services.ForConcreteType<DeepConstructorGuy>();
-
-                    services.For<EngineChoice>().Add<EngineChoice>();
-                    
-                    services.For<IService>().Use(new ColorService("red"));
-
-                    services.Policies.SetAllProperties(policy => { policy.TypeMatches(type => type == typeof(IService)); });
-                    
-                    services.For<IGateway>().Use<DefaultGateway>()
-                        .Setter<string>("Name").Is("Blue")
-                        .Setter<string>("Color").Is("Green");
+                    // And the rest of your application's 
+                    // DI registrations.
+                    services.IncludeRegistry<TestClassRegistry>();
                 })
+                
+                // Call this method to start your application
+                // with Oakton handling the command line parsing
+                // and delegation
                 .RunOaktonCommands(args);
+        }
+        // ENDSAMPLE
+    }
+
+    public class TestClassRegistry : ServiceRegistry
+    {
+        public TestClassRegistry()
+        {
+            Scan(s =>
+            {
+                s.TheCallingAssembly();
+                s.WithDefaultConventions();
+            });
+                    
+            For<IEngine>().Use<Hemi>().Named("The Hemi");
+
+            For<IEngine>().Add<VEight>().Singleton().Named("V8");
+            For<IEngine>().Add<FourFiftyFour>();
+            For<IEngine>().Add<StraightSix>().Scoped();
+
+            For<IEngine>().Add(c => new Rotary()).Named("Rotary");
+            For<IEngine>().Add(c => c.GetService<PluginElectric>());
+
+            For<IEngine>().Add(new InlineFour());
+
+            For<IWidget>().Use<AWidget>();
+
+            For<AWidget>().Use<AWidget>();
+
+            ForConcreteType<DeepConstructorGuy>();
+
+            For<EngineChoice>().Add<EngineChoice>();
+                    
+            For<IService>().Use(new ColorService("red"));
+
+            Policies.SetAllProperties(policy => { policy.TypeMatches(type => type == typeof(IService)); });
+                    
+            For<IGateway>().Use<DefaultGateway>()
+                .Setter<string>("Name").Is("Blue")
+                .Setter<string>("Color").Is("Green");
         }
     }
 
