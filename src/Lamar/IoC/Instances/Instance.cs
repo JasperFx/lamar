@@ -231,12 +231,12 @@ namespace Lamar.IoC.Instances
 
         protected bool tryGetService(Scope scope, out object service)
         {
-            return scope.Services.TryGetValue(Hash, out service);
+            return scope.Services.TryFind(Hash, out service);
         }
 
-        protected bool store(Scope scope, object service)
+        protected void store(Scope scope, object service)
         {
-            return scope.Services.TryAdd(Hash, service);
+            scope.Services = scope.Services.AddOrUpdate(Hash, service);
         }
 
         /// <summary>

@@ -67,9 +67,9 @@ namespace Lamar
                 case ServiceLifetime.Transient:
                     return false;
                 case ServiceLifetime.Scoped:
-                    return _scope.Services.ContainsKey(Instance.Hash);
+                    return _scope.Services.TryFind(Instance.Hash, out var _);
                 case ServiceLifetime.Singleton:
-                    return _scope.Root.Services.ContainsKey(Instance.Hash);
+                    return _scope.Root.Services.TryFind(Instance.Hash, out var _);
             }
 
             return false;

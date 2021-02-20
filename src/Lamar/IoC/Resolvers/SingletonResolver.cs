@@ -22,9 +22,10 @@ namespace Lamar.IoC.Resolvers
         {
             if (_service != null) return _service;
 
-            if (_topLevelScope.Services.ContainsKey(Hash))
+
+            if (_topLevelScope.Services.TryFind(Hash, out var service))
             {
-                _service = (T) _topLevelScope.Services[Hash];
+                _service = (T) service;
                 return _service;
             }
 
@@ -32,9 +33,9 @@ namespace Lamar.IoC.Resolvers
             {
                 if (_service == null)
                 {
-                    if (_topLevelScope.Services.ContainsKey(Hash))
+                    if (_topLevelScope.Services.TryFind(Hash, out var o))
                     {
-                        _service = (T) _topLevelScope.Services[Hash];
+                        _service = (T) o;
                     }
                     else
                     {
@@ -44,7 +45,7 @@ namespace Lamar.IoC.Resolvers
                             _topLevelScope.Disposables.Add(disposable);
                         }
 
-                        _topLevelScope.Services.SmartAdd(Hash, _service);
+                        _topLevelScope.Services = _topLevelScope.Services.AddOrUpdate(Hash, _service);
                     }
                 }
             }

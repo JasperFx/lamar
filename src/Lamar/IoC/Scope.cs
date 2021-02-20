@@ -93,7 +93,7 @@ namespace Lamar.IoC
 
         public ConcurrentBag<IDisposable> Disposables { get; } = new ConcurrentBag<IDisposable>();
 
-        internal readonly ConcurrentDictionary<int, object> Services = new ConcurrentDictionary<int, object>();
+        internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
 
         public virtual void Dispose()
         {

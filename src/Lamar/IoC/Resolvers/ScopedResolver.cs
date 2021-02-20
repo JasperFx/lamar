@@ -10,20 +10,20 @@ namespace Lamar.IoC.Resolvers
 
         public object Resolve(Scope scope)
         {
-            if (scope.Services.TryGetValue(Hash, out object service))
+            if (scope.Services.TryFind(Hash, out object service))
             {
                 return service;
             }
 
             lock (_locker)
             {
-                if (scope.Services.TryGetValue(Hash, out service))
+                if (scope.Services.TryFind(Hash, out service))
                 {
                     return service;
                 }
                 
                 service = (T) Build(scope);
-                scope.Services.TryAdd(Hash, service);
+                scope.Services = scope.Services.AddOrUpdate(Hash, service);
 
                 if (service is IDisposable)
                 {

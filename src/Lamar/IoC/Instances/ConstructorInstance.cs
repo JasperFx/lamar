@@ -69,7 +69,7 @@ namespace Lamar.IoC.Instances
             {
                 return s =>
                 {
-                    if (topScope.Services.TryGetValue(Hash, out object service))
+                    if (topScope.Services.TryFind(Hash, out object service))
                     {
                         return service;
                     }

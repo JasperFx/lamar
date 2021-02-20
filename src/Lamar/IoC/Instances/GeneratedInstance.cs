@@ -85,20 +85,21 @@ namespace Lamar.IoC.Instances
                 
                 return s =>
                 {
-                    if (s.Services.TryGetValue(Hash, out object service))
+                    if (s.Services.TryFind(Hash, out object service))
                     {
                         return service;
                     }
 
                     lock (locker)
                     {
-                        if (s.Services.TryGetValue(Hash, out service))
+                        if (s.Services.TryFind(Hash, out service))
                         {
                             return service;
                         }
 
                         service = resolver(s);
-                        s.Services.TryAdd(Hash, service);
+
+                        s.Services = s.Services.AddOrUpdate(Hash, service);
 
                         return service;
                     }
@@ -113,20 +114,20 @@ namespace Lamar.IoC.Instances
                 
                 return s =>
                 {
-                    if (root.Services.TryGetValue(Hash, out object service))
+                    if (root.Services.TryFind(Hash, out object service))
                     {
                         return service;
                     }
 
                     lock (locker)
                     {
-                        if (root.Services.TryGetValue(Hash, out service))
+                        if (root.Services.TryFind(Hash, out service))
                         {
                             return service;
                         }
 
                         service = resolver(root);
-                        root.Services.TryAdd(Hash, service);
+                        root.Services = root.Services.AddOrUpdate(Hash, service);
 
                         return service;
                     }
