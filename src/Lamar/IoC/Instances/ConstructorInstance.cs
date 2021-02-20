@@ -112,6 +112,11 @@ namespace Lamar.IoC.Instances
             {
                 return cached;
             }
+
+            if (Constructor == null && ErrorMessages.Any())
+            {
+                new ErrorMessageResolver(this).Resolve(scope);
+            }
             
             var values = Arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
             var service = Activator.CreateInstance(ImplementationType, values);
