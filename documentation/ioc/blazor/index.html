@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <title>Lamar - Validating Container Configuration</title>
+        <title>Lamar - Integration with Blazor</title>
         <link href="/lamar/content/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/prism.css" rel="stylesheet" type="text/css" />
         <link href="/lamar/content/theme.css" rel="stylesheet" type="text/css" />
@@ -37,8 +37,8 @@
             <li>
               <a href="https://gitter.im/jasperfx/Lamar?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/da2edb525cde1455a622c58c0effc3a90b9a181c/68747470733a2f2f6261646765732e6769747465722e696d2f4a6f696e253230436861742e737667" alt="Join the chat at https://gitter.im/jasperfx/Lamar" data-canonical-src="https://badges.gitter.im/Join%20Chat.svg" style="max-width:100%;"></a>
             </li>
-            <li><a href="/lamar/documentation/ioc/diagnostics/whatdoihave" title="WhatDoIHave()">Previous</a></li>
-            <li><a href="/lamar/documentation/ioc/diagnostics/environment-tests" title="Environment Tests">Next</a></li>
+            <li><a href="/lamar/documentation/ioc/aspnetcore" title="Integration with ASP.Net Core">Previous</a></li>
+            <li><a href="/lamar/documentation/ioc/registration" title="Registration">Next</a></li>
           </ul>
           <div class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -53,7 +53,7 @@
 
     <div class="container">
       <nav class="navbar-inverse">
-        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li><a href="/lamar/documentation/ioc/diagnostics">Lamar Diagnostics</a></li><li class="active">Validating Container Configuration</li></ol>
+        <ol class="breadcrumb"><li><a href="/lamar/">Lamar</a></li><li><a href="/lamar/documentation">Documentation</a></li><li><a href="/lamar/documentation/ioc">Lamar as IoC Container</a></li><li class="active">Integration with Blazor</li></ol>
       </nav>
     </div>
 
@@ -68,27 +68,52 @@
             <ul class="nav nav-stacked affix" id="sidebar">
             </ul>
 
-            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a></p>
-            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a></p>
+            <h3 class="no-margin">Next</h3><p><a href="/lamar/documentation/ioc/registration">Registration</a></p>
+            <h3 class="no-margin">Previous</h3><a href="/lamar/documentation/ioc/aspnetcore">Integration with ASP.Net Core</a></p>
           </div><!--/left-->
 
           <!--right-->
           <div class="col-md-9">
-              <h1>Validating Container Configuration</h1>
+              <h1>Integration with Blazor</h1>
 
               <hr />
 
               <div id="main-pane">
-                <!--Title: Validating Container Configuration-->
-<p>To find any potential holes in your Lamar configuration like missing dependencies, unclear defaults of plugin types, validation errors, or just plain build errors, you can use this method below:</p>
-<pre><code class="language-csharp">&#xA;container.AssertConfigurationIsValid();&#xA;</code></pre>
-<p>Running this method will walk over every single registration in your <code>Container</code> and:</p>
-<ol>
-<li>Try to create a build plan for that Instance that will flush out any problems with missing dependencies or invalid inline configuration</li>
-<li>Try to build every single configured Instance</li>
-<li>Call any methods on built objects decorated with the <code>[ValidationMethod]</code> attribute to perform environment tests. See <a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a> for more information on this usage.</li>
-</ol>
-<p>If Lamar encounters any errors of any kind during this method, it will throw an exception summarizing <strong>all</strong> of the problems that it encountered.</p>
+                <!--title:Integration with Blazor-->
+<div class="alert-warning alert"><p><strong>Note!</strong>
+No specific Blazor support has been built into Lamar, and Blazor is still an immature and rapidly-evolving framework. Use of Lamar within Blazor apps is considered experimental.</p>
+</div>
+<p>To use Lamar within Blazor applications, you need only the base <a href="https://www.nuget.org/packages/Lamar/">Lamar</a> NuGet package installed. Then, you can configure Blazor's host builder to use Lamar for IoC as shown below.</p>
+<pre><code>using System.Threading.Tasks;
+using Lamar;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
+namespace Lamar.Sample.Blazor
+{
+    public class Program
+    {
+        public static async Task Main(string[] args)
+        {
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add&lt;App&gt;(&quot;#app&quot;);
+
+            // configure Blazor to use Lamar
+            builder.ConfigureContainer&lt;ServiceRegistry&gt;(new LamarServiceProviderFactory(), ConfigureServices);
+
+            await builder.Build().RunAsync();
+        }
+
+        private static void ConfigureServices(ServiceRegistry services)
+        {
+            // here you can configure Lamar as normal
+            
+            services.For&lt;IFoo&gt;().Use&lt;Foo&gt;().Singleton();
+            services.IncludeRegistry&lt;FooRegistry&gt;();
+        }
+    }
+}
+</code></pre>
+<p>That's all you need; Blazor will now use Lamar for all dependency injection.</p>
 
               </div>
 
@@ -96,12 +121,12 @@
 
               <nav>
                 <span>
-                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/diagnostics/whatdoihave">WhatDoIHave()</a>
+                  <strong>Previous: </strong><a href="/lamar/documentation/ioc/aspnetcore">Integration with ASP.Net Core</a>
 
                 </span>
                 <span class="pull-right">
 
-                  <strong>Next: </strong><a href="/lamar/documentation/ioc/diagnostics/environment-tests">Environment Tests</a>
+                  <strong>Next: </strong><a href="/lamar/documentation/ioc/registration">Registration</a>
 
                 </span>
               </nav>
