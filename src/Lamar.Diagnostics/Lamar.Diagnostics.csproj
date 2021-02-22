@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <Description>Adds diagnostic checks to the command line of your Lamar-enabled ASP.Net Core app</Description>
-        <VersionPrefix>3.0.0</VersionPrefix>
+        <VersionPrefix>3.0.1</VersionPrefix>
         <Authors>Jeremy D. Miller</Authors>
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <DebugType>portable</DebugType>

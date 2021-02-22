@@ -14,7 +14,7 @@ namespace Lamar.Diagnostics
         
         public static bool IsEnumerable(this Type type, out Type elementType)
         {
-            if (type.Closes(typeof(IEnumerable<>)) && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (type.Closes(typeof(IEnumerable<>)) && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 elementType = type.GetGenericArguments()[0];
                 return true;
@@ -26,7 +26,7 @@ namespace Lamar.Diagnostics
         
         public static bool IsLogger(this Type type, out Type innerType)
         {
-            if (type.Closes(typeof(ILogger<>)) && type.GetGenericTypeDefinition() == typeof(ILogger<>))
+            if (type.Closes(typeof(ILogger<>)) && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ILogger<>))
             {
                 innerType = type.GetGenericArguments()[0];
                 return true;
@@ -38,7 +38,7 @@ namespace Lamar.Diagnostics
 
         public static bool IsOption(this Type type, out Type optionType)
         {
-            if (type.Closes(typeof(IOptions<>)) && type != typeof(IOptions<>))
+            if (type.Closes(typeof(IOptions<>)) && type.IsGenericType && type != typeof(IOptions<>))
             {
                 optionType = type.GetGenericArguments().First();
                 return true;
