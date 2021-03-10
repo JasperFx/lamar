@@ -22,9 +22,9 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
             return new HostBuilder()
                 .UseLamar((context, services) =>
                 {
-                    // This adds a Container validation
-                    // to the Oakton "check-env" command
-                    services.CheckLamarConfiguration();
+// This adds a Container validation
+// to the Oakton "check-env" command
+services.CheckLamarConfiguration();
                     
                     // And the rest of your application's 
                     // DI registrations.

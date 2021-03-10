@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlClient;
 using Lamar;
 
 namespace StructureMap.Testing.Widget
@@ -168,6 +169,32 @@ namespace StructureMap.Testing.Widget
         [ValidationMethod]
         public void Validate2()
         {
+        }
+    }
+
+    public class DatabaseSettings
+    {
+        public string ConnectionString { get; set; }
+    }
+
+    public class DatabaseUsingService
+    {
+        private readonly DatabaseSettings _settings;
+
+        public DatabaseUsingService(DatabaseSettings settings)
+        {
+            _settings = settings;
+        }
+
+        [ValidationMethod]
+        public void Validate()
+        {
+            // For *now*, Lamar requires validate methods be synchronous
+            using (var conn = new SqlConnection(_settings.ConnectionString))
+            {
+                // If this blows up, the environment check fails:)
+                conn.Open();
+            }
         }
     }
 }

@@ -8,4 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lamar\Lamar.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
 </Project>

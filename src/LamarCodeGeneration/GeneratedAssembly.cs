@@ -109,7 +109,9 @@ namespace LamarCodeGeneration
                 .SelectMany(x => x.AllInjectedFields)
                 .Select(x => x.ArgType.Namespace)
                 .Concat(Namespaces)
-                .Distinct().ToList();
+                .Distinct()
+                .Where(x => x.IsNotEmpty()) // weed out blank namespaces, thank you F#!
+                .ToList();
             return namespaces;
         }
 
