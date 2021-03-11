@@ -19,6 +19,32 @@ namespace LamarCompiler.Testing.Codegen
             
         }
         
+        public class Envelope<T>
+        {
+            public T Value { get; set; }
+            public Guid ExecutingUserId { get; set; }
+        }
+
+        public class Created
+        {
+            public Guid Id { get; set; }
+        }
+
+        public class Updated
+        {
+            public String UpdateValue { get; set; }
+        }
+
+        [Fact]
+        public void short_name_of_generic_type()
+        {
+            var createdName = typeof(Envelope<Created>).ShortNameInCode();
+            var updatedName = typeof(Envelope<Updated>).ShortNameInCode();
+            
+            createdName.ShouldBe("ReflectionExtensionsTests.Envelope<ReflectionExtensionsTests.Created>");
+            createdName.ShouldNotBe(updatedName);
+        }
+        
         [Fact]
         public void get_full_name_in_code_for_inner_generic_type()
         {

@@ -123,20 +123,34 @@ namespace LamarCodeGeneration
         public static string ShortNameInCode(this Type type)
         {
             if (Aliases.ContainsKey(type)) return Aliases[type];
-            
-            if (type.IsGenericType && type.IsGenericTypeDefinition)
+
+            if (type.IsGenericType)
             {
-                
-                var parts = type.Name.Split('`');
-                var numberOfArgs = int.Parse(parts[1]) - 1;
-                
-                var cleanName = parts.First().Replace("+", ".");
-                if (type.IsNested)
+                if (type.IsGenericTypeDefinition)
                 {
-                    cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
-                }
+                    var parts = type.Name.Split('`');
+                    var numberOfArgs = int.Parse(parts[1]) - 1;
                 
-                return $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
+                    var cleanName = parts.First().Replace("+", ".");
+                    if (type.IsNested)
+                    {
+                        cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
+                    }
+                
+                    return $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
+                }
+                else
+                {
+                    var cleanName = type.Name.Split('`').First().Replace("+", ".");
+                    if (type.IsNested)
+                    {
+                        cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
+                    }
+
+                    var args = type.GetGenericArguments().Select(x => x.ShortNameInCode()).Join(", ");
+
+                    return $"{cleanName}<{args}>";
+                }
             }
 
             if (type.MemberType == MemberTypes.NestedType)
