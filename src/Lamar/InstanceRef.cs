@@ -1,6 +1,7 @@
 ﻿using System;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
+using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
