@@ -165,7 +165,7 @@ namespace LamarCodeGeneration.Frames
         public bool TrySetArgument(Variable variable)
         {
             var parameters = Method.GetParameters().Select(x => x.ParameterType).ToArray();
-            if (parameters.Count(x => variable.VariableType.CanBeCastTo(x)) != 1) return false;
+            if (parameters.Count(x => variable.VariableType == x) != 1) return false;
             
             var index = Array.IndexOf(parameters, variable.VariableType);
             Arguments[index] = variable;
@@ -177,7 +177,7 @@ namespace LamarCodeGeneration.Frames
         {
             var parameters = Method.GetParameters().ToArray();
             var matching = parameters.FirstOrDefault(x =>
-                variable.VariableType.CanBeCastTo(x.ParameterType) && x.Name == parameterName);
+                variable.VariableType == x.ParameterType && x.Name == parameterName);
 
             if (matching == null) return false;
 
