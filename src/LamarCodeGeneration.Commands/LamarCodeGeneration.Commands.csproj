@@ -4,7 +4,7 @@
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
 
         <Description>Command line utilities for managing Lamar dynamically generated code</Description>
-        <VersionPrefix>2.0.0</VersionPrefix>
+        <VersionPrefix>2.0.1</VersionPrefix>
         <Authors>Jeremy D. Miller</Authors>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration.Commands</AssemblyName>
