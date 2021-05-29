@@ -27,10 +27,6 @@ namespace Lamar.Diagnostics
         [Description("Show the full build plans")]
         public bool BuildPlansFlag { get; set; }
         
-        
-        [Description("Show all information about built in .Net types and instance names")]
-        public bool VerboseFlag { get; set; }
-
 
         public ModelQuery ToModelQuery(IContainer container)
         {
