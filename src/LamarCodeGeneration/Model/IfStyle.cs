@@ -5,10 +5,10 @@ namespace LamarCodeGeneration.Model
     public class IfStyle
     {
         private readonly bool _writes;
-        internal static readonly IfStyle If = new IfStyle("if");
-        internal static readonly IfStyle ElseIf = new IfStyle("else if");
-        internal static readonly IfStyle Else = new IfStyle("else");
-        internal static readonly IfStyle None = new IfStyle("else", false);
+        public static readonly IfStyle If = new IfStyle("if");
+        public static readonly IfStyle ElseIf = new IfStyle("else if");
+        public static readonly IfStyle Else = new IfStyle("else");
+        public static readonly IfStyle None = new IfStyle("else", false);
 
         public string Code { get; }
 
