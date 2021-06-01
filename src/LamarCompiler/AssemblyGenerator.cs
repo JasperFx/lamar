@@ -21,7 +21,6 @@ namespace LamarCompiler
 	/// </summary>
 	public class AssemblyGenerator
 	{
-		private static readonly ILamarAssemblyLoadContext _context = new CustomAssemblyLoadContext();
 
 		private readonly IList<MetadataReference> _references = new List<MetadataReference>();
 		private readonly IList<Assembly> _assemblies = new List<Assembly>();
@@ -169,8 +168,12 @@ namespace LamarCompiler
 
 				stream.Seek(0, SeekOrigin.Begin);
 
-				return _context.LoadFromStream(stream);
+				using (var context = new CustomAssemblyLoadContext())
+				{
+					return context.LoadFromStream(stream);
+				}
 			}
+
 		}
 
 		public void Compile(GeneratedAssembly generatedAssembly, IServiceVariableSource services = null)
@@ -216,8 +219,20 @@ namespace LamarCompiler
 	}
 
 #if !NET461
-	public sealed class CustomAssemblyLoadContext : AssemblyLoadContext, ILamarAssemblyLoadContext
+	public sealed class CustomAssemblyLoadContext : AssemblyLoadContext, ILamarAssemblyLoadContext, IDisposable
 	{
+		#if NET5_0
+		
+		public CustomAssemblyLoadContext() : base(true)
+		{
+		}
+#else
+		
+		public CustomAssemblyLoadContext() : base()
+		{
+		}
+		#endif
+
 		protected override Assembly Load(AssemblyName assemblyName)
 		{
 			return Assembly.Load(assemblyName);
@@ -226,6 +241,13 @@ namespace LamarCompiler
 		Assembly ILamarAssemblyLoadContext.LoadFromAssemblyName(AssemblyName assemblyName)
 		{
 			return Load(assemblyName);
+		}
+
+		public void Dispose()
+		{
+			#if NET5_0
+			Unload();
+			#endif
 		}
 	}
 

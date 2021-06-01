@@ -131,7 +131,6 @@ namespace LamarCodeGeneration
         /// rules and using the namespace "LamarGenerated"
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public static GeneratedAssembly Empty()
         {
             return new GeneratedAssembly(new GenerationRules("LamarGenerated"));
