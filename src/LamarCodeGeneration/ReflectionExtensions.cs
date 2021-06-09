@@ -86,17 +86,39 @@ namespace LamarCodeGeneration
         {
             if (Aliases.ContainsKey(type)) return Aliases[type];
             
-            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            if (type.IsGenericType)
             {
-                var cleanName = type.Name.Split('`').First().Replace("+", ".");
-                if (type.IsNested)
+                if (type.IsGenericTypeDefinition)
                 {
-                    cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
-                }
-                
-                var args = type.GetGenericArguments().Select(x => x.FullNameInCode()).Join(", ");
+                    var parts = type.Name.Split('`');;
+                    var cleanName = parts.First().Replace("+", ".");
 
-                return $"{cleanName}<{args}>";
+                    var hasArgs = parts.Length > 1;
+                    if (hasArgs) 
+                    {
+                        var numberOfArgs = int.Parse(parts[1]) - 1;
+                        cleanName = $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
+                    }
+
+                    if (type.IsNested)
+                    {
+                        cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
+                    }
+
+                    return cleanName;
+                }
+                else
+                {
+                    var cleanName = type.Name.Split('`').First().Replace("+", ".");
+                    if (type.IsNested)
+                    {
+                        cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
+                    }
+                    
+                    var args = type.GetGenericArguments().Select(x => x.FullNameInCode()).Join(", ");
+
+                    return $"{cleanName}<{args}>";
+                }
             }
 
             if (type.MemberType == MemberTypes.NestedType)
@@ -129,15 +151,21 @@ namespace LamarCodeGeneration
                 if (type.IsGenericTypeDefinition)
                 {
                     var parts = type.Name.Split('`');
-                    var numberOfArgs = int.Parse(parts[1]) - 1;
                 
                     var cleanName = parts.First().Replace("+", ".");
+
+                    var hasArgs = parts.Length > 1;
+                    if (hasArgs) 
+                    {
+                        var numberOfArgs = int.Parse(parts[1]) - 1;
+                        cleanName = $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
+                    }
                     if (type.IsNested)
                     {
                         cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
                     }
-                
-                    return $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
+
+                    return cleanName;
                 }
                 else
                 {

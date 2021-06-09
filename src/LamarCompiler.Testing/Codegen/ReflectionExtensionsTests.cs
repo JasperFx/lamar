@@ -44,7 +44,15 @@ namespace LamarCompiler.Testing.Codegen
             createdName.ShouldBe("ReflectionExtensionsTests.Envelope<ReflectionExtensionsTests.Created>");
             createdName.ShouldNotBe(updatedName);
         }
-        
+
+        [Fact]
+        public void short_name_of_open_generic_type()
+        {
+            var createdName = typeof(Envelope<>).ShortNameInCode();
+
+            createdName.ShouldBe("ReflectionExtensionsTests.Envelope<>");
+        }
+
         [Fact]
         public void get_full_name_in_code_for_inner_generic_type()
         {
@@ -107,6 +115,22 @@ namespace LamarCompiler.Testing.Codegen
         {
             typeof(GenericTestClassWithNested<string>.NestedTestClass).FullNameInCode().ShouldBe("LamarCompiler.Testing.Codegen.GenericTestClassWithNested<string>.NestedTestClass");
         }
+
+        [Fact]
+        public void short_name_of_open_generic_types_nested_type()
+        {
+            var createdName = typeof(GenericTestClassWithNested<>.NestedTestClass).ShortNameInCode();
+
+            createdName.ShouldBe("GenericTestClassWithNested<>.NestedTestClass");
+        }
+
+        [Fact]
+        public void short_name_of_open_generic_types_nested_open_generic_type()
+        {
+            var createdName = typeof(GenericTestClassWithNested<>.NestedGenericTestClass<>).ShortNameInCode();
+
+            createdName.ShouldBe("GenericTestClassWithNested<>.NestedGenericTestClass<>");
+        }
     }
 
     public class ThingHolder
@@ -124,9 +148,14 @@ namespace LamarCompiler.Testing.Codegen
 
     public class Message1{}
 
-    public class GenericTestClassWithNested<T>
+    public class GenericTestClassWithNested<TOuter>
     {
         public sealed class NestedTestClass
+        {
+
+        }
+
+        public sealed class NestedGenericTestClass<TInner>
         {
 
         }
