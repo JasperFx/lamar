@@ -4,7 +4,7 @@
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
 
         <Description>Command line utilities for managing Lamar dynamically generated code</Description>
-        <VersionPrefix>2.0.1</VersionPrefix>
+        <VersionPrefix>2.0.2</VersionPrefix>
         <Authors>Jeremy D. Miller</Authors>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration.Commands</AssemblyName>
@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Baseline" Version="3.1.2" />
         <PackageReference Include="Oakton" Version="[3.0.0, 4.0.0)" />
     </ItemGroup>
     
