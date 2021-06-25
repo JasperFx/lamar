@@ -10,8 +10,4 @@
       <ProjectReference Include="..\LamarCodeGeneration.Commands\LamarCodeGeneration.Commands.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Baseline" Version="3.1.2" />
-    </ItemGroup>
-
 </Project>
