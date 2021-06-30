@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lamar.AspNetCoreTests.Integ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithAspNetCoreMvc3", "src\LamarWithAspNetCoreMvc3\LamarWithAspNetCoreMvc3.csproj", "{5AA571C7-51E5-4479-8A52-5A6E375D4895}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithIdentityOnNet5", "src\LamarWithIdentityOnNet5\LamarWithIdentityOnNet5.csproj", "{638BAA60-6013-49E1-8BB7-206F1EDE325B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +171,10 @@ Global
 		{5AA571C7-51E5-4479-8A52-5A6E375D4895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AA571C7-51E5-4479-8A52-5A6E375D4895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AA571C7-51E5-4479-8A52-5A6E375D4895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638BAA60-6013-49E1-8BB7-206F1EDE325B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{638BAA60-6013-49E1-8BB7-206F1EDE325B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{638BAA60-6013-49E1-8BB7-206F1EDE325B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{638BAA60-6013-49E1-8BB7-206F1EDE325B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
