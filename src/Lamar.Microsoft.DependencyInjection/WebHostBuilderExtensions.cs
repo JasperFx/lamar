@@ -11,6 +11,30 @@ namespace Lamar.Microsoft.DependencyInjection
 
     public static class WebHostBuilderExtensions
     {
+        /// <summary>
+        /// Apply Lamar service overrides regardless of the order of .Net service registrations. This is primarily
+        /// meant for test automation scenarios
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="overrides"></param>
+        /// <returns></returns>
+        public static IHostBuilder OverrideServices(this IHostBuilder builder, Action<ServiceRegistry> overrides)
+        {
+            return builder.ConfigureServices(x => x.OverrideServices(overrides));
+        }
+        
+        /// <summary>
+        /// Apply Lamar service overrides regardless of the order of .Net service registrations. This is primarily
+        /// meant for test automation scenarios
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="overrides"></param>
+        /// <returns></returns>
+        public static IWebHostBuilder OverrideServices(this IWebHostBuilder builder, Action<ServiceRegistry> overrides)
+        {
+            return builder.ConfigureServices(x => x.OverrideServices(overrides));
+        }
+        
         public static IWebHostBuilder UseLamar<T>(this IWebHostBuilder builder, Action<WebHostBuilderContext, T> configure = null) where T : ServiceRegistry, new()
         {
             return builder.ConfigureServices((context, services) =>
