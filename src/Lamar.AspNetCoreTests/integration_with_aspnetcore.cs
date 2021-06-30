@@ -174,6 +174,28 @@ namespace Lamar.Testing.AspNetCoreIntegration
             }
         }
         
+        public class FakeServer : NulloServer{}
+
+        [Fact]
+        public void can_override_registrations()
+        {
+            var builder = new WebHostBuilder();
+            builder
+                .UseLamar()
+                
+                // This is the override
+                .OverrideServices(s => s.For<IServer>().Use<FakeServer>())
+
+                .UseUrls("http://localhost:5002")
+                .UseServer(new NulloServer())
+                .UseStartup<Startup>();
+
+            using var host = builder.Build();
+
+            host.Services.GetRequiredService<IServer>()
+                .ShouldBeOfType<FakeServer>();
+        }
+        
         [Fact]
         public void how_do_i_build_with_everything()
         {
