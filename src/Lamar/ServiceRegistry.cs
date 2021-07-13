@@ -19,8 +19,16 @@ namespace Lamar
 
         public static T Scoped<T>(this T instance) where T : Instance
         {
+            assertNotObjectInstance(instance);
             instance.Lifetime = ServiceLifetime.Scoped;
             return instance;
+        }
+
+        private static void assertNotObjectInstance<T>(T instance) where T : Instance
+        {
+            if (instance is ObjectInstance)
+                throw new InvalidOperationException(
+                    "You cannot override the lifecycle of a direct object registration. Did you mean to use a Lambda registration instead?");
         }
 
         public static T Singleton<T>(this T instance) where T : Instance
@@ -31,6 +39,7 @@ namespace Lamar
 
         public static T Transient<T>(this T instance) where T : Instance
         {
+            assertNotObjectInstance(instance);
             instance.Lifetime = ServiceLifetime.Transient;
             return instance;
         }
