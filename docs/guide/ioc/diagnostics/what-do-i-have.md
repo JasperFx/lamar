@@ -129,7 +129,7 @@ var byType = container.WhatDoIHave(typeName: "Widget");
 <sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs#L159-L175' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-## WhatDoIHave() under ASP&period;Net Core
+## WhatDoIHave() under ASP.Net Core
 
 You can call `WhatDoIHave()` and `WhatDidIScan()` when running in ASP.Net Core like so:
 
