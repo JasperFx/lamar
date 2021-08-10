@@ -6,10 +6,23 @@ Because most new server side development in .Net today is targeting ASP.Net Core
 
 Lamar's `Container` class subclasses another class in Lamar called `Scope` that you probably won't interact with much directly:
 
-<[sample:Container-Declaration]>
+<!-- snippet: sample_Container-Declaration -->
+<a id='snippet-sample_container-declaration'></a>
+```cs
+public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope,
+        ISupportRequiredService
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/Container.cs#L13-L16' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-declaration' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 `Scope` itself directly implements several other ASP.Net Core related interfaces:
 
-<[sample:Scope-Declarations]>
+<!-- snippet: sample_Scope-Declarations -->
+<a id='snippet-sample_scope-declarations'></a>
+```cs
+public class Scope : IServiceContext
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L19-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 [IServiceScope](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope?view=aspnetcore-2.1), [ISupportRequiredService](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.isupportrequiredservice?view=aspnetcore-2.1), [IServiceScopeFactory](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory?view=aspnetcore-2.1) are all ASP.Net Core DI abstractions.

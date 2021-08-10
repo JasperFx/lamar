@@ -8,13 +8,63 @@ Lamar allows you to resolve instances of concrete classes without configuring th
 
 Let's say we have the following object model, which represents the weather condition for a certain location.
 
-<[sample:concrete-weather-model]>
+<!-- snippet: sample_concrete-weather-model -->
+<a id='snippet-sample_concrete-weather-model'></a>
+```cs
+public class Weather
+{
+    public Location Location { get; set; }
+    public Atmosphere Atmosphere { get; set; }
+    public Wind Wind { get; set; }
+    public Condition Condition { get; set; }
+
+    public Weather(Location location, Atmosphere atmosphere, Wind wind, Condition condition)
+    {
+        Location = location;
+        Atmosphere = atmosphere;
+        Wind = wind;
+        Condition = condition;
+    }
+}
+
+public class Location
+{
+    //some properties
+}
+
+public class Atmosphere
+{
+    //some properties
+}
+
+public class Wind
+{
+    //some properties        
+}
+
+public class Condition
+{
+    //some properties        
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Samples/model.cs#L92-L129' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_concrete-weather-model' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Before we can resolve the concrete `Weather` type, we need an instance of an `Container` object. As mentioned earlier, these objects defines a generic `GetInstance` method which can build us an instance of the `Weather` type.
 
 You can create a container yourself or use the statically accessed container.
 
-<[sample:quickstart-resolve-concrete-types]>
+<!-- snippet: sample_quickstart-resolve-concrete-types -->
+<a id='snippet-sample_quickstart-resolve-concrete-types'></a>
+```cs
+var container = new Container();
+var weather1 = container.GetInstance<Weather>();
+
+var weather2 = container.GetInstance<Weather>();
+weather2 = container.GetInstance<Weather>(); //short version for above.
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Samples/quickstart/resolving_instances.cs#L44-L50' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_quickstart-resolve-concrete-types' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 The reason why we don't need to supply any configuration is because Lamar supports a concept called [auto wiring](/guide/ioc/auto-wiring). It's basically a smart way of building instances of types by looking to the constructors of the requested and all the needed underlying types. During this inspection Lamar also uses any provided configuration to help building the requested service or dependency.
 

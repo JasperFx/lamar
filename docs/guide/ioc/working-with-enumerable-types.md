@@ -22,11 +22,65 @@ Note, if there are not any registrations for whatever `T` is, you'll get an empt
 
 Here's an acceptance test from the Lamar codebase that demonstrates this:
 
-<[sample:EnumerableFamilyPolicy_in_action]>
+<!-- snippet: sample_EnumerableFamilyPolicy_in_action -->
+<a id='snippet-sample_enumerablefamilypolicy_in_action'></a>
+```cs
+[Fact]
+public void collection_types_are_all_possible_by_default()
+{
+    // NOTE that we do NOT make any explicit registration of
+    // IList<IWidget>, IEnumerable<IWidget>, ICollection<IWidget>, or IWidget[]
+    var container = new Container(_ =>
+    {
+        _.For<IWidget>().Add<AWidget>();
+        _.For<IWidget>().Add<BWidget>();
+        _.For<IWidget>().Add<CWidget>();
+    });
+
+    // IList<T>
+    container.GetInstance<IList<IWidget>>()
+        .Select(x => x.GetType())
+        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
+
+    // ICollection<T>
+    container.GetInstance<ICollection<IWidget>>()
+        .Select(x => x.GetType())
+        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
+
+    // Array of T
+    container.GetInstance<IWidget[]>()
+        .Select(x => x.GetType())
+        .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Acceptance/enumerable_instances.cs#L10-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_enumerablefamilypolicy_in_action' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 And another showing how you can override this behavior with explicit configuration:
 
-<[sample:explicit-enumeration-behavior]>
+<!-- snippet: sample_explicit-enumeration-behavior -->
+<a id='snippet-sample_explicit-enumeration-behavior'></a>
+```cs
+[Fact]
+public void override_enumeration_behavior()
+{
+    var container = new Container(_ =>
+    {
+        _.For<IWidget>().Add<AWidget>();
+        _.For<IWidget>().Add<BWidget>();
+        _.For<IWidget>().Add<CWidget>();
+
+        // Explicit registration should have precedence over the default
+        // behavior
+        _.For<IWidget[]>().Use(new IWidget[] { new DefaultWidget() });
+    });
+
+    container.GetInstance<IWidget[]>()
+        .Single().ShouldBeOfType<DefaultWidget>();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Acceptance/enumerable_instances.cs#L41-L60' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_explicit-enumeration-behavior' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## Sample Usage: Validation Rules
 
@@ -35,7 +89,37 @@ building a system to process `IWidget` objects. As part of processing a widget, 
 series of rules that we might model with the `IWidgetValidator` interface shown below and used within the main
 `WidgetProcessor` class:
 
-<[sample:IWidgetValidator-enumerable]>
+<!-- snippet: sample_IWidgetValidator-enumerable -->
+<a id='snippet-sample_iwidgetvalidator-enumerable'></a>
+```cs
+public interface IWidgetValidator
+{
+    IEnumerable<string> Validate(IWidget widget);
+}
+
+public class WidgetProcessor
+{
+    private readonly IEnumerable<IWidgetValidator> _validators;
+
+    public WidgetProcessor(IEnumerable<IWidgetValidator> validators)
+    {
+        _validators = validators;
+    }
+
+    public void Process(IWidget widget)
+    {
+        var validationMessages = _validators.SelectMany(x => x.Validate(widget))
+            .ToArray();
+
+        if (validationMessages.Any())
+        {
+            // don't process the widget
+        }
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Acceptance/enumerable_instances.cs#L62-L89' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iwidgetvalidator-enumerable' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 We *could* simply configure all of the `IWidgetValidator` rules in one place with an explicit registration of `IEnumerable<IWidgetValidator>`,
 but what if we need to have an extensibility to add more validation rules later? What if we want to add these additional rules in addon packages? Or we

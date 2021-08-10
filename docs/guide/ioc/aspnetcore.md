@@ -9,7 +9,28 @@ To use Lamar within ASP.Net Core applications, also install the [Lamar.Microsoft
 With that NuGet installed, your normal ASP.Net Core bootstrapping changes just slightly. When you bootstrap your `IWebHostBuilder` object
 that configures ASP.Net Core, you also need to call the `UseLamar()` method as shown below:
 
-<[sample:getting-started-main]>
+<!-- snippet: sample_getting-started-main -->
+<a id='snippet-sample_getting-started-main'></a>
+```cs
+public static void Main(string[] args)
+{
+    var builder = new WebHostBuilder();
+    builder
+        // Replaces the built in DI container
+        // with Lamar
+        .UseLamar()
+        
+        // Normal ASP.Net Core bootstrapping
+        .UseUrls("http://localhost:5002")
+        .UseKestrel()
+        .UseStartup<Startup>();
+
+    builder.Start();
+
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/Samples/StartUp.cs#L14-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-started-main' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ::: warning
 The `Startup.ConfigureServices(ServiceRegistry)` convention does not work as of ASP.Net Core 2.1. Use `ConfigureContainer(ServiceRegistry)` instead.
@@ -17,7 +38,37 @@ The `Startup.ConfigureServices(ServiceRegistry)` convention does not work as of 
 
 If you use a `StartUp` class for extra configuration, your `ConfigureContainer()` method *can* take in a `ServiceRegistry` object from Lamar for service registrations in place of the ASP.Net Core `IServiceCollection` interface as shown below:
 
-<[sample:getting-started-startup]>
+<!-- snippet: sample_getting-started-startup -->
+<a id='snippet-sample_getting-started-startup'></a>
+```cs
+public class Startup
+{
+    // Take in Lamar's ServiceRegistry instead of IServiceCollection
+    // as your argument, but fear not, it implements IServiceCollection
+    // as well
+    public void ConfigureContainer(ServiceRegistry services)
+    {
+        // Supports ASP.Net Core DI abstractions
+        services.AddMvc();
+        services.AddLogging();
+        
+        // Also exposes Lamar specific registrations
+        // and functionality
+        services.Scan(s =>
+        {
+            s.TheCallingAssembly();
+            s.WithDefaultConventions();
+        });
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseMvc();
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/Samples/StartUp.cs#L35-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-started-startup' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 You can also still write `ConfigureServices(IServiceCollection)`, but you'd miss out on most of Lamar's extra functionality beyond what that abstraction
 provides.
@@ -29,7 +80,39 @@ HTTP requests.
 
 The set up with ASP.Net Core v3 isn't really any different, but there's a known *gotcha* with the `AddControllers()` call as shown below:
 
-<[sample:integration-with-mvc3]>
+<!-- snippet: sample_integration-with-mvc3 -->
+<a id='snippet-sample_integration-with-mvc3'></a>
+```cs
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            
+            // Add Lamar
+            .UseLamar()
+            
+            
+            
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+
+                webBuilder.ConfigureServices(services =>
+                {
+                    // This is important, the call to AddControllers()
+                    // cannot be made before the usage of ConfigureWebHostDefaults
+                    services.AddControllers();
+                });
+            });
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarWithAspNetCoreMvc3/Program.cs#L14-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_integration-with-mvc3' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 To play it safe, add any registrations or configuration directly related to MVC Core directly within or after the call to `IHostBuilder.ConfigureWebHostDefaults()`. This is strictly an issue with ordering within MVC Core guts, and not particularly a problem with Lamar per se.
 
@@ -37,7 +120,29 @@ To play it safe, add any registrations or configuration directly related to MVC 
 
 To set up for a worker service, you'll use the same ConfigureContainer() albeit with a different signature.
 
-<[sample:startup-worker-service]>
+<!-- snippet: sample_startup-worker-service -->
+<a id='snippet-sample_startup-worker-service'></a>
+```cs
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+	Host.CreateDefaultBuilder(args)
+		.UseLamar()
+		.ConfigureServices((hostContext, services) =>
+		{
+			services.AddHostedService<Worker>();
+		})
+		.ConfigureContainer<Lamar.ServiceRegistry>((context, services) =>
+		{
+			// Also exposes Lamar specific registrations
+			// and functionality
+			services.Scan(s =>
+			{
+				s.TheCallingAssembly();
+				s.WithDefaultConventions();
+			});
+		});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/SampleWorkerApp/Program.cs#L18-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_startup-worker-service' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## Extended Command Line Diagnostics for ASP.Net Core
 
@@ -49,7 +154,34 @@ New with the Lamar 3.1.0 release is a separate Nuget package named *Lamar.Diagno
 
 First, you need to be using the [Oakton.AspNetCore](https://jasperfx.github.io/oakton/documentation/aspnetcore/) package to execute commands in your ASP.Net Core application like this:
 
-<[sample:using-oakton-aspnetcore]>
+<!-- snippet: sample_using-oakton-aspnetcore -->
+<a id='snippet-sample_using-oakton-aspnetcore'></a>
+```cs
+var registry = new ServiceRegistry();
+registry.Scan(x =>
+{
+    x.Assembly(typeof(Program).Assembly);
+    x.WithDefaultConventions();
+});
+
+var builder = new HostBuilder();
+
+return builder
+    // Replaces the built in DI container
+    // with Lamar
+    .UseLamar(registry)
+    .ConfigureWebHostDefaults(x =>
+    {
+        // Normal ASP.Net Core bootstrapping
+        x.UseUrls("http://localhost:5002")
+            .UseKestrel()
+            .UseStartup<Startup>();
+    })
+
+    .RunOaktonCommands(args);
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/SampleWebApp/Program.cs#L22-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-oakton-aspnetcore' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Including this *Lamar.Diagnostics* NuGet into your ASP.Net Core application will add some additional Lamar diagnostic commands. If you open a command line tool to the root directory of your ASP.Net Core project
 with the *Lamar.Diagnostics* and *Oakton.AspNetCore* NuGet installed and type the command for CLI usage `dotnet run -- ?` or `dotnet run -- help`, you'll get something like this:
@@ -145,7 +277,42 @@ In its default usage, `dotnet run -- lamar-validate` will only validate the cont
 You can also add Lamar's container validation and its own environment tests to the *Oakton.AspNetCore* environment check functionality with the following usage of the `IServiceCollection.CheckLamarConfiguration()` extension method from *Lamar.Diagnostics* as shown below
 in a sample `Startup.ConfigureContainer()` method:
 
-<[sample:startup-with-check-lamar-configuration]>
+<!-- snippet: sample_startup-with-check-lamar-configuration -->
+<a id='snippet-sample_startup-with-check-lamar-configuration'></a>
+```cs
+public class Startup
+{
+    // Take in Lamar's ServiceRegistry instead of IServiceCollection
+    // as your argument, but fear not, it implements IServiceCollection
+    // as well
+    public void ConfigureContainer(ServiceRegistry services)
+    {
+        // Supports ASP.Net Core DI abstractions
+        services.AddMvc();
+        services.AddLogging();
+
+        // Also exposes Lamar specific registrations
+        // and functionality
+        services.Scan(s =>
+        {
+            s.TheCallingAssembly();
+            s.WithDefaultConventions();
+        });
+        
+        
+        // This adds Lamar's validation to the 
+        // Oakton.AspNetCore environment check support
+        services.CheckLamarConfiguration();
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseMvc();
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/SampleWebApp/Startup.cs#L16-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_startup-with-check-lamar-configuration' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Now, when you run the `dotnet run -- check-env` command for your application, you *should* see a check for the Lamar container:
 

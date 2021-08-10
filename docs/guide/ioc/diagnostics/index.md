@@ -4,7 +4,32 @@ Like StructureMap before it, one of Lamar's big differentiators from other IoC t
 
 The `Lamar.Diagnostics` NuGet library can be used to expose all of Lamar's diagnostic capabilities to the command line of your .Net Core or .Net 5.0 systems. To get started, just add a NuGet dependency to `Lamar.Diagnostics` to your application. This package relies on the .Net command line integration from [Oakton](https://jasperfx.github.io), so you'll need to set up Oakton as shown in this sample `Program.Main()` method:
 
-<[sample:using-lamar-diagnostics]>
+<!-- snippet: sample_using-lamar-diagnostics -->
+<a id='snippet-sample_using-lamar-diagnostics'></a>
+```cs
+static Task<int> Main(string[] args)
+{
+    // Start up your HostBuilder as normal
+    return new HostBuilder()
+        .UseLamar((context, services) =>
+        {
+// This adds a Container validation
+// to the Oakton "check-env" command
+services.CheckLamarConfiguration();
+            
+            // And the rest of your application's 
+            // DI registrations.
+            services.IncludeRegistry<TestClassRegistry>();
+        })
+        
+        // Call this method to start your application
+        // with Oakton handling the command line parsing
+        // and delegation
+        .RunOaktonCommands(args);
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L18-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Once the `Lamar.Diagnostics` NuGet is installed to your application and you've opted into Oakton to handle command line options, typing this command at the root of your project will show all the installed commands:
 
