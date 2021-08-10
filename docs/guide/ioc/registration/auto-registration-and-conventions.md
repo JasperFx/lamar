@@ -460,7 +460,25 @@ The service lifetime override behavior was added in Lamar v4.1
 
 Lastly, you can change the default `Lifetime` of the discovered registrations like this:
 
-<sample:WithDefaultConventionsLifetime>
+<!-- snippet: sample_WithDefaultConventionsLifetime -->
+<a id='snippet-sample_withdefaultconventionslifetime'></a>
+```cs
+var container = new Container(_ =>
+{
+    _.Scan(x =>
+    {
+        x.Assembly("Lamar.Testing");
+        
+        // Use Scoped as the lifetime
+        x.WithDefaultConventions(ServiceLifetime.Scoped);
+        
+        // Mix and match with override behavior
+        x.WithDefaultConventions(OverwriteBehavior.Never, ServiceLifetime.Singleton);
+    });
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L71-L85' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventionslifetime' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Otherwise, the default registration will be `Lifetime.Transient`.
 

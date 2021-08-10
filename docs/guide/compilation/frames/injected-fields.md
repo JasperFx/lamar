@@ -7,7 +7,7 @@ There's a special kind of [Variable](/guide/compilation/frames/variables) called
 * Set up a constructor parameter for that field
 * In the constructor, map the constructor parameter to the private field
 
-As an example, let's take the `WhatTimeIsIt` generated type from the [frames model tutorial](/guide/compilation/frames), but
+As an example, let's take the `WhatTimeIsIt` generated type from the [frames model tutorial](/guide/compilation/frames/), but
 this time generate the class with the assumption that the "now" time is injected into the generated type's constructor
 like this:
 
