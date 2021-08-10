@@ -56,7 +56,7 @@ public void include_a_registry()
 ## _Use_ versus _Add_
 
 ::: warning
-This behavior changed from StructureMap. Lamar follows the now common approach mandated by ASP&period;Net Core that the last registration
+This behavior changed from StructureMap. Lamar follows the now common approach mandated by ASP.Net Core that the last registration
 for a certain service type wins. So no more special meaning to Use() vs. Add().
 :::
 

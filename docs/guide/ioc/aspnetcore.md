@@ -76,7 +76,7 @@ provides.
 And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.
 
-## ASP&period;Net Core v3.*
+## ASP.Net Core v3.*
 
 The set up with ASP.Net Core v3 isn't really any different, but there's a known *gotcha* with the `AddControllers()` call as shown below:
 
