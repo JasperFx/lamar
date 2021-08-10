@@ -11,7 +11,7 @@ namespace Lamar.Testing.IoC.Acceptance
 {
     public class custom_policies
     {
-        // SAMPLE: database-users
+        #region sample_database-users
         public class DatabaseUser
         {
             public string ConnectionString { get; set; }
@@ -32,9 +32,9 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: connectionstringpolicy
+        #region sample_connectionstringpolicy
         public class ConnectionStringPolicy : ConfiguredInstancePolicy
         {
             protected override void apply(IConfiguredInstance instance)
@@ -59,9 +59,9 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: use_the_connection_string_policy
+        #region sample_use_the_connection_string_policy
         [Fact]
         public void use_the_connection_string_policy()
         {
@@ -77,9 +77,9 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ConnectionString.ShouldBe("the connection string");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: IDatabase
+        #region sample_IDatabase
         public interface IDatabase { }
 
         public class Database : IDatabase
@@ -97,9 +97,9 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: database-users-2
+        #region sample_database-users-2
         public class BigService
         {
             public BigService(IDatabase green)
@@ -136,9 +136,9 @@ namespace Lamar.Testing.IoC.Acceptance
             public IDatabase Red { get; private set; }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: InjectDatabaseByName
+        #region sample_InjectDatabaseByName
         public class InjectDatabaseByName : ConfiguredInstancePolicy
         {
             protected override void apply(IConfiguredInstance instance)
@@ -155,12 +155,12 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void choose_database()
         {
-            // SAMPLE: choose_database_container_setup
+            #region sample_choose_database_container_setup
             var container = new Container(_ =>
             {
                 _.For<IDatabase>().Add<Database>().Named("red")
@@ -171,9 +171,9 @@ namespace Lamar.Testing.IoC.Acceptance
 
                 _.Policies.Add<InjectDatabaseByName>();
             });
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: inject-database-by-name-in-usage
+            #region sample_inject-database-by-name-in-usage
             // ImportantService should get the "red" database
             container.GetInstance<ImportantService>()
                 .DB.As<Database>().ConnectionString.ShouldBe("*red*");
@@ -187,14 +187,14 @@ namespace Lamar.Testing.IoC.Acceptance
 
             user.Green.As<Database>().ConnectionString.ShouldBe("*green*");
             user.Red.As<Database>().ConnectionString.ShouldBe("*red*");
-            // ENDSAMPLE
+            #endregion
         }
 
         public interface IWidgets { }
 
         public class WidgetCache : IWidgets { }
 
-        // SAMPLE: CacheIsSingleton
+        #region sample_CacheIsSingleton
         public class CacheIsSingleton : IInstancePolicy
         {
             public void Apply(Instance instance)
@@ -206,9 +206,9 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: set_cache_to_singleton
+        #region sample_set_cache_to_singleton
         [Fact]
         public void set_cache_to_singleton()
         {
@@ -230,7 +230,7 @@ namespace Lamar.Testing.IoC.Acceptance
                     .Lifetime.ShouldBe(ServiceLifetime.Singleton);
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class MyCustomPolicy : IInstancePolicy
         {
@@ -242,14 +242,14 @@ namespace Lamar.Testing.IoC.Acceptance
         [Fact]
         public void show_registration()
         {
-            // SAMPLE: policies.add
+            #region sample_policies.add
             var container = new Container(_ =>
             {
                 _.Policies.Add<MyCustomPolicy>();
                 // or
                 _.Policies.Add(new MyCustomPolicy());
             });
-            // ENDSAMPLE
+            #endregion
         }
 
 

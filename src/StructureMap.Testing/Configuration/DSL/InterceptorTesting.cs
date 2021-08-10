@@ -13,7 +13,7 @@ namespace StructureMap.Testing.Configuration.DSL
             _lastService = null;
             recorder = new ContextRecorder();
 
-            // SAMPLE: interceptors-by-instance
+            #region sample_interceptors-by-instance
             _container = new Container(r =>
             {
                 r.For<ContextRecorder>().Use(recorder);
@@ -60,7 +60,7 @@ namespace StructureMap.Testing.Configuration.DSL
                     x.Object(new ColorService("Yellow")).Named("Bad")
                         .OnCreation("throw exception", obj => { throw new Exception("Bad!"); });
                 });
-                // ENDSAMPLE
+                #endregion
             });
         }
 

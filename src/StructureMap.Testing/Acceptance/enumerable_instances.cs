@@ -7,7 +7,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class enumerable_instances
     {
-        // SAMPLE: EnumerableFamilyPolicy_in_action
+        #region sample_EnumerableFamilyPolicy_in_action
         [Fact]
         public void collection_types_are_all_possible_by_default()
         {
@@ -36,9 +36,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: explicit-enumeration-behavior
+        #region sample_explicit-enumeration-behavior
         [Fact]
         public void override_enumeration_behavior()
         {
@@ -57,9 +57,9 @@ namespace StructureMap.Testing.Acceptance
                 .Single().ShouldBeOfType<DefaultWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: IWidgetValidator-enumerable
+        #region sample_IWidgetValidator-enumerable
         public interface IWidgetValidator
         {
             IEnumerable<string> Validate(IWidget widget);
@@ -86,6 +86,6 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

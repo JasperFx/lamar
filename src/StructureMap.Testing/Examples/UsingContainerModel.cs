@@ -16,12 +16,12 @@ namespace StructureMap.Testing.Examples
             var container = Container.For<VisualizationRegistry>();
 
 #if NET451
-            // SAMPLE: find-all-plugin-types-from-the-current-assembly
+            #region sample_find-all-plugin-types-from-the-current-assembly
             container.Model.PluginTypes.Where(x => x.PluginType.Assembly == Assembly.GetExecutingAssembly())
                 .Each(pluginType => Debug.WriteLine(pluginType.PluginType));
-            // ENDSAMPLE
+            #endregion
 #endif
-            // SAMPLE: find-default-of-plugintype
+            #region sample_find-default-of-plugintype
             // Finding the concrete type of the default
             // IDevice service
             container.Model.DefaultTypeFor<IDevice>()
@@ -31,21 +31,21 @@ namespace StructureMap.Testing.Examples
             // IDevice service
             container.Model.For<IDevice>().Default
                 .ReturnedType.ShouldBe(typeof(DefaultDevice));
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: find-named-instance-by-type-and-name
+            #region sample_find-named-instance-by-type-and-name
             var redRule = container.Model.Find<Rule>("Red");
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: query-instances-of-plugintype
+            #region sample_query-instances-of-plugintype
             container.Model.For<Rule>().Instances.Each(i =>
             {
                 Debug.WriteLine(i.Instance.Description);
             });
-            // ENDSAMPLE
+            #endregion
 
 #if NET451
-            // SAMPLE: eject-and-remove-configuration
+            #region sample_eject-and-remove-configuration
             // Removes all configurations and objects already built as singletons
             // related to types in the current Assembly
             container.Model.EjectAndRemoveTypes(type => type.Assembly == Assembly.GetExecutingAssembly());
@@ -53,26 +53,26 @@ namespace StructureMap.Testing.Examples
             // Removes all configurations and objects already built as singletons
             // that were registered to IDevice
             container.Model.EjectAndRemove(typeof(IDevice));
-            // ENDSAMPLE
+            #endregion
 #endif
             /*
-            // SAMPLE: eject-an-object
+            #region sample_eject-an-object
             // ONLY ejects any built object for this Instance from the SingletonThing
             // cache
             container.Model.For<IDevice>().Default.EjectObject();
-            // ENDSAMPLE
+            #endregion
              */
 
             /*
-            // SAMPLE: testing-for-registrations
+            #region sample_testing-for-registrations
             // Is there a default instance for IDevice?
             container.Model.HasDefaultImplementationFor<IDevice>().ShouldBeTrue();
 
             // Are there any configured instances for IDevice?
             container.Model.HasImplementationsFor<IDevice>().ShouldBeTrue();
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: working-with-single-instance-ref
+            #region sample_working-with-single-instance-ref
             // First, find the model for a single Instance
             var instance = container.Model.For<IDevice>().Default;
 
@@ -101,7 +101,7 @@ namespace StructureMap.Testing.Examples
             // uses. Be cautious using this.
             var rawModel = instance.Instance;
 
-            // ENDSAMPLE
+            #endregion
              *
              */
         }

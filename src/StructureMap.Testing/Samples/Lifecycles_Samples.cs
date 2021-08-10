@@ -5,7 +5,7 @@ namespace StructureMap.Testing.Samples
 {
     public class Lifecycles_Samples
     {
-        // SAMPLE: SingletonThing-in-action
+        #region sample_SingletonThing-in-action
         [Fact]
         public void singletons()
         {
@@ -20,7 +20,7 @@ namespace StructureMap.Testing.Samples
                 .ShouldBeTheSameAs(c.GetInstance<IService>());
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void singletons_2()
@@ -43,7 +43,7 @@ namespace StructureMap.Testing.Samples
             }
         }
 
-        // SAMPLE: how-transient-works
+        #region sample_how-transient-works
         [Fact]
         public void Transient()
         {
@@ -67,9 +67,9 @@ namespace StructureMap.Testing.Samples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: how-always-unique
+        #region sample_how-always-unique
         [Fact]
         public void Always_Unique()
         {
@@ -97,7 +97,7 @@ namespace StructureMap.Testing.Samples
             holder.Service.ShouldNotBeTheSameAs(holder.User.Service);
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class ServiceUser
         {
@@ -130,7 +130,7 @@ namespace StructureMap.Testing.Samples
             holder.Service.ShouldBeTheSameAs(holder.User.Service);
         }
 
-        // SAMPLE: lifecycle-configuration-at-plugin-type
+        #region sample_lifecycle-configuration-at-plugin-type
         public class LifecycleAtPluginTypeRegistry : Registry
         {
             public LifecycleAtPluginTypeRegistry()
@@ -152,9 +152,9 @@ namespace StructureMap.Testing.Samples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: lifecycle-configuration-at-instance
+        #region sample_lifecycle-configuration-at-instance
         public class LifecycleByInstanceRegistry : Registry
         {
             public LifecycleByInstanceRegistry()
@@ -166,7 +166,7 @@ namespace StructureMap.Testing.Samples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class MyCustomLifecycle : ILifecycle
         {

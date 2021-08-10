@@ -8,7 +8,7 @@ namespace Lamar
     ///     at runtime
     /// </summary>
     [LamarIgnore]
-    // SAMPLE: IFamilyPolicy
+    #region sample_IFamilyPolicy
     public interface IFamilyPolicy : ILamarPolicy
     {
         /// <summary>
@@ -18,7 +18,7 @@ namespace Lamar
         /// </summary>
         ServiceFamily Build(Type type, ServiceGraph serviceGraph);
     }
-    // ENDSAMPLE
+    #endregion
 
 
 }

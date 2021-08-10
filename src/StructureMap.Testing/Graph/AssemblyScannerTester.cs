@@ -142,7 +142,7 @@ namespace StructureMap.Testing.Graph
         }
 
 #if NET451
-        // SAMPLE: scan-filesystem
+        #region sample_scan-filesystem
         [Fact]
         public void scan_all_assemblies_in_a_folder()
         {
@@ -161,9 +161,9 @@ namespace StructureMap.Testing.Graph
             shouldNotHaveFamilyWithSameName<IDefinedInExe>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: scan-filesystem-for-exe
+        #region sample_scan-filesystem-for-exe
         [Fact]
         public void scan_all_assemblies_in_a_folder_including_exe()
         {
@@ -185,9 +185,9 @@ namespace StructureMap.Testing.Graph
             shouldHaveFamilyWithSameName<IDefinedInExe>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: scan-calling-assembly
+        #region sample_scan-calling-assembly
         [Fact]
         public void scan_but_ignore_registries_by_default()
         {
@@ -196,7 +196,7 @@ namespace StructureMap.Testing.Graph
             TestingRegistry.WasUsed.ShouldBeFalse();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void scan_specific_assemblies_in_a_folder()
@@ -226,7 +226,7 @@ namespace StructureMap.Testing.Graph
 #endif
 
 
-        // SAMPLE: scan-for-registries
+        #region sample_scan-for-registries
         [Fact]
         public void Search_for_registries_when_explicitly_told()
         {
@@ -239,7 +239,7 @@ namespace StructureMap.Testing.Graph
             TestingRegistry.WasUsed.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void use_a_dual_exclude()
@@ -282,7 +282,7 @@ namespace StructureMap.Testing.Graph
             shouldNotHaveFamily<ITypeThatHasAttributeButIsNotInRegistry>();
         }
 
-        // SAMPLE: scan-exclusions
+        #region sample_scan-exclusions
         [Fact]
         public void use_a_single_exclude_of_type()
         {
@@ -322,7 +322,7 @@ namespace StructureMap.Testing.Graph
             shouldNotHaveFamily<ITypeThatHasAttributeButIsNotInRegistry>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void Use_a_single_include_predicate()

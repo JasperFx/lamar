@@ -265,7 +265,7 @@ namespace StructureMap.Testing.Graph
             rule.ShouldBeOfType(typeof(ColorRule));
         }
 
-        // SAMPLE: TryGetInstanceViaNameAndGeneric_ReturnsInstance_WhenTypeFound
+        #region sample_TryGetInstanceViaNameAndGeneric_ReturnsInstance_WhenTypeFound
         [Fact]
         public void TryGetInstanceViaNameAndGeneric_ReturnsInstance_WhenTypeFound()
         {
@@ -278,7 +278,7 @@ namespace StructureMap.Testing.Graph
             instance.ShouldBeOfType(typeof(ColorRule));
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void TryGetInstanceViaNameAndGeneric_ReturnsNull_WhenTypeNotFound()

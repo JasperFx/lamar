@@ -6,16 +6,16 @@ using StructureMap.TypeRules;
 
 namespace StructureMap.Testing.Examples.FamilyPolicies
 {
-    // SAMPLE: SomeSettings
+    #region sample_SomeSettings
     public class SomeSettings
     {
         public string ThisDirectory { get; set; }
         public string ThatDirectory { get; set; }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: ISettingsProvider
+    #region sample_ISettingsProvider
     public interface ISettingsProvider
     {
         T SettingsFor<T>() where T : class, new();
@@ -40,9 +40,9 @@ namespace StructureMap.Testing.Examples.FamilyPolicies
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: SettingPolicy
+    #region sample_SettingPolicy
     public class SettingPolicy : IFamilyPolicy
     {
         public PluginFamily Build(Type type)
@@ -83,10 +83,10 @@ namespace StructureMap.Testing.Examples.FamilyPolicies
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
 
-    // SAMPLE: registering-custom-family-policy
+    #region sample_registering-custom-family-policy
     public class SettingsRegistry : Registry
     {
         public SettingsRegistry()
@@ -96,5 +96,5 @@ namespace StructureMap.Testing.Examples.FamilyPolicies
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

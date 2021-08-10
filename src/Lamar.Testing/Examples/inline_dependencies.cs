@@ -16,7 +16,7 @@ namespace Lamar.Testing.Examples
 {
     public class inline_dependencies
     {
-        // SAMPLE: inline-dependencies-value
+        #region sample_inline-dependencies-value
         [Fact]
         public void inline_usage_of_primitive_constructor_argument()
         {
@@ -31,9 +31,9 @@ namespace Lamar.Testing.Examples
                 .Color.ShouldBe("Red");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: inline-dependencies-rule-classes
+        #region sample_inline-dependencies-rule-classes
         public class SomeEvent
         {
         }
@@ -53,9 +53,9 @@ namespace Lamar.Testing.Examples
             void ProcessEvent(SomeEvent @event);
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: inline-dependencies-SimpleRule
+        #region sample_inline-dependencies-SimpleRule
         public class SimpleRule : IEventRule
         {
             private readonly ICondition _condition;
@@ -76,7 +76,7 @@ namespace Lamar.Testing.Examples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class Condition1 : ICondition
         {
@@ -110,7 +110,7 @@ namespace Lamar.Testing.Examples
         {
         }
 
-        // SAMPLE: inline-dependencies-simple-ctor-injection
+        #region sample_inline-dependencies-simple-ctor-injection
         public class InlineCtorArgs : ServiceRegistry
         {
             public InlineCtorArgs()
@@ -170,9 +170,9 @@ namespace Lamar.Testing.Examples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: inline-dependencies-ctor-by-name
+        #region sample_inline-dependencies-ctor-by-name
         public class DualConditionRule : IEventRule
         {
             private readonly ICondition _first;
@@ -207,9 +207,9 @@ namespace Lamar.Testing.Examples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: inline-dependencies-setters
+        #region sample_inline-dependencies-setters
         public class RuleWithSetters : IEventRule
         {
             public ICondition Condition { get; set; }
@@ -237,9 +237,9 @@ namespace Lamar.Testing.Examples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: inline-dependencies-open-types
+        #region sample_inline-dependencies-open-types
         public interface IEventRule<TEvent>
         {
             void ProcessEvent(TEvent @event);
@@ -298,11 +298,11 @@ namespace Lamar.Testing.Examples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
 
 
-        // SAMPLE: inline-dependencies-enumerables
+        #region sample_inline-dependencies-enumerables
         public class BigRule : IEventRule
         {
             private readonly IEnumerable<ICondition> _conditions;
@@ -324,6 +324,6 @@ namespace Lamar.Testing.Examples
         }
 
 
-        // ENDSAMPLE
+        #endregion
     }
 }

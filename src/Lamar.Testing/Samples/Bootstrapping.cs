@@ -15,12 +15,12 @@ namespace Lamar.Testing.Samples
         public static void Go()
         {
             
-            // SAMPLE: bootstrap-inline
+            #region sample_bootstrap-inline
             var container = new Container(x =>
             {
                 x.AddTransient<IClock, Clock>();
             });
-            // ENDSAMPLE
+            #endregion
             
             
             
@@ -29,7 +29,7 @@ namespace Lamar.Testing.Samples
 
         public static void Go2()
         {
-            // SAMPLE: bootstrap-with-registry
+            #region sample_bootstrap-with-registry
             // Create a Lamar.ServiceRegistry object
             // and define your service registrations
             var registry = new ServiceRegistry();
@@ -47,7 +47,7 @@ namespace Lamar.Testing.Samples
             
             
             var container = new Container(registry);
-            // ENDSAMPLE
+            #endregion
         }
     }
 }

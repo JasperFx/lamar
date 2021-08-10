@@ -12,7 +12,7 @@ using LamarCodeGeneration.Util;
 namespace Lamar.IoC.Frames
 {
     
-    // SAMPLE: GetInstanceFrame
+    #region sample_GetInstanceFrame
     public class GetInstanceFrame : SyncFrame, IResolverFrame
     {
         private static readonly MethodInfo _resolveMethod =
@@ -65,5 +65,5 @@ namespace Lamar.IoC.Frames
             }
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

@@ -8,7 +8,7 @@ namespace Lamar.Testing.Samples
 {
     public class NestedContainer
     {
-        // SAMPLE: using-nested-container
+        #region sample_using-nested-container
         [Fact]
         public void using_nested_containers()
         {
@@ -36,7 +36,7 @@ namespace Lamar.Testing.Samples
             nested.GetInstance<IService>()
                 .ShouldBeSameAs(nestedService);
         }
-        // ENDSAMPLE
+        #endregion
         
     }
 }

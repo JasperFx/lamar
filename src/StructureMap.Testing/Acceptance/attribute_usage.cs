@@ -49,7 +49,7 @@ namespace StructureMap.Testing.Acceptance
                 .Lifecycle.ShouldBeOfType<SingletonLifecycle>();
         }
 
-        // SAMPLE: [Singleton]-usage
+        #region sample_[Singleton]-usage
         [Singleton] // ALL Instance's of ITeamCache will be singletons by default
         public interface ITeamCache { }
 
@@ -64,7 +64,7 @@ namespace StructureMap.Testing.Acceptance
         [Singleton] // This specific type will be a singleton
         public class Chiefs : ITeam { }
 
-        // ENDSAMPLE
+        #endregion
 
         public interface ILogger { }
 
@@ -85,7 +85,7 @@ namespace StructureMap.Testing.Acceptance
         }
 
 #if NET451
-        // SAMPLE: AppSettingAttribute
+        #region sample_AppSettingAttribute
         public class AppSettingAttribute : StructureMapAttribute
         {
             private readonly string _key;
@@ -110,10 +110,10 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
 
-        // SAMPLE: AppSettingTarget
+        #region sample_AppSettingTarget
         public class AppSettingTarget
         {
             public string Name { get; set; }
@@ -127,9 +127,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: using_parameter_and_property_attibutes
+        #region sample_using_parameter_and_property_attibutes
         [Fact]
         public void using_parameter_and_property_attibutes()
         {
@@ -148,17 +148,17 @@ namespace StructureMap.Testing.Acceptance
             Debug.WriteLine(container.Model.For<AppSettingTarget>().Default.DescribeBuildPlan());
         }
 
-        // ENDSAMPLE
+        #endregion
 #endif
     }
 
 
-    // SAMPLE: using-lifecycle-attributes
+    #region sample_using-lifecycle-attributes
     [AlwaysUnique]
     public interface IShouldBeUnique { }
 
     [Singleton] // because the most wonderful thing about Tiggers is that I'm the only one....
     public class Tigger { }
 
-    // ENDSAMPLE
+    #endregion
 }

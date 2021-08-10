@@ -86,7 +86,7 @@ namespace StructureMap.Testing.Widget
     }
 
 
-    // SAMPLE: ColorRule
+    #region sample_ColorRule
     public class ColorRule : Rule
     {
         public string ID = Guid.NewGuid().ToString();
@@ -106,7 +106,7 @@ namespace StructureMap.Testing.Widget
             return $"The '{Color}' Rule";
         }
     }
-    // ENDSAMPLE
+    #endregion
 
 
     public class GreaterThanRule : Rule

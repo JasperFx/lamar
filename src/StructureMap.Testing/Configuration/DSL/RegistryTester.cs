@@ -32,7 +32,7 @@ namespace StructureMap.Testing.Configuration.DSL
             }
         }
 
-        // SAMPLE: simple-registry
+        #region sample_simple-registry
         public class PurpleRegistry : ServiceRegistry
         {
             public PurpleRegistry()
@@ -41,7 +41,7 @@ namespace StructureMap.Testing.Configuration.DSL
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void Can_add_an_instance_for_concrete_class_with_no_constructors()
@@ -98,7 +98,7 @@ namespace StructureMap.Testing.Configuration.DSL
             registry1.Equals((object)registry2).ShouldBeFalse();
         }
 
-        // SAMPLE: including-registries
+        #region sample_including-registries
         [Fact]
         public void include_a_registry()
         {
@@ -113,7 +113,7 @@ namespace StructureMap.Testing.Configuration.DSL
             container.GetAllInstances<IWidget>().Count().ShouldBe(5);
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class MutatedWidget : IWidget
         {

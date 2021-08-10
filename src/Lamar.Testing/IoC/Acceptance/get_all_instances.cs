@@ -40,7 +40,7 @@ namespace Lamar.Testing.IoC.Acceptance
         
         
         
-        // SAMPLE: GetInstance
+        #region sample_GetInstance
         [Fact]
         public void get_the_default_instance()
         {
@@ -58,9 +58,9 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: GetInstance-by-name
+        #region sample_GetInstance-by-name
         [Fact]
         public void get_a_named_instance()
         {
@@ -82,9 +82,9 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance(typeof(IWidget), "C").ShouldBeOfType<CWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: get-all-instances
+        #region sample_get-all-instances
         [Fact]
         public void get_all_instances()
         {
@@ -111,7 +111,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public interface IWidget
         {

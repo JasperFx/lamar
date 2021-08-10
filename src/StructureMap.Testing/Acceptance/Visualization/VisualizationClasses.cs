@@ -3,7 +3,7 @@ using StructureMap.Graph;
 
 namespace StructureMap.Testing.Acceptance.Visualization
 {
-    // SAMPLE: VisualizationRegistry
+    #region sample_VisualizationRegistry
     public class VisualizationRegistry : Registry
     {
         public VisualizationRegistry()
@@ -24,16 +24,16 @@ namespace StructureMap.Testing.Acceptance.Visualization
 
         }
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: IVisualizer<T>
+    #region sample_IVisualizer<T>
     public interface IVisualizer<TLog>
     {
         string ToHtml(TLog log);
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: ILogVisualizer
+    #region sample_ILogVisualizer
     public interface ILogVisualizer
     {
         // If we already know what the type of log we have
@@ -42,9 +42,9 @@ namespace StructureMap.Testing.Acceptance.Visualization
         // If we only know that we have a log object
         string ToHtml(object log);
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: DefaultVisualizer
+    #region sample_DefaultVisualizer
     public class DefaultVisualizer<TLog> : IVisualizer<TLog>
     {
         public string ToHtml(TLog log)
@@ -52,7 +52,7 @@ namespace StructureMap.Testing.Acceptance.Visualization
             return string.Format("<div>{0}</div>", log);
         }
     }
-    // ENDSAMPLE
+    #endregion
 
 
     public class SpecialLog { }
@@ -65,7 +65,7 @@ namespace StructureMap.Testing.Acceptance.Visualization
 
     public class IssueCreated { }
 
-    // SAMPLE: specific-visualizers
+    #region sample_specific-visualizers
     public class IssueCreatedVisualizer : IVisualizer<IssueCreated>
     {
         public string ToHtml(IssueCreated log)
@@ -81,7 +81,7 @@ namespace StructureMap.Testing.Acceptance.Visualization
             return "special html for issue resolved";
         }
     }
-    // ENDSAMPLE
+    #endregion
 
 
     public class Visualizer
@@ -93,16 +93,16 @@ namespace StructureMap.Testing.Acceptance.Visualization
             _container = container;
         }
 
-        // SAMPLE: to-html-already-knowning-the-log-type
+        #region sample_to-html-already-knowning-the-log-type
         public string ToHtml<TLog>(TLog log)
         {
             // _container is a reference to an IContainer object
             return _container.GetInstance<IVisualizer<TLog>>().ToHtml(log);
         }
-        // ENDSAMPLE
+        #endregion
     }
 
-    // SAMPLE: LogVisualizer
+    #region sample_LogVisualizer
     public class LogVisualizer : ILogVisualizer
     {
         private readonly IContainer _container;
@@ -168,6 +168,6 @@ namespace StructureMap.Testing.Acceptance.Visualization
             }
         }
     }
-    // ENDSAMPLE
+    #endregion
 
 }

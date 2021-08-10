@@ -15,7 +15,7 @@ namespace SampleWorkerApp
 			CreateHostBuilder(args).Build().Run();
 		}
 
-		// SAMPLE: startup-worker-service
+		#region sample_startup-worker-service
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
 				.UseLamar()
@@ -33,6 +33,6 @@ namespace SampleWorkerApp
 						s.WithDefaultConventions();
 					});
 				});
-		// ENDSAMPLE
+		#endregion
 	}
 }

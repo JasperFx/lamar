@@ -8,7 +8,7 @@ using Xunit;
 
 namespace StructureMap.Testing.Acceptance
 {
-    // SAMPLE: custom-ctor-scenario
+    #region sample_custom-ctor-scenario
     public abstract class BaseThing
     {
         public BaseThing(IWidget widget)
@@ -46,9 +46,9 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: custom-ctor-rule
+    #region sample_custom-ctor-rule
     public class ThingCtorRule : IConstructorSelector
     {
         public ConstructorInfo Find(Type pluggedType, DependencyCollection dependencies, PluginGraph graph)
@@ -61,11 +61,11 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class constructor_selection
     {
-        // SAMPLE: using-custom-ctor-rule
+        #region sample_using-custom-ctor-rule
         [Fact]
         public void use_a_custom_constructor_selector()
         {
@@ -83,9 +83,9 @@ namespace StructureMap.Testing.Acceptance
                 .CorrectCtorWasUsed.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: using-default-ctor-attribute
+        #region sample_using-default-ctor-attribute
         public class AttributedThing
         {
             // Normally the greediest ctor would be
@@ -115,9 +115,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: explicit-ctor-selection
+        #region sample_explicit-ctor-selection
         public class Thingie
         {
             public Thingie(IWidget widget)
@@ -153,9 +153,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: skip-ctor-with-missing-simples
+        #region sample_skip-ctor-with-missing-simples
         public class DbContext
         {
             public string ConnectionString { get; set; }
@@ -191,6 +191,6 @@ namespace StructureMap.Testing.Acceptance
                 .ConnectionString.ShouldBe("not the default");
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

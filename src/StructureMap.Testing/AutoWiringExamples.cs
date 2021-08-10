@@ -5,7 +5,7 @@ using Xunit;
 
 namespace StructureMap.Testing
 {
-    // SAMPLE: auto-wiring-sample
+    #region sample_auto-wiring-sample
     public interface Xman
     {
     }
@@ -53,7 +53,7 @@ namespace StructureMap.Testing
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public interface IValidator
     {

@@ -28,7 +28,7 @@ namespace StructureMap.Testing.Configuration.DSL
                 //        EqualTo("Orange")
                 //    );
 
-                // SAMPLE: Using-AddInstances
+                #region sample_Using-AddInstances
 
                 // registry is a StructureMap Registry object
                 registry.For<IService>().AddInstances(x =>
@@ -45,7 +45,7 @@ namespace StructureMap.Testing.Configuration.DSL
                     x.Type<ColorService>().Named("Decorated").Ctor<string>("color").Is("Orange");
                 });
 
-                // ENDSAMPLE
+                #endregion
             });
         }
 

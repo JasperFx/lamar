@@ -19,7 +19,7 @@ namespace WebApplication4
     {
         public static Task<int> Main(string[] args)
         {
-            // SAMPLE: using-oakton-aspnetcore
+            #region sample_using-oakton-aspnetcore
             var registry = new ServiceRegistry();
             registry.Scan(x =>
             {
@@ -43,7 +43,7 @@ namespace WebApplication4
 
 
                 .RunOaktonCommands(args);
-            // ENDSAMPLE
+            #endregion
             
 
         }

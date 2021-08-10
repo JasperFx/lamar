@@ -14,7 +14,7 @@ namespace Lamar.Testing.IoC.Acceptance
         [Fact]
         public void decorator_example()
         {
-            // SAMPLE: decorator-sample
+            #region sample_decorator-sample
             var container = new Container(_ =>
             {
                 // This usage adds the WidgetHolder as a decorator
@@ -33,7 +33,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<WidgetDecorator>()
                 .Inner.ShouldBeOfType<AWidget>();
             
-            // ENDSAMPLE
+            #endregion
         }
 
         public class WidgetHolderDecoratorPolicy : DecoratorPolicy
@@ -231,7 +231,7 @@ namespace Lamar.Testing.IoC.Acceptance
         }
 
         
-        // SAMPLE: WidgetHolder-Decorator
+        #region sample_WidgetHolder-Decorator
         public class WidgetDecorator : IWidget
         {
             public WidgetDecorator(IThing thing, IWidget inner)
@@ -246,7 +246,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 
             }
         }
-        // ENDSAMPLE
+        #endregion
 
         public class OtherWidgetHolder : WidgetDecorator
         {

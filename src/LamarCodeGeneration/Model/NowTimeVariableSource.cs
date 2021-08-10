@@ -3,7 +3,7 @@ using LamarCodeGeneration.Frames;
 
 namespace LamarCodeGeneration.Model
 {
-    // SAMPLE: NowTimeVariableSource
+    #region sample_NowTimeVariableSource
     public class NowTimeVariableSource : IVariableSource
     {
         public bool Matches(Type type)
@@ -26,9 +26,9 @@ namespace LamarCodeGeneration.Model
             throw new ArgumentOutOfRangeException(nameof(type), "Only DateTime and DateTimeOffset are supported");
         }
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: NowFetchFrame
+    #region sample_NowFetchFrame
     public class NowFetchFrame : SyncFrame
     {
         public NowFetchFrame(Type variableType)
@@ -46,6 +46,6 @@ namespace LamarCodeGeneration.Model
             Next?.GenerateCode(method, writer);
         }
     }
-    // ENDSAMPLE
+    #endregion
 
 }

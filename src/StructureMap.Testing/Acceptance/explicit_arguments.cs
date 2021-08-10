@@ -9,15 +9,15 @@ namespace StructureMap.Testing.Acceptance
         [Fact]
         public void supply_defaults_by_generic()
         {
-            // SAMPLE: explicit-arg-container
+            #region sample_explicit-arg-container
             var container = new Container(x =>
             {
                 x.For<IWidget>().Use<BWidget>();
                 x.For<IService>().Use<AService>();
             });
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: explicit-fluent-interface
+            #region sample_explicit-fluent-interface
             var widget = new BWidget();
             var service = new BService();
 
@@ -31,7 +31,7 @@ namespace StructureMap.Testing.Acceptance
 
             guyWithWidgetAndService
                 .Service.ShouldBeTheSameAs(service);
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace StructureMap.Testing.Acceptance
                 x.For<IService>().Use<AService>();
             });
 
-            // SAMPLE: explicit-use-explicit-args
+            #region sample_explicit-use-explicit-args
             var widget = new BWidget();
             var service = new BService();
 
@@ -59,7 +59,7 @@ namespace StructureMap.Testing.Acceptance
 
             guyWithWidgetAndService
                 .Service.ShouldBeTheSameAs(service);
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace StructureMap.Testing.Acceptance
                 x.For<IService>().Use<AService>();
             });
 
-            // SAMPLE: explicit-defaults-with-nested-closure
+            #region sample_explicit-defaults-with-nested-closure
             var widget = new BWidget();
             var service = new BService();
 
@@ -88,10 +88,10 @@ namespace StructureMap.Testing.Acceptance
 
             guyWithWidgetAndService
                 .Service.ShouldBeTheSameAs(service);
-            // ENDSAMPLE
+            #endregion
         }
 
-        // SAMPLE: explicit-named-arguments
+        #region sample_explicit-named-arguments
         [Fact]
         public void supply_named_arguments()
         {
@@ -107,10 +107,10 @@ namespace StructureMap.Testing.Acceptance
                 .Color.ShouldBe("Blue");
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 
-    // SAMPLE: explicit-domain
+    #region sample_explicit-domain
     public class ColorWidget : IWidget
     {
         public string Color { get; set; }
@@ -133,5 +133,5 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

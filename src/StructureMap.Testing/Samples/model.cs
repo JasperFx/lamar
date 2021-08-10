@@ -13,7 +13,7 @@ namespace StructureMap.Docs.samples
     }
 
 
-// SAMPLE: foobar-model-structuremap
+#region sample_foobar-model-structuremap
     public interface IBar
     {
     }
@@ -36,14 +36,14 @@ namespace StructureMap.Docs.samples
         }
     }
 
-// ENDSAMPLE
+#endregion
 
 
     public static class GoFooBarModel
     {
         public static void Quickstart1()
         {
-// SAMPLE: foobar-quickstart1
+#region sample_foobar-quickstart1
 // Configure and build a brand new
 // StructureMap Container object
             var container = new Container(_ =>
@@ -61,12 +61,12 @@ namespace StructureMap.Docs.samples
                 .Bar.ShouldBeOfType<Bar>();
 
 
-// ENDSAMPLE
+#endregion
         }
 
         public static void Quickstart2()
         {
-// SAMPLE: foobar-quickstart2
+#region sample_foobar-quickstart2
             var container = new Container(_ =>
             {
                 _.Scan(x =>
@@ -80,7 +80,7 @@ namespace StructureMap.Docs.samples
                 .ShouldBeOfType<Foo>()
                 .Bar.ShouldBeOfType<Bar>();
 
-// ENDSAMPLE
+#endregion
         }
     }
 
@@ -89,7 +89,7 @@ namespace StructureMap.Docs.samples
     }
 
 
-// SAMPLE: concrete-weather-model
+#region sample_concrete-weather-model
     public class Weather
     {
         public Location Location { get; set; }
@@ -126,5 +126,5 @@ namespace StructureMap.Docs.samples
         //some properties        
     }
 
-// ENDSAMPLE
+#endregion
 }

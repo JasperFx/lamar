@@ -8,7 +8,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class contextual_building
     {
-        // SAMPLE: Logger-contextual-building
+        #region sample_Logger-contextual-building
         [Fact]
         public void can_happily_use_the_parent_type()
         {
@@ -25,9 +25,9 @@ namespace StructureMap.Testing.Acceptance
             top.Child.Child.Logger.ParentType.ShouldBe(typeof(LoggedClass3));
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: LoggerConvention
+        #region sample_LoggerConvention
         public class LoggerConvention : ConfiguredInstancePolicy
         {
             protected override void apply(Type pluginType, IConfiguredInstance instance)
@@ -53,10 +53,10 @@ namespace StructureMap.Testing.Acceptance
             top.Child.Child.Logger.ParentType.ShouldBe(typeof(LoggedClass3));
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 
-    // SAMPLE: LoggerFactory
+    #region sample_LoggerFactory
     public static class LoggerFactory
     {
         public static Logger LoggerFor(Type type)
@@ -65,7 +65,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class LoggedClass1
     {

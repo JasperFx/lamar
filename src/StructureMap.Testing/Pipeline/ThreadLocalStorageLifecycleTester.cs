@@ -6,7 +6,7 @@ using Xunit;
 
 namespace StructureMap.Testing.Pipeline
 {
-    // SAMPLE: thread-local-storage
+    #region sample_thread-local-storage
 
     public class ThreadLocalStorageLifecycleTester
     {
@@ -88,5 +88,5 @@ namespace StructureMap.Testing.Pipeline
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

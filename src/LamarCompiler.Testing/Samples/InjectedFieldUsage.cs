@@ -19,7 +19,7 @@ namespace LamarCompiler.Testing.Samples
         [Fact]
         public void generate_a_class()
         {
-            // SAMPLE: using-injected-field
+            #region sample_using-injected-field
             var assembly = GeneratedAssembly.Empty();
             var type = assembly.AddType("WhatTimeIsIt", typeof(ISaySomething));
             
@@ -35,7 +35,7 @@ namespace LamarCompiler.Testing.Samples
             method.Frames.Add(@call);
 
             assembly.CompileAll();
-            // ENDSAMPLE
+            #endregion
             
             
             _output.WriteLine(type.SourceCode);

@@ -99,11 +99,11 @@ namespace StructureMap.Testing.Query
             var startable1 = container.GetInstance<Startable1>();
             startable1.WasStarted.ShouldBeFalse();
 
-            // SAMPLE: calling-startable-start
+            #region sample_calling-startable-start
             var allStartables = container.Model.GetAllPossible<IStartable>();
             allStartables.ToArray()
                 .Each(x => x.Start());
-            // ENDSAMPLE
+            #endregion
 
             allStartables.Each(x => x.WasStarted.ShouldBeTrue());
 
@@ -185,7 +185,7 @@ namespace StructureMap.Testing.Query
         }
     }
 
-    // SAMPLE: istartable
+    #region sample_istartable
     public interface IStartable
     {
         bool WasStarted { get; }
@@ -193,7 +193,7 @@ namespace StructureMap.Testing.Query
         void Start();
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class Startable : IStartable
     {

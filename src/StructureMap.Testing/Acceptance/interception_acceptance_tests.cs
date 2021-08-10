@@ -10,7 +10,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class interception_acceptance_tests
     {
-        // SAMPLE: activate_by_action
+        #region sample_activate_by_action
         [Fact]
         public void activate_by_action()
         {
@@ -26,7 +26,7 @@ namespace StructureMap.Testing.Acceptance
                 .Activated.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void activate_by_expression_action()
@@ -79,7 +79,7 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTheSameAs(widget);
         }
 
-        // SAMPLE: decorator-by-type-example
+        #region sample_decorator-by-type-example
         [Fact]
         public void decorator_example()
         {
@@ -97,25 +97,25 @@ namespace StructureMap.Testing.Acceptance
                 .Inner.ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void equivalent()
         {
-            // SAMPLE: simple-decorator-equivalent
+            #region sample_simple-decorator-equivalent
             var container = new Container(_ =>
             {
                 _.For<IWidget>().Use<WidgetHolder>()
                     .Ctor<IWidget>().Is<AWidget>();
             });
-            // ENDSAMPLE
+            #endregion
 
             container.GetInstance<IWidget>()
                 .ShouldBeOfType<WidgetHolder>()
                 .Inner.ShouldBeOfType<AWidget>();
         }
 
-        // SAMPLE: decorate-plugin-type-with-type
+        #region sample_decorate-plugin-type-with-type
         [Fact]
         public void decorate_with_type()
         {
@@ -131,7 +131,7 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void decorate_with_type_and_inline_dependency()
@@ -281,7 +281,7 @@ namespace StructureMap.Testing.Acceptance
             decorator.Two.ShouldBeOfType<AService>();
         }
 
-        // SAMPLE: use_a_custom_interception_policy
+        #region sample_use_a_custom_interception_policy
         [Fact]
         public void use_a_custom_interception_policy()
         {
@@ -297,7 +297,7 @@ namespace StructureMap.Testing.Acceptance
                 .Inner.ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void intercept_a_literal_object()
@@ -315,7 +315,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // SAMPLE: Activateable
+    #region sample_Activateable
     public abstract class Activateable
     {
         public bool Activated { get; set; }
@@ -326,7 +326,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class WidgetKeeper
     {
@@ -346,12 +346,12 @@ namespace StructureMap.Testing.Acceptance
     {
     }
 
-    // SAMPLE: AWidget-is-Activateable
+    #region sample_AWidget-is-Activateable
     public class AWidget : Activateable, IWidget
     {
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class BWidget : Activateable, IWidget
     {
@@ -361,7 +361,7 @@ namespace StructureMap.Testing.Acceptance
     {
     }
 
-    // SAMPLE: WidgetHolder
+    #region sample_WidgetHolder
     public class WidgetHolder : IWidget
     {
         private readonly IWidget _inner;
@@ -377,7 +377,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class NamedWidgetHolder : WidgetHolder
     {
@@ -477,7 +477,7 @@ namespace StructureMap.Testing.Acceptance
     {
     }
 
-    // SAMPLE: CustomInterception
+    #region sample_CustomInterception
     public class CustomInterception : IInterceptorPolicy
     {
         public string Description
@@ -496,5 +496,5 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

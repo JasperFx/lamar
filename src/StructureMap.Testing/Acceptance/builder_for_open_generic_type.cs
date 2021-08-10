@@ -11,7 +11,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class builder_for_open_generic_type
     {
-        // SAMPLE: generic-builders-in-action
+        #region sample_generic-builders-in-action
         [Fact]
         public void show_the_workaround_for_generic_builders()
         {
@@ -26,12 +26,12 @@ namespace StructureMap.Testing.Acceptance
             Debug.WriteLine(container.WhatDoIHave(assembly: GetType().GetAssembly()));
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void using_repository_instance()
         {
-            // SAMPLE: using-repository-instance
+            #region sample_using-repository-instance
             var container = new Container(_ =>
             {
                 _.For<IRepository<string, int>>().UseInstance(new RepositoryInstance<string, int>());
@@ -40,11 +40,11 @@ namespace StructureMap.Testing.Acceptance
 
                 _.For<IRepository<string, int>>().Use(() => RepositoryBuilder.Build<string, int>());
             });
-            // ENDSAMPLE
+            #endregion
         }
     }
 
-    // SAMPLE: RepositoryInstanceFactory
+    #region sample_RepositoryInstanceFactory
     public class RepositoryInstanceFactory : Instance
     {
         // This is the key part here. This method is called by
@@ -76,9 +76,9 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: RepositoryInstance
+    #region sample_RepositoryInstance
     public class RepositoryInstance<TDocument, TQuery> : LambdaInstance<IRepository<TDocument, TQuery>>
     {
         public RepositoryInstance() : base(() => RepositoryBuilder.Build<TDocument, TQuery>())
@@ -96,16 +96,16 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: IRepository<T,T1>
+    #region sample_IRepository<T,T1>
     public interface IRepository<TDocument, TQuery>
     {
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: RepositoryBuilder
+    #region sample_RepositoryBuilder
     public static class RepositoryBuilder
     {
         public static IRepository<TDocument, TQuery> Build<TDocument, TQuery>()
@@ -114,7 +114,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class Repository<T, T1> : IRepository<T, T1>
     {

@@ -129,12 +129,12 @@ namespace Lamar.Testing.IoC
         [Fact]
         public void recursive_family_creation()
         {
-            // SAMPLE: register-ColorPolicy
+            #region sample_register-ColorPolicy
             var container = Container.For(_ =>
             {
                 _.Policies.OnMissingFamily<ColorPolicy>();
             });
-            // ENDSAMPLE
+            #endregion
             
             container.GetInstance<ColorUser>()
                 .Color.ShouldNotBeNull();
@@ -145,12 +145,12 @@ namespace Lamar.Testing.IoC
     }
 
     
-    // SAMPLE: Color
+    #region sample_Color
     public class Color
     {
         public string Name { get; set; }
     }
-    // ENDSAMPLE
+    #endregion
     
     
     public class ColorUser
@@ -164,7 +164,7 @@ namespace Lamar.Testing.IoC
     }
 
 
-    // SAMPLE: ColorPolicy
+    #region sample_ColorPolicy
     public class ColorPolicy : IFamilyPolicy
     {
         public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
@@ -180,7 +180,7 @@ namespace Lamar.Testing.IoC
                 );
         }
     }
-    // ENDSAMPLE
+    #endregion
 
     public class FakeThing
     {

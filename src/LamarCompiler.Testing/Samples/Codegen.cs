@@ -6,12 +6,12 @@ using Xunit;
 
 namespace LamarCompiler.Testing.Samples
 {
-    // SAMPLE: IOperation
+    #region sample_IOperation
     public interface IOperation
     {
         int Calculate(int one, int two);
     }
-    // ENDSAMPLE
+    #endregion
 
     public class AddOperator : IOperation
     {
@@ -26,7 +26,7 @@ namespace LamarCompiler.Testing.Samples
         [Fact]
         public void generate_code_on_the_fly()
         {
-            // SAMPLE: using-AssemblyGenerator
+            #region sample_using-AssemblyGenerator
             var generator = new AssemblyGenerator();
 
             // This is necessary for the compilation to succeed
@@ -63,14 +63,14 @@ namespace Generated
             // Use our new type
             var result = operation.Calculate(1, 2);
             
-            // ENDSAMPLE
+            #endregion
             result.ShouldBe(3);
         }
 
         [Fact]
         public void generate_code_on_the_fly_using_source_writer()
         {
-            // SAMPLE: using-AssemblyGenerator-with-source-writer
+            #region sample_using-AssemblyGenerator-with-source-writer
             var generator = new AssemblyGenerator();
 
             // This is necessary for the compilation to succeed
@@ -100,7 +100,7 @@ namespace Generated
 
             var result = operation.Calculate(1, 2);
             
-            // ENDSAMPLE
+            #endregion
             result.ShouldBe(3);
         }
 

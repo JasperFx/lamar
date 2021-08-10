@@ -15,7 +15,7 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
 {
     class Program
     {
-        // SAMPLE: using-lamar-diagnostics
+        #region sample_using-lamar-diagnostics
         static Task<int> Main(string[] args)
         {
             // Start up your HostBuilder as normal
@@ -36,7 +36,7 @@ services.CheckLamarConfiguration();
                 // and delegation
                 .RunOaktonCommands(args);
         }
-        // ENDSAMPLE
+        #endregion
     }
 
     public class TestClassRegistry : ServiceRegistry

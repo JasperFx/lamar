@@ -10,10 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
-    // SAMPLE: Container-Declaration
+    #region sample_Container-Declaration
     public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope,
             ISupportRequiredService
-        // ENDSAMPLE
+        #endregion
     {
         private bool _isDisposing;
 

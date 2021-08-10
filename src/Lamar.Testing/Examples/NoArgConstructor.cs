@@ -6,7 +6,7 @@ using LamarCodeGeneration.Model;
 
 namespace Lamar.Codegen
 {
-    // SAMPLE: NoArgCreationFrame
+    #region sample_NoArgCreationFrame
     public class NoArgCreationFrame : SyncFrame
     {
         public NoArgCreationFrame(Type concreteType) 
@@ -39,12 +39,12 @@ namespace Lamar.Codegen
             }
         }
     }
-    // ENDSAMPLE
+    #endregion
     
     
     /*
      
-        // SAMPLE: NoArgCreationFrameCtor
+        #region sample_NoArgCreationFrameCtor
         public NoArgCreationFrame(Type concreteType) 
         {
             // By creating the variable this way, we're
@@ -52,10 +52,10 @@ namespace Lamar.Codegen
             // by this frame
             Output = new Variable(concreteType, this);
         }
-        // ENDSAMPLE
+        #endregion
      
      
-        // SAMPLE: NoArgCreationFrameCtor2
+        #region sample_NoArgCreationFrameCtor2
         public NoArgCreationFrame(Type concreteType) 
         {
             // By creating the variable this way, we're
@@ -63,6 +63,6 @@ namespace Lamar.Codegen
             // by this frame
             Output = Create(concreteType);
         }
-        // ENDSAMPLE
+        #endregion
      */
 }

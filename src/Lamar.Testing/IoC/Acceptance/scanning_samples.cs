@@ -8,7 +8,7 @@ namespace Lamar.Testing.IoC.Acceptance
 {
     public class scanning_samples
     {
-        // SAMPLE: WithDefaultConventions
+        #region sample_WithDefaultConventions
         public interface ISpaceship { }
 
         public class Spaceship : ISpaceship { }
@@ -33,12 +33,12 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<IRocket>().ShouldBeOfType<Rocket>();
         }
 
-        // ENDSAMPLE
+        #endregion
         
         [Fact]
         public void default_scanning_in_action_with_overrides()
         {
-            // SAMPLE: WithDefaultConventionsOptions
+            #region sample_WithDefaultConventionsOptions
             var container = new Container(_ =>
             {
                 _.Scan(x =>
@@ -61,14 +61,14 @@ namespace Lamar.Testing.IoC.Acceptance
                     x.WithDefaultConventions(OverwriteBehavior.NewType);
                 });
             });
-            // ENDSAMPLE
+            #endregion
 
         }
         
         [Fact]
         public void default_scanning_in_action_with_override_lifetime()
         {
-            // SAMPLE: WithDefaultConventionsLifetime
+            #region sample_WithDefaultConventionsLifetime
             var container = new Container(_ =>
             {
                 _.Scan(x =>
@@ -82,11 +82,11 @@ namespace Lamar.Testing.IoC.Acceptance
                     x.WithDefaultConventions(OverwriteBehavior.Never, ServiceLifetime.Singleton);
                 });
             });
-            // ENDSAMPLE
+            #endregion
 
         }
 
-        // SAMPLE: register-all-types-implementing
+        #region sample_register-all-types-implementing
         public interface IFantasySeries { }
 
         public class WheelOfTime : IFantasySeries { }
@@ -122,9 +122,9 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<IFantasySeries>("blackcompany").ShouldBeOfType<BlackCompany>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: SingleImplementationsOfInterface
+        #region sample_SingleImplementationsOfInterface
         public interface ISong { }
 
         public class TheOnlySong : ISong { }
@@ -145,6 +145,6 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<TheOnlySong>();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

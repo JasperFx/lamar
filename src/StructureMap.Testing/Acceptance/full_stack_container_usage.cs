@@ -40,7 +40,7 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldHaveTheSameElementsAs(typeof(AFoo), typeof(BFoo), typeof(CFoo));
         }
 
-        // SAMPLE: container-configure
+        #region sample_container-configure
         [Fact]
         public void change_default_in_an_existing_container()
         {
@@ -62,7 +62,7 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<IFoo>().ShouldBeOfType<CFoo>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public interface IOpen<T>
         {

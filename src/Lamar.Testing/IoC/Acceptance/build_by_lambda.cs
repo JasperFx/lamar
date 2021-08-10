@@ -15,7 +15,7 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<Rule>().ShouldBeOfType<ColorRule>().Color.ShouldBe("Beige");
         }
 
-        // SAMPLE: build-with-lambdas
+        #region sample_build-with-lambdas
         [Fact]
         public void build_with_lambdas_1()
         {
@@ -40,9 +40,9 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<Rule>("Purple").ShouldBeOfType<ColorRule>().Color.ShouldBe("Purple");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: lambdas-as-inline-dependency
+        #region sample_lambdas-as-inline-dependency
         [Fact]
         public void as_inline_dependency()
         {
@@ -83,6 +83,6 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<inline_dependencies.RuleHolder>("Purple").Rule.ShouldBeOfType<ColorRule>().Color.ShouldBe("Purple");
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

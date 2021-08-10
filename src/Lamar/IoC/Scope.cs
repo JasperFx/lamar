@@ -16,9 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC
 {
-    // SAMPLE: Scope-Declarations
+    #region sample_Scope-Declarations
     public class Scope : IServiceContext
-    // ENDSAMPLE
+    #endregion
     {
         protected bool _hasDisposed;
 

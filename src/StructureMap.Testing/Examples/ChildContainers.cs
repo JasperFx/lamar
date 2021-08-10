@@ -8,7 +8,7 @@ namespace StructureMap.Testing.Examples
     {
         public class ChildSpecialService : IService { }
 
-        // SAMPLE: show_a_child_container_in_action
+        #region sample_show_a_child_container_in_action
         [Fact]
         public void show_a_child_container_in_action()
         {
@@ -38,9 +38,9 @@ namespace StructureMap.Testing.Examples
                 .ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested_container_from_child
+        #region sample_nested_container_from_child
         [Fact]
         public void nested_container_from_child()
         {
@@ -65,9 +65,9 @@ namespace StructureMap.Testing.Examples
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: stubs-with-child-containers
+        #region sample_stubs-with-child-containers
         public class TheRealService : IService { }
 
         public class StubbedService : IService { }
@@ -91,6 +91,6 @@ namespace StructureMap.Testing.Examples
             // services through the new child container....
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

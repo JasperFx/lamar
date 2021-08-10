@@ -8,7 +8,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class generic_types
     {
-        // SAMPLE: register_open_generic_type
+        #region sample_register_open_generic_type
         [Fact]
         public void register_open_generic_type()
         {
@@ -28,12 +28,12 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<DefaultVisualizer<IssueResolved>>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void using_visualizer()
         {
-            // SAMPLE: using-visualizer-knowning-the-type
+            #region sample_using-visualizer-knowning-the-type
             // Just setting up a Container and ILogVisualizer
             var container = Container.For<VisualizationRegistry>();
             var visualizer = container.GetInstance<ILogVisualizer>();
@@ -43,13 +43,13 @@ namespace StructureMap.Testing.Acceptance
 
             // I can get the html representation:
             var html = visualizer.ToHtml(created);
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
         public void a_bunch_of_logs()
         {
-            // SAMPLE: using-visualizer-not-knowing-the-type
+            #region sample_using-visualizer-not-knowing-the-type
             var logs = new object[]
             {
                 new IssueCreated(),
@@ -57,18 +57,19 @@ namespace StructureMap.Testing.Acceptance
                 new Comment(),
                 new IssueResolved()
             };
+            #endregion
 
-            // SAMPLE: using-visualizer-knowning-the-type
+            #region sample_using-visualizer-knowning-the-type
             // Just setting up a Container and ILogVisualizer
             var container = Container.For<VisualizationRegistry>();
             var visualizer = container.GetInstance<ILogVisualizer>();
 
             var items = logs.Select(visualizer.ToHtml);
             var html = string.Join("<hr />", items);
-            // ENDSAMPLE
+            #endregion
         }
 
-        // SAMPLE: generic-defaults-with-fallback
+        #region sample_generic-defaults-with-fallback
         [Fact]
         public void generic_defaults()
         {
@@ -91,9 +92,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<DefaultVisualizer<TaskAssigned>>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: visualization-registry-in-action
+        #region sample_visualization-registry-in-action
         [Fact]
         public void visualization_registry()
         {
@@ -113,6 +114,6 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<DefaultVisualizer<TaskAssigned>>();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

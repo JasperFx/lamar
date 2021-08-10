@@ -10,7 +10,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class custom_registration_convention
     {
-        // SAMPLE: custom-registration-convention
+        #region sample_custom-registration-convention
         public interface IFoo
         {
         }
@@ -65,6 +65,6 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<IBaz>().ShouldBeOfType<BusyGuy>();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

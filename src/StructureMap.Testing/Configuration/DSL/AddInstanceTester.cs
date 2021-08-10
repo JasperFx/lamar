@@ -60,7 +60,7 @@ namespace StructureMap.Testing.Configuration.DSL
                 .Widget.IsType<AWidget>();
         }
 
-        // SAMPLE: named-instance
+        #region sample_named-instance
         [Fact]
         public void SimpleCaseWithNamedInstance()
         {
@@ -70,7 +70,7 @@ namespace StructureMap.Testing.Configuration.DSL
             widget.ShouldNotBeNull();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void SpecifyANewInstanceOverrideADependencyWithANamedInstance()

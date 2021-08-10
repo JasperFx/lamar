@@ -7,7 +7,7 @@ namespace Lamar.Testing.IoC.Acceptance
 {
     public class nested_containers
     {
-        // SAMPLE: nested-creation
+        #region sample_nested-creation
         public interface IWorker
         {
             void DoWork();
@@ -41,9 +41,9 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-singletons
+        #region sample_nested-singletons
         [Fact]
         public void nested_container_usage_of_singletons()
         {
@@ -62,9 +62,9 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-transients
+        #region sample_nested-transients
         [Fact]
         public void nested_container_behavior_of_scoped()
         {
@@ -93,11 +93,11 @@ namespace Lamar.Testing.IoC.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
 
 
-        // SAMPLE: nested-disposal
+        #region sample_nested-disposal
         [Fact]
         public void nested_container_disposal()
         {
@@ -150,10 +150,10 @@ namespace Lamar.Testing.IoC.Acceptance
             singleton.WasDisposed.ShouldBeFalse();
         }
 
-        // ENDSAMPLE
+        #endregion
 
 
-        // SAMPLE: nested-func-lazy-and-container-resolution
+        #region sample_nested-func-lazy-and-container-resolution
         public class Foo
         {
         }
@@ -174,7 +174,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
 
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void always_unique_disposal()
@@ -200,7 +200,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
     }
 
-    // SAMPLE: nested-colors
+    #region sample_nested-colors
     public interface IColor
     {
     }
@@ -245,9 +245,9 @@ namespace Lamar.Testing.IoC.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: nested-http
+    #region sample_nested-http
     public interface IHttpRequest
     {
     }
@@ -294,7 +294,7 @@ namespace Lamar.Testing.IoC.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public interface IUnitOfWork
     {

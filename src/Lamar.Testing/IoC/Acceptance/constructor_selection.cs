@@ -8,7 +8,7 @@ using Xunit;
 
 namespace StructureMap.Testing.Acceptance
 {
-    // SAMPLE: custom-ctor-scenario
+    #region sample_custom-ctor-scenario
     public abstract class BaseThing
     {
         public BaseThing(IWidget widget)
@@ -46,7 +46,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
 
 
@@ -54,7 +54,7 @@ namespace StructureMap.Testing.Acceptance
     {
 
 
-        // SAMPLE: using-default-ctor-attribute
+        #region sample_using-default-ctor-attribute
         public class AttributedThing
         {
             // Normally the greediest ctor would be
@@ -84,9 +84,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: explicit-ctor-selection
+        #region sample_explicit-ctor-selection
         public class Thingie
         {
             public Thingie(IWidget widget)
@@ -122,9 +122,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: skip-ctor-with-missing-simples
+        #region sample_skip-ctor-with-missing-simples
         public class DbContext
         {
             public string ConnectionString { get; set; }
@@ -160,6 +160,6 @@ namespace StructureMap.Testing.Acceptance
                 .ConnectionString.ShouldBe("not the default");
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

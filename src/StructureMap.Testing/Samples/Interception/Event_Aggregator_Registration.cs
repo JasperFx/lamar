@@ -12,7 +12,7 @@ namespace StructureMap.Testing.Samples.Interception
 {
     public class Event_Aggregator_Registration
     {
-        // SAMPLE: use_the_event_listener_registration
+        #region sample_use_the_event_listener_registration
         [Fact]
         public void use_the_event_listener_registration()
         {
@@ -32,7 +32,7 @@ namespace StructureMap.Testing.Samples.Interception
             listener.Messages.Single().ShouldBeTheSameAs(message);
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 
     public class BooMessage
@@ -49,7 +49,7 @@ namespace StructureMap.Testing.Samples.Interception
         }
     }
 
-    // SAMPLE: EventListenerRegistration
+    #region sample_EventListenerRegistration
     public class EventListenerRegistration : IInterceptorPolicy
     {
         public string Description
@@ -68,21 +68,21 @@ namespace StructureMap.Testing.Samples.Interception
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public interface IListener
     {
     }
 
-    // SAMPLE: IListener<T>
+    #region sample_IListener<T>
     public interface IListener<T>
     {
         void Handle(T message);
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: IEventAggregator
+    #region sample_IEventAggregator
     public interface IEventAggregator
     {
         // Sending messages
@@ -96,7 +96,7 @@ namespace StructureMap.Testing.Samples.Interception
         void RemoveListener(object listener);
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class EventAggregator : IEventAggregator
     {

@@ -18,7 +18,7 @@ namespace Lamar.Testing.IoC.Diagnostics
             var c = new Container(x => x.For<IWidget>().Use<ColorWidget>());
             
             
-            // SAMPLE: whatdidiscan
+            #region sample_whatdidiscan
             var container = new Container(_ =>
             {
                 _.Scan(x =>
@@ -43,7 +43,7 @@ namespace Lamar.Testing.IoC.Diagnostics
             });
 
             Console.WriteLine(container.WhatDidIScan());
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace Lamar.Testing.IoC.Diagnostics
         }
     }
 
-    // SAMPLE: whatdidiscan-result
+    #region sample_whatdidiscan-result
     /*
     All Scanners
     ================================================================
@@ -118,5 +118,5 @@ namespace Lamar.Testing.IoC.Diagnostics
     * Find and register all types implementing StructureMap.Testing.Widget.IWidget
 
     */
-    // ENDSAMPLE
+    #endregion
 }

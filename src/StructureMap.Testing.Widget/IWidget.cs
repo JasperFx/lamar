@@ -4,14 +4,14 @@ using Lamar;
 
 namespace StructureMap.Testing.Widget
 {
-    // SAMPLE: IWidget
+    #region sample_IWidget
     public interface IWidget
     {
         void DoSomething();
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: inline-dependencies-ColorWidget
+    #region sample_inline-dependencies-ColorWidget
     public class ColorWidget : IWidget
     {
         public ColorWidget(string color)
@@ -56,7 +56,7 @@ namespace StructureMap.Testing.Widget
             return $"Color: {Color}";
         }
     }
-    // ENDSAMPLE
+    #endregion
 
     public class AWidget : IWidget
     {

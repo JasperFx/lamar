@@ -8,7 +8,7 @@ namespace Lamar.Testing.Samples
     {
         public void start_a_container()
         {
-            // SAMPLE: start-a-container
+            #region sample_start-a-container
             var container = new Container(x =>
             {
                 // Using StructureMap style registrations
@@ -19,9 +19,9 @@ namespace Lamar.Testing.Samples
                 
                 // and lots more services in all likelihood
             });
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: resolving-services-quickstart
+            #region sample_resolving-services-quickstart
             // StructureMap style
             
             // Get a required service
@@ -38,7 +38,7 @@ namespace Lamar.Testing.Samples
             
             // Try to resolve a service if it's registered
             var service2 = provider.GetService<IService>();
-            // ENDSAMPLE
+            #endregion
         }
     }
 }

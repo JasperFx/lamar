@@ -9,7 +9,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class scanning_samples
     {
-        // SAMPLE: WithDefaultConventions
+        #region sample_WithDefaultConventions
         public interface ISpaceship { }
 
         public class Spaceship : ISpaceship { }
@@ -34,9 +34,9 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<IRocket>().ShouldBeOfType<Rocket>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: register-all-types-implementing
+        #region sample_register-all-types-implementing
         public interface IFantasySeries { }
 
         public class WheelOfTime : IFantasySeries { }
@@ -69,9 +69,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldHaveTheSameElementsAs(typeof(BlackCompany), typeof(GameOfThrones), typeof(WheelOfTime));
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: SingleImplementationsOfInterface
+        #region sample_SingleImplementationsOfInterface
         public interface ISong { }
 
         public class TheOnlySong : ISong { }
@@ -92,6 +92,6 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<TheOnlySong>();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LamarWithAspNetCoreMvc3
 {
-    // SAMPLE: integration-with-mvc3
+    #region sample_integration-with-mvc3
     public class Program
     {
         public static void Main(string[] args)
@@ -39,5 +39,5 @@ namespace LamarWithAspNetCoreMvc3
                     });
                 });
     }
-    // ENDSAMPLE
+    #endregion
 }

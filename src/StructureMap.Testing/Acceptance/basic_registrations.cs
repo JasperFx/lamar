@@ -19,7 +19,7 @@ namespace StructureMap.Testing.Acceptance
     }
 
     /*
-    // SAMPLE: SettingDefaults
+    #region sample_SettingDefaults
     public class SettingDefaults : ServiceRegistry
     {
         public SettingDefaults()
@@ -51,8 +51,8 @@ namespace StructureMap.Testing.Acceptance
             For(typeof (IService<>)).Use(new MySpecialInstance());
         }
     }
-    // ENDSAMPLE
-    // SAMPLE: AdditionalRegistrations
+    #endregion
+    #region sample_AdditionalRegistrations
     public class AdditionalRegistrations : ServiceRegistry
     {
         public AdditionalRegistrations()
@@ -79,7 +79,7 @@ namespace StructureMap.Testing.Acceptance
             For(typeof(IService<>)).Add(new MySpecialInstance());
         }
     }
-    // ENDSAMPLE
+    #endregion
     */
 
     public class MySpecialInstance : LambdaInstance<IWidget>

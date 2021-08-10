@@ -4,7 +4,7 @@ using StructureMap.Testing.Widget;
 
 namespace Lamar.Testing.Samples
 {
-    // SAMPLE: LifetimeRegistry
+    #region sample_LifetimeRegistry
     public class LifetimeRegistry : ServiceRegistry
     {
         public LifetimeRegistry()
@@ -31,5 +31,5 @@ namespace Lamar.Testing.Samples
             For<IUnitOfWork>().Use<UnitOfWork>().Scoped();
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

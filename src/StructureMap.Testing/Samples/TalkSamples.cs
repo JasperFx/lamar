@@ -49,16 +49,16 @@ namespace StructureMap.Testing.Samples
         }
     }
 
-    // SAMPLE: nhibernate-isession-factory
+    #region sample_nhibernate-isession-factory
     public interface ISession { }
 
     public interface ISessionFactory
     {
         ISession Build();
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: SessionFactoryRegistry
+    #region sample_SessionFactoryRegistry
     public class SessionFactoryRegistry : Registry
     {
         // Let's not worry about how ISessionFactory is built
@@ -77,7 +77,7 @@ namespace StructureMap.Testing.Samples
             });
         }
     }
-    // ENDSAMPLE
+    #endregion
 
 
 
