@@ -5,7 +5,7 @@ namespace StructureMap.Testing.Examples.MultiTenancy
 {
     public class missing_instance_rule_overrides
     {
-        // SAMPLE: missing-instance-mt-domain
+        #region sample_missing-instance-mt-domain
         public interface Rule
         {
         }
@@ -22,9 +22,9 @@ namespace StructureMap.Testing.Examples.MultiTenancy
         {
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: missing-instance-mt-fallthrough
+        #region sample_missing-instance-mt-fallthrough
         [Fact]
         public void use_customer_overrides()
         {
@@ -45,9 +45,9 @@ namespace StructureMap.Testing.Examples.MultiTenancy
             container.GetInstance<Rule>("client3").ShouldBeOfType<DefaultRule>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: missing-instance-mt-lookup
+        #region sample_missing-instance-mt-lookup
         public interface IClientRulesRepsitory
         {
             ClientRulesData Find(string clientName);
@@ -83,6 +83,6 @@ namespace StructureMap.Testing.Examples.MultiTenancy
             });
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

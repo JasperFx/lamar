@@ -1,6 +1,6 @@
 ﻿namespace Lamar.Testing.Samples
 {
-// SAMPLE: foobar-model
+#region sample_foobar-model
     public interface IBar
     {
     }
@@ -23,6 +23,6 @@
         }
     }
 
-// ENDSAMPLE
+#endregion
 
 }

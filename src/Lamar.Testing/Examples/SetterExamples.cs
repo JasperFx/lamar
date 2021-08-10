@@ -18,7 +18,7 @@ namespace Lamar.Testing.Examples
     {
     }
 
-    // SAMPLE: setter-injection-with-SetterProperty
+    #region sample_setter-injection-with-SetterProperty
     public class Repository
     {
         // Adding the SetterProperty to a setter directs
@@ -30,7 +30,7 @@ namespace Lamar.Testing.Examples
         [SetterProperty]
         public bool ShouldCache { get; set; }
     }
-    // ENDSAMPLE
+    #endregion
 
     public class DataProvider : IDataProvider { }
 
@@ -56,13 +56,13 @@ namespace Lamar.Testing.Examples
         }
     }
 
-    // SAMPLE: IShippingService
+    #region sample_IShippingService
     public interface IShippingService
     {
         void ShipIt();
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class ShippingWebService : IShippingService
     {
@@ -132,7 +132,7 @@ namespace Lamar.Testing.Examples
         }
     }
 
-    // SAMPLE: BasicScanning
+    #region sample_BasicScanning
     public class BasicScanning : ServiceRegistry
     {
         public BasicScanning()
@@ -155,7 +155,7 @@ namespace Lamar.Testing.Examples
             });
         }
     }
-    // ENDSAMPLE
+    #endregion
 
     public class MySpecialRegistrationConvention : IRegistrationConvention
     {
@@ -188,7 +188,7 @@ namespace Lamar.Testing.Examples
         private readonly IRepository _repository;
         private readonly IShippingService _service;
 
-        // SAMPLE: ShippingScreenPresenter-with-ctor-injection
+        #region sample_ShippingScreenPresenter-with-ctor-injection
         // This is the way to write a Constructor Function with an IoC tool
         // Let the IoC container "inject" services from outside, and keep
         // ShippingScreenPresenter ignorant of the IoC infrastructure
@@ -197,9 +197,9 @@ namespace Lamar.Testing.Examples
             _service = service;
             _repository = repository;
         }
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: ShippingScreenPresenter-anti-pattern
+        #region sample_ShippingScreenPresenter-anti-pattern
         // This is the wrong way to use an IoC container.  Do NOT invoke the container from
         // the constructor function.  This tightly couples the ShippingScreenPresenter to
         // the IoC container in a harmful way.  This class cannot be used in either
@@ -212,7 +212,7 @@ namespace Lamar.Testing.Examples
             _service = container.GetInstance<IShippingService>();
             _repository = container.GetInstance<IRepository>();
         }
-        // ENDSAMPLE
+        #endregion
 
 
 
@@ -234,7 +234,7 @@ namespace Lamar.Testing.Examples
             _output = output;
         }
 
-        // SAMPLE: ShippingScreenPresenter-build-plan
+        #region sample_ShippingScreenPresenter-build-plan
         [Fact]
         public void ShowBuildPlan()
         {
@@ -252,7 +252,7 @@ namespace Lamar.Testing.Examples
             // _output is the xUnit ITestOutputHelper here
             _output.WriteLine(buildPlan);
         }
-        // ENDSAMPLE
+        #endregion
     }
 
     public class ApplicationController

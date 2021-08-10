@@ -1,6 +1,6 @@
 ﻿namespace StructureMap.Testing.Examples
 {
-    // SAMPLE: evil-singleton
+    #region sample_evil-singleton
     public class EvilSingleton
     {
         public static readonly EvilSingleton Instance = new EvilSingleton();
@@ -24,9 +24,9 @@
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: no-singleton
+    #region sample_no-singleton
     public class SingletonService { }
 
     public class SingletonUser
@@ -43,5 +43,5 @@
             For<SingletonService>().Singleton();
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

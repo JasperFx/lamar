@@ -9,7 +9,7 @@ namespace StructureMap.Testing.Examples
             
         }
 
-        // SAMPLE: validation-method-usage
+        #region sample_validation-method-usage
         public class Database : IDatabase
         {
             [ValidationMethod]
@@ -22,7 +22,7 @@ namespace StructureMap.Testing.Examples
                 // be reached
             }
         }
-        // ENDSAMPLE
+        #endregion
 
         public class DatabaseRegistry : Registry
         {

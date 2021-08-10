@@ -35,14 +35,14 @@ namespace StructureMap.Testing.Diagnostics
         [Fact]
         public void deep_build_plan_for_default_of_type()
         {
-            // SAMPLE: build-plan-deep-for-default
+            #region sample_build-plan-deep-for-default
             var container = Container.For<VisualizationRegistry>();
 
             var description = container.Model.For<IDevice>().Default
                 .DescribeBuildPlan();
 
             Debug.WriteLine(description);
-            // ENDSAMPLE
+            #endregion
         }
     }
 
@@ -64,11 +64,11 @@ namespace StructureMap.Testing.Diagnostics
         [Fact]
         public void simple_build_by_lambda()
         {
-            // SAMPLE: build-plan-by-name
+            #region sample_build-plan-by-name
             var description = theContainer.Model.For<IDevice>()
                 .Find("A")
                 .DescribeBuildPlan();
-            // ENDSAMPLE
+            #endregion
 
             Debug.WriteLine(description);
 

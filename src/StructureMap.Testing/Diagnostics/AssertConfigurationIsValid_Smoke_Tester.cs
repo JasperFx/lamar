@@ -12,9 +12,9 @@ namespace StructureMap.Testing.Diagnostics
         {
             var container = new Container(x => x.For<IWidget>().Use<NamedWidget>().Ctor<string>().Is("Marshall"));
 
-            // SAMPLE: container.AssertConfigurationIsValid
+            #region sample_container.AssertConfigurationIsValid
             container.AssertConfigurationIsValid();
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]

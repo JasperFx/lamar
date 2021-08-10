@@ -20,7 +20,7 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTheSameAs(container.GetInstance<Rule>());
         }
 
-        // SAMPLE: lifecycle-rules
+        #region sample_lifecycle-rules
         [Fact]
         public void lifecycle_precedence()
         {
@@ -62,6 +62,6 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

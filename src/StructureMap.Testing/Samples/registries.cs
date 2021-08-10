@@ -2,7 +2,7 @@
 
 namespace StructureMap.Docs.samples
 {
-// SAMPLE: foobar-registry-structuremap
+#region sample_foobar-registry-structuremap
     public class FooBarRegistry : Registry
     {
         public FooBarRegistry()
@@ -12,9 +12,9 @@ namespace StructureMap.Docs.samples
         }
     }
 
-// ENDSAMPLE
+#endregion
 
-// SAMPLE: foo-registry
+#region sample_foo-registry
     public class FooRegistry : Registry
     {
         public FooRegistry()
@@ -23,5 +23,5 @@ namespace StructureMap.Docs.samples
         }
     }
 
-// ENDSAMPLE
+#endregion
 }

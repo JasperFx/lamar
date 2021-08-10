@@ -11,7 +11,7 @@ namespace StructureMap.Testing
         [Fact]
         public void what_did_i_scan_usage()
         {
-            // SAMPLE: whatdidiscan
+            #region sample_whatdidiscan
             var container = new Container(_ =>
             {
                 _.Scan(x =>
@@ -36,11 +36,11 @@ namespace StructureMap.Testing
             });
 
             Debug.WriteLine(container.WhatDidIScan());
-            // ENDSAMPLE
+            #endregion
         }
     }
 
-    // SAMPLE: whatdidiscan-result
+    #region sample_whatdidiscan-result
     /*
     All Scanners
     ================================================================
@@ -71,5 +71,5 @@ namespace StructureMap.Testing
     * Find and register all types implementing StructureMap.Testing.Widget.IWidget
 
     */
-    // ENDSAMPLE
+    #endregion
 }

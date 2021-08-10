@@ -6,7 +6,7 @@ namespace StructureMap.Testing.Examples.Resolving
 {
     public class SimpleScenarios
     {
-        // SAMPLE: GetInstance
+        #region sample_GetInstance
         [Fact]
         public void get_the_default_instance()
         {
@@ -21,9 +21,9 @@ namespace StructureMap.Testing.Examples.Resolving
                 .ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: GetInstance-by-name
+        #region sample_GetInstance-by-name
         [Fact]
         public void get_a_named_instance()
         {
@@ -45,9 +45,9 @@ namespace StructureMap.Testing.Examples.Resolving
             container.GetInstance(typeof(IWidget), "C").ShouldBeOfType<CWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: get-all-instances
+        #region sample_get-all-instances
         [Fact]
         public void get_all_instances()
         {
@@ -70,7 +70,7 @@ namespace StructureMap.Testing.Examples.Resolving
                 .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public interface IWidget
         {

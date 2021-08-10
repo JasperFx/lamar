@@ -10,7 +10,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class nested_containers
     {
-        // SAMPLE: nested-creation
+        #region sample_nested-creation
         public interface IWorker
         {
             void DoWork();
@@ -44,9 +44,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-singletons
+        #region sample_nested-singletons
         [Fact]
         public void nested_container_usage_of_singletons()
         {
@@ -62,9 +62,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-transients
+        #region sample_nested-transients
         [Fact]
         public void nested_container_behavior_of_transients()
         {
@@ -91,9 +91,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-profiles
+        #region sample_nested-profiles
         [Fact]
         public void nested_container_from_profile_container()
         {
@@ -116,9 +116,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-disposal
+        #region sample_nested-disposal
         [Fact]
         public void nested_container_disposal()
         {
@@ -167,9 +167,9 @@ namespace StructureMap.Testing.Acceptance
             singleton.WasDisposed.ShouldBeFalse();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-overriding
+        #region sample_nested-overriding
         [Fact]
         public void overriding_services_in_a_nested_container()
         {
@@ -206,9 +206,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<StandInHttpResponse>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: nested-func-lazy-and-container-resolution
+        #region sample_nested-func-lazy-and-container-resolution
         public class Foo
         {
         }
@@ -249,7 +249,7 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void always_unique_disposal()
@@ -300,7 +300,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // SAMPLE: nested-colors
+    #region sample_nested-colors
     public interface IColor
     {
     }
@@ -345,9 +345,9 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: nested-http
+    #region sample_nested-http
     public interface IHttpRequest
     {
     }
@@ -394,7 +394,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public interface IUnitOfWork
     {

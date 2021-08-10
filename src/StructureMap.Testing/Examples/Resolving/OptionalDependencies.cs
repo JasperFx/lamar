@@ -5,7 +5,7 @@ namespace StructureMap.Testing.Examples.Resolving
 {
     public class OptionalDependencies
     {
-        // SAMPLE: optional-foo
+        #region sample_optional-foo
         public interface IFoo
         {
         }
@@ -14,9 +14,9 @@ namespace StructureMap.Testing.Examples.Resolving
         {
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: optional-got-it
+        #region sample_optional-got-it
         [Fact]
         public void i_have_got_that()
         {
@@ -31,9 +31,9 @@ namespace StructureMap.Testing.Examples.Resolving
                 .ShouldNotBeNull();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: optional-dont-got-it
+        #region sample_optional-dont-got-it
         [Fact]
         public void i_do_not_have_that()
         {
@@ -48,9 +48,9 @@ namespace StructureMap.Testing.Examples.Resolving
                 .ShouldBeNull();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: optional-no-concrete
+        #region sample_optional-no-concrete
         public class ConcreteThing
         {
         }
@@ -70,9 +70,9 @@ namespace StructureMap.Testing.Examples.Resolving
                 .ShouldNotBeNull();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: optional-close-generics
+        #region sample_optional-close-generics
         public interface IThing<T>
         {
         }
@@ -90,9 +90,9 @@ namespace StructureMap.Testing.Examples.Resolving
                 .ShouldBeOfType<Thing<string>>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: optional-real-usage
+        #region sample_optional-real-usage
         public class MyFoo : IFoo
         {
         }
@@ -109,6 +109,6 @@ namespace StructureMap.Testing.Examples.Resolving
 
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

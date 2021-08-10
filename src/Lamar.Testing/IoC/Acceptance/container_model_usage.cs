@@ -21,7 +21,7 @@ namespace Lamar.Testing.IoC.Acceptance
         {
             _output = output;
             
-            // SAMPLE: container-for-build-plan
+            #region sample_container-for-build-plan
             container = new Container(x =>
             {
                 x.For(typeof(IService<>)).Add(typeof(Service<>));
@@ -42,10 +42,10 @@ namespace Lamar.Testing.IoC.Acceptance
                 x.For<Startable2>().Use<Startable2>();
                 x.For<Startable3>().Use<Startable3>();
             });
-            // ENDSAMPLE
+            #endregion
         }
 
-        // SAMPLE: UsesStuff
+        #region sample_UsesStuff
         public class UsesStuff
         {
             public IWidget Widget { get; }
@@ -59,14 +59,14 @@ namespace Lamar.Testing.IoC.Acceptance
                 Engine = engine;
             }
         }
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void has_build_plan_for_concrete_type()
         {
-            // SAMPLE: getting-build-plan
+            #region sample_getting-build-plan
             var plan = container.Model.For<UsesStuff>().Default.DescribeBuildPlan();
-            // ENDSAMPLE
+            #endregion
             _output.WriteLine(plan);
             
         }
@@ -216,11 +216,11 @@ namespace Lamar.Testing.IoC.Acceptance
             var startable1 = container.GetInstance<Startable1>();
             startable1.WasStarted.ShouldBeFalse();
 
-            // SAMPLE: calling-startable-start
+            #region sample_calling-startable-start
             var allStartables = container.Model.GetAllPossible<IStartable>();
             allStartables.ToArray()
                 .Each(x => x.Start());
-            // ENDSAMPLE
+            #endregion
 
             allStartables.Each(x => x.WasStarted.ShouldBeTrue());
 
@@ -264,7 +264,7 @@ namespace Lamar.Testing.IoC.Acceptance
         }
     }
 
-    // SAMPLE: istartable
+    #region sample_istartable
     public interface IStartable
     {
         bool WasStarted { get; }
@@ -272,7 +272,7 @@ namespace Lamar.Testing.IoC.Acceptance
         void Start();
     }
 
-    // ENDSAMPLE
+    #endregion
 
     public class Startable : IStartable
     {

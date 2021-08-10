@@ -6,7 +6,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class build_by_lambdas
     {
-        // SAMPLE: build-with-lambdas
+        #region sample_build-with-lambdas
         [Fact]
         public void build_with_lambdas_1()
         {
@@ -36,9 +36,9 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<Rule>("Purple").ShouldBeOfType<ColorRule>().Color.ShouldBe("Purple");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: build-with-lambdas-in-batch
+        #region sample_build-with-lambdas-in-batch
         [Fact]
         public void add_batch_of_lambdas()
         {
@@ -69,9 +69,9 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<Rule>("Purple").ShouldBeOfType<ColorRule>().Color.ShouldBe("Purple");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: lambdas-as-inline-dependency
+        #region sample_lambdas-as-inline-dependency
         [Fact]
         public void as_inline_dependency()
         {
@@ -109,10 +109,10 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<RuleHolder>("Purple").Rule.ShouldBeOfType<ColorRule>().Color.ShouldBe("Purple");
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 
-    // SAMPLE: RuleHolder
+    #region sample_RuleHolder
     public class RuleHolder
     {
         private readonly Rule _rule;
@@ -128,9 +128,9 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: RuleBuilder
+    #region sample_RuleBuilder
     public class RuleBuilder
     {
         public Rule ForColor(string color)
@@ -139,5 +139,5 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

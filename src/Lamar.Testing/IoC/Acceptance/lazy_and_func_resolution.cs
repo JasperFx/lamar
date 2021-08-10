@@ -45,7 +45,7 @@ public class lazy_and_func_resolution
             user.Build().ShouldBeOfType<AWidget>();
         }
 
-        // SAMPLE: Lazy-in-usage
+        #region sample_Lazy-in-usage
         public class WidgetLazyUser
         {
             private readonly Lazy<IWidget> _widget;
@@ -73,7 +73,7 @@ public class lazy_and_func_resolution
                 .Widget.ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void can_build_a_Lazy_of_T_automatically()
@@ -109,7 +109,7 @@ public class lazy_and_func_resolution
             w2.ShouldNotBeTheSameAs(w3);
         }
 
-        // SAMPLE: using-func-t
+        #region sample_using-func-t
         [Fact]
         public void build_a_func_that_returns_a_singleton()
         {
@@ -130,7 +130,7 @@ public class lazy_and_func_resolution
             w2.ShouldBeSameAs(w3);
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class GreenWidget : IWidget
         {
@@ -152,7 +152,7 @@ public class lazy_and_func_resolution
             }
         }
         
-        // SAMPLE: using-func-string-t
+        #region sample_using-func-string-t
         [Fact]
         public void build_a_func_by_string()
         {
@@ -169,7 +169,7 @@ public class lazy_and_func_resolution
             func("red").ShouldBeOfType<RedWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
 
         [Fact]
@@ -204,7 +204,7 @@ public class lazy_and_func_resolution
         {
         }
 
-        // SAMPLE: using-lazy-as-workaround-for-bidirectional-dependency
+        #region sample_using-lazy-as-workaround-for-bidirectional-dependency
 
         public class Thing1
         {
@@ -247,6 +247,6 @@ public class lazy_and_func_resolution
             thing2.Thing1.ShouldBeSameAs(thing1);
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

@@ -5,7 +5,7 @@ namespace StructureMap.Testing.Bugs
 {
     public class AddValueDirectlyWithGenericUsage
     {
-        // SAMPLE: injecting-pre-built-object
+        #region sample_injecting-pre-built-object
         [Fact]
         public void should_be_able_to_resolve_from_the_generic_family_expression()
         {
@@ -15,6 +15,6 @@ namespace StructureMap.Testing.Bugs
             container.GetInstance<IWidget>("mine").ShouldBeTheSameAs(widget);
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

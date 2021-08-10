@@ -19,18 +19,18 @@ namespace Lamar.Testing.IoC.Diagnostics
         [Fact]
         public void empty_container()
         {
-            // SAMPLE: whatdoihave-simple
+            #region sample_whatdoihave-simple
             var container = Container.Empty();
             var report = container.WhatDoIHave();
 
             Console.WriteLine(report);
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
         public void display_one_service_for_an_interface()
         {
-            // SAMPLE: what_do_i_have_container
+            #region sample_what_do_i_have_container
             var container = new Container(x =>
             {
                 x.For<IEngine>().Use<Hemi>().Named("The Hemi");
@@ -46,11 +46,11 @@ namespace Lamar.Testing.IoC.Diagnostics
 
                 x.For<IEngine>().UseIfNone<VTwelve>();
             });
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: whatdoihave_everything
+            #region sample_whatdoihave_everything
             Console.WriteLine(container.WhatDoIHave());
-            // ENDSAMPLE
+            #endregion
             
             _output.WriteLine(container.WhatDoIHave());
         }
@@ -97,15 +97,15 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<IWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-assembly
+            #region sample_whatdoihave-assembly
             Console.WriteLine(container.WhatDoIHave(assembly: typeof(IWidget).Assembly));
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
         public void filtering_examples()
         {
-            // SAMPLE: whatdoihave-filtering
+            #region sample_whatdoihave-filtering
             var container = Container.Empty();
 
             // Filter by the Assembly of the Plugin Type
@@ -121,7 +121,7 @@ namespace Lamar.Testing.IoC.Diagnostics
             // Filter by a case insensitive string.Contains() match
             // against the Plugin Type name
             var byType = container.WhatDoIHave(typeName: "Widget");
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
@@ -143,9 +143,9 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<IWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-plugintype
+            #region sample_whatdoihave-plugintype
             Console.WriteLine(container.WhatDoIHave(typeof(IWidget)));
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
@@ -169,9 +169,9 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<AWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-type
+            #region sample_whatdoihave-type
             Console.WriteLine(container.WhatDoIHave(typeName: "Widget"));
-            // ENDSAMPLE
+            #endregion
         }
 
 
@@ -196,9 +196,9 @@ namespace Lamar.Testing.IoC.Diagnostics
                 x.For<AWidget>().Use<AWidget>();
             });
 
-            // SAMPLE: whatdoihave-namespace
+            #region sample_whatdoihave-namespace
             Console.WriteLine(container.WhatDoIHave(@namespace: "System"));
-            // ENDSAMPLE
+            #endregion
         }
     }
 

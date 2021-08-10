@@ -17,7 +17,7 @@ namespace LamarCompiler.Testing.Samples
         [Fact]
         public void write_code()
         {
-            // SAMPLE: simple-usage-of-source-writer
+            #region sample_simple-usage-of-source-writer
             var writer = new SourceWriter();
             
             writer.Write(@"
@@ -27,14 +27,14 @@ END
 ".Replace("'", "\""));
             
             Console.WriteLine(writer.Code());
-            // ENDSAMPLE
+            #endregion
             
             _output.WriteLine(writer.Code());
         }
 
         public void other_methods()
         {
-            // SAMPLE: other-sourcewriter-basics
+            #region sample_other-sourcewriter-basics
             var writer = new SourceWriter();
             
             // Write an empty line into the code 
@@ -49,13 +49,13 @@ END
             // next line and decrements the leading space
             // indention for the following lines of code
             writer.FinishBlock();
-            // ENDSAMPLE
+            #endregion
         }
 
 
         public void advanced_usages()
         {
-            // SAMPLE: SourceWriterAdvanced
+            #region sample_SourceWriterAdvanced
             var writer = new SourceWriter();
             
             // Add "using [namespace]; statements
@@ -84,7 +84,7 @@ END
             // Start the declaration of a new public class named "MyClass"
             // that implements the IDisposable interface
             writer.StartClass("MyClass", typeof(IDisposable));
-            // ENDSAMPLE
+            #endregion
         }
     }
 }

@@ -6,7 +6,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class lifecycle_creation
     {
-        // SAMPLE: SingletonThing-disposed-on-container-dispose
+        #region sample_SingletonThing-disposed-on-container-dispose
         public class DisposableSingleton : IDisposable
         {
             public void Dispose()
@@ -17,9 +17,9 @@ namespace StructureMap.Testing.Acceptance
             public bool WasDisposed { get; set; }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: singleton-in-action
+        #region sample_singleton-in-action
         [Fact]
         public void singletons_are_disposed_when_the_container_is_disposed()
         {
@@ -45,7 +45,7 @@ namespace StructureMap.Testing.Acceptance
             singleton.WasDisposed.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void singletons_are_created_in_a_completely_separate_context_in_the_parent_container()
@@ -75,7 +75,7 @@ namespace StructureMap.Testing.Acceptance
             thing.Transient.ShouldNotBeTheSameAs(thing.SingletonThing.ShouldBeOfType<SingletonThing>().Transient);
         }
 
-        // SAMPLE: transient-are-shared-within-a-graph
+        #region sample_transient-are-shared-within-a-graph
         public interface IUnitOfWork
         {
         }
@@ -138,7 +138,7 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTheSameAs(coordinator.Worker2.Uow);
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 
     public interface ISingletonThing

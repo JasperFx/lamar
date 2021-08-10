@@ -4,7 +4,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar
 {
-    // SAMPLE: IInstancePolicy
+    #region sample_IInstancePolicy
     /// <summary>
     /// Custom policy on Instance construction that is evaluated
     /// as part of creating a "build plan"
@@ -19,9 +19,9 @@ namespace Lamar
         /// <param name="instance"></param>
         void Apply(Instance instance);
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: ConfiguredInstancePolicy
+    #region sample_ConfiguredInstancePolicy
     /// <summary>
     /// Base class for using policies against IConfiguredInstance registrations
     /// </summary>
@@ -37,5 +37,5 @@ namespace Lamar
 
         protected abstract void apply(IConfiguredInstance instance);
     }
-    // ENDSAMPLE
+    #endregion
 }

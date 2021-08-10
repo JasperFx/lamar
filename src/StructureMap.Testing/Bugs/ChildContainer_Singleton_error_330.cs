@@ -27,7 +27,7 @@ namespace StructureMap.Testing.Bugs
             childContainer.Model.For<IRoot>().Lifecycle.ShouldBeOfType<ChildContainerSingletonLifecycle>();
         }
 
-        // SAMPLE: singletons_to_child_container_are_isolated
+        #region sample_singletons_to_child_container_are_isolated
         [Fact]
         public void singletons_to_child_container_are_isolated()
         {
@@ -59,7 +59,7 @@ namespace StructureMap.Testing.Bugs
                 .ShouldNotBeTheSameAs(child2.GetInstance<IRoot>());
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public interface IRoot
         {

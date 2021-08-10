@@ -10,7 +10,7 @@ namespace StructureMap.Testing.Graph
     {
         public FirstInterfaceConventionTester()
         {
-            // SAMPLE: using-RegisterConcreteTypesAgainstTheFirstInterface
+            #region sample_using-RegisterConcreteTypesAgainstTheFirstInterface
             container = new Container(x =>
             {
                 x.Scan(o =>
@@ -21,7 +21,7 @@ namespace StructureMap.Testing.Graph
                     o.Exclude(t => t.CanBeCastTo(typeof(IGateway)));
                 });
             });
-            // ENDSAMPLE
+            #endregion
         }
 
         private Container container;

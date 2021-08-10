@@ -5,7 +5,7 @@ namespace StructureMap.Testing
 {
     public class BuildUpIntegratedTester
     {
-        // SAMPLE: using-buildup
+        #region sample_using-buildup
         public class BuildUpTarget1
         {
             public IGateway Gateway { get; set; }
@@ -29,7 +29,7 @@ namespace StructureMap.Testing
             target.Service.ShouldBeNull();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void create_a_setter_rule_and_see_it_applied_in_BuildUp_through_ObjectFactory()

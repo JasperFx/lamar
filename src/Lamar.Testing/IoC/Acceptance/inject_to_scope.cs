@@ -152,31 +152,31 @@ namespace Lamar.Testing.IoC.Acceptance
         [Fact]
         public void using_injected_service()
         {
-            // SAMPLE: container-with-injectable
+            #region sample_container-with-injectable
             var container = new Container(_ =>
             {
                 _.Injectable<ExecutionContext>();
             });
-            // ENDSAMPLE
+            #endregion
             
-            // SAMPLE: injecting-context-to-nested
+            #region sample_injecting-context-to-nested
             var context = new ExecutionContext();
 
             var nested = container.GetNestedContainer();
             nested.Inject(context);
-            // ENDSAMPLE
+            #endregion
 
 
-            // SAMPLE: resolving-using-context
+            #region sample_resolving-using-context
             var service = nested.GetInstance<ContextUsingService>();
             service.Context.ShouldBeSameAs(context);
-            // ENDSAMPLE
+            #endregion
         }
     }
 
     
     
-    // SAMPLE: ContextUsingService
+    #region sample_ContextUsingService
     public class ContextUsingService
     {
         public ExecutionContext Context { get; }
@@ -186,14 +186,14 @@ namespace Lamar.Testing.IoC.Acceptance
             Context = context;
         }
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: ExecutionContext
+    #region sample_ExecutionContext
     // This class is specific to some kind of short lived 
     // process and lives in a nested container
     public class ExecutionContext
     {
         public Guid Id { get; set; } = Guid.NewGuid();
     }
-    // ENDSAMPLE
+    #endregion
 }

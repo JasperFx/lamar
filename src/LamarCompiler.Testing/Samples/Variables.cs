@@ -19,25 +19,25 @@ namespace LamarCompiler.Testing.Samples
         [Fact]
         public void use_variables()
         {
-            // SAMPLE: derived-variable
+            #region sample_derived-variable
             var now = new Variable(typeof(DateTime), $"{typeof(DateTime).FullName}.{nameof(DateTime.Now)}");
-            // ENDSAMPLE
+            #endregion
 
-            // SAMPLE: default-variable-name-usage
+            #region sample_default-variable-name-usage
             var widget = Variable.For<IWidget>();
             widget.Usage.ShouldBe("widget");
-            // ENDSAMPLE
+            #endregion
             
             
             
-            // SAMPLE: override-variable-usage-and-type
+            #region sample_override-variable-usage-and-type
             var service = new Variable(typeof(IService), "service");
             service.OverrideName("myService");
             service.OverrideType(typeof(WhateverService));
-            // ENDSAMPLE
+            #endregion
 
 
-            // SAMPLE: create-a-variable
+            #region sample_create-a-variable
             // Create a connection for the type SqlConnection 
             // with the name "conn"
             var conn = Variable.For<SqlConnection>("conn");
@@ -49,15 +49,15 @@ namespace LamarCompiler.Testing.Samples
             // for the type
             var conn3 = Variable.For<SqlConnection>();
             conn3.Usage.ShouldBe("sqlConnection");
-            // ENDSAMPLE
+            #endregion
 
 
 #if NETCOREAPP2_0
-            // SAMPLE: variable-dependencies
+            #region sample_variable-dependencies
             var context = Variable.For<HttpContext>();
             var response = new Variable(typeof(HttpResponse), $"{context.Usage}.{nameof(HttpContext.Response)}");
             response.Dependencies.Add(context);
-            // ENDSAMPLE 
+            #endregion 
 #endif
 
         }

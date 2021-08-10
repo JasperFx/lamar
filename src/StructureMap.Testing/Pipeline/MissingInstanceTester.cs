@@ -9,7 +9,7 @@ namespace StructureMap.Testing.Pipeline
 {
     public class MissingInstanceTester
     {
-        // SAMPLE: missing-instance-objects
+        #region sample_missing-instance-objects
         public interface Rule
         {
         }
@@ -24,9 +24,9 @@ namespace StructureMap.Testing.Pipeline
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: missing-instance-simple-usage
+        #region sample_missing-instance-simple-usage
         [Fact]
         public void configure_and_use_missing_instance()
         {
@@ -46,9 +46,9 @@ namespace StructureMap.Testing.Pipeline
                 .ShouldBeOfType<ColorRule>().Color.ShouldBe("blue");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: missing-instance-does-not-override-explicit
+        #region sample_missing-instance-does-not-override-explicit
         [Fact]
         public void does_not_override_explicit_registrations()
         {
@@ -65,9 +65,9 @@ namespace StructureMap.Testing.Pipeline
                 .Color.ShouldBe("DarkRed");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: missing-instance-with-Instance-registration
+        #region sample_missing-instance-with-Instance-registration
         [Fact]
         public void configure_and_use_missing_instance_by_generic_registration()
         {
@@ -84,7 +84,7 @@ namespace StructureMap.Testing.Pipeline
             container.GetInstance<Rule>("blue").ShouldBeOfType<ColorRule>().Color.ShouldBe("blue");
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void returns_missing_instance_if_it_exists_and_the_requested_instance_is_not_found()

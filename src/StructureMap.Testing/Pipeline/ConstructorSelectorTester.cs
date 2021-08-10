@@ -23,7 +23,7 @@ namespace StructureMap.Testing.Pipeline
                 .ShouldBe(7);
         }
 
-        // SAMPLE: select-the-greediest-ctor
+        #region sample_select-the-greediest-ctor
         public class GreaterThanRule : Rule
         {
             public string Attribute { get; set; }
@@ -59,7 +59,7 @@ namespace StructureMap.Testing.Pipeline
             rule.Value.ShouldBe(42);
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void should_get_the_greediest_constructor_if_there_is_more_than_one()

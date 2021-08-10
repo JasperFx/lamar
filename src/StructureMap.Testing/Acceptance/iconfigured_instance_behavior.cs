@@ -13,20 +13,20 @@ namespace StructureMap.Testing.Acceptance
         [Fact]
         public void set_to_singleton()
         {
-            // SAMPLE: set-iconfigured-instance-to-SingletonThing
+            #region sample_set-iconfigured-instance-to-SingletonThing
             IConfiguredInstance instance
                 = new ConfiguredInstance(typeof(WidgetHolder));
 
             instance.Singleton();
 
             instance.Lifecycle.ShouldBeOfType<SingletonLifecycle>();
-            // ENDSAMPLE
+            #endregion
         }
 
         [Fact]
         public void set_to_default()
         {
-            // SAMPLE: iconfiguredinstance-lifecycle
+            #region sample_iconfiguredinstance-lifecycle
             IConfiguredInstance instance
                 = new ConfiguredInstance(typeof(WidgetHolder));
 
@@ -41,13 +41,13 @@ namespace StructureMap.Testing.Acceptance
 
             // or override to the default "transient" lifecycle
             instance.DefaultLifecycle();
-            // ENDSAMPLE
+            #endregion
 
             instance.Lifecycle
                 .ShouldBeOfType<TransientLifecycle>();
         }
 
-        // SAMPLE: reflecting-over-parameters
+        #region sample_reflecting-over-parameters
         public class GuyWithArguments
         {
             public GuyWithArguments(IWidget widget, Rule rule)
@@ -66,9 +66,9 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldHaveTheSameElementsAs("widget", "rule");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: iconfiguredinstance-getsettableproperties
+        #region sample_iconfiguredinstance-getsettableproperties
         public class GuyWithProperties
         {
             public IWidget Widget { get; set; }
@@ -85,9 +85,9 @@ namespace StructureMap.Testing.Acceptance
                 .Single().Name.ShouldBe("Widget");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: add-dependency-by-property-info
+        #region sample_add-dependency-by-property-info
         [Fact]
         public void dependency_with_setter_with_value()
         {
@@ -104,9 +104,9 @@ namespace StructureMap.Testing.Acceptance
                 .Widget.ShouldBeTheSameAs(myWidget);
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: add-dependency-by-property-info-with-instance
+        #region sample_add-dependency-by-property-info-with-instance
         [Fact]
         public void dependency_with_setter_with_instance()
         {
@@ -123,9 +123,9 @@ namespace StructureMap.Testing.Acceptance
                 .Widget.ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: add-dependency-by-constructor-parameter
+        #region sample_add-dependency-by-constructor-parameter
         public class GuyWithDatabaseConnection
         {
             public string ConnectionString { get; set; }
@@ -155,9 +155,9 @@ namespace StructureMap.Testing.Acceptance
             guy.ConnectionString.ShouldBe(connString);
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: add-interceptor-to-iconfigured-instance
+        #region sample_add-interceptor-to-iconfigured-instance
 
         public class SimpleWidget
         {
@@ -182,6 +182,6 @@ namespace StructureMap.Testing.Acceptance
                 .WasIntercepted.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

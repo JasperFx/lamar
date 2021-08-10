@@ -22,7 +22,7 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // SAMPLE: container-scoped-in-action
+        #region sample_container-scoped-in-action
         [Fact]
         public void container_scoping_with_root_child_and_nested_container()
         {
@@ -79,6 +79,6 @@ namespace StructureMap.Testing.Acceptance
             mainDisposable.WasDisposed.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

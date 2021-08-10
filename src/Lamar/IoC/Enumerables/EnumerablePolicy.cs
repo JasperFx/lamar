@@ -6,7 +6,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Enumerables
 {
-    // SAMPLE: EnumerablePolicy
+    #region sample_EnumerablePolicy
     public class EnumerablePolicy : IFamilyPolicy
     {
         public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
@@ -32,5 +32,5 @@ namespace Lamar.IoC.Enumerables
             return null;
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

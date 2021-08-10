@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApplication4
 {
-    // SAMPLE: startup-with-check-lamar-configuration
+    #region sample_startup-with-check-lamar-configuration
     public class Startup
     {
         // Take in Lamar's ServiceRegistry instead of IServiceCollection
@@ -44,5 +44,5 @@ namespace WebApplication4
             app.UseMvc();
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

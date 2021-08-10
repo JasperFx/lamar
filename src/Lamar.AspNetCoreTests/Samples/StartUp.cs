@@ -11,7 +11,7 @@ namespace Lamar.Testing.AspNetCoreIntegration.Samples
     public static class Program
     {
         /*
-        // SAMPLE: getting-started-main
+        #region sample_getting-started-main
         public static void Main(string[] args)
         {
             var builder = new WebHostBuilder();
@@ -28,11 +28,11 @@ namespace Lamar.Testing.AspNetCoreIntegration.Samples
             builder.Start();
 
         }
-        // ENDSAMPLE
+        #endregion
         */
     }
     
-    // SAMPLE: getting-started-startup
+    #region sample_getting-started-startup
     public class Startup
     {
         // Take in Lamar's ServiceRegistry instead of IServiceCollection
@@ -58,9 +58,9 @@ namespace Lamar.Testing.AspNetCoreIntegration.Samples
             app.UseMvc();
         }
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: whatdoihave-aspnetcore
+    #region sample_whatdoihave-aspnetcore
     public class StartupWithDiagnostics
     {
         // Take in Lamar's ServiceRegistry instead of IServiceCollection
@@ -94,5 +94,5 @@ namespace Lamar.Testing.AspNetCoreIntegration.Samples
             app.UseMvc();
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

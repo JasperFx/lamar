@@ -1,6 +1,6 @@
 ﻿namespace Lamar.Testing.Samples
 {
-// SAMPLE: foobar-registry
+#region sample_foobar-registry
     public class FooBarRegistry : ServiceRegistry
     {
         public FooBarRegistry()
@@ -10,5 +10,5 @@
         }
     }
 
-// ENDSAMPLE
+#endregion
 }

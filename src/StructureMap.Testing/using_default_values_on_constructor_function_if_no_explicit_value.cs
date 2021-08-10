@@ -5,7 +5,7 @@ namespace StructureMap.Testing
 {
     public class using_default_values_on_constructor_function_if_no_explicit_value
     {
-        // SAMPLE: GuyWithName-defaults
+        #region sample_GuyWithName-defaults
         // I was listening to Jim Croce's "I've got a Name" song
         // when I wrote this feature;)
         public class GuyWithName
@@ -56,9 +56,9 @@ namespace StructureMap.Testing
                 .Name.ShouldBe("Eric Clapton");
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: GuyWithNoDefaultName
+        #region sample_GuyWithNoDefaultName
         public class GuyWithNoDefaultName
         {
             // StructureMap will not use any kind of auto-wiring
@@ -79,9 +79,9 @@ namespace StructureMap.Testing
             });
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: GuyWithNoDefaultName-explicit-argument
+        #region sample_GuyWithNoDefaultName-explicit-argument
         [Fact]
         public void can_build_with_explicit_argument()
         {
@@ -95,6 +95,6 @@ namespace StructureMap.Testing
                 .ShouldNotBeNull();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

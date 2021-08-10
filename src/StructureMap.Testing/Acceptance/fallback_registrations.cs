@@ -7,7 +7,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class fallback_registrations
     {
-        // SAMPLE: fallback_registrations
+        #region sample_fallback_registrations
         public class DefaultServices : Registry
         {
             public DefaultServices()
@@ -27,9 +27,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: use-if-none-modularity
+        #region sample_use-if-none-modularity
         [AttributeUsage(AttributeTargets.Assembly)]
         public class ProductModuleAttribute : Attribute
         {
@@ -81,6 +81,6 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeOfType<BWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

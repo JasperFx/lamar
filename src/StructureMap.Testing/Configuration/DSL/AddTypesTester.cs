@@ -26,7 +26,7 @@ namespace StructureMap.Testing.Configuration.DSL
         {
         }
 
-        // SAMPLE: named-instances-shorthand
+        #region sample_named-instances-shorthand
         [Fact]
         public void A_concrete_type_is_available_by_name_when_it_is_added_by_the_shorthand_mechanism()
         {
@@ -43,7 +43,7 @@ namespace StructureMap.Testing.Configuration.DSL
             container.GetInstance<IAddTypes>("Blue").IsType<BlueAddTypes>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void A_concrete_type_is_available_when_it_is_added_by_the_shorthand_mechanism()

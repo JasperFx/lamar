@@ -2,7 +2,7 @@ using BaselineTypeDiscovery;
 
 namespace Lamar.Scanning.Conventions
 {
-    // SAMPLE: IRegistrationConvention
+    #region sample_IRegistrationConvention
     /// <summary>
     ///     Used to create custom type scanning conventions
     /// </summary>
@@ -11,5 +11,5 @@ namespace Lamar.Scanning.Conventions
         void ScanTypes(TypeSet types, ServiceRegistry services);
     }
 
-    // ENDSAMPLE
+    #endregion
 }

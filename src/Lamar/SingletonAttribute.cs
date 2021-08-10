@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
-    // SAMPLE: SingletonAttribute
+    #region sample_SingletonAttribute
     /// <summary>
     /// Makes Lamar treat a Type as a singleton in the lifecycle scoping
     /// </summary>
@@ -17,5 +17,5 @@ namespace Lamar
             instance.Lifetime = ServiceLifetime.Singleton;
         }
     }
-    // ENDSAMPLE
+    #endregion
 }

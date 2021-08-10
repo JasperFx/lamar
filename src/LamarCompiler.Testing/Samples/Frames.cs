@@ -20,7 +20,7 @@ namespace LamarCompiler.Testing.Samples
         [Fact]
         public void write_method()
         {
-            // SAMPLE: write-new-method
+            #region sample_write-new-method
             // Configures the code generation rules
             // and policies
             var rules = new GenerationRules("GeneratedNamespace");
@@ -46,7 +46,7 @@ namespace LamarCompiler.Testing.Samples
             
             // Compile the new code!
             assembly.CompileAll();
-            // ENDSAMPLE
+            #endregion
             
             
             // Write the generated code to the console here
@@ -54,7 +54,7 @@ namespace LamarCompiler.Testing.Samples
         }
     }
 
-    // SAMPLE: NowSpeaker
+    #region sample_NowSpeaker
     public static class NowSpeaker
     {
         public static void Speak(DateTime now)
@@ -62,14 +62,14 @@ namespace LamarCompiler.Testing.Samples
             Console.WriteLine(now.ToString("o"));
         }
     }
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: ISaySomething
+    #region sample_ISaySomething
     public interface ISaySomething
     {
         void Speak();
     }
-    // ENDSAMPLE
+    #endregion
 
 
 

@@ -13,7 +13,7 @@ namespace LamarCodeGeneration.Frames
         }
     }
 
-    // SAMPLE: CommentFrame
+    #region sample_CommentFrame
     public class CommentFrame : SyncFrame
     {
         private readonly string _commentText;
@@ -32,7 +32,7 @@ namespace LamarCodeGeneration.Frames
             Next?.GenerateCode(method, writer);
         }
     }
-    // ENDSAMPLE
+    #endregion
 
     public abstract class AsyncFrame : Frame
     {

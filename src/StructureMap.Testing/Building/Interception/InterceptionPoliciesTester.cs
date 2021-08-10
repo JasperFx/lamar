@@ -60,7 +60,7 @@ namespace StructureMap.Testing.Building.Interception
                 .ShouldHaveTheSameElementsAs(activator5);
         }
 
-        // SAMPLE: InterceptorPolicy<T>-in-action
+        #region sample_InterceptorPolicy<T>-in-action
         [Fact]
         public void apply_policy_selectively_with_a_func()
         {
@@ -104,7 +104,7 @@ namespace StructureMap.Testing.Building.Interception
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
         public class BTarget : ATarget
         {

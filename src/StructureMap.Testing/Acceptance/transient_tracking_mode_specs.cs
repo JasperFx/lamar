@@ -35,7 +35,7 @@ namespace StructureMap.Testing.Acceptance
                 .ShouldBeTheSameAs(transient1);
         }
 
-        // SAMPLE: transient_tracking_mode
+        #region sample_transient_tracking_mode
         [Fact]
         public void release_transient_created_by_root_container()
         {
@@ -79,7 +79,7 @@ namespace StructureMap.Testing.Acceptance
             transient2.WasDisposed.ShouldBeTrue();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void tracks_transients_built_as_dependencies_in_graph()

@@ -2,7 +2,7 @@
 {
     public class DependencyInjectionSample
     {
-        // SAMPLE: basic-dependency-injection
+        #region sample_basic-dependency-injection
         public interface IDatabase { }
 
         public class DatabaseUser
@@ -19,9 +19,9 @@
             public IDatabase Database { get; set; }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: basic-service-location
+        #region sample_basic-service-location
         public class ThirdDatabaseUser
         {
             private IDatabase _database;
@@ -33,6 +33,6 @@
             }
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

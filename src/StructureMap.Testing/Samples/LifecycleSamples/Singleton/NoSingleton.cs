@@ -2,7 +2,7 @@
 
 namespace StructureMap.Testing.Samples.LifecycleSamples.Singleton
 {
-    // SAMPLE: no-SingletonThing
+    #region sample_no-SingletonThing
     public interface ISingletonDependency
     {
         void DoSomething();
@@ -33,5 +33,5 @@ namespace StructureMap.Testing.Samples.LifecycleSamples.Singleton
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

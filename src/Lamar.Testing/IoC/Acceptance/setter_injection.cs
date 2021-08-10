@@ -274,7 +274,7 @@ namespace Lamar.Testing.IoC.Acceptance
     
     public class ConventionBasedSetterInjectionTester
     {
-        // SAMPLE: using-setter-policy
+        #region sample_using-setter-policy
         public class ClassWithNamedProperties
         {
             public int Age { get; set; }
@@ -308,7 +308,7 @@ namespace Lamar.Testing.IoC.Acceptance
             target.Gateway.ShouldBeOfType<DefaultGateway>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void specify_setter_policy_by_of_type_and_construct_an_object()

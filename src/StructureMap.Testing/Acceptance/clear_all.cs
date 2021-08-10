@@ -6,7 +6,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class clear_all
     {
-        // SAMPLE: ImportantClientWidget
+        #region sample_ImportantClientWidget
         public class ImportantClientWidget : IWidget { }
 
         public class ImportantClientServices : Registry
@@ -17,9 +17,9 @@ namespace StructureMap.Testing.Acceptance
             }
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: clear_all_in_action
+        #region sample_clear_all_in_action
         [Fact]
         public void clear_all_in_action()
         {
@@ -36,6 +36,6 @@ namespace StructureMap.Testing.Acceptance
             Debug.WriteLine(container.WhatDoIHave(pluginType: typeof(IWidget)));
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

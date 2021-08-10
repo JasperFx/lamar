@@ -5,7 +5,7 @@ namespace StructureMap.Testing.Acceptance
 {
     public class forwarding
     {
-        // SAMPLE: forwarding-sample-types
+        #region sample_forwarding-sample-types
         public interface IWriter { }
 
         public interface IReader { }
@@ -14,9 +14,9 @@ namespace StructureMap.Testing.Acceptance
         {
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: forwarding-in-action
+        #region sample_forwarding-in-action
         [Fact]
         public void stateful_cache_serves_multiple_interfaces()
         {
@@ -33,9 +33,9 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<IWriter>().ShouldBeOfType<StatefulCache>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: forward-without-forward
+        #region sample_forward-without-forward
         [Fact]
         public void equivalent()
         {
@@ -52,6 +52,6 @@ namespace StructureMap.Testing.Acceptance
             container.GetInstance<IWriter>().ShouldBeOfType<StatefulCache>();
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

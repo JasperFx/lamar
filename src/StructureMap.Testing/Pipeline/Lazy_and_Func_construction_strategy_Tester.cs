@@ -18,7 +18,7 @@ namespace StructureMap.Testing.Pipeline
             container.GetInstance<Func<ConcreteClass>>()().ShouldNotBeNull();
         }
 
-        // SAMPLE: Lazy-in-usage
+        #region sample_Lazy-in-usage
         public class WidgetLazyUser
         {
             private readonly Lazy<IWidget> _widget;
@@ -46,7 +46,7 @@ namespace StructureMap.Testing.Pipeline
                 .Widget.ShouldBeOfType<AWidget>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void can_build_a_Lazy_of_T_automatically()
@@ -82,7 +82,7 @@ namespace StructureMap.Testing.Pipeline
             w2.ShouldNotBeTheSameAs(w3);
         }
 
-        // SAMPLE: using-func-t
+        #region sample_using-func-t
         [Fact]
         public void build_a_func_that_returns_a_singleton()
         {
@@ -103,9 +103,9 @@ namespace StructureMap.Testing.Pipeline
             w2.ShouldBeTheSameAs(w3);
         }
 
-        // ENDSAMPLE
+        #endregion
 
-        // SAMPLE: using-func-string-t
+        #region sample_using-func-string-t
         [Fact]
         public void build_a_func_by_string()
         {
@@ -120,7 +120,7 @@ namespace StructureMap.Testing.Pipeline
             func("green").ShouldBeOfType<ColorWidget>().Color.ShouldBe("green");
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void build_a_func_by_string_from_default()
@@ -168,7 +168,7 @@ namespace StructureMap.Testing.Pipeline
         {
         }
 
-        // SAMPLE: using-lazy-as-workaround-for-bidirectional-dependency
+        #region sample_using-lazy-as-workaround-for-bidirectional-dependency
 
         [Singleton]
         public class Thing1
@@ -208,6 +208,6 @@ namespace StructureMap.Testing.Pipeline
             thing2.Thing1.ShouldBeSameAs(thing1);
         }
 
-        // ENDSAMPLE
+        #endregion
     }
 }

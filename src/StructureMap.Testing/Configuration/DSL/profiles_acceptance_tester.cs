@@ -49,7 +49,7 @@ namespace StructureMap.Testing.Configuration.DSL
             profile.GetInstance<Rule>().ShouldBeOfType<DefaultRule>();
         }
 
-        // SAMPLE: profile-in-action
+        #region sample_profile-in-action
         [Fact]
         public void Add_default_instance_with_concrete_type()
         {
@@ -68,7 +68,7 @@ namespace StructureMap.Testing.Configuration.DSL
             profile.GetInstance<Rule>().ShouldBeOfType<DefaultRule>();
         }
 
-        // ENDSAMPLE
+        #endregion
 
         [Fact]
         public void Add_default_instance_with_concrete_type_with_a_non_transient_lifecycle()

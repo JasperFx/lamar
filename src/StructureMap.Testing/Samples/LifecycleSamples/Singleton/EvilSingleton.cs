@@ -1,6 +1,6 @@
 ﻿namespace StructureMap.Testing.Samples.LifecycleSamples.Singleton
 {
-    // SAMPLE: evil-SingletonThing
+    #region sample_evil-SingletonThing
     public class EvilSingleton
     {
         public static readonly EvilSingleton Instance = new EvilSingleton();
@@ -24,5 +24,5 @@
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

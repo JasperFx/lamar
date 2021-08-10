@@ -184,7 +184,7 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // SAMPLE: DisposedGuy
+    #region sample_DisposedGuy
     public class DisposedGuy : IDisposable
     {
         public bool WasDisposed;
@@ -195,9 +195,9 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: CustomLifecycle
+    #region sample_CustomLifecycle
     public class CustomLifecycle : ILifecycle
     {
         public static LifecycleObjectCache Cache = new LifecycleObjectCache();
@@ -222,9 +222,9 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 
-    // SAMPLE: using-custom-lifecycle
+    #region sample_using-custom-lifecycle
     public class UsingCustomLifecycle : Registry
     {
         public UsingCustomLifecycle()
@@ -238,5 +238,5 @@ namespace StructureMap.Testing.Acceptance
         }
     }
 
-    // ENDSAMPLE
+    #endregion
 }

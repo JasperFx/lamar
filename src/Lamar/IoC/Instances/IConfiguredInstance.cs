@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
 {
-    // SAMPLE: IConfiguredInstance
+    #region sample_IConfiguredInstance
     public interface IConfiguredInstance
     {
         /// <summary>
@@ -53,5 +53,5 @@ namespace Lamar.IoC.Instances
         /// <param name="instance"></param>
         void AddInline(Instance instance);
     }
-    // ENDSAMPLE
+    #endregion
 }
