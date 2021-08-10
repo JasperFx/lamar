@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /images/lamar.jpg
+heroImage: /lamar.jpg
 actionText: Get Started
 actionLink: /guide/
 
