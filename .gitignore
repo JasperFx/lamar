@@ -290,3 +290,6 @@ __pycache__/
 .DS_Store
 
 doc-target
+
+# vitepress docs
+docs/.vitepress/dist
