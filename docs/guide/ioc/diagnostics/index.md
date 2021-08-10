@@ -161,6 +161,4 @@ dotnet run -- lamar-scanning
 
 ## Programmatic Diagnostics
 
-The older, programmatic usages of Lamar diagnostics are described in other sections:
-
-<[TableOfContents]>
+The older, programmatic usages of Lamar diagnostics are described in other sections.
