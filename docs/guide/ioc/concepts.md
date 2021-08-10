@@ -12,12 +12,47 @@ An IoC container like Lamar uses the _Inversion of Control_ concept to simplify 
 
 _[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)_ is nothing more than pushing dependencies of an object into constructor functions or setter properties instead of that object doing everything for itself. If you are strictly using _Dependency Injection_ to fill the dependencies of your classes, your code should have no coupling to Lamar itself.
 
-<[sample:basic-dependency-injection]>
+<!-- snippet: sample_basic-dependency-injection -->
+<a id='snippet-sample_basic-dependency-injection'></a>
+```cs
+public interface IDatabase { }
+
+public class DatabaseUser
+{
+    // Using Constructor Injection
+    public DatabaseUser(IDatabase database)
+    {
+    }
+}
+
+public class OtherDatabaseUser
+{
+    // Setter Injection
+    public IDatabase Database { get; set; }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Examples/DependencyInjection.cs#L5-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_basic-dependency-injection' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## Service Locator
 
 Lamar also fills the role of a _[service locator](https://en.wikipedia.org/wiki/Service_locator_pattern)_. In this usage, your code would directly access Lamar's `Container` class to build or resolve services upon demand like this sample:
 
-<[sample:basic-service-location]>
+<!-- snippet: sample_basic-service-location -->
+<a id='snippet-sample_basic-service-location'></a>
+```cs
+public class ThirdDatabaseUser
+{
+    private IDatabase _database;
+
+    public ThirdDatabaseUser(IContainer container)
+    {
+        // This is service location
+        _database = container.GetInstance<IDatabase>();
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Examples/DependencyInjection.cs#L24-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_basic-service-location' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Since IoC tools like Lamar have come onto the software scene, many developers have very badly overused the service locator pattern and many other developers have become very vocal in their distaste for service location. The Lamar team simply recommends that you favor Dependency Injection wherever possible, but that *some* service location in your system where you may need more advanced building options or lazy resolution of services is probably just fine.

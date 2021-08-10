@@ -15,7 +15,21 @@ maintain legible code indention just like you'd use if you were writing the code
 
 To dip our toes into source generation, let's write a simple method to a string that would just write out "Hello" to the console:
 
-<[sample:simple-usage-of-source-writer]>
+<!-- snippet: sample_simple-usage-of-source-writer -->
+<a id='snippet-sample_simple-usage-of-source-writer'></a>
+```cs
+var writer = new SourceWriter();
+
+writer.Write(@"
+BLOCK:public void SayHello()
+Console.WriteLine('Hello');
+END
+".Replace("'", "\""));
+
+Console.WriteLine(writer.Code());
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/UsingSourceWriter.cs#L20-L30' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_simple-usage-of-source-writer' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 After that code, the value of the `SourceWriter.Code()` method is this text:
 
@@ -36,7 +50,26 @@ A few notes on what `SourceWriter.Write()` is doing:
 
 Other basic method usages are shown below:
 
-<[sample:other-sourcewriter-basics]>
+<!-- snippet: sample_other-sourcewriter-basics -->
+<a id='snippet-sample_other-sourcewriter-basics'></a>
+```cs
+var writer = new SourceWriter();
+
+// Write an empty line into the code 
+writer.BlankLine();
+
+// Writes a single line into the code
+// with the proper indention. Does NOT
+// respect the BLOCK: and END directives
+writer.WriteLine("// A comment");
+
+// Writes a closing '}' character into the 
+// next line and decrements the leading space
+// indention for the following lines of code
+writer.FinishBlock();
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/UsingSourceWriter.cs#L37-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_other-sourcewriter-basics' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## Advanced Usages
 
@@ -46,4 +79,37 @@ All the usages in this section are from extension methods in the `Lamar.Compilat
 
 Here are some of the advanced usages of `ISourceWriter`:
 
-<[sample:SourceWriterAdvanced]>
+<!-- snippet: sample_SourceWriterAdvanced -->
+<a id='snippet-sample_sourcewriteradvanced'></a>
+```cs
+var writer = new SourceWriter();
+
+// Add "using [namespace]; statements
+writer.UsingNamespace(typeof(Console).Namespace);
+writer.UsingNamespace<IOperation>();
+
+writer.Namespace("GeneratedCode");
+// Write new classes and code within the namespace
+writer.FinishBlock();
+
+
+// Helper to write using blocks in C# code
+writer.UsingBlock("var conn = new SqlConnection()", w =>
+{
+    w.Write("conn.Open();");
+    // other statements
+});
+
+
+
+// Write a comment text into the code at the correct indention
+// level
+writer.WriteComment("Some message");
+
+
+// Start the declaration of a new public class named "MyClass"
+// that implements the IDisposable interface
+writer.StartClass("MyClass", typeof(IDisposable));
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/UsingSourceWriter.cs#L58-L87' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_sourcewriteradvanced' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->

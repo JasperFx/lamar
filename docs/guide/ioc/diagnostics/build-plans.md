@@ -7,7 +7,29 @@ dependencies are built out.
 
 New for Lamar 3.1.0 is a convenience method similar to `WhatDoIHave()` that prints out the build plans:
 
-<[sample:using-HowDoIBuild]>
+<!-- snippet: sample_using-HowDoIBuild -->
+<a id='snippet-sample_using-howdoibuild'></a>
+```cs
+var container = new Container(x =>
+{
+    x.For<IEngine>().Use<Hemi>().Named("The Hemi");
+
+    x.For<IEngine>().Add<VEight>().Singleton().Named("V8");
+    x.For<IEngine>().Add<FourFiftyFour>();
+    x.For<IEngine>().Add<StraightSix>().Scoped();
+
+    x.For<IEngine>().Add(c => new Rotary()).Named("Rotary");
+    x.For<IEngine>().Add(c => c.GetService<PluginElectric>());
+
+    x.For<IEngine>().Add(new InlineFour());
+
+    x.For<IEngine>().UseIfNone<VTwelve>();
+});
+
+Console.WriteLine(container.HowDoIBuild());
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/HowDoIBuild_smoke_tests.cs#L30-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-howdoibuild' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
   This method also provides the same kind of filtering as the [WhatDoIHave](/guide/ioc/diagnostics/what-do-i-have) operation.
 
@@ -15,15 +37,64 @@ New for Lamar 3.1.0 is a convenience method similar to `WhatDoIHave()` that prin
 
 Let's say you have a container configured like this:
 
-<[sample:container-for-build-plan]>
+<!-- snippet: sample_container-for-build-plan -->
+<a id='snippet-sample_container-for-build-plan'></a>
+```cs
+container = new Container(x =>
+{
+    x.For(typeof(IService<>)).Add(typeof(Service<>));
+    x.For(typeof(IService<>)).Add(typeof(Service2<>));
+
+    x.For<IWidget>().Use<AWidget>().Singleton();
+
+    x.AddTransient<Rule, DefaultRule>();
+    x.AddTransient<Rule, ARule>();
+    x.AddSingleton<Rule>(new ColorRule("red"));
+
+    x.AddScoped<IThing, Thing>();
+    
+
+    x.For<IEngine>().Use<PushrodEngine>();
+
+    x.For<Startable1>().Use<Startable1>().Singleton();
+    x.For<Startable2>().Use<Startable2>();
+    x.For<Startable3>().Use<Startable3>();
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L24-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-for-build-plan' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 And you have a concrete type like this one:
 
-<[sample:UsesStuff]>
+<!-- snippet: sample_UsesStuff -->
+<a id='snippet-sample_usesstuff'></a>
+```cs
+public class UsesStuff
+{
+    public IWidget Widget { get; }
+    public IThing Thing { get; }
+    public IEngine Engine { get; }
+
+    public UsesStuff(IWidget widget, IThing thing, IEngine engine)
+    {
+        Widget = widget;
+        Thing = thing;
+        Engine = engine;
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L48-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_usesstuff' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 To see what the generated code is to resolve that `UsesStuff` type, we can use the [container diagnostic model](/guide/ioc/diagnostics/using-the-container-model) to access that code for us with this syntax:
 
-<[sample:getting-build-plan]>
+<!-- snippet: sample_getting-build-plan -->
+<a id='snippet-sample_getting-build-plan'></a>
+```cs
+var plan = container.Model.For<UsesStuff>().Default.DescribeBuildPlan();
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L67-L69' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-build-plan' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Which outputs this lovely looking code below:
 

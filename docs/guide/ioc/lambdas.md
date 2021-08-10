@@ -5,12 +5,46 @@ Instead of allowing Lamar to build objects directly, you can give a Lamar `Conta
 Using NHibernate's [`ISession`](https://github.com/nhibernate/nhibernate-core/blob/master/src/NHibernate/ISession.cs) as an example
 of an object that typically has to be built by using an [`ISessionFactory`](https://github.com/nhibernate/nhibernate-core/blob/master/src/NHibernate/ISessionFactory.cs) object:
 
-<[sample:nhibernate-isession-factory]>
+<!-- snippet: sample_nhibernate-isession-factory -->
+<a id='snippet-sample_nhibernate-isession-factory'></a>
+```cs
+public interface ISession { }
+
+public interface ISessionFactory
+{
+    ISession Build();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Samples/TalkSamples.cs#L52-L59' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nhibernate-isession-factory' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 If we want to allow Lamar to control the `ISession` lifecycle and creation, we have to register a Lambda function as the
 means of creating `ISession` as shown in this example below:
 
-<[sample:SessionFactoryRegistry]>
+<!-- snippet: sample_SessionFactoryRegistry -->
+<a id='snippet-sample_sessionfactoryregistry'></a>
+```cs
+public class SessionFactoryRegistry : Registry
+{
+    // Let's not worry about how ISessionFactory is built
+    // in this example
+    public SessionFactoryRegistry(ISessionFactory factory)
+    {
+        For<ISessionFactory>().Use(factory);
+
+        // Build ISession with a lambda:
+        For<ISession>().Use("Build ISession from ISessionFactory", c =>
+        {
+            // To resolve ISession, I first pull out
+            // ISessionFactory from the IContext and use that
+            // to build a new ISession. 
+            return c.GetInstance<ISessionFactory>().Build();
+        });
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Samples/TalkSamples.cs#L61-L80' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_sessionfactoryregistry' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Lambda registrations can be done with any of the following four signatures:
 

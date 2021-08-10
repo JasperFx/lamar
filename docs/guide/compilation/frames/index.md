@@ -19,17 +19,68 @@ The various types represent:
 
 Alright then, let's make this concrete. Let's say that we want to generate and use dynamic instances of this interface:
 
-<[sample:ISaySomething]>
+<!-- snippet: sample_ISaySomething -->
+<a id='snippet-sample_isaysomething'></a>
+```cs
+public interface ISaySomething
+{
+    void Speak();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/Frames.cs#L67-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_isaysomething' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Moreover, I want a version of `ISaySomething` that will call the following method and write the current time to the console:
 
-<[sample:NowSpeaker]>
+<!-- snippet: sample_NowSpeaker -->
+<a id='snippet-sample_nowspeaker'></a>
+```cs
+public static class NowSpeaker
+{
+    public static void Speak(DateTime now)
+    {
+        Console.WriteLine(now.ToString("o"));
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/Frames.cs#L57-L65' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nowspeaker' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Our dynamic class for ISaySomething will need to pass the current time to the now parameter of that method. To help out here, there's some built in helpers in Lamar specifically to write in the right code to get the current time to a variable of DateTime or DateTimeOffset that is named "now."
 
 To skip ahead a little bit, let's generate a new class and object with the following code:
 
-<[sample:write-new-method]>
+<!-- snippet: sample_write-new-method -->
+<a id='snippet-sample_write-new-method'></a>
+```cs
+// Configures the code generation rules
+// and policies
+var rules = new GenerationRules("GeneratedNamespace");
+
+// Adds the "now : DateTime" variable rule to 
+// our generated code
+rules.Sources.Add(new NowTimeVariableSource());
+
+// Start the definition for a new generated assembly
+var assembly = new GeneratedAssembly(rules);
+
+// Add a new generated type called "WhatTimeIsIt" that will
+// implement the 
+var type = assembly.AddType("WhatTimeIsIt", typeof(ISaySomething));
+
+// Getting the definition for the method named "Speak"
+var method = type.MethodFor(nameof(ISaySomething.Speak));
+
+// Adding a frame that calls the NowSpeaker.Speak() method and
+// adding it to the generated method
+var @call = new MethodCall(typeof(NowSpeaker), nameof(NowSpeaker.Speak));
+method.Frames.Add(@call);
+
+// Compile the new code!
+assembly.CompileAll();
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/Frames.cs#L23-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_write-new-method' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 After all that, if we interrogate the source code for the generated type above (type.SourceCode), we'd see this ugly generated code:
 
@@ -55,7 +106,29 @@ Some notes about the generated code:
 
 So now let's look at how Lamar was able to add the code to pass along DateTime.UtcNow. First off, let's look at the code that just writes out the date variable:
 
-<[sample:NowFetchFrame]>
+<!-- snippet: sample_NowFetchFrame -->
+<a id='snippet-sample_nowfetchframe'></a>
+```cs
+public class NowFetchFrame : SyncFrame
+{
+    public NowFetchFrame(Type variableType)
+    {
+        // Notice how "this" frame is passed into the variable
+        // class constructor as the creator
+        Variable = new Variable(variableType, "now", this);
+    }
+    
+    public Variable Variable { get; }
+    
+    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
+    {
+        writer.WriteLine($"var {Variable.Usage} = {Variable.VariableType.FullName}.{nameof(DateTime.UtcNow)};");
+        Next?.GenerateCode(method, writer);
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCodeGeneration/Model/NowTimeVariableSource.cs#L31-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nowfetchframe' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 In the frame above, you'll see that the `GenerateCode()` method writes its code into the source, then immediately turns around and tells the next Frame - if there is one - to generated its code. As the last step to write out the new source code, Lamar:
 
@@ -68,7 +141,34 @@ In the generated method up above, the call to `NowSpeaker.Speak(now)` depends o
 
 Lastly, we had to use a custom `IVariableSource` to teach Lamar how to resolve the now variable. That code looks like this:
 
-<[sample:NowTimeVariableSource]>
+<!-- snippet: sample_NowTimeVariableSource -->
+<a id='snippet-sample_nowtimevariablesource'></a>
+```cs
+public class NowTimeVariableSource : IVariableSource
+{
+    public bool Matches(Type type)
+    {
+        return type == typeof(DateTime) || type == typeof(DateTimeOffset);
+    }
+
+    public Variable Create(Type type)
+    {
+        if (type == typeof(DateTime))
+        {
+            return new NowFetchFrame(typeof(DateTime)).Variable;
+        }
+
+        if (type == typeof(DateTimeOffset))
+        {
+            return new NowFetchFrame(typeof(DateTimeOffset)).Variable;
+        }
+
+        throw new ArgumentOutOfRangeException(nameof(type), "Only DateTime and DateTimeOffset are supported");
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCodeGeneration/Model/NowTimeVariableSource.cs#L6-L29' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nowtimevariablesource' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Out of the box, the Lamar + [Jasper](https://jasperfx.github.io) combination uses variable sources for:
 

@@ -10,6 +10,23 @@ The deployments still frequently failed, but we were able to spot **and diagnose
 
 One of the mechanisms we used for these environment tests was Lamar's ability to mark methods on configured types as environment tests with the `[ValidationMethod]` attribute as shown below:
 
-<[sample:validation-method-usage]>
+<!-- snippet: sample_validation-method-usage -->
+<a id='snippet-sample_validation-method-usage'></a>
+```cs
+public class Database : IDatabase
+{
+    [ValidationMethod]
+    public void TryToConnect()
+    {
+        // try to open a connection to the configured
+        // database connection string
+
+        // throw an exception if the database cannot
+        // be reached
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Examples/ValidationMethod.cs#L12-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_validation-method-usage' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Used in conjunction with [Lamar's ability to validate a container](/guide/ioc/diagnostics/validating-container-configuration), you can use this technique to quickly support environment tests embedded into your system code.

@@ -2,15 +2,83 @@
 
 The `IContainer.WhatDoIHave()` method can give you a quick textual report of the current configuration of a running `Container`:
 
-<[sample:whatdoihave-simple]>
+<!-- snippet: sample_whatdoihave-simple -->
+<a id='snippet-sample_whatdoihave-simple'></a>
+```cs
+var container = Container.Empty();
+var report = container.WhatDoIHave();
+
+Console.WriteLine(report);
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L22-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-simple' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_whatdoihave-simple-1'></a>
+```cs
+var container = new Container();
+var report = container.WhatDoIHave();
+
+Debug.WriteLine(report);
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs#L14-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-simple-1' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Enough talk, say you have a `Container` with this configuration:
 
-<[sample:what_do_i_have_container]>
+<!-- snippet: sample_what_do_i_have_container -->
+<a id='snippet-sample_what_do_i_have_container'></a>
+```cs
+var container = new Container(x =>
+{
+    x.For<IEngine>().Use<Hemi>().Named("The Hemi");
+
+    x.For<IEngine>().Add<VEight>().Singleton().Named("V8");
+    x.For<IEngine>().Add<FourFiftyFour>();
+    x.For<IEngine>().Add<StraightSix>().Scoped();
+
+    x.For<IEngine>().Add(c => new Rotary()).Named("Rotary");
+    x.For<IEngine>().Add(c => c.GetService<PluginElectric>());
+
+    x.For<IEngine>().Add(new InlineFour());
+
+    x.For<IEngine>().UseIfNone<VTwelve>();
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L33-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_what_do_i_have_container' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_what_do_i_have_container-1'></a>
+```cs
+var container = new Container(x =>
+{
+    x.For<IEngine>().Use<Hemi>().Named("The Hemi");
+
+    x.For<IEngine>().Add<VEight>().Singleton().Named("V8");
+    x.For<IEngine>().Add<FourFiftyFour>().AlwaysUnique();
+    x.For<IEngine>().Add<StraightSix>().LifecycleIs<ThreadLocalStorageLifecycle>();
+
+    x.For<IEngine>().Add(() => new Rotary()).Named("Rotary");
+    x.For<IEngine>().Add(c => c.GetInstance<PluginElectric>());
+
+    x.For<IEngine>().Add(new InlineFour());
+
+    x.For<IEngine>().UseIfNone<VTwelve>();
+    x.For<IEngine>().MissingNamedInstanceIs.ConstructedBy(c => new NamedEngine(c.RequestedName));
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs#L25-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_what_do_i_have_container-1' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 If you were to run the code below against this `Container`:
 
-<[sample:whatdoihave_everything]>
+<!-- snippet: sample_whatdoihave_everything -->
+<a id='snippet-sample_whatdoihave_everything'></a>
+```cs
+Console.WriteLine(container.WhatDoIHave());
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L51-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave_everything' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_whatdoihave_everything-1'></a>
+```cs
+Debug.WriteLine(container.WhatDoIHave());
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs#L44-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave_everything-1' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
   you would get the output shown in [this gist](https://gist.github.com/jeremydmiller/7eae90eda21cc47ed24fa30623f9feb2).
 
@@ -20,10 +88,87 @@ If you're curious, all the raw code for this example is in [here](https://github
 
 Filtering the `WhatDoIHave()` results can be done in these ways:
 
-<[sample:whatdoihave-filtering]>
+<!-- snippet: sample_whatdoihave-filtering -->
+<a id='snippet-sample_whatdoihave-filtering'></a>
+```cs
+var container = Container.Empty();
+
+// Filter by the Assembly of the Plugin Type
+var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);
+
+// Only report on the specified Plugin Type
+var byPluginType = container.WhatDoIHave(typeof(IWidget));
+
+// Filter to Plugin Type's in the named namespace
+// The 'IsInNamespace' test will include child namespaces
+var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget");
+
+// Filter by a case insensitive string.Contains() match
+// against the Plugin Type name
+var byType = container.WhatDoIHave(typeName: "Widget");
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L108-L124' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_whatdoihave-filtering-1'></a>
+```cs
+var container = new Container();
+
+// Filter by the Assembly of the Plugin Type
+var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).GetAssembly());
+
+// Only report on the specified Plugin Type
+var byPluginType = container.WhatDoIHave(typeof(IWidget));
+
+// Filter to Plugin Type's in the named namespace
+// The 'IsInNamespace' test will include child namespaces
+var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget");
+
+// Filter by a case insensitive string.Contains() match
+// against the Plugin Type name
+var byType = container.WhatDoIHave(typeName: "Widget");
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs#L159-L175' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering-1' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## WhatDoIHave() under ASP&period;Net Core
 
 You can call `WhatDoIHave()` and `WhatDidIScan()` when running in ASP.Net Core like so:
 
-<[sample:whatdoihave-aspnetcore]>
+<!-- snippet: sample_whatdoihave-aspnetcore -->
+<a id='snippet-sample_whatdoihave-aspnetcore'></a>
+```cs
+public class StartupWithDiagnostics
+{
+    // Take in Lamar's ServiceRegistry instead of IServiceCollection
+    // as your argument, but fear not, it implements IServiceCollection
+    // as well
+    public void ConfigureContainer(ServiceRegistry services)
+    {
+        // Supports ASP.Net Core DI abstractions
+        services.AddMvc();
+        services.AddLogging();
+
+        // Also exposes Lamar specific registrations
+        // and functionality
+        services.Scan(s =>
+        {
+            s.TheCallingAssembly();
+            s.WithDefaultConventions();
+        });
+    }
+
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+        if(env.IsDevelopment())
+        {
+            var container = (IContainer)app.ApplicationServices;
+            // or write to your own Logger
+            Console.WriteLine(container.WhatDidIScan());
+            Console.WriteLine(container.WhatDoIHave());
+        }
+
+        app.UseMvc();
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/Samples/StartUp.cs#L63-L97' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-aspnetcore' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->

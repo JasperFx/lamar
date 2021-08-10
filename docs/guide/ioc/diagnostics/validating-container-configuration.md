@@ -2,7 +2,13 @@
 
 To find any potential holes in your Lamar configuration like missing dependencies, unclear defaults of plugin types, validation errors, or just plain build errors, you can use this method below:
 
-<[sample:container.AssertConfigurationIsValid]>
+<!-- snippet: sample_container.AssertConfigurationIsValid -->
+<a id='snippet-sample_container.assertconfigurationisvalid'></a>
+```cs
+container.AssertConfigurationIsValid();
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Diagnostics/AssertConfigurationIsValid_Smoke_Tester.cs#L15-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container.assertconfigurationisvalid' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Running this method will walk over every single registration in your `Container` and:
 

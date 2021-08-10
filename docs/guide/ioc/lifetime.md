@@ -13,4 +13,35 @@ are no longer supported, with the assumption that `Scoped` is a useful replaceme
 
 Here are some sample usages of registering services with a lifetime:
 
-<[sample:LifetimeRegistry]>
+<!-- snippet: sample_LifetimeRegistry -->
+<a id='snippet-sample_lifetimeregistry'></a>
+```cs
+public class LifetimeRegistry : ServiceRegistry
+{
+    public LifetimeRegistry()
+    {
+        // Lifetimes the ASP.Net Core way
+        // The registration methods are all extension
+        // methods, so hence, "this."
+        this.AddTransient<IWidget, AWidget>();
+
+        this.AddSingleton<IClock, Clock>();
+
+        this.AddScoped<IUnitOfWork, UnitOfWork>();
+        
+        // Lifetimes the old StructureMap way
+        // Transient is the default
+        For<IWidget>().Use<AWidget>();
+
+        For<IClock>().Use<Clock>().Singleton();
+        
+        // or
+
+        ForSingletonOf<IClock>().Use<Clock>();
+
+        For<IUnitOfWork>().Use<UnitOfWork>().Scoped();
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Lifetimes.cs#L7-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lifetimeregistry' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->

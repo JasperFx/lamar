@@ -14,11 +14,47 @@ To get started, just add [Lamar](https://www.nuget.org/packages/Lamar/) to your 
 
 Most of the time you use an IoC container these days, it's probably mostly hidden inside of some kind of application framework. However, if you wanted to use Lamar all by itself you would first [bootstrap a Lamar container](/guide/ioc/bootstrapping) with all its service registrations something like this:
 
-<[sample:start-a-container]>
+<!-- snippet: sample_start-a-container -->
+<a id='snippet-sample_start-a-container'></a>
+```cs
+var container = new Container(x =>
+{
+    // Using StructureMap style registrations
+    x.For<IClock>().Use<Clock>();
+    
+    // Using ASP.Net Core DI style registrations
+    x.AddTransient<IClock, Clock>();
+    
+    // and lots more services in all likelihood
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/GettingStarted.cs#L11-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_start-a-container' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Now, to resolve services from your container:
 
-<[sample:resolving-services-quickstart]>
+<!-- snippet: sample_resolving-services-quickstart -->
+<a id='snippet-sample_resolving-services-quickstart'></a>
+```cs
+// StructureMap style
+
+// Get a required service
+var clock = container.GetInstance<IClock>();
+
+// Try to resolve a service if it's registered
+var service = container.TryGetInstance<IService>();
+
+// ASP.Net Core style
+var provider = (IServiceProvider)container;
+
+// Get a required service
+var clock2 = provider.GetRequiredService<IClock>();
+
+// Try to resolve a service if it's registered
+var service2 = provider.GetService<IService>();
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/GettingStarted.cs#L24-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_resolving-services-quickstart' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Definitely note that the old StructureMap style of service resolution is semantically different than ASP.Net Core's DI resolution methods. That's been the cause of much user aggravation over the years.
 
@@ -29,11 +65,62 @@ To use Lamar within ASP.Net Core applications, also install the [Lamar.Microsoft
 With that NuGet installed, your normal ASP.Net Core bootstrapping changes just slightly. When you bootstrap your `IWebHostBuilder` object
 that configures ASP.Net Core, you also need to call the `UseLamar()` method as shown below:
 
-<[sample:getting-started-main]>
+<!-- snippet: sample_getting-started-main -->
+<a id='snippet-sample_getting-started-main'></a>
+```cs
+public static void Main(string[] args)
+{
+    var builder = new WebHostBuilder();
+    builder
+        // Replaces the built in DI container
+        // with Lamar
+        .UseLamar()
+        
+        // Normal ASP.Net Core bootstrapping
+        .UseUrls("http://localhost:5002")
+        .UseKestrel()
+        .UseStartup<Startup>();
+
+    builder.Start();
+
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/Samples/StartUp.cs#L14-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-started-main' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 If you use a `StartUp` class for extra configuration, your `ConfigureContainer()` method *can* take in a `ServiceRegistry` object from Lamar for service registrations in place of the ASP.Net Core `IServiceCollection` interface as shown below:
 
-<[sample:getting-started-startup]>
+<!-- snippet: sample_getting-started-startup -->
+<a id='snippet-sample_getting-started-startup'></a>
+```cs
+public class Startup
+{
+    // Take in Lamar's ServiceRegistry instead of IServiceCollection
+    // as your argument, but fear not, it implements IServiceCollection
+    // as well
+    public void ConfigureContainer(ServiceRegistry services)
+    {
+        // Supports ASP.Net Core DI abstractions
+        services.AddMvc();
+        services.AddLogging();
+        
+        // Also exposes Lamar specific registrations
+        // and functionality
+        services.Scan(s =>
+        {
+            s.TheCallingAssembly();
+            s.WithDefaultConventions();
+        });
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseMvc();
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/Samples/StartUp.cs#L35-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-started-startup' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 You can also still write `ConfigureServices(IServiceCollection)`, but you'd miss out on most of Lamar's extra functionality beyond what that abstraction
 provides.
