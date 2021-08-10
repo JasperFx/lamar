@@ -154,8 +154,8 @@ public void nested_container_disposal()
 
 ## Transients
 
-<[warning]>
+::: warning
 This behavior is different from StructureMap. Be aware of this, or you may be vulnerable to memory leaks.
-<[/warning]>
+:::
 
 Objects that implement `IDisposable` are tracked by the container that creates them and will be disposed whenever that container itself is disposed.
