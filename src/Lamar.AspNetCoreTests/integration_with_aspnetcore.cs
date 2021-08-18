@@ -27,10 +27,25 @@ using LamarCodeGeneration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Xunit.Abstractions;
 
 namespace Lamar.Testing.AspNetCoreIntegration
 {
+    public static class Program
+    {
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder() 
+                .UseLamar()
+                
+                // This is the override
+                .OverrideServices(s => s.For<IServer>().Use<integration_with_aspnetcore.FakeServer>())
+                .ConfigureWebHostDefaults(b => b.UseStartup<Startup>());
+            ;
+        }
+    }
+    
     public class integration_with_aspnetcore
     {
         private readonly ITestOutputHelper _output;
@@ -39,6 +54,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
         {
             _output = output;
         }
+
 
         [Fact]
         public void default_registrations_for_service_provider_factory()
@@ -175,6 +191,47 @@ namespace Lamar.Testing.AspNetCoreIntegration
         }
         
         public class FakeServer : NulloServer{}
+        
+        [Fact]
+        public void can_override_registrations_on_host_builder()
+        {
+            var builder = Host.CreateDefaultBuilder();
+            builder
+                .UseLamar()
+                
+                // This is the override
+                .OverrideServices(s => s.For<IServer>().Use<FakeServer>())
+                .ConfigureWebHostDefaults(b => b.UseStartup<Startup>());
+
+            using var host = builder.Build();
+
+            host.Services.GetRequiredService<IServer>()
+                .ShouldBeOfType<FakeServer>();
+        }
+
+
+        #region sample_usage_of_overrides
+
+        [Fact]
+        public void sample_usage_of_overrides()
+        {
+            var builder = Program
+                .CreateHostBuilder(Array.Empty<string>())
+
+                // This is our chance to make service overrides
+                .OverrideServices(s =>
+                {
+                    s.For<IServer>().Use<FakeServer>();
+                });
+
+            using var host = builder.Build();
+
+            host.Services.GetRequiredService<IServer>()
+                .ShouldBeOfType<FakeServer>();
+        }
+
+        #endregion
+
 
         [Fact]
         public void can_override_registrations()

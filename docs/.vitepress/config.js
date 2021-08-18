@@ -101,6 +101,10 @@ function getIOCSideBar() {
           text: 'Using Attributes for Configuration',
           link: '/guide/ioc/registration/attributes'
         },
+        {
+          text: 'Overriding Service Registrations',
+          link: '/guide/ioc/registration/overrides'
+        },
       ]
     },
     {
