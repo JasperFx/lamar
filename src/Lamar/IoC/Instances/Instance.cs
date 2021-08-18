@@ -135,6 +135,8 @@ namespace Lamar.IoC.Instances
                 Hash = GetHashCode();
             }
         }
+        
+        internal bool InlineIsLimitedToExactNameMatch { get; set; }
 
         public bool HasPlanned { get; protected internal set; }
 

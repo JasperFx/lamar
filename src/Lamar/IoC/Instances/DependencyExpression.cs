@@ -51,7 +51,11 @@ namespace Lamar.IoC.Instances
         public ConstructorInstance Is(Instance instance)
         {
             _instance.AddInline(instance);
-            if (_propertyName != null) instance.Name = _propertyName;
+            if (_propertyName != null)
+            {
+                instance.Name = _propertyName;
+                instance.InlineIsLimitedToExactNameMatch = true;
+            }
             return _instance;
         }
 

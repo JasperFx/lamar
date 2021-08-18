@@ -320,9 +320,12 @@ namespace Lamar.IoC.Instances
 
         private Instance findInlineDependency(string name, Type dependencyType)
         {
-            var instance = _inlines.FirstOrDefault(i => i.ServiceType == dependencyType && i.Name == name)
-                           ?? _inlines.FirstOrDefault(i => i.ServiceType == dependencyType);
-            return instance;
+            var exact = _inlines.FirstOrDefault(i => i.ServiceType == dependencyType && i.Name == name);
+            if (exact != null) return exact;
+
+            var instance = _inlines.FirstOrDefault(i => i.ServiceType == dependencyType);
+            if (instance == null) return null;
+            return instance.InlineIsLimitedToExactNameMatch ? null : instance;
         }
 
 
