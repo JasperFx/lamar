@@ -29,9 +29,9 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[5.0.0,5.9.0)" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="[5.0.0,5.9.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[5.0.0,5.9.0)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[5.0.0,5.9.0)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[5.0.0,7.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="[5.0.0,7.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="[5.0.0,7.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="[5.0.0,7.0.0)" />
   </ItemGroup>
 </Project>
