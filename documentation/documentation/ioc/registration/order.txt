@@ -1,8 +1,0 @@
-registry-dsl
-inline-dependencies
-auto-registration-and-conventions
-configured-instance
-policies
-changing-configuration-at-runtime
-constructor-selection
-fallback-services

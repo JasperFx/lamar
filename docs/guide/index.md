@@ -3,10 +3,22 @@
 This page does assume that you are already familiar with IoC containers. For more background on the concepts
 and usage of an IoC container within your application, see [concepts](/guide/ioc/concepts)
 
+## What is Lamar?
+
 Lamar is a .NET library that provides two pieces of functionality:
 
 1. A fast [Inversion of Control Container](https://www.martinfowler.com/articles/injection.html) that natively supports the [ASP.Net Core DI abstractions](https://code.msdn.microsoft.com/Dependency-injection-in-f789ceaa) and a subset of the older [StructureMap library](https://structuremap.github.io)
 1. The dynamic code generation and compilation features used underneath the IoC implementation
+
+## History and Motivation
+
+[StructureMap](https://structuremap.github.io) was the first production capable Inversion of Control container
+in the .Net ecosystem, with its first production usage in the summer of 2004. Despite its success,
+StructureMap's internals were not keeping up well with modern usage within ASP.Net Core applications and 
+lagged in performance. Lamar was conceived as a replacement for StructureMap that would hugely improve
+upon StructureMap's performance, be completely compliant with the new ASP.Net Core DI behavior,
+and provide an easy off ramp for existing StructureMap users.
+
 
 ## Lamar as IoC Container
 

@@ -1,5 +1,5 @@
 module.exports = {
-  base: '/',
+  base: '/lamar/',
   lang: 'en-US',
   title: 'Lamar',
   description: '.NET Fast Inversion of Control and Dynamic code weaving tools',
