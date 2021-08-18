@@ -204,7 +204,7 @@ namespace LamarCodeGeneration.Util
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static void ReadLines(this string text, Action<string> callback)
+        internal static void ReadLines(this string text, Action<string> callback)
         {
             var reader = new StringReader(text);
             string line;
@@ -215,21 +215,11 @@ namespace LamarCodeGeneration.Util
         }
 
         /// <summary>
-        /// Just uses MD5 to create a repeatable hash
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string ToHash(this string text)
-        {
-            return MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(text)).Select(b => b.ToString("x2")).Join("");
-        }
-
-        /// <summary>
         /// Splits a camel cased string into seperate words delimitted by a space
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string SplitCamelCase(this string str)
+        internal static string SplitCamelCase(this string str)
         {
             return Regex.Replace(Regex.Replace(str, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2"), @"(\p{Ll})(\P{Ll})", "$1 $2");
         }
@@ -239,26 +229,10 @@ namespace LamarCodeGeneration.Util
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string SplitPascalCase(this string str)
+        internal static string SplitPascalCase(this string str)
         {
             return SplitCamelCase(str);
         }
 
-        public static TEnum ToEnum<TEnum>(this string text) where TEnum : struct
-        {
-            var enumType = typeof (TEnum);
-            if(!enumType.GetTypeInfo().IsEnum) throw new ArgumentException("{0} is not an Enum".ToFormat(enumType.Name));
-            return (TEnum) Enum.Parse(enumType, text, true);
-        }
-
-        /// <summary>
-        /// Wraps a string with parantheses.  Originally used to file escape file names when making command line calls
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public static string FileEscape(this string file)
-        {
-            return "\"{0}\"".ToFormat(file);
-        }
     }
 }
