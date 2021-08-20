@@ -21,7 +21,7 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<AWidget>();
         }
 
-        public class AWidgetInstance : ConstructorInstance<AWidget>
+        public class AWidgetInstance : ConstructorInstance<AWidget, IWidget>
         {
             public AWidgetInstance(Type serviceType, ServiceLifetime lifetime) : base(serviceType, lifetime)
             {

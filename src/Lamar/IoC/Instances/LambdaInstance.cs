@@ -72,8 +72,6 @@ namespace Lamar.IoC.Instances
 
         public override Func<Scope, object> ToResolver(Scope topScope)
         {
-            
-            
             if (_resolver == null)
             {
                 lock (_locker)

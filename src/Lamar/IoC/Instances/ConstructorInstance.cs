@@ -13,20 +13,84 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
 {
-    public partial class ConstructorInstance<T> : ConstructorInstance
+    public partial class ConstructorInstance<TImplementation, TService> : ConstructorInstance where TImplementation : TService
     {
-        public ConstructorInstance(Type serviceType, ServiceLifetime lifetime) : base(serviceType, typeof(T), lifetime)
+        private Func<IServiceContext,TImplementation, TService> _interceptor;
+
+        public ConstructorInstance(Type serviceType, ServiceLifetime lifetime) : base(serviceType, typeof(TImplementation), lifetime)
         {
         }
         
-        public ConstructorInstance<T> SelectConstructor(Expression<Func<T>> constructor)
+        public ConstructorInstance<TImplementation, TService> SelectConstructor(Expression<Func<TImplementation>> constructor)
         {
-            var finder = new ConstructorFinderVisitor<T>(typeof(T));
+            var finder = new ConstructorFinderVisitor<TImplementation>(typeof(TImplementation));
             finder.Visit(constructor);
 
             Constructor = finder.Constructor;
 
             return this;
+        }
+
+        protected override Func<Scope, object> wrapCreator(Func<Scope, object> inner)
+        {
+            return _interceptor == null
+                ? inner
+                : scope =>
+                {
+                    var raw = inner(scope);
+                    return _interceptor(scope, (TImplementation) raw);
+                };
+        }
+
+        /// <summary>
+        /// Intercept the object being created and potentially replace it with a wrapped
+        /// version or another object
+        /// </summary>
+        /// <param name="interceptor"></param>
+        /// <returns></returns>
+        public ConstructorInstance<TImplementation, TService> OnCreation(Func<TImplementation, TService> interceptor)
+        {
+            return OnCreation((s, x) => interceptor(x));
+        }
+        
+        /// <summary>
+        /// Intercept the object being created and potentially replace it with a wrapped
+        /// version or another object
+        /// </summary>
+        /// <param name="interceptor"></param>
+        /// <returns></returns>
+        public ConstructorInstance<TImplementation, TService> OnCreation(Func<IServiceContext, TImplementation, TService> interceptor)
+        {
+            _interceptor = interceptor;
+            return this;
+        }
+        
+        /// <summary>
+        /// Perform some action on the object being created at the time the object is created for the first time by Lamar
+        /// </summary>
+        /// <param name="activator"></param>
+        /// <returns></returns>
+        public ConstructorInstance<TImplementation, TService> OnCreation(Action<IServiceContext, TImplementation> activator)
+        {
+            return OnCreation((s, x) =>
+            {
+                activator(s, x);
+                return x;
+            });
+        }
+        
+        /// <summary>
+        /// Perform some action on the object being created at the time the object is created for the first time by Lamar
+        /// </summary>
+        /// <param name="activator"></param>
+        /// <returns></returns>
+        public ConstructorInstance<TImplementation, TService> OnCreation(Action<TImplementation> activator)
+        {
+            return OnCreation((s, x) =>
+            {
+                activator(x);
+                return x;
+            });
         }
     }
 
@@ -54,17 +118,18 @@ namespace Lamar.IoC.Instances
             return For<T, T>(lifetime);
         }
 
-        public static ConstructorInstance<TConcrete> For<T, TConcrete>(ServiceLifetime lifetime = ServiceLifetime.Transient)
+        public static ConstructorInstance<TConcrete, T> For<T, TConcrete>(ServiceLifetime lifetime = ServiceLifetime.Transient)
             where TConcrete : T
         {
-            return new ConstructorInstance<TConcrete>(typeof(T), lifetime);
+            return new(typeof(T), lifetime);
         }
 
         public IList<Instance> InlineDependencies => _inlines;
 
-        
         public override Func<Scope, object> ToResolver(Scope topScope)
         {
+            Func<Scope, object> creator = wrapCreator(quickResolve);
+            
             if (Lifetime == ServiceLifetime.Singleton)
             {
                 return s =>
@@ -73,15 +138,13 @@ namespace Lamar.IoC.Instances
                     {
                         return service;
                     }
-                    else
-                    {
-                        lock (_locker)
-                        {
-                            service = quickResolve(topScope);
-                        }
 
-                        return service;
+                    lock (_locker)
+                    {
+                        service = creator(topScope);
                     }
+
+                    return service;
                 };
             }
             

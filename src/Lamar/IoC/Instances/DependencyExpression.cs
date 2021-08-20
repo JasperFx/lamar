@@ -91,7 +91,7 @@ namespace Lamar.IoC.Instances
         /// <returns></returns>
         public ConstructorInstance Is<TConcreteType>() where TConcreteType : TChild
         {
-            return Is(new ConstructorInstance<TConcreteType>(typeof(TChild), ServiceLifetime.Transient));
+            return Is(new ConstructorInstance<TConcreteType, TChild>(typeof(TChild), ServiceLifetime.Transient));
         }
 
 
@@ -111,9 +111,9 @@ namespace Lamar.IoC.Instances
         /// </summary>
         /// <typeparam name="TConcreteType"></typeparam>
         /// <returns></returns>
-        public ConstructorInstance Is<TConcreteType>(Action<ConstructorInstance<TConcreteType>> configure) where TConcreteType : TChild
+        public ConstructorInstance Is<TConcreteType>(Action<ConstructorInstance<TConcreteType, TChild>> configure) where TConcreteType : TChild
         {
-            var instance = new ConstructorInstance<TConcreteType>(typeof(TChild), ServiceLifetime.Transient);
+            var instance = new ConstructorInstance<TConcreteType, TChild>(typeof(TChild), ServiceLifetime.Transient);
             configure(instance);
             return Is(instance);
         }

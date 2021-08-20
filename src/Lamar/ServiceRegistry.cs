@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lamar.IoC.Activation;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
@@ -84,12 +85,12 @@ namespace Lamar
         /// <typeparam name="T"></typeparam>
         public class BuildWithExpression<T>
         {
-            public BuildWithExpression(ConstructorInstance<T> instance)
+            public BuildWithExpression(ConstructorInstance<T, T> instance)
             {
                 Configure = instance;
             }
 
-            public ConstructorInstance<T> Configure { get; }
+            public ConstructorInstance<T, T> Configure { get; }
         }
 
 
@@ -167,7 +168,7 @@ namespace Lamar
 
 
 
-            public ConstructorInstance<TConcrete> Use<TConcrete>() where TConcrete : class, T
+            public ConstructorInstance<TConcrete, T> Use<TConcrete>() where TConcrete : class, T
             {
                 var instance = ConstructorInstance.For<T, TConcrete>();
                 if (_lifetime != null) instance.Lifetime = _lifetime.Value;
@@ -223,7 +224,7 @@ namespace Lamar
             /// </summary>
             /// <typeparam name="TConcrete"></typeparam>
             /// <exception cref="NotImplementedException"></exception>
-            public ConstructorInstance<TConcrete> Add<TConcrete>() where TConcrete : class, T
+            public ConstructorInstance<TConcrete, T> Add<TConcrete>() where TConcrete : class, T
             {
                 return Use<TConcrete>();
             }
@@ -262,19 +263,77 @@ namespace Lamar
             /// Decorates all instances of T with the concrete type TDecorator
             /// </summary>
             /// <typeparam name="TDecorator"></typeparam>
-            /// <exception cref="NotImplementedException"></exception>
             public void DecorateAllWith<TDecorator>() where TDecorator : T
             {
                 var policy = new DecoratorPolicy(typeof(T), typeof(TDecorator));
                 _parent.AddSingleton<IDecoratorPolicy>(policy);
             }
+
+            /// <summary>
+            /// Intercept the object being created and potentially replace it with a wrapped
+            /// version or another object. This will apply to every registration where the service
+            /// type is T or the implementation type could be cast to T
+            /// </summary>
+            /// <param name="interceptor"></param>
+            /// <returns></returns>
+            public void InterceptAll(Func<T, T> interceptor)
+            {
+                InterceptAll((s, x) => interceptor(x));
+            }
+        
+            /// <summary>
+            /// Intercept the object being created and potentially replace it with a wrapped
+            /// version or another object. This will apply to every registration where the service
+            /// type is T or the implementation type could be cast to T
+            /// </summary>
+            /// <param name="interceptor"></param>
+            /// <returns></returns>
+            public void InterceptAll(Func<IServiceContext, T, T> interceptor)
+            {
+                var policy = new InterceptorPolicy<T>(interceptor);
+                _parent.Policies.Add(policy);
+            }
+        
+            /// <summary>
+            /// Perform some action on the object being created at the time the object is created for the first time by Lamar.
+            /// This will apply to every registration where the service
+            /// type is T or the implementation type could be cast to T
+            /// </summary>
+            /// <param name="activator"></param>
+            /// <returns></returns>
+            public void OnCreationForAll(Action<IServiceContext, T> activator)
+            {
+                var policy = new ActivationPolicy<T>(activator);
+                _parent.Policies.Add(policy);
+            }
+        
+            /// <summary>
+            /// Perform some action on the object being created at the time the object is created for the first time by Lamar.
+            /// This will apply to every registration where the service
+            /// type is T or the implementation type could be cast to T
+            /// </summary>
+            /// <param name="activator"></param>
+            /// <returns></returns>
+            public void OnCreationForAll(Action<T> activator)
+            {
+                OnCreationForAll((c, x) => activator(x));
+            }
         }
 
+        /// <summary>
+        /// Shorthand equivalent to `For<T>().******.Singleton()`
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public InstanceExpression<T> ForSingletonOf<T>() where T : class
         {
             return new InstanceExpression<T>(this, ServiceLifetime.Singleton);
         }
 
+        /// <summary>
+        /// Create an isolated type scanning registration policy 
+        /// </summary>
+        /// <param name="scan"></param>
         public void Scan(Action<IAssemblyScanner> scan)
         {
             var finder = new AssemblyScanner(this);
@@ -350,20 +409,6 @@ namespace Lamar
             }
 
             /// <summary>
-            /// *If* you have an ill-behaved set of dependencies that somehow manage
-            /// to have multiple types with the exact same full name, but in separate
-            /// assemblies, you can tell Lamar to build each dynamic in a separate assembly to
-            /// get around type references. If you're using mixed ASP.Net Core 2.0 and 2.1 assemblies,
-            /// you'll want this
-            /// </summary>
-            [Obsolete("This will be unnecessary with the 1.1 model where you don't generate singletons upfront")]
-            public DynamicAssemblySharing DynamicAssemblySharing
-            {
-                set => _parent.AddSingleton(new SharingSettings {Sharing = value});
-            }
-
-            
-            /// <summary>
             /// Adds a new policy to this container
             /// that can apply to every object instance created
             /// by this container
@@ -434,13 +479,13 @@ namespace Lamar
             /// Directs StructureMap to always inject dependencies into any and all public Setter properties
             /// of the type TPluginType.
             /// </summary>
-            /// <typeparam name="TServiceType"></typeparam>
+            /// <typeparam name="TType"></typeparam>
             /// <returns></returns>
-            public InstanceExpression<TServiceType> FillAllPropertiesOfType<TServiceType>() where TServiceType : class
+            public InstanceExpression<TType> FillAllPropertiesOfType<TType>() where TType : class
             {
-                Add(new LambdaSetterPolicy(prop => prop.PropertyType == typeof(TServiceType)));
+                Add(new LambdaSetterPolicy(prop => prop.PropertyType == typeof(TType)));
 
-                return _parent.For<TServiceType>();
+                return _parent.For<TType>();
             }
         }
 
