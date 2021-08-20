@@ -281,7 +281,7 @@ documentation/compilation/frames/injected-fields/
 
         private static void RunTests(string projectName, string directoryName = "src")
         {
-            Run("dotnet", $"test --no-build --no-restore {directoryName}/{projectName}/{projectName}.csproj");
+            Run("dotnet", $"test -f net5.0 --no-build --no-restore {directoryName}/{projectName}/{projectName}.csproj");
         }
         
         private static string GetEnvironmentVariable(string variableName)
