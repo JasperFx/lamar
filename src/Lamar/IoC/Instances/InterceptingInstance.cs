@@ -8,7 +8,8 @@ using LamarCodeGeneration.Model;
 
 namespace Lamar.IoC.Instances
 {
-    public class InterceptingInstance<T> : Instance
+    [Obsolete("We'll replace this with a very similar option")]
+    internal class InterceptingInstance<T> : Instance
     {
         private readonly Instance _inner;
         private readonly IActivationInterceptor<T> _interceptor;
@@ -24,8 +25,11 @@ namespace Lamar.IoC.Instances
         protected override IEnumerable<Instance> createPlan(ServiceGraph services)
         {
             _inner.CreatePlan(services);
-            foreach(var message in _inner.ErrorMessages)
+            foreach (var message in _inner.ErrorMessages)
+            {
                 ErrorMessages.Add(message);
+            }
+            
             return base.createPlan(services);
         }
 
@@ -36,8 +40,8 @@ namespace Lamar.IoC.Instances
         }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot) => new GetInstanceFrame(this).Variable;
-
-        public override Func<Scope, object> ToResolver(Scope topScope) => s => Resolve(topScope);
+        
+        public override Func<Scope, object> ToResolver(Scope topScope) => Resolve;
 
         public override object Resolve(Scope scope)
         {

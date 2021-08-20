@@ -9,6 +9,6 @@ namespace Lamar
 {
     public interface IActivationInterceptor<T>
     {
-        T Intercept(Type serviceType, T instance, Scope scope);
+        T Intercept(Type serviceType, T instance, IServiceContext scope);
     }
 }

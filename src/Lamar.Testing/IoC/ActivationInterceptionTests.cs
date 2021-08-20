@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lamar.IoC;
+using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Lamar.Testing.IoC
         {
             public int InterceptCount { get; private set; }
 
-            public T Intercept(Type serviceType, T instance, Scope scope)
+            public T Intercept(Type serviceType, T instance, IServiceContext scope)
             {
                 ++InterceptCount;
                 return instance;
@@ -35,8 +36,8 @@ namespace Lamar.Testing.IoC
             });
 
             var instance = container.GetInstance<IWidget>();
-
-            Assert.Equal(1, interceptor.InterceptCount);
+            
+            interceptor.InterceptCount.ShouldBe(1);
         }
     }
 }
