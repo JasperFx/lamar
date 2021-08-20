@@ -1,6 +1,6 @@
 # Validating Container Configuration
 
-To find any potential holes in your Lamar configuration like missing dependencies, unclear defaults of plugin types, validation errors, or just plain build errors, you can use this method below:
+To find any potential holes in your Lamar configuration like missing dependencies, unclear defaults of service types, validation errors, or just plain build errors, you can use this method below:
 
 <!-- snippet: sample_container.AssertConfigurationIsValid -->
 <a id='snippet-sample_container.assertconfigurationisvalid'></a>

@@ -108,18 +108,18 @@ namespace Lamar.Testing.IoC.Diagnostics
             #region sample_whatdoihave-filtering
             var container = Container.Empty();
 
-            // Filter by the Assembly of the Plugin Type
+            // Filter by the Assembly of the Service Type
             var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);
 
-            // Only report on the specified Plugin Type
-            var byPluginType = container.WhatDoIHave(typeof(IWidget));
+            // Only report on the specified Service Type
+            var byServiceType = container.WhatDoIHave(typeof(IWidget));
 
-            // Filter to Plugin Type's in the named namespace
+            // Filter to Service Type's in the named namespace
             // The 'IsInNamespace' test will include child namespaces
             var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget");
 
             // Filter by a case insensitive string.Contains() match
-            // against the Plugin Type name
+            // against the Service Type name
             var byType = container.WhatDoIHave(typeName: "Widget");
             #endregion
         }

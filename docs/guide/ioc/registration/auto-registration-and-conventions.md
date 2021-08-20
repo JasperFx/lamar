@@ -537,7 +537,7 @@ public void only_implementation()
 
 ## Register all Concrete Types of an Interface
 
-To add all concrete types that can be cast to a named plugin type, use this syntax:
+To add all concrete types that can be cast to a named service type, use this syntax:
 
 <!-- snippet: sample_register-all-types-implementing -->
 <a id='snippet-sample_register-all-types-implementing'></a>

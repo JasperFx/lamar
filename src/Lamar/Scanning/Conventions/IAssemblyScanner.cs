@@ -36,27 +36,27 @@ namespace Lamar.Scanning.Conventions
         void AssemblyContainingType(Type type);
 
         /// <summary>
-        ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
+        ///     Add all concrete types of the Service Type as Instances of Service Type
         /// </summary>
-        /// <typeparam name="TPluginType"></typeparam>
-        FindAllTypesFilter AddAllTypesOf<TPluginType>();
+        /// <typeparam name="TServiceType"></typeparam>
+        FindAllTypesFilter AddAllTypesOf<TServiceType>();
 
         /// <summary>
-        ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
+        ///     Add all concrete types of the Service Type as Instances of Service Type
         ///     with the specified lifetime
         /// </summary>
-        /// <typeparam name="TPluginType"></typeparam>
+        /// <typeparam name="TServiceType"></typeparam>
         /// <param name="lifetime"></param>
-        FindAllTypesFilter AddAllTypesOf<TPluginType>(ServiceLifetime lifetime);
+        FindAllTypesFilter AddAllTypesOf<TServiceType>(ServiceLifetime lifetime);
 
         /// <summary>
-        ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
+        ///     Add all concrete types of the Service Type as Instances of Service Type
         /// </summary>
         /// <param name="pluginType"></param>
         FindAllTypesFilter AddAllTypesOf(Type pluginType);
 
         /// <summary>
-        ///     Add all concrete types of the Plugin Type as Instances of Plugin Type
+        ///     Add all concrete types of the Service Type as Instances of Service Type
         ///     with the specified lifetime
         /// </summary>
         /// <param name="pluginType"></param>
@@ -124,14 +124,14 @@ namespace Lamar.Scanning.Conventions
         /// <summary>
         ///     Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
         ///     class named "Something" that implements "ISomething" will be automatically
-        ///     added to PluginType "ISomething"
+        ///     added to ServiceType "ISomething"
         /// </summary>
         void WithDefaultConventions();
 
         /// <summary>
         ///     Adds the DefaultConventionScanner to the scanning operations with the specified lifetime.
         ///     I.e., a concrete class named "Something" that implements "ISomething" will be automatically
-        ///     added to PluginType "ISomething"
+        ///     added to ServiceType "ISomething"
         /// </summary>
         /// <param name="lifetime"></param>
         void WithDefaultConventions(ServiceLifetime lifetime);
@@ -139,7 +139,7 @@ namespace Lamar.Scanning.Conventions
         /// <summary>
         ///     Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
         ///     class named "Something" that implements "ISomething" will be automatically
-        ///     added to PluginType "ISomething"
+        ///     added to ServiceType "ISomething"
         /// </summary>
         /// <param name="behavior">Define whether or not Lamar should overwrite any existing registrations. Default is IfNew</param>
         void WithDefaultConventions(OverwriteBehavior behavior);
@@ -147,7 +147,7 @@ namespace Lamar.Scanning.Conventions
         /// <summary>
         ///     Adds the DefaultConventionScanner to the scanning operations with the specified lifetime.
         ///     I.e., a concrete class named "Something" that implements "ISomething" will be automatically
-        ///     added to PluginType "ISomething"
+        ///     added to ServiceType "ISomething"
         /// </summary>
         /// <param name="behavior">Define whether or not Lamar should overwrite any existing registrations. Default is IfNew</param>
         /// <param name="lifetime">The <see cref="ServiceLifetime"/> to use</param>
@@ -187,7 +187,7 @@ namespace Lamar.Scanning.Conventions
 
 
         /// <summary>
-        ///     Scans for PluginType's and Concrete Types that close the given open generic type
+        ///     Scans for ServiceType's and Concrete Types that close the given open generic type
         /// </summary>
         /// <example>
         /// </example>
@@ -195,7 +195,7 @@ namespace Lamar.Scanning.Conventions
         void ConnectImplementationsToTypesClosing(Type openGenericType);
 
         /// <summary>
-        ///     Scans for PluginType's and Concrete Types that close the given open generic type
+        ///     Scans for ServiceType's and Concrete Types that close the given open generic type
         /// </summary>
         /// <example>
         /// </example>

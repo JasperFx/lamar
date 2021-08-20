@@ -1,6 +1,6 @@
-# Get a Service by PluginType
+# Get a Service by ServiceType
 
-Requesting the default configured object of a plugin type is done through the `IContainer.GetInstance()` method shown below:
+Requesting the default configured object of a service type is done through the `IContainer.GetInstance()` method shown below:
 
 <!-- snippet: sample_GetInstance -->
 <a id='snippet-sample_getinstance'></a>

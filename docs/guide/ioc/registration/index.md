@@ -60,7 +60,7 @@ A simple configuration of a Lamar Container might then be:
 
 Initializing or configuring the container is usually done at application startup and is located as close as possible to the application's entry point. This place is sometimes referred to as the composition root of the application. In our example we are composing our application's object graph by connecting abstractions to concrete types.
 
-We are using the fluent API `For<TInterface>().Use<TConcrete>()` which registers a default instance for a given plugin type (the TInterface type in this case). In our example we want an new instance of `Foo` every time we request the abstraction `IFoo`.
+We are using the fluent API `For<TInterface>().Use<TConcrete>()` which registers a default instance for a given service type (the TInterface type in this case). In our example we want an new instance of `Foo` every time we request the abstraction `IFoo`.
 
 The recommended way of using the [ServiceRegistry DSL](/guide/ioc/registration/registry-dsl) is by defining one or more `ServiceRegistry` classes. Typically, you would subclass the `ServiceRegistry` class, then use the Fluent API methods exposed by the `ServiceRegistry` class to describe a `Container` configuration. Here's a sample `ServiceRegistry` class used to configure the same types as in our previous example:
 
@@ -102,7 +102,7 @@ The Lamar team highly recommends using `ServiceRegistry` classes for your real a
 
 In real world applications you also have to deal with repetitive similar registrations. Such registrations are tedious, easy to forget and can be a weak spot in your application. Lamar provides [auto-registration and conventions](/guide/ioc/registration/auto-registration-and-conventions)  which mitigates this pain and eases the maintenance burden. Lamar exposes this feature through the [ServiceRegistry DSL](/guide/ioc/registration/registry-dsl) by the `Scan` method.
 
-In our example there is an reoccurring pattern, we are connecting the plugin type `ISomething` to a concrete type `Something`, meaning `IFoo` to `Foo` and `IBar` to `Bar`. Wouldn't it be cool if we could write a convention for exactly doing that? Fortunately Lamar has already one build in. Let's see how we can create an container with the same configuration as in the above examples.
+In our example there is an reoccurring pattern, we are connecting the service type `ISomething` to a concrete type `Something`, meaning `IFoo` to `Foo` and `IBar` to `Bar`. Wouldn't it be cool if we could write a convention for exactly doing that? Fortunately Lamar has already one build in. Let's see how we can create an container with the same configuration as in the above examples.
 
 <!-- snippet: sample_quickstart-configure-the-container-using-auto-registrations-and-conventions -->
 <a id='snippet-sample_quickstart-configure-the-container-using-auto-registrations-and-conventions'></a>

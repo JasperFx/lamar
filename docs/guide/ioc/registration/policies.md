@@ -19,8 +19,7 @@ interface:
 public interface IFamilyPolicy : ILamarPolicy
 {
     /// <summary>
-    ///     Allows you to create missing registrations for an unknown plugin type
-    ///     at runtime.
+    ///     Allows you to create missing registrations for an unknown service Type    ///     at runtime.
     ///     Return null if this policy does not apply to the given type
     /// </summary>
     ServiceFamily Build(Type type, ServiceGraph serviceGraph);
@@ -29,7 +28,7 @@ public interface IFamilyPolicy : ILamarPolicy
 <sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IFamilyPolicy.cs#L11-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifamilypolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-Internally, if you make a request to `IContainer.GetInstance(type)` for a type that the active `Container` does not recognize, StructureMap will next try to apply all the registered `IFamilyPolicy` policies to create a `ServiceFamily` object for that plugin type that models the registrations for that plugin type, including the default, additional named instances, interceptors or decorators, and lifecycle rules.
+Internally, if you make a request to `IContainer.GetInstance(type)` for a type that the active `Container` does not recognize, StructureMap will next try to apply all the registered `IFamilyPolicy` policies to create a `ServiceFamily` object for that service type that models the registrations for that service type, including the default, additional named instances, interceptors or decorators, and lifecycle rules.
 
 The simplest built in example is the `EnumerablePolicy` shown below that can fill in requests for `IList<T>`, `ICollection<T>`, and `T[]` with a collection of all the known registrations of the type `T`:
 

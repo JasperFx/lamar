@@ -436,7 +436,7 @@ namespace Lamar
 
             /// <summary>
             /// Register a strategy for automatically resolving "missing" families
-            /// when an unknown PluginType is first encountered
+            /// when an unknown ServiceType is first encountered
             /// </summary>
             /// <param name="policy"></param>
             public void OnMissingFamily(IFamilyPolicy policy)
@@ -477,7 +477,7 @@ namespace Lamar
 
             /// <summary>
             /// Directs StructureMap to always inject dependencies into any and all public Setter properties
-            /// of the type TPluginType.
+            /// of the type TServiceType.
             /// </summary>
             /// <typeparam name="TType"></typeparam>
             /// <returns></returns>

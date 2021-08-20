@@ -124,12 +124,12 @@ namespace Lamar
         /// <summary>
         /// Returns a report detailing the complete configuration of all service families and Instances
         /// </summary>
-        /// <param name="serviceType">Optional parameter to filter the results down to just this plugin type.</param>
-        /// <param name="assembly">Optional parameter to filter the results down to only plugin types from this
+        /// <param name="serviceType">Optional parameter to filter the results down to just this service type.</param>
+        /// <param name="assembly">Optional parameter to filter the results down to only service types from this
         /// <see cref="Assembly"/>.</param>
-        /// <param name="namespace">Optional parameter to filter the results down to only plugin types from this
+        /// <param name="namespace">Optional parameter to filter the results down to only service types from this
         /// namespace.</param>
-        /// <param name="typeName">Optional parameter to filter the results down to any plugin type whose name contains
+        /// <param name="typeName">Optional parameter to filter the results down to any service type whose name contains
         ///  this text.</param>
         /// <returns>The detailed report of the configuration.</returns>
         string WhatDoIHave(Type serviceType = null, Assembly assembly = null, string @namespace = null,

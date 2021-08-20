@@ -93,18 +93,16 @@ Filtering the `WhatDoIHave()` results can be done in these ways:
 ```cs
 var container = Container.Empty();
 
-// Filter by the Assembly of the Plugin Type
-var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);
+// Filter by the Assembly of the Service Typevar byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).Assembly);
 
-// Only report on the specified Plugin Type
-var byPluginType = container.WhatDoIHave(typeof(IWidget));
+// Only report on the specified Service Typevar byPluginType = container.WhatDoIHave(typeof(IWidget));
 
-// Filter to Plugin Type's in the named namespace
+// Filter to Service Type's in the named namespace
 // The 'IsInNamespace' test will include child namespaces
 var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget");
 
 // Filter by a case insensitive string.Contains() match
-// against the Plugin Type name
+// against the Service Type name
 var byType = container.WhatDoIHave(typeName: "Widget");
 ```
 <sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L108-L124' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering' title='Start of snippet'>anchor</a></sup>
@@ -112,18 +110,16 @@ var byType = container.WhatDoIHave(typeName: "Widget");
 ```cs
 var container = new Container();
 
-// Filter by the Assembly of the Plugin Type
-var byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).GetAssembly());
+// Filter by the Assembly of the Service Typevar byAssembly = container.WhatDoIHave(assembly: typeof(IWidget).GetAssembly());
 
-// Only report on the specified Plugin Type
-var byPluginType = container.WhatDoIHave(typeof(IWidget));
+// Only report on the specified Service Typevar byPluginType = container.WhatDoIHave(typeof(IWidget));
 
-// Filter to Plugin Type's in the named namespace
+// Filter to Service Type's in the named namespace
 // The 'IsInNamespace' test will include child namespaces
 var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget");
 
 // Filter by a case insensitive string.Contains() match
-// against the Plugin Type name
+// against the Service Type name
 var byType = container.WhatDoIHave(typeName: "Widget");
 ```
 <sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/WhatDoIHave_Smoke_Tester.cs#L159-L175' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering-1' title='Start of snippet'>anchor</a></sup>

@@ -74,7 +74,7 @@ public class SettingDefaults : ServiceRegistry
 {
     public SettingDefaults()
     {
-        // If you know the plugin type and its a closed type
+        // If you know the service type and its a closed type
         // you can use this syntax
         For<IWidget>().Use<DefaultWidget>();
 
@@ -114,7 +114,7 @@ public class AdditionalRegistrations : ServiceRegistry
 {
     public AdditionalRegistrations()
     {
-        // If you know the plugin type and its a closed type
+        // If you know the service type and its a closed type
         // you can use this syntax
         For<IWidget>().Add<DefaultWidget>();
 
@@ -142,7 +142,7 @@ public class AdditionalRegistrations : ServiceRegistry
 
 ## Add Many Registrations with For().AddInstances()
 
-If you need to add several `Instances` to a single plugin type, the `AddInstances()` syntax
+If you need to add several `Instances` to a single service type, the `AddInstances()` syntax
 shown below may be quicker and easier to use:
 
 <!-- snippet: sample_Using-AddInstances -->

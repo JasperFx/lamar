@@ -7,12 +7,12 @@ namespace Lamar
     public interface IServiceFamilyConfiguration
     {
         /// <summary>
-        /// The plugin type
+        /// The service type
         /// </summary>
         Type ServiceType { get; }
 
         /// <summary>
-        /// The "instance" that will be used when Container.GetInstance(PluginType) is called.
+        /// The "instance" that will be used when Container.GetInstance(ServiceType) is called.
         /// See <see cref="Instance">InstanceRef</see> for more information
         /// </summary>
         InstanceRef Default { get; }
@@ -20,7 +20,7 @@ namespace Lamar
 
         /// <summary>
         /// All of the <see cref="Instance">Instance</see>'s registered
-        /// for this PluginType
+        /// for this ServiceType
         /// </summary>
         IEnumerable<InstanceRef> Instances { get; }
 

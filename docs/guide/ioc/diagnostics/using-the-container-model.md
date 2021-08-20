@@ -2,9 +2,9 @@
 
 The queryable `Container.Model` is a power facility to look into your Lamar `Container` and even to eject previously built services from the Container. The `Container.Model` represents a **static view of what a `Container` already has**, and does not account for policies that may allow Lamar to validly discover types that it may encounter later at runtime.
 
-## Querying for Plugin Types
+## Querying for Service Types
 
-The [WhatDoIHave()](/guide/ioc/diagnostics/what-do-i-have) mechanism works by just iterating over the `Container.Model.PluginTypes` collection as shown below:
+The [WhatDoIHave()](/guide/ioc/diagnostics/what-do-i-have) mechanism works by just iterating over the `Container.Model.ServiceTypes` collection as shown below:
 
 <!-- snippet: sample_find-all-plugin-types-from-the-current-assembly -->
 <a id='snippet-sample_find-all-plugin-types-from-the-current-assembly'></a>
@@ -17,7 +17,7 @@ container.Model.PluginTypes.Where(x => x.PluginType.Assembly == Assembly.GetExec
 
 ## Working with a Service Type
 
-The `IServiceFamilyConfiguration` interface allows you to query and manipulate all the configured Instance's for a given plugin type.
+The `IServiceFamilyConfiguration` interface allows you to query and manipulate all the configured Instance's for a given service type.
 
 See the entire [IServiceFamilyConfiguration interface here](https://github.com/JasperFx/lamar/blob/master/src/Lamar/IServiceFamilyConfiguration.cs).
 

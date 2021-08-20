@@ -1,4 +1,4 @@
-# Try Getting an Optional Service by Plugin Type and Name
+# Try Getting an Optional Service by Service Type and Name
 
 Just use the `IContainer.TryGetInstance<T>(name)` or `IContainer.TryGetInstance(Type pluginType, string name)` method as shown below:
 

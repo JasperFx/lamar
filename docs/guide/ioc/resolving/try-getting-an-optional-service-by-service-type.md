@@ -1,4 +1,4 @@
-# Try Getting an Optional Service by Plugin Type
+# Try Getting an Optional Service by Service Type
 
 ::: tip INFO
 The Lamar team does not recommend using "optional" dependencies as shown in this topic, but

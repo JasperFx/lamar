@@ -385,10 +385,10 @@ namespace Lamar.Testing.Examples
             // Shortcut for just specifying "use this type -- with auto wiring"
             For<IService>().Use<RemoteService>();
 
-            // Set the default Instance of a PluginType
+            // Set the default Instance of a ServiceType
             For<IService>().Use<RemoteService>();
 
-            // Add an additional Instance of a PluginType
+            // Add an additional Instance of a ServiceType
             For<IService>().Use<RemoteService>();
         }
     }

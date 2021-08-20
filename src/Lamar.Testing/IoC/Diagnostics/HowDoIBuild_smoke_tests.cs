@@ -100,18 +100,18 @@ namespace Lamar.Testing.IoC.Diagnostics
         {
             var container = Container.Empty();
 
-            // Filter by the Assembly of the Plugin Type
+            // Filter by the Assembly of the Service Type
             var byAssembly = container.HowDoIBuild(assembly: typeof(IWidget).Assembly);
 
-            // Only report on the specified Plugin Type
-            var byPluginType = container.HowDoIBuild(typeof(IWidget));
+            // Only report on the specified Service Type
+            var byServiceType = container.HowDoIBuild(typeof(IWidget));
 
-            // Filter to Plugin Type's in the named namespace
+            // Filter to Service Type's in the named namespace
             // The 'IsInNamespace' test will include child namespaces
             var byNamespace = container.HowDoIBuild(@namespace: "StructureMap.Testing.Widget");
 
             // Filter by a case insensitive string.Contains() match
-            // against the Plugin Type name
+            // against the Service Type name
             var byType = container.HowDoIBuild(typeName: "Widget");
         }
 

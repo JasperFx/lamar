@@ -38,7 +38,7 @@ There's a couple thing to note, here about this new attribute:
 * Lamar internals are looking for any attribute of the base class. Attributes that affect types are read and applied early, while attributes decorating properties or constructor parameters are only read and applied during the creation of [build plans](/guide/ioc/diagnostics/build-plans).
 * Unlike many other frameworks, the attributes in Lamar are not executed at build time. Instead, Lamar uses attributes *one time* to determine the build plan.
 
-## Attribute Targeting Plugin Type or Concrete Type
+## Attribute Targeting Service Type or Concrete Type
 
 Take the new `[Singleton]` attribute shown below:
 
@@ -61,7 +61,7 @@ public class SingletonAttribute : LamarAttribute
 <sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/SingletonAttribute.cs#L7-L20' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_singletonattribute' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-This new attribute can be used on either the plugin type (typically an interface) or on a concrete type to make an individual type registration be a singleton. You can see the usage on some types below:
+This new attribute can be used on either the service type (typically an interface) or on a concrete type to make an individual type registration be a singleton. You can see the usage on some types below:
 
 <!-- snippet: sample_[Singleton]-usage -->
 <a id='snippet-sample_[singleton]-usage'></a>

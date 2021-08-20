@@ -64,14 +64,14 @@ namespace Lamar.Scanning.Conventions
             _assemblies.Add(type.GetTypeInfo().Assembly);
         }
 
-        public FindAllTypesFilter AddAllTypesOf<TPluginType>()
+        public FindAllTypesFilter AddAllTypesOf<TServiceType>()
         {
-            return AddAllTypesOf(typeof(TPluginType), ServiceLifetime.Transient);
+            return AddAllTypesOf(typeof(TServiceType), ServiceLifetime.Transient);
         }
 
-        public FindAllTypesFilter AddAllTypesOf<TPluginType>(ServiceLifetime lifetime)
+        public FindAllTypesFilter AddAllTypesOf<TServiceType>(ServiceLifetime lifetime)
         {
-            return AddAllTypesOf(typeof(TPluginType), lifetime);
+            return AddAllTypesOf(typeof(TServiceType), lifetime);
         }
 
         public FindAllTypesFilter AddAllTypesOf(Type pluginType)

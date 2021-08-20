@@ -22,7 +22,7 @@ namespace Lamar.Scanning.Conventions
             foreach (var type in types.FindTypes(TypeClassification.Concretes)
                 .Where(type => type.GetConstructors().Any()))
             {
-                var serviceType = FindPluginType(type);
+                var serviceType = FindServiceType(type);
                 if (serviceType != null && ShouldAdd(services, serviceType, type))
                     services.Add(new ServiceDescriptor(serviceType, type, _lifetime));
             }
@@ -42,7 +42,7 @@ namespace Lamar.Scanning.Conventions
             return !hasMatch;
         }
 
-        public virtual Type FindPluginType(Type concreteType)
+        public virtual Type FindServiceType(Type concreteType)
         {
             var interfaceName = "I" + concreteType.Name;
             return concreteType.GetTypeInfo().GetInterfaces().FirstOrDefault(t => t.Name == interfaceName);

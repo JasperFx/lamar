@@ -1,4 +1,4 @@
-# Get all Services by Plugin Type
+# Get all Services by Service Type
 
 ::: warning
 The functionality respects the order in which the actual instances are configured in the Container -- which is compliant with the
@@ -8,7 +8,7 @@ expected behavior inside of ASP.Net Core.  Be warned that some other IoC tools m
 Please see [working with Enumerable Types](/guide/ioc/working-with-enumerable-types) for a lot more information about what's going on behind the
 scenes.
 
-Once in a while you might want to get an enumerable of all the configured objects for a PluginType.  That's done with the `GetAllInstances()` method shown below:
+Once in a while you might want to get an enumerable of all the configured objects for a ServiceType.  That's done with the `GetAllInstances()` method shown below:
 
 <!-- snippet: sample_get-all-instances -->
 <a id='snippet-sample_get-all-instances'></a>

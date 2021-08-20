@@ -116,24 +116,24 @@ function getIOCSideBar() {
       link: '/guide/ioc/resolving/',
       children: [
         {
-          text: 'Get a Service by PluginType',
-          link: '/guide/ioc/resolving/get-a-service-by-plugin-type'
+          text: 'Get a Service by Service Type',
+          link: '/guide/ioc/resolving/get-a-service-by-service-type'
         },
         {
-          text: 'Get a Service by Plugin Type and Name',
-          link: '/guide/ioc/resolving/get-a-service-by-plugin-type-and-name'
+          text: 'Get a Service by Service Type and Name',
+          link: '/guide/ioc/resolving/get-a-service-by-service-type-and-name'
         },
         {
-          text: 'Get all Services by Plugin Type',
-          link: '/guide/ioc/resolving/get-all-services-by-plugin-type'
+          text: 'Get all Services by Service Type',
+          link: '/guide/ioc/resolving/get-all-services-by-service-type'
         },
         {
-          text: 'Try Getting an Optional Service by Plugin Type',
-          link: '/guide/ioc/resolving/try-getting-an-optional-service-by-plugin-type'
+          text: 'Try Getting an Optional Service by Service Type',
+          link: '/guide/ioc/resolving/try-getting-an-optional-service-by-service-type'
         },
         {
-          text: 'Try Getting an Optional Service by Plugin Type and Name',
-          link: '/guide/ioc/resolving/try-getting-an-optional-service-by-plugin-type-and-name'
+          text: 'Try Getting an Optional Service by Service Type and Name',
+          link: '/guide/ioc/resolving/try-getting-an-optional-service-by-service-type-and-name'
         },
         {
           text: 'Auto Resolving Concrete Types',
