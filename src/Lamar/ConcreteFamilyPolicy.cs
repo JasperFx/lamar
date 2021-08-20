@@ -40,7 +40,6 @@ namespace Lamar
                 return empty;
             }
 
-            return null;
         }
     }
 }

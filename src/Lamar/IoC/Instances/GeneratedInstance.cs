@@ -60,84 +60,82 @@ namespace Lamar.IoC.Instances
                 return new InjectedServiceField(this);
             }
 
-
-
             if (Lifetime == ServiceLifetime.Scoped && mode == BuildMode.Dependency)
             {
                 return new GetInstanceFrame(this).Variable;
             }
-
-            
 
             return generateVariableForBuilding(variables, mode, isRoot);
         }
 
         public Func<Scope, object> BuildFuncResolver(Scope scope)
         {
-
             var root = scope.Root;
             var def = new FuncResolverDefinition(this, root);
             var resolver = def.BuildResolver();
+            resolver = wrapCreator(resolver);
 
-            if (Lifetime == ServiceLifetime.Scoped)
+            switch (Lifetime)
             {
-                var locker = new object();
-                
-                return s =>
+                case ServiceLifetime.Scoped:
                 {
-                    if (s.Services.TryFind(Hash, out object service))
+                    var locker = new object();
+                
+                    return s =>
                     {
-                        return service;
-                    }
-
-                    lock (locker)
-                    {
-                        if (s.Services.TryFind(Hash, out service))
+                        if (s.Services.TryFind(Hash, out object service))
                         {
                             return service;
                         }
 
-                        service = resolver(s);
+                        lock (locker)
+                        {
+                            if (s.Services.TryFind(Hash, out service))
+                            {
+                                return service;
+                            }
 
-                        s.Services = s.Services.AddOrUpdate(Hash, service);
+                            service = resolver(s);
 
-                        return service;
-                    }
+                            s.Services = s.Services.AddOrUpdate(Hash, service);
+
+                            return service;
+                        }
                     
 
-                };
-            }
-            
-            if (Lifetime == ServiceLifetime.Singleton)
-            {
-                var locker = new object();
+                    };
+                }
                 
-                return s =>
+                case ServiceLifetime.Singleton:
                 {
-                    if (root.Services.TryFind(Hash, out object service))
+                    var locker = new object();
+                
+                    return s =>
                     {
-                        return service;
-                    }
-
-                    lock (locker)
-                    {
-                        if (root.Services.TryFind(Hash, out service))
+                        if (root.Services.TryFind(Hash, out object service))
                         {
                             return service;
                         }
 
-                        service = resolver(root);
-                        root.Services = root.Services.AddOrUpdate(Hash, service);
+                        lock (locker)
+                        {
+                            if (root.Services.TryFind(Hash, out service))
+                            {
+                                return service;
+                            }
 
-                        return service;
-                    }
+                            service = resolver(root);
+                            root.Services = root.Services.AddOrUpdate(Hash, service);
+
+                            return service;
+                        }
                     
 
-                };
+                    };
+                }
+                default:
+                    return resolver;
             }
-
-
-            return resolver;
         }
 
         public abstract Frame CreateBuildFrame();
@@ -233,6 +231,11 @@ namespace Lamar.IoC.Instances
 
                 return null;
             }
+        }
+
+        protected virtual Func<Scope, object> wrapCreator(Func<Scope, object> inner)
+        {
+            return inner;
         }
     }
 

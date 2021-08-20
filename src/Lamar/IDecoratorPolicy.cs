@@ -50,10 +50,7 @@ namespace Lamar
             if (!serviceType.IsOpenGeneric())
             {
                 var hasCtorArg = decoratorType.GetConstructors().SelectMany(x => x.GetParameters())
-                    .Any(x =>
-                    {
-                        return x.ParameterType == serviceType;
-                    });
+                    .Any(x => x.ParameterType == serviceType);
 
                 if (!hasCtorArg)
                 {
