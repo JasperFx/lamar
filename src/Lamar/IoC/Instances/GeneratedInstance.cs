@@ -73,7 +73,6 @@ namespace Lamar.IoC.Instances
             var root = scope.Root;
             var def = new FuncResolverDefinition(this, root);
             var resolver = def.BuildResolver();
-            resolver = wrapCreator(resolver);
 
             switch (Lifetime)
             {
@@ -233,10 +232,6 @@ namespace Lamar.IoC.Instances
             }
         }
 
-        protected virtual Func<Scope, object> wrapCreator(Func<Scope, object> inner)
-        {
-            return inner;
-        }
     }
 
 }

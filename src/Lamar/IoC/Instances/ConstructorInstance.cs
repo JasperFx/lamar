@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Lamar.IoC.Activation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Setters;
 using LamarCodeGeneration;
@@ -19,7 +20,7 @@ namespace Lamar.IoC.Instances
     /// </summary>
     /// <typeparam name="TImplementation"></typeparam>
     /// <typeparam name="TService"></typeparam>
-    public partial class ConstructorInstance<TImplementation, TService> : ConstructorInstance where TImplementation : TService
+    public partial class ConstructorInstance<TImplementation, TService> : ConstructorInstance, IMaybeIntercepted where TImplementation : TService
     {
         private Func<IServiceContext,TImplementation, TService> _interceptor;
 
@@ -36,18 +37,7 @@ namespace Lamar.IoC.Instances
 
             return this;
         }
-
-        protected override Func<Scope, object> wrapCreator(Func<Scope, object> inner)
-        {
-            return _interceptor == null
-                ? inner
-                : scope =>
-                {
-                    var raw = inner(scope);
-                    return _interceptor(scope, (TImplementation) raw);
-                };
-        }
-
+        
         /// <summary>
         /// Intercept the object being created and potentially replace it with a wrapped
         /// version or another object
@@ -98,6 +88,18 @@ namespace Lamar.IoC.Instances
                 return x;
             });
         }
+
+        bool IMaybeIntercepted.TryWrap(out Instance wrapped)
+        {
+            if (_interceptor != null)
+            {
+                wrapped = new InterceptingInstance<TImplementation, TService>(_interceptor, this);
+                return true;
+            }
+
+            wrapped = null;
+            return false;
+        }
     }
 
     public class ConstructorInstance : GeneratedInstance, IConfiguredInstance
@@ -134,8 +136,6 @@ namespace Lamar.IoC.Instances
 
         public override Func<Scope, object> ToResolver(Scope topScope)
         {
-            Func<Scope, object> creator = wrapCreator(quickResolve);
-            
             if (Lifetime == ServiceLifetime.Singleton)
             {
                 return s =>
@@ -147,7 +147,7 @@ namespace Lamar.IoC.Instances
 
                     lock (_locker)
                     {
-                        service = creator(topScope);
+                        service = ((Func<Scope, object>) quickResolve)(topScope);
                     }
 
                     return service;

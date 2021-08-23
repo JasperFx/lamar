@@ -15,6 +15,27 @@ namespace Lamar
         bool TryWrap(Instance inner, out Instance wrapped);
     }
 
+    internal interface IMaybeIntercepted
+    {
+        bool TryWrap(out Instance wrapped);
+    }
+
+    internal class MaybeIntercepted : IDecoratorPolicy
+    {
+        internal static readonly MaybeIntercepted Instance = new MaybeIntercepted();
+        
+        public bool TryWrap(Instance inner, out Instance wrapped)
+        {
+            if (inner is IMaybeIntercepted i)
+            {
+                return i.TryWrap(out wrapped);
+            }
+
+            wrapped = null;
+            return false;
+        }
+    }
+
     [LamarIgnore]
     public class DecoratorPolicy<TService, TDecorator> : DecoratorPolicy where TDecorator : TService
     {

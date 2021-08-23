@@ -110,6 +110,33 @@ namespace Lamar.Testing.IoC.Acceptance
         #endregion
         
         [Fact]
+        public void intercept_a_single_transient_instance_as_dependency()
+        {
+            var container = new Container(x =>
+            {
+                x.For<IWidget>().Add<ActivatedWidget>()
+                    .Named("yes")
+                    .OnCreation(w => new DecoratedWidget(w));
+            });
+
+            container.GetInstance<WidgetCatcher>()
+                .Widget
+                .ShouldBeOfType<DecoratedWidget>()
+                .Inner.ShouldBeOfType<ActivatedWidget>();
+
+        }
+
+        public class WidgetCatcher
+        {
+            public IWidget Widget { get; }
+
+            public WidgetCatcher(IWidget widget)
+            {
+                Widget = widget;
+            }
+        }
+        
+        [Fact]
         public void intercept_a_single_instance_as_singleton()
         {
             var container = new Container(x =>

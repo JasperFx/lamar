@@ -6,11 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Activation
 {
-    internal class InterceptingInstance<T> : LambdaInstance<Scope, T>
+    internal class InterceptingInstance<TImplementation, TService> : LambdaInstance<Scope, TService> where TImplementation : TService
     {
         private readonly Instance _inner;
 
-        public InterceptingInstance(Func<IServiceContext, T, T> interceptor, Instance inner)
+        public InterceptingInstance(Func<IServiceContext, TImplementation, TService> interceptor, Instance inner)
+        
             : base(inner.ServiceType, buildCreator(interceptor, inner), inner.Lifetime)
         {
             inner.Lifetime = ServiceLifetime.Transient;
@@ -35,7 +36,7 @@ namespace Lamar.IoC.Activation
             return $"User defined interception{Environment.NewLine}{base.GetBuildPlan(rootScope)}";
         }
 
-        private static Func<Scope, T> buildCreator(Func<IServiceContext, T, T> interceptor, Instance inner)
+        private static Func<Scope, TService> buildCreator(Func<IServiceContext, TImplementation, TService> interceptor, Instance inner)
         {
             switch (inner.Lifetime)
             {
@@ -45,11 +46,11 @@ namespace Lamar.IoC.Activation
                         var raw = inner.QuickResolve(s);
                         return raw switch
                         {
-                            T inner => interceptor(s.Root, inner),
+                            TImplementation inner => interceptor(s.Root, inner),
                             null => throw new InvalidOperationException(
                                 $"Inner instance {inner} of activator returned null"),
                             _ => throw new InvalidCastException(
-                                $"Activation interceptor expected type {typeof(T).FullNameInCode()}, but was {raw.GetType().FullNameInCode()}")
+                                $"Activation interceptor expected type {typeof(TImplementation).FullNameInCode()}, but was {raw.GetType().FullNameInCode()}")
                         };
                     };
                 
@@ -60,11 +61,11 @@ namespace Lamar.IoC.Activation
                         var raw = inner.Resolve(s);
                         return raw switch
                         {
-                            T inner => interceptor(s.Root, inner),
+                            TImplementation inner => interceptor(s.Root, inner),
                             null => throw new InvalidOperationException(
                                 $"Inner instance {inner} of activator returned null"),
                             _ => throw new InvalidCastException(
-                                $"Activation interceptor expected type {typeof(T).FullNameInCode()}, but was {raw.GetType().FullNameInCode()}")
+                                $"Activation interceptor expected type {typeof(TImplementation).FullNameInCode()}, but was {raw.GetType().FullNameInCode()}")
                         };
                     };
             }

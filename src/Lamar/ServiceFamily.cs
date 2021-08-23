@@ -56,6 +56,16 @@ namespace Lamar
             FullNameInCode = serviceType.FullNameInCode();
         }
 
+        private IEnumerable<IDecoratorPolicy> allDecoratorPolicies(IDecoratorPolicy[] decoratorPolicies)
+        {
+            foreach (var decoratorPolicy in decoratorPolicies)
+            {
+                yield return decoratorPolicy;
+            }
+            
+            yield return MaybeIntercepted.Instance;
+        }
+
         private IEnumerable<Instance> applyDecorators(IDecoratorPolicy[] decoratorPolicies, Instance[] instances)
         {
             foreach (var instance in instances)
@@ -64,9 +74,9 @@ namespace Lamar
 
                 var originalName = instance.Name;
                 var originalLifetime = instance.Lifetime;
-                
-                
-                foreach (var decoratorPolicy in decoratorPolicies)
+
+
+                foreach (var decoratorPolicy in allDecoratorPolicies(decoratorPolicies))
                 {
                     if (decoratorPolicy.TryWrap(current, out var wrapped))
                     {
@@ -76,7 +86,6 @@ namespace Lamar
                         current.Lifetime = ServiceLifetime.Transient;
                         
                         current = wrapped;
-                        
                     }
                 }
 

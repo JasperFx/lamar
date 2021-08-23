@@ -21,7 +21,7 @@ namespace Lamar.IoC.Activation
         {
             if (TestInstance(inner))
             {
-                wrapped = new InterceptingInstance<T>(_interceptor, inner);
+                wrapped = new InterceptingInstance<T, T>(_interceptor, inner);
 
                 return true;
             }
