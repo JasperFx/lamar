@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ImTools;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -243,7 +244,9 @@ namespace Lamar.Testing.IoC.Acceptance
             
             public void DoSomething()
             {
-                
+                // do something before 
+                Inner.DoSomething();
+                // do something after
             }
         }
         #endregion

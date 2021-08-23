@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,6 +84,8 @@ namespace Lamar.Testing.IoC.Acceptance
 
         }
 
+        #region sample_intercept_a_single_instance
+
         [Fact]
         public void intercept_a_single_instance()
         {
@@ -103,6 +106,8 @@ namespace Lamar.Testing.IoC.Acceptance
                 .ShouldBeOfType<ActivatedWidget>();
 
         }
+
+        #endregion
         
         [Fact]
         public void intercept_a_single_instance_as_singleton()
@@ -158,7 +163,8 @@ namespace Lamar.Testing.IoC.Acceptance
                 services.AddTransient<IWidget, AWidget>();
                 services.AddScoped<IWidget, BWidget>();
                 
-                services.For<IWidget>().InterceptAll(x => new DecoratedWidget(x));
+                services.For<IWidget>()
+                    .InterceptAll(x => new DecoratedWidget(x));
             });
 
             var widgets = container.GetAllInstances<IWidget>();
@@ -228,6 +234,126 @@ namespace Lamar.Testing.IoC.Acceptance
             container.GetInstance<IService>()
                 .ShouldBeOfType<ActivatedService>()
                 .WasActivated.ShouldBeTrue();
+        }
+
+
+        public interface IPoller : IDisposable
+        {
+       
+        }
+
+        #region sample_poller
+
+        public class Poller : IPoller
+        {
+            public void Start()
+            {
+                // start the actual polling
+            }
+            
+            public void Dispose()
+            {
+                // stop polling
+            }
+        }
+
+        #endregion
+
+        public static void examples()
+        {
+            #region sample_using_activator_on_one_registration
+
+            var container = new Container(x =>
+            {
+                x.For<IPoller>().Use<Poller>()
+                    
+                    // This registers an activator on just this
+                    // one registration
+                    .OnCreation(poller => poller.Start());
+            });
+
+            #endregion
+        }
+
+        #region sample_IStartable
+
+        public interface IStartable : IDisposable
+        {
+            void Start();
+        }
+
+        #endregion
+
+        #region sample_StartablePoller
+
+        public class StartablePoller : IPoller, IStartable
+        {
+            public void Dispose()
+            {
+                // shut things down
+            }
+
+            public void Start()
+            {
+                // start up the polling
+            }
+        }
+        #endregion
+
+        public static void startable_polling_registration()
+        {
+            #region sample_activator_by_marker_type
+
+            var container = new Container(services =>
+            {
+                // Remember that Lamar natively understands .Net
+                // DI registrations w/o any adapter
+                services.AddSingleton<IPoller, StartablePoller>();
+                
+                // Other registrations that might include other 
+                // IStartable types
+                
+                services.For<IStartable>()
+                    .OnCreationForAll(x => x.Start());
+            });
+
+            #endregion  
+        }
+
+        #region sample_StartableTracker
+
+        public class StartableTracker
+        {
+            public List<IStartable> Startables { get; }
+                = new List<IStartable>();
+        }
+
+        #endregion
+
+        public static void startable_and_tracker_registration()
+        {
+            #region sample_startable_and_tracker_registration
+
+            var container = new Container(services =>
+            {
+                services.AddSingleton<IPoller, StartablePoller>();
+                
+                // Other registrations that might include other 
+                // IStartable types
+                
+                services.AddSingleton<StartableTracker>();
+
+                services.For<IStartable>()
+                    .OnCreationForAll((context, startable) =>
+                    {
+                        var tracker = context.GetInstance<StartableTracker>();
+                        tracker.Startables.Add(startable);
+
+                        startable.Start();
+                    });
+            });
+
+            #endregion
         }
     }
 }

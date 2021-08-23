@@ -22,7 +22,7 @@ public class Container : Scope, IContainer, INestedContainer, IServiceScopeFacto
 ```cs
 public class Scope : IServiceContext
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L19-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L20-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 [IServiceScope](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope?view=aspnetcore-2.1), [ISupportRequiredService](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.isupportrequiredservice?view=aspnetcore-2.1), [IServiceScopeFactory](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory?view=aspnetcore-2.1) are all ASP.Net Core DI abstractions.

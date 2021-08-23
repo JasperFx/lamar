@@ -19,7 +19,8 @@ interface:
 public interface IFamilyPolicy : ILamarPolicy
 {
     /// <summary>
-    ///     Allows you to create missing registrations for an unknown service Type    ///     at runtime.
+    ///     Allows you to create missing registrations for an unknown service type
+    ///     at runtime.
     ///     Return null if this policy does not apply to the given type
     /// </summary>
     ServiceFamily Build(Type type, ServiceGraph serviceGraph);
@@ -35,7 +36,7 @@ The simplest built in example is the `EnumerablePolicy` shown below that can fil
 <!-- snippet: sample_EnumerablePolicy -->
 <a id='snippet-sample_enumerablepolicy'></a>
 ```cs
-public class EnumerablePolicy : IFamilyPolicy
+internal class EnumerablePolicy : IFamilyPolicy
 {
     public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
     {

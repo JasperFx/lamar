@@ -146,7 +146,7 @@ function getIOCSideBar() {
       link: '/guide/ioc/generics'
     },
     {
-      text: 'Decorators',
+      text: 'Decorators, Interceptors, and Activators',
       link: '/guide/ioc/decorators'
     },
     {

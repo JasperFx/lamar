@@ -74,7 +74,7 @@ public class SettingDefaults : ServiceRegistry
 {
     public SettingDefaults()
     {
-        // If you know the service type and its a closed type
+        // If you know the plugin type and its a closed type
         // you can use this syntax
         For<IWidget>().Use<DefaultWidget>();
 
@@ -114,7 +114,7 @@ public class AdditionalRegistrations : ServiceRegistry
 {
     public AdditionalRegistrations()
     {
-        // If you know the service type and its a closed type
+        // If you know the plugin type and its a closed type
         // you can use this syntax
         For<IWidget>().Add<DefaultWidget>();
 
