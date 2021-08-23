@@ -8,11 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Lamar.Scanning.Conventions
 {
     [LamarIgnore]
-    public class ConnectedConcretions : List<Type>
+    internal class ConnectedConcretions : List<Type>
     {
     }
 
-    public static class ServiceCollectionExtensions
+    internal static class ServiceCollectionExtensions
     {
         public static bool HasScanners(this IEnumerable<ServiceDescriptor> services)
         {
@@ -80,12 +80,6 @@ namespace Lamar.Scanning.Conventions
             return services.LastOrDefault(x => x.ServiceType == serviceType);
         }
 
-        public static Type[] RegisteredTypesFor<T>(this IServiceCollection services)
-        {
-            return services
-                .Where(x => x.ServiceType == typeof(T) && x.ImplementationType != null)
-                .Select(x => x.ImplementationType)
-                .ToArray();
-        }
+
     }
 }

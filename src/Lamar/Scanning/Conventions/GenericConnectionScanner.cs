@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
 {
-    public class GenericConnectionScanner : IRegistrationConvention
+    internal class GenericConnectionScanner : IRegistrationConvention
     {
         private readonly IList<Type> _concretions = new List<Type>();
         private readonly IList<Type> _interfaces = new List<Type>();

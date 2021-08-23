@@ -2,7 +2,7 @@
 
 namespace Lamar.IoC
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         public static string Sanitize(this string value)
         {

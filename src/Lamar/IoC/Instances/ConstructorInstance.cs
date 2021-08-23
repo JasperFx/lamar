@@ -13,6 +13,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
 {
+    /// <summary>
+    /// Models the construction of a service registration that is built by calling the implementation
+    /// type's constructor functions
+    /// </summary>
+    /// <typeparam name="TImplementation"></typeparam>
+    /// <typeparam name="TService"></typeparam>
     public partial class ConstructorInstance<TImplementation, TService> : ConstructorInstance where TImplementation : TService
     {
         private Func<IServiceContext,TImplementation, TService> _interceptor;
@@ -313,7 +319,7 @@ namespace Lamar.IoC.Instances
         
         private readonly List<InjectedSetter> _setters = new List<InjectedSetter>();
 
-        public IReadOnlyList<InjectedSetter> Setters => _setters;
+        internal IReadOnlyList<InjectedSetter> Setters => _setters;
 
         internal InjectedSetter[] FindSetters(ServiceGraph services)
         {

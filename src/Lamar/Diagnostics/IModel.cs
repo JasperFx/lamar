@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 
-namespace Lamar
+namespace Lamar.Diagnostics
 {
     /// <summary>
     /// Can be used to analyze and query the registrations and configuration

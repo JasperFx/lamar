@@ -6,7 +6,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.Scanning.Conventions
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         public static bool CanBeCreated(this Type type)
         {
@@ -14,14 +14,14 @@ namespace Lamar.Scanning.Conventions
         }
 
 
-        public static Type FindFirstInterfaceThatCloses(this Type TPluggedType, Type templateType)
+        public static Type FindFirstInterfaceThatCloses(this Type implementationType, Type templateType)
         {
-            return TPluggedType.FindInterfacesThatClose(templateType).FirstOrDefault();
+            return implementationType.FindInterfacesThatClose(templateType).FirstOrDefault();
         }
 
-        public static IEnumerable<Type> FindInterfacesThatClose(this Type TPluggedType, Type templateType)
+        public static IEnumerable<Type> FindInterfacesThatClose(this Type pluggedType, Type templateType)
         {
-            return rawFindInterfacesThatCloses(TPluggedType, templateType).Distinct();
+            return rawFindInterfacesThatCloses(pluggedType, templateType).Distinct();
         }
 
         private static IEnumerable<Type> rawFindInterfacesThatCloses(Type TPluggedType, Type templateType)

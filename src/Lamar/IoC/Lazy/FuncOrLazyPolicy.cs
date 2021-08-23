@@ -5,7 +5,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Lazy
 {
-    public class FuncOrLazyPolicy : IFamilyPolicy
+    internal class FuncOrLazyPolicy : IFamilyPolicy
     {
         public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
         {

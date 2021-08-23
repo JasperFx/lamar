@@ -7,10 +7,8 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar
 {
-    public class CloseGenericFamilyPolicy : IFamilyPolicy
+    internal class CloseGenericFamilyPolicy : IFamilyPolicy
     {
-        
-        
         public ServiceFamily Build(Type type, ServiceGraph graph)
         {
             if (!type.IsGenericType) return null;

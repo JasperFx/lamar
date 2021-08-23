@@ -63,7 +63,7 @@ namespace GeneratorTarget
 
         public void WriteToConsole()
         {
-            _writer.Write();
+            _writer?.Write();
         }
     }
 }

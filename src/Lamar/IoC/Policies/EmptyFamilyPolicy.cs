@@ -3,7 +3,7 @@ using Lamar.IoC.Instances;
 
 namespace Lamar
 {
-    public class EmptyFamilyPolicy : IFamilyPolicy
+    internal class EmptyFamilyPolicy : IFamilyPolicy
     {
         public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
         {

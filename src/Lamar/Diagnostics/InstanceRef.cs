@@ -4,7 +4,7 @@ using Lamar.IoC.Instances;
 using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar
+namespace Lamar.Diagnostics
 {
     /// <summary>
     /// A diagnostic wrapper around registered Instance's 

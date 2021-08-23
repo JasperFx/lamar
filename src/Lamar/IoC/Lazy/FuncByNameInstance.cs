@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Lazy
 {
-    public class FuncByNameInstance<T> : Instance
+    internal class FuncByNameInstance<T> : Instance
     {
         public FuncByNameInstance() : base(typeof(Func<string, T>), typeof(Func<string, T>), ServiceLifetime.Transient)
         {

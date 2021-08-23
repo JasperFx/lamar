@@ -11,7 +11,7 @@ using LamarCodeGeneration.Model;
 
 namespace Lamar.IoC.Lazy
 {
-    public class GetFuncFrame : TemplateFrame, IResolverFrame
+    internal class GetFuncFrame : TemplateFrame, IResolverFrame
     {
         private static readonly MethodInfo _openMethod = typeof(Scope).GetMethod(nameof(Scope.FactoryFor));
 

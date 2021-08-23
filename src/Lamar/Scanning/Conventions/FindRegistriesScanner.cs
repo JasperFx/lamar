@@ -6,7 +6,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.Scanning.Conventions
 {
-    public class FindRegistriesScanner : IRegistrationConvention
+    internal class FindRegistriesScanner : IRegistrationConvention
     {
         public void ScanTypes(TypeSet types, ServiceRegistry registry)
         {

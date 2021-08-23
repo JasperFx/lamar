@@ -210,7 +210,7 @@ namespace Lamar
             /// Fills in a default type implementation for a service type if there are no prior
             /// registrations
             /// </summary>
-            /// <typeparam name="TConcrete"></typeparam>
+            /// <typeparam name="T"></typeparam>
             public void UseIfNone(T service)
             {
                 if (_parent.FindDefault<T>() == null)
@@ -220,10 +220,9 @@ namespace Lamar
             }
 
             /// <summary>
-            /// Delegates to Use<TConcrete>(), polyfill for StructureMap syntax
+            /// Delegates to Use&lt;T&gt;(), polyfill for StructureMap syntax
             /// </summary>
             /// <typeparam name="TConcrete"></typeparam>
-            /// <exception cref="NotImplementedException"></exception>
             public ConstructorInstance<TConcrete, T> Add<TConcrete>() where TConcrete : class, T
             {
                 return Use<TConcrete>();
@@ -393,17 +392,12 @@ namespace Lamar
         /// </summary>
         public PoliciesExpression Policies => new PoliciesExpression(this);
 
-        public class SharingSettings
-        {
-            public DynamicAssemblySharing Sharing { get; set; }
-        }
-        
         public class PoliciesExpression
         {
             private readonly ServiceRegistry _parent;
 
 
-            public PoliciesExpression(ServiceRegistry parent)
+            internal PoliciesExpression(ServiceRegistry parent)
             {
                 _parent = parent;
             }

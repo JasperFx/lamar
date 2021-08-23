@@ -2,15 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Lamar.Diagnostics;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Diagnostics
 {
     public class ModelQuery
     {
+        /// <summary>
+        /// Optionally specify the namespace of service types in the query. This is inclusive.
+        /// </summary>
         public string Namespace;
+        
+        /// <summary>
+        /// Only list out registrations for the specific ServiceType
+        /// </summary>
         public Type ServiceType;
+        
+        /// <summary>
+        /// Only list out registrations for service types from this assembly
+        /// </summary>
         public Assembly Assembly;
+        
+        
         public string TypeName;
 
         public IEnumerable<IServiceFamilyConfiguration> Query(IModel model)

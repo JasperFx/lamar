@@ -1,5 +1,9 @@
 namespace Lamar.Scanning.Conventions
 {
+    /// <summary>
+    /// Controls the behavior of the type scanning registrations if there are prior, matching
+    /// registrations
+    /// </summary>
     public enum OverwriteBehavior
     {
         /// <summary>

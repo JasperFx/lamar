@@ -27,19 +27,20 @@ namespace Lamar
             {
                 var att = method.GetAttribute<ValidationMethodAttribute>();
 
-                if (att != null)
-                {
-                    if (method.GetParameters().Length > 0)
-                    {
-                        var msg =
-                            string.Format(
-                                "Method *{0}* in Class *{1}* cannot be a validation method because it has parameters",
-                                method.Name, objectType.AssemblyQualifiedName);
-                        throw new ArgumentException(msg);
-                    }
 
-                    methodList.Add(method);
+                if (att == null)
+                {
+                    continue;
                 }
+
+                if (method.GetParameters().Length > 0)
+                {
+                    var msg =
+                        $"Method *{method.Name}* in Class *{objectType.AssemblyQualifiedName}* cannot be a validation method because it has parameters";
+                    throw new ArgumentException(msg);
+                }
+
+                methodList.Add(method);
             }
 
             var returnValue = new MethodInfo[methodList.Count];

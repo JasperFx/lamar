@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Lazy
 {
-    public class LazyInstance<T> : Instance, IResolver
+    internal class LazyInstance<T> : Instance, IResolver
     {
 
         public LazyInstance() : base(typeof(Lazy<T>), typeof(Lazy<T>), ServiceLifetime.Transient)

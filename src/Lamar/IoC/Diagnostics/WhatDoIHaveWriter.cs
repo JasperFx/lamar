@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Lamar.Diagnostics;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;
 

@@ -11,6 +11,10 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Enumerables
 {
+    /// <summary>
+    /// Instance type to support .Net enumerable types that are not arrays
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ListInstance<T> : GeneratedInstance, IEnumerableInstance
     {
         private readonly IList<Instance> _inlines = new List<Instance>();

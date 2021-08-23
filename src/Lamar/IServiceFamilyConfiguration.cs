@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lamar.Diagnostics;
 using Lamar.IoC.Instances;
 
 namespace Lamar

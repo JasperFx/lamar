@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
 {
-    public class FirstInterfaceConvention : IRegistrationConvention
+    internal class FirstInterfaceConvention : IRegistrationConvention
     {
         private readonly ServiceLifetime _lifetime;
 

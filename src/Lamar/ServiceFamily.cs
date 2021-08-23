@@ -193,7 +193,6 @@ namespace Lamar
         /// <param name="serviceType"></param>
         /// <param name="decoration"></param>
         /// <param name="templateTypes"></param>
-        /// <param name="types"></param>
         /// <returns></returns>
         public ServiceFamily CreateTemplatedClone(Type serviceType, IDecoratorPolicy[] decoration, Type[] templateTypes)
         {

@@ -9,7 +9,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Resolvers
 {
-    public class CastScopeFrame : SyncFrame, IResolverFrame
+    internal class CastScopeFrame : SyncFrame, IResolverFrame
     {
         private Variable _scope;
 

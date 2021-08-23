@@ -17,6 +17,10 @@ namespace Lamar.IoC.Enumerables
         Type ServiceType { get; }
     }
 
+    /// <summary>
+    /// Instance type to represent .Net arrays
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ArrayInstance<T> : GeneratedInstance, IEnumerableInstance
     {
         private readonly IList<Instance> _inlines = new List<Instance>();

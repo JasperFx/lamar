@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions
 {
-    internal class ScanningExploder
+    internal static class ScanningExploder
     {
         internal static (ServiceRegistry, AssemblyScanner[]) ExplodeSynchronously(IServiceCollection services)
         {
@@ -73,7 +72,8 @@ namespace Lamar.Scanning.Conventions
             return (registry, scanners);
         }
 
-        internal static (ServiceRegistry, List<object>) ParseToOperations(IServiceCollection services,
+
+        private static (ServiceRegistry, List<object>) ParseToOperations(IServiceCollection services,
             List<Type> registriesEncountered)
         {
             var scanners = services

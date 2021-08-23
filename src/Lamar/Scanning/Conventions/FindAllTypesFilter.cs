@@ -20,7 +20,7 @@ namespace Lamar.Scanning.Conventions
             _lifetime = lifetime;
         }
 
-        public void ScanTypes(TypeSet types, ServiceRegistry services)
+        void IRegistrationConvention.ScanTypes(TypeSet types, ServiceRegistry services)
         {
             if (_serviceType.IsOpenGeneric())
             {
@@ -38,7 +38,7 @@ namespace Lamar.Scanning.Conventions
             }
         }
 
-        public bool Matches(Type type)
+        private bool Matches(Type type)
         {
             return Instance.CanBeCastTo(type, _serviceType) && type.GetConstructors().Any() && type.CanBeCreated();
         }

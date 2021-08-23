@@ -5,7 +5,7 @@ using Lamar.IoC;
 using Lamar.Scanning.Conventions;
 using LamarCodeGeneration.Util;
 
-namespace Lamar
+namespace Lamar.Diagnostics
 {
     internal class QueryModel : IModel
     {

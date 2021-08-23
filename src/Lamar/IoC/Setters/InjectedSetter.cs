@@ -9,7 +9,7 @@ using LamarCodeGeneration.Model;
 namespace Lamar.IoC.Setters
 {
 
-    public class InjectedSetter
+    internal class InjectedSetter
     {
         public PropertyInfo Property { get; }
         public Instance Instance { get; }

@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Lamar.IoC.Setters
 {
+    /// <summary>
+    /// Setter policy using a lambda test
+    /// </summary>
     public class LambdaSetterPolicy : ISetterPolicy
     {
         private readonly Func<PropertyInfo, bool> _match;

@@ -6,7 +6,7 @@ using LamarCodeGeneration.Util;
 
 namespace Lamar
 {
-    public class ConcreteFamilyPolicy : IFamilyPolicy
+    internal class ConcreteFamilyPolicy : IFamilyPolicy
     {
         public static bool IsReallyPublic(Type type)
         {
