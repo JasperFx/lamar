@@ -1,0 +1,1 @@
+import{o as e,c as a,b as r}from"./app.213acb6a.js";const o='{"title":"LamarCodeGeneration & LamarCompiler","description":"","frontmatter":{},"relativePath":"guide/compilation/index.md","lastUpdated":1629732345319}',t={},i=r('',2);t.render=function(r,o,t,n,l,m){return e(),a("div",null,[i])};export{o as __pageData,t as default};
