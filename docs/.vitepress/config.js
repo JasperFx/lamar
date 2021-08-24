@@ -20,8 +20,8 @@ module.exports = {
     ],
 
     algolia: {
-      apiKey: 'your_api_key',
-      indexName: 'index_name'
+      apiKey: 'b9590d6ae8461868e8449d64285f57c1',
+      indexName: 'lamar_index'
     },
 
     sidebar: [
