@@ -20,6 +20,7 @@ module.exports = {
     ],
 
     algolia: {
+      appId: 'BL3MV9D81Y',
       apiKey: 'b9590d6ae8461868e8449d64285f57c1',
       indexName: 'lamar_index'
     },
