@@ -22,7 +22,7 @@ jobs:
       - name: Build & Deploy docs
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: ./build.sh --no-color publish-docs
+        run: ./build.sh --no-color publish-docs-gh-actions
 
       - name: Generate Algolia DocSearch index
         uses: darrenjennings/algolia-docsearch-action@master
