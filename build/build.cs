@@ -154,33 +154,53 @@ documentation/compilation/frames/injected-fields/
 
             Target("publish-docs", DependsOn("docs-build"), () =>
             {
-                var docTargetDir = "doc-target";
-                var branchName = "gh-pages";
-                Run("git", $"clone -b {branchName} {GITHUB_REPO} {InitializeDirectory(docTargetDir)}");
-                // if you are not using git --global config, un-comment the block below, update and use it
-                // Run("git", "config user.email user_email", docTargetDir);
-                // Run("git", "config user.name user_name", docTargetDir);
+                PublishDocs(GITHUB_REPO);
+            });
 
-                // Clean off all the files in the doc-target directory
-                foreach (var file in Directory.EnumerateFiles(docTargetDir))
-                {
-                    if (Path.GetFileName(file) == ".nojekyll") continue;
-                    
-                    File.Delete(file);
-                }
-
-                var buildDir = Path.Combine(Environment.CurrentDirectory, "docs", ".vitepress", "dist");
-                
-                CopyFilesRecursively(buildDir, docTargetDir);
-
-                WriteForwards();
-
-                Run("git", "add --all", docTargetDir);
-                Run("git", $"commit -a -m \"Documentation Update for {BUILD_VERSION}\" --allow-empty", docTargetDir);
-                Run("git", $"push origin {branchName}", docTargetDir);
+            Target("publish-docs-gh-actions", DependsOn("docs-build"), () =>
+            {
+                var ghActor = GetEnvironmentVariable("GITHUB_ACTOR");
+                var ghToken = GetEnvironmentVariable("GITHUB_TOKEN");
+                var ghRepo = GetEnvironmentVariable("GITHUB_REPOSITORY");
+                var repo = $"https://{ghActor}:{ghToken}@github.com/{ghRepo}.git";
+                PublishDocs(repo, true);
             });
 
             RunTargetsAndExit(args);
+        }
+
+        private static void PublishDocs(string repo, bool isGHActionContext=false)
+        {
+            var docTargetDir = "doc-target";
+            var branchName = "gh-pages";
+            Run("git", $"clone -b {branchName} {repo} {InitializeDirectory(docTargetDir)}");
+
+            if (isGHActionContext) {
+                Run("git", "config user.email \"action@github.com\"", docTargetDir);
+                Run("git", "config user.name \"GitHub Action\"", docTargetDir);
+            } else {
+                // if you are not using git --global config, un-comment the block below, update and use it
+                // Run("git", "config user.email user_email", docTargetDir);
+                // Run("git", "config user.name user_name", docTargetDir);
+            }
+
+            // Clean off all the files in the doc-target directory
+            foreach (var file in Directory.EnumerateFiles(docTargetDir))
+            {
+                if (Path.GetFileName(file) == ".nojekyll") continue;
+                
+                File.Delete(file);
+            }
+
+            var buildDir = Path.Combine(Environment.CurrentDirectory, "docs", ".vitepress", "dist");
+
+            CopyFilesRecursively(buildDir, docTargetDir);
+
+            WriteForwards();
+
+            Run("git", "add --all", docTargetDir);
+            Run("git", $"commit -a -m \"Documentation Update for {BUILD_VERSION}\" --allow-empty", docTargetDir);
+            Run("git", $"push origin {branchName}", docTargetDir);
         }
 
         private static void WriteForwards()

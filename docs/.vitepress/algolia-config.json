@@ -1,0 +1,34 @@
+{
+  "index_name": "lamar_index",
+  "start_urls": [
+    {
+      "url": "https://jasperfx.github.io/lamar/guide/"
+    }
+  ],
+  "stop_urls": [
+    "(?:(?<!\\.html)(?<!/))$",
+    "/lamar/guide/index.html"
+  ],
+  "selectors": {
+    "lvl0": {
+      "selector": ".sidebar > .sidebar-links > .sidebar-link .sidebar-link-item.active",
+      "global": true,
+      "default_value": "guide"
+    },
+    "lvl1": ".content h1",
+    "lvl2": ".content h2",
+    "lvl3": ".content h3",
+    "lvl4": ".content h4",
+    "lvl5": ".content h5",
+    "text": ".content p, .content li",
+    "language": {
+      "selector": "/html/@lang",
+      "type": "xpath",
+      "global": true,
+      "default_value": "en-US"
+    }
+  },
+  "custom_settings": {
+    "attributesForFaceting": ["language"]
+  }
+}
