@@ -1,19 +1,12 @@
 {
   "index_name": "lamar_index",
   "start_urls": [
-    {
-      "url": "https://jasperfx.github.io/lamar/guide/"
-    }
-  ],
-  "stop_urls": [
-    "(?:(?<!\\.html)(?<!/))$",
-    "/lamar/guide/index.html"
+    "https://jasperfx.github.io/lamar/guide"
   ],
   "selectors": {
     "lvl0": {
       "selector": ".sidebar > .sidebar-links > .sidebar-link .sidebar-link-item.active",
-      "global": true,
-      "default_value": "guide"
+      "global": true
     },
     "lvl1": ".content h1",
     "lvl2": ".content h2",
