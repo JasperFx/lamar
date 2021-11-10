@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 
         <Description>Command line utilities for managing Lamar dynamically generated code</Description>
         <Version>2.0.3</Version>
@@ -27,6 +27,6 @@
     <ItemGroup>
         <PackageReference Include="Oakton" Version="[3.0.0, 4.0.0)" />
     </ItemGroup>
-    
+
 
 </Project>

@@ -4,7 +4,7 @@
         <Description>Code Generation Chicanery for .Net</Description>
         <Version>3.2.2</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration</AssemblyName>
         <PackageId>LamarCodeGeneration</PackageId>
@@ -17,7 +17,7 @@
         <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
         <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     </PropertyGroup>
-    
+
     <ItemGroup>
       <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
       <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />

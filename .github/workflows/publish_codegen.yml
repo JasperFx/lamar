@@ -12,7 +12,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Install dependencies
       run: dotnet restore
     - name: Build
@@ -23,7 +23,7 @@ jobs:
       with:
           PROJECT_FILE_PATH: src/LamarCodeGeneration/LamarCodeGeneration.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-          
+
     - name: Publish LamarCodeGeneration.Commands
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-    <Version>6.0.0</Version>
+    <Version>6.0.1</Version>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar</AssemblyName>
     <PackageId>Lamar</PackageId>
@@ -34,5 +34,11 @@
     <PackageReference Include="BaselineTypeDiscovery" Version="1.1.1" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[5.0.0, 5.9.0)" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <PackageReference Include="BaselineTypeDiscovery" Version="1.1.1" />
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.0, 6.9.0)" />
   </ItemGroup>
 </Project>

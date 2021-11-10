@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Lamar;
 using Lamar.Diagnostics;
 using Lamar.Microsoft.DependencyInjection;
@@ -22,15 +19,15 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
             return new HostBuilder()
                 .UseLamar((context, services) =>
                 {
-// This adds a Container validation
-// to the Oakton "check-env" command
-services.CheckLamarConfiguration();
-                    
-                    // And the rest of your application's 
+                    // This adds a Container validation
+                    // to the Oakton "check-env" command
+                    services.CheckLamarConfiguration();
+
+                    // And the rest of your application's
                     // DI registrations.
                     services.IncludeRegistry<TestClassRegistry>();
                 })
-                
+
                 // Call this method to start your application
                 // with Oakton handling the command line parsing
                 // and delegation
@@ -48,7 +45,7 @@ services.CheckLamarConfiguration();
                 s.TheCallingAssembly();
                 s.WithDefaultConventions();
             });
-                    
+
             For<IEngine>().Use<Hemi>().Named("The Hemi");
 
             For<IEngine>().Add<VEight>().Singleton().Named("V8");
@@ -67,11 +64,11 @@ services.CheckLamarConfiguration();
             ForConcreteType<DeepConstructorGuy>();
 
             For<EngineChoice>().Add<EngineChoice>();
-                    
+
             For<IService>().Use(new ColorService("red"));
 
             Policies.SetAllProperties(policy => { policy.TypeMatches(type => type == typeof(IService)); });
-                    
+
             For<IGateway>().Use<DefaultGateway>()
                 .Setter<string>("Name").Is("Blue")
                 .Setter<string>("Color").Is("Green");
