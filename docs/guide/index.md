@@ -140,6 +140,46 @@ provides.
 And that is that, you're ready to run your ASP.Net Core application with Lamar handling service resolution and object cleanup during your
 HTTP requests.
 
+## Lamar with ASP.NET Core Minimal Hosting
+
+Minimal hosting provides you with a condensed programming experience, only exposing the minimum required to get an ASP.NET Core application running. You can still use Lamar with the minimal hosting approach, but you will be required to take a few additional steps to wire the Lamar container correctly into the ASP.NET Core infrastructure. Follow the example below. You will still need the NuGet packages mentioned in the previous section.
+
+```c#
+using Lamar;
+using Lamar.Microsoft.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Step 1. Add Lamar as the Host Container
+builder.Host.UseLamar();
+
+// Step 2. Add Lamar and registrations to ASP.NET Core 
+builder.Services.AddLamar(ServiceRegistry.For(registry => {
+    registry.AddScoped<IService, MyService>();
+}));
+
+var app = builder.Build();
+
+// Step 3. Use [FromServices] Attribute
+// Note: Blows up with "inferred" exception without it
+
+app.MapGet("/", ([FromServices] IService service) => service.Hi());
+app.Run();
+
+public class MyService : IService {
+    public string Hi() {
+        return "Hello, World!";
+    }
+}
+
+public interface IService {
+    string Hi();
+}
+```
+
+**Note: It's important that services injected into minimal endpoints have a `[FromServices]` attribute.**
+
 ## Lamar for Runtime Code Generation & Compilation
 
 Please see [compilation](/guide/compilation/) for more information.
