@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
-    public class ServiceGraph : IDisposable
+    public class ServiceGraph : IDisposable, IAsyncDisposable
     {
         private readonly object _familyLock = new object();
         
@@ -57,8 +57,6 @@ namespace Lamar
         }
 
         public Scope RootScope { get; }
-
-        internal readonly Dictionary<string, Type> CachedResolverTypes = new Dictionary<string, Type>();
 
         private void organize(ServiceRegistry services)
         {
@@ -380,9 +378,47 @@ namespace Lamar
 
         public void Dispose()
         {
-            foreach (var instance in AllInstances().OfType<IDisposable>())
+            foreach (var instance in AllInstances().OfType<ObjectInstance>())
             {
-                instance.SafeDispose();
+                if (instance.Service is IDisposable d)
+                {
+                    d.SafeDispose();
+                }
+                else if (instance.Service is IAsyncDisposable a)
+                {
+                    try
+                    {
+                        a.DisposeAsync().GetAwaiter().GetResult();
+                    }
+                    catch (Exception)
+                    {
+    
+                    }
+                }
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            foreach (var instance in AllInstances().OfType<ObjectInstance>())
+            {
+                if (instance.Service is IAsyncDisposable a)
+                {
+                    try
+                    {
+                        await a.DisposeAsync();
+                    }
+                    catch (Exception)
+                    {
+    
+                    }
+                }
+                else if (instance.Service is IDisposable d)
+                {
+                    d.SafeDispose();
+                }
+                
+                
             }
         }
 

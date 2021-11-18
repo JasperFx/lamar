@@ -40,10 +40,7 @@ namespace Lamar.IoC.Resolvers
                     else
                     {
                         _service = Build(_topLevelScope);
-                        if (_service is IDisposable disposable)
-                        {
-                            _topLevelScope.Disposables.Add(disposable);
-                        }
+                        _topLevelScope.TryAddDisposable(_service);
 
                         _topLevelScope.Services = _topLevelScope.Services.AddOrUpdate(Hash, _service);
                     }

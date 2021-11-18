@@ -10,11 +10,6 @@ namespace Lamar.IoC.Instances
 {
     public static class LambdaDefinitionExtensions
     {
-        private static readonly MethodInfo _getDisposables =
-            ReflectionHelper.GetProperty<Scope>(x => x.Disposables).GetGetMethod();
-
-        private static readonly MethodInfo _add = ReflectionHelper.GetMethod<ConcurrentBag<IDisposable>>(x => x.Add(null));
-
         private static readonly MethodInfo _tryRegisterDisposable =
             ReflectionHelper.GetMethod<Scope>(x => x.TryAddDisposable(null));
         
@@ -22,10 +17,8 @@ namespace Lamar.IoC.Instances
             Type variableType)
         {
             var scope = definition.Arguments.Single();
-            var disposables = Expression.Call(scope, _getDisposables);
-
             
-            var @call = Expression.Call(disposables, _add, variableType.CanBeCastTo<IDisposable>() ? parameter : Expression.Convert(parameter, typeof(IDisposable)));
+            var @call = Expression.Call(scope, _tryRegisterDisposable, parameter);
             
             definition.Body.Add(@call);
         }

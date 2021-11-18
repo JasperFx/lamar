@@ -7,10 +7,7 @@ namespace Lamar.IoC.Resolvers
         public object Resolve(Scope scope)
         {
             var service = Build(scope);
-            if (service is IDisposable)
-            {
-                scope.Disposables.Add((IDisposable) service);
-            }
+            scope.TryAddDisposable(service);
 
             return service;
         }

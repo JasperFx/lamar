@@ -18,7 +18,7 @@ namespace Lamar.Testing.IoC
             clock
                 .ShouldBeSameAs(singleton1.Resolve(Scope.Empty()));
             
-            theScope.Disposables.ShouldNotContain(clock);
+            theScope.AllDisposables.ShouldNotContain(clock);
 
         }
         
@@ -31,7 +31,7 @@ namespace Lamar.Testing.IoC
             clock
                 .ShouldBeSameAs(singleton1.Resolve(Scope.Empty()));
             
-            theScope.Disposables.ShouldContain(clock);
+            theScope.AllDisposables.ShouldContain(clock);
 
                 
         }
@@ -54,7 +54,7 @@ namespace Lamar.Testing.IoC
             var resolver = new DisposableScopedClock();
             var clock = resolver.Resolve(theScope);
             
-            theScope.Disposables.ShouldContain(clock);
+            theScope.AllDisposables.ShouldContain(clock);
         }
         
         [Fact]
@@ -73,7 +73,7 @@ namespace Lamar.Testing.IoC
 
             var clock = resolver.Resolve(theScope);
             
-            theScope.Disposables.ShouldContain(clock);
+            theScope.AllDisposables.ShouldContain(clock);
 
         }
     }

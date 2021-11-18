@@ -52,7 +52,8 @@ namespace Lamar.IoC.Instances
         {
             // No next, not disposable
 
-            var isDisposed = BuiltType.CanBeCastTo<IDisposable>();
+            var isDisposed = BuiltType.CanBeCastTo<IDisposable>() || 
+                             BuiltType.CanBeCastTo<IAsyncDisposable>();
 
             var callCtor = Expression.New(Ctor, Parameters.Select(definition.ExpressionFor));
 

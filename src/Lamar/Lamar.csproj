@@ -19,6 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BaselineTypeDiscovery" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LamarCodeGeneration\LamarCodeGeneration.csproj" />

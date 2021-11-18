@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using BaselineTypeDiscovery;
 using Lamar.Diagnostics;
 using Lamar.IoC.Diagnostics;
@@ -93,6 +94,8 @@ namespace Lamar.IoC
 
 
         public ConcurrentBag<IDisposable> Disposables { get; } = new ConcurrentBag<IDisposable>();
+        
+        internal IEnumerable<IDisposable> AllDisposables => Disposables;
 
         internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
 
@@ -113,6 +116,40 @@ namespace Lamar.IoC
             foreach (var disposable in distinctDisposables)
             {
                 disposable.SafeDispose();
+            }
+        }
+        
+        public virtual async ValueTask DisposeAsync()
+        {
+            if (DisposalLock == DisposalLock.ThrowOnDispose) throw new InvalidOperationException("This Container has DisposalLock = DisposalLock.ThrowOnDispose and cannot be disposed until the lock is cleared");
+
+            if (_hasDisposed) return;
+            _hasDisposed = true;
+
+            var distinctDisposables = Disposables.Distinct().ToArray();
+            // clear disposables bag to prevent memory leak. current implementation of ConcurrentBag is using thread local storage and in some cases
+            // e.g. an object from Disposables collection is referencing this Scope instance the whole graph can stay in memory after it was disposed
+            while (Disposables.TryTake(out _)) { }
+
+            if (DisposalLock == DisposalLock.Ignore) return;
+
+            foreach (var disposable in distinctDisposables)
+            {
+                if (disposable is IAsyncDisposable asyncDisposable)
+                {
+                    try
+                    {
+                        await asyncDisposable.DisposeAsync();
+                    }
+                    catch (Exception)
+                    {
+                        // Yup, don't let that go out
+                    }
+                }
+                else
+                {
+                    disposable.SafeDispose();
+                }
             }
         }
 
@@ -384,16 +421,15 @@ namespace Lamar.IoC
         /// <param name="object"></param>
         public void TryAddDisposable(object @object)
         {
-            if (@object is IDisposable disposable)
+            switch (@object)
             {
-                Disposables.Add(disposable);
+                case IDisposable disposable:
+                    Disposables.Add(disposable);
+                    break;
+                case IAsyncDisposable a:
+                    Disposables.Add(new AsyncDisposableWrapper(a));
+                    break;
             }
-        }
-
-        public object AddDisposable(object @object)
-        {
-            Disposables.Add((IDisposable) @object);
-            return @object;
         }
 
         public Func<string, T> FactoryByNameFor<T>()

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
 {
-    public interface INestedContainer : IServiceContext
+    public interface INestedContainer : IServiceContext, IAsyncDisposable
     {
         /// <summary>
         /// Inject an object into a container at runtime. Used primarily for services like
@@ -37,7 +37,7 @@ namespace Lamar
         void Inject<T>( T @object );
     }
     
-    public interface IContainer : IServiceContext, IDisposable
+    public interface IContainer : IServiceContext
     {
         /// <summary>
         /// Starts a "Nested" Container for atomic, isolated access.

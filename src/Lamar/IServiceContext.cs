@@ -7,7 +7,7 @@ using LamarCodeGeneration.Model;
 
 namespace Lamar
 {
-    public interface IServiceContext : IServiceProvider, IDisposable
+    public interface IServiceContext : IServiceProvider, IDisposable, IAsyncDisposable
     {
 
         /// <summary>

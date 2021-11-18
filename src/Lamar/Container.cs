@@ -12,7 +12,7 @@ namespace Lamar
 {
     #region sample_Container-Declaration
     public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope,
-            ISupportRequiredService
+            ISupportRequiredService, IAsyncDisposable
         #endregion
     {
         private bool _isDisposing;
@@ -55,6 +55,19 @@ namespace Lamar
             base.Dispose();
 
             if (ReferenceEquals(Root, this)) ServiceGraph.Dispose();
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            // Because a StackOverflowException when trying to cleanly shut down
+            // an application is really no fun
+            if (_isDisposing) return;
+
+            _isDisposing = true;
+
+            await base.DisposeAsync();
+
+            if (ReferenceEquals(Root, this)) ServiceGraph.DisposeAsync();
         }
 
 
@@ -270,6 +283,8 @@ namespace Lamar
 
             return true;
         }
+
+
     }
 
     /// <summary>

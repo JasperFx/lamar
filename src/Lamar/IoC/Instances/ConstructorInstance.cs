@@ -195,17 +195,28 @@ namespace Lamar.IoC.Instances
                 setter.ApplyQuickBuildProperties(service, scope);
             }
 
-            if (service is IDisposable disposable)
+            switch (service)
             {
-                if (Lifetime == ServiceLifetime.Singleton)
-                {
+                case IDisposable disposable when Lifetime == ServiceLifetime.Singleton:
                     scope.Root.Disposables.Add(disposable);
-                }
-                else
-                {
+                    break;
+                case IDisposable disposable:
                     scope.Disposables.Add(disposable);
+                    break;
+                case IAsyncDisposable a:
+                {
+                    var wrapper = new AsyncDisposableWrapper(a);
+                    if (Lifetime == ServiceLifetime.Singleton)
+                    {
+                        scope.Root.Disposables.Add(wrapper);
+                    }
+                    else
+                    {
+                        scope.Disposables.Add(wrapper);
+                    }
+
+                    break;
                 }
-                
             }
 
             if (Lifetime != ServiceLifetime.Transient)
@@ -283,7 +294,7 @@ namespace Lamar.IoC.Instances
 
         private DisposeTracking determineDisposalTracking(BuildMode mode)
         {
-            if (!ImplementationType.CanBeCastTo<IDisposable>()) return DisposeTracking.None;
+            if (!ImplementationType.CanBeCastTo<IDisposable>() && !ImplementationType.CanBeCastTo<IAsyncDisposable>()) return DisposeTracking.None;
 
             switch (mode)
             {

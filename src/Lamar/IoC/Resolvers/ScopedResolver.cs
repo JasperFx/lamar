@@ -26,10 +26,7 @@ namespace Lamar.IoC.Resolvers
                 service = (T) Build(scope);
                 scope.Services = scope.Services.AddOrUpdate(Hash, service);
 
-                if (service is IDisposable)
-                {
-                    scope.Disposables.Add((IDisposable) service);
-                }
+                scope.TryAddDisposable(service);
 
                 return service;
             }
