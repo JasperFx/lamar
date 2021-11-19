@@ -23,6 +23,9 @@
     <ProjectReference Include="..\StructureMap.Testing.Widget4\StructureMap.Testing.Widget4.csproj" />
     <ProjectReference Include="..\StructureMap.Testing.Widget5\StructureMap.Testing.Widget5.csproj" />
     <ProjectReference Include="..\StructureMap.Testing.Widget\StructureMap.Testing.Widget.csproj" />
+    <ProjectReference Include="..\Widget.Core\Widget.Core.csproj" />
+    <ProjectReference Include="..\Widget.Instance\Widget.Instance.csproj" />
+    <ProjectReference Include="..\Widget.Registration\Widget.Registration.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">

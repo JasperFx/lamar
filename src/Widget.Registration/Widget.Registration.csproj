@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Aspect.Logger\Widget.Aspect.Logger.csproj" />
+    <ProjectReference Include="..\Lamar\Lamar.csproj" />
     <ProjectReference Include="..\src\Aspect.Logger\Widget.Aspect.Logger.csproj" />
     <ProjectReference Include="..\src\Lamar\Lamar.csproj" />
     <ProjectReference Include="..\Widget.Core\Widget.Core.csproj" />
