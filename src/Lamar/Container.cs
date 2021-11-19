@@ -13,6 +13,10 @@ namespace Lamar
     #region sample_Container-Declaration
     public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope,
             ISupportRequiredService, IAsyncDisposable
+
+#if NET6_0_OR_GREATER
+            , IServiceProviderIsService
+#endif
         #endregion
     {
         private bool _isDisposing;
@@ -285,6 +289,12 @@ namespace Lamar
         }
 
 
+#if NET6_0_OR_GREATER
+        public bool IsService(Type serviceType)
+        {
+            return ServiceGraph.HasFamily(serviceType);
+        }
+#endif
     }
 
     /// <summary>
