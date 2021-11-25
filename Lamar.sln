@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Testing", "src\Lamar.Testing\Lamar.Testing.csproj", "{865C14C3-4B54-46EC-B394-9BAD73905086}"
 EndProject
@@ -49,17 +49,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarCodeGeneration.Command
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorTarget", "src\GeneratorTarget\GeneratorTarget.csproj", "{3938B85F-95BA-42F8-B686-DC650C3501A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lamar.AspNetCoreTests.Integration", "src\Lamar.AspNetCoreTests.Integration\Lamar.AspNetCoreTests.Integration.csproj", "{4BA17CD6-53C4-4FFB-8739-A02972AA6A2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AspNetCoreTests.Integration", "src\Lamar.AspNetCoreTests.Integration\Lamar.AspNetCoreTests.Integration.csproj", "{4BA17CD6-53C4-4FFB-8739-A02972AA6A2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithAspNetCoreMvc3", "src\LamarWithAspNetCoreMvc3\LamarWithAspNetCoreMvc3.csproj", "{5AA571C7-51E5-4479-8A52-5A6E375D4895}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithAspNetCoreMvc3", "src\LamarWithAspNetCoreMvc3\LamarWithAspNetCoreMvc3.csproj", "{5AA571C7-51E5-4479-8A52-5A6E375D4895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithIdentityOnNet5", "src\LamarWithIdentityOnNet5\LamarWithIdentityOnNet5.csproj", "{638BAA60-6013-49E1-8BB7-206F1EDE325B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithIdentityOnNet5", "src\LamarWithIdentityOnNet5\LamarWithIdentityOnNet5.csproj", "{638BAA60-6013-49E1-8BB7-206F1EDE325B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Core", "src\Widget.Core\Widget.Core.csproj", "{4EF9A748-F9B3-4321-B48A-3FD1D39C70FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Core", "src\Widget.Core\Widget.Core.csproj", "{4EF9A748-F9B3-4321-B48A-3FD1D39C70FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Instance", "src\Widget.Instance\Widget.Instance.csproj", "{7B71DDE5-BC22-45C9-93F9-D8F9D04DA5C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Instance", "src\Widget.Instance\Widget.Instance.csproj", "{7B71DDE5-BC22-45C9-93F9-D8F9D04DA5C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Widget.Registration", "src\Widget.Registration\Widget.Registration.csproj", "{9F1B7566-0D78-4A95-A5FF-C9FE7A71EBE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Registration", "src\Widget.Registration\Widget.Registration.csproj", "{9F1B7566-0D78-4A95-A5FF-C9FE7A71EBE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithMinimalApiOnNet6", "src\LamarWithMinimalApiOnNet6\LamarWithMinimalApiOnNet6.csproj", "{D39497B9-192B-4F4B-9B8D-024935124B93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +177,10 @@ Global
 		{9F1B7566-0D78-4A95-A5FF-C9FE7A71EBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F1B7566-0D78-4A95-A5FF-C9FE7A71EBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F1B7566-0D78-4A95-A5FF-C9FE7A71EBE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D39497B9-192B-4F4B-9B8D-024935124B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39497B9-192B-4F4B-9B8D-024935124B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39497B9-192B-4F4B-9B8D-024935124B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39497B9-192B-4F4B-9B8D-024935124B93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
