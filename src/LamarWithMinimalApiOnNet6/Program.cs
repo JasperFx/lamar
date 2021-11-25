@@ -1,46 +1,72 @@
 using Lamar;
 using Lamar.Microsoft.DependencyInjection;
-
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-
+// use Lamar as DI.
 builder.Host.UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory());
-builder.Host.ConfigureContainer<ServiceRegistry>(builder =>
+builder.Host.ConfigureContainer<ServiceRegistry>(services =>
 {
-    builder.For<ITest>().Use<MyTest>();
+    // register services using Lamar
+    services.For<ITest>().Use<MyTest>();
+    services.IncludeRegistry<MyRegistry>();
+    
+    // add the controllers
+    services.AddControllers();
 });
 
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapRazorPages();
-
+app.MapControllers();
 app.Run();
+
+[Route("api/[controller]")]
+[ApiController]
+public class HelloController : ControllerBase
+{
+    private readonly ITest test;
+    private readonly ITestTime testTime;
+
+    public HelloController(ITest test, ITestTime testTime)
+    {
+        this.test = test;
+        this.testTime = testTime;
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    => this.Ok($"{this.test.SayHello()}@{this.testTime.GetTime()}");
+}
 
 public interface ITest
 {
     string SayHello();
 }
 
+public interface ITestTime
+{
+    DateTime GetTime();
+}
+
+public class TestTime : ITestTime
+{
+    public DateTime GetTime() => DateTime.Now;
+}
+
 public class MyTest : ITest
 {
     public string SayHello() => "Hi there";
+}
+
+public class MyRegistry : ServiceRegistry
+{
+    public MyRegistry()
+    {
+        Scan(s =>
+        {
+            s.TheCallingAssembly();
+            s.WithDefaultConventions();
+        });
+    }
 }
