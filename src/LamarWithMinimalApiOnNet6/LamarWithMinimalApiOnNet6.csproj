@@ -10,4 +10,8 @@
 		<ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
 </Project>
