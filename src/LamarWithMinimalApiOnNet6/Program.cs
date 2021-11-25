@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 // use Lamar as DI.
-builder.Host.UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory());
+builder.Host.UseLamar();
 builder.Host.ConfigureContainer<ServiceRegistry>(services =>
 {
     // register services using Lamar
