@@ -11,14 +11,22 @@ builder.Host.ConfigureContainer<ServiceRegistry>(services =>
     // register services using Lamar
     services.For<ITest>().Use<MyTest>();
     services.IncludeRegistry<MyRegistry>();
-    
+
     // add the controllers
     services.AddControllers();
 });
 
-
 var app = builder.Build();
 app.MapControllers();
+
+// resolve services during start up
+using (var scope = app.Services.CreateScope())
+{
+    var testService = scope.ServiceProvider.GetRequiredService<ITest>();
+    Console.WriteLine(testService.SayHello());
+}
+
+
 app.Run();
 
 [Route("api/[controller]")]
