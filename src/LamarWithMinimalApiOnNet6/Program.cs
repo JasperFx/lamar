@@ -19,6 +19,8 @@ builder.Host.ConfigureContainer<ServiceRegistry>(services =>
 var app = builder.Build();
 app.MapControllers();
 
+app.MapGet("/", ([FromServices] ITest test) => test.SayHello());
+
 // resolve services during start up
 using (var scope = app.Services.CreateScope())
 {
