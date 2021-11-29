@@ -20,6 +20,10 @@ namespace Lamar.IoC
 {
     #region sample_Scope-Declarations
     public class Scope : IServiceContext
+#if NET6_0_OR_GREATER
+            , IServiceProviderIsService
+#endif
+        
     #endregion
     {
         protected bool _hasDisposed;
@@ -64,6 +68,13 @@ namespace Lamar.IoC
         }
 
         protected Scope(){}
+        
+#if NET6_0_OR_GREATER
+        public bool IsService(Type serviceType)
+        {
+            return ServiceGraph.HasFamily(serviceType);
+        }
+#endif
         
         public Scope Root { get; protected set; }
 

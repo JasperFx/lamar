@@ -1,6 +1,10 @@
+using System;
 using Lamar;
 using Lamar.Microsoft.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +23,7 @@ builder.Host.ConfigureContainer<ServiceRegistry>(services =>
 var app = builder.Build();
 app.MapControllers();
 
-app.MapGet("/", ([FromServices] ITest test) => test.SayHello());
+app.MapGet("/", (ITest service) => service.SayHello());
 
 // resolve services during start up
 using (var scope = app.Services.CreateScope())

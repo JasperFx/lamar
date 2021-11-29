@@ -131,7 +131,11 @@ namespace Lamar.Microsoft.DependencyInjection
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
 
-            registry = registry ?? new ServiceRegistry();
+#if NET6_0_OR_GREATER
+            services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+#endif
+
+            registry ??= new ServiceRegistry();
 
             foreach (var descriptor in registry)
             {
