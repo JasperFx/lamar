@@ -176,13 +176,14 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 container.Bootstrapping.DisplayTimings().Write(writer);
 
                 _output.WriteLine(writer.ToString());
+                _output.WriteLine(container.WhatDoIHave());
             }
 
             _output.WriteLine("Bootstrapping: " + bootstrappingTime);
             _output.WriteLine("Building all:  " + (ending - starting));
 
 
-
+            
 
             if (failures.Any())
             {
@@ -633,7 +634,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     options.RequireHttpsMetadata = true;
                 });
 
-
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app)

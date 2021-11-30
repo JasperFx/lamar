@@ -146,47 +146,54 @@ namespace LamarCodeGeneration
         {
             if (Aliases.ContainsKey(type)) return Aliases[type];
 
-            if (type.IsGenericType)
+            try
             {
-                if (type.IsGenericTypeDefinition)
+                if (type.IsGenericType)
                 {
-                    var parts = type.Name.Split('`');
+                    if (type.IsGenericTypeDefinition)
+                    {
+                        var parts = type.Name.Split('`');
                 
-                    var cleanName = parts.First().Replace("+", ".");
+                        var cleanName = parts.First().Replace("+", ".");
 
-                    var hasArgs = parts.Length > 1;
-                    if (hasArgs) 
-                    {
-                        var numberOfArgs = int.Parse(parts[1]) - 1;
-                        cleanName = $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
-                    }
-                    if (type.IsNested)
-                    {
-                        cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
-                    }
+                        var hasArgs = parts.Length > 1;
+                        if (hasArgs) 
+                        {
+                            var numberOfArgs = int.Parse(parts[1]) - 1;
+                            cleanName = $"{cleanName}<{"".PadLeft(numberOfArgs, ',')}>";
+                        }
+                        if (type.IsNested)
+                        {
+                            cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
+                        }
 
-                    return cleanName;
+                        return cleanName;
+                    }
+                    else
+                    {
+                        var cleanName = type.Name.Split('`').First().Replace("+", ".");
+                        if (type.IsNested)
+                        {
+                            cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
+                        }
+
+                        var args = type.GetGenericArguments().Select(x => x.ShortNameInCode()).Join(", ");
+
+                        return $"{cleanName}<{args}>";
+                    }
                 }
-                else
+
+                if (type.MemberType == MemberTypes.NestedType)
                 {
-                    var cleanName = type.Name.Split('`').First().Replace("+", ".");
-                    if (type.IsNested)
-                    {
-                        cleanName = $"{type.ReflectedType.NameInCode()}.{cleanName}";
-                    }
-
-                    var args = type.GetGenericArguments().Select(x => x.ShortNameInCode()).Join(", ");
-
-                    return $"{cleanName}<{args}>";
+                    return $"{type.ReflectedType.NameInCode()}.{type.Name}";
                 }
-            }
 
-            if (type.MemberType == MemberTypes.NestedType)
+                return type.Name.Replace("+", ".");
+            }
+            catch (Exception)
             {
-                return $"{type.ReflectedType.NameInCode()}.{type.Name}";
+                return type.Name;
             }
-
-            return type.Name.Replace("+", ".");
         }
 
 
