@@ -24,45 +24,43 @@ namespace Lamar.Diagnostics
                 AnsiConsole.Record();
             }
             
-            AnsiConsole.Render(new FigletText("Lamar"){Color = Color.Blue});
+            AnsiConsole.Write(new FigletText("Lamar"){Color = Color.Blue});
 
-            using (var host = input.BuildHost())
+            using var host = input.BuildHost();
+            var container = (IContainer)host.Services;
+
+
+            // TODO -- check for the interactive mode here.
+                
+
+            var configurations = input.Query(container)
+                .GroupBy(x => x.ServiceType.ResolveServiceType().Assembly)
+                .OrderBy(x => x.Key.FullName)
+                .ToArray();
+
+            var display = input.BuildPlansFlag ? WhatDoIHaveDisplay.BuildPlan : WhatDoIHaveDisplay.Summary;
+
+            WriteSummaries(input, configurations, display, container);
+                
+
+                
+            if (input.FileFlag.IsNotEmpty())
             {
-                var container = (IContainer)host.Services;
+                var fullPath = input.FileFlag.ToFullPath();
+                Console.WriteLine("Writing the query results to " + fullPath);
 
-
-                // TODO -- check for the interactive mode here.
-                
-
-                var configurations = input.Query(container)
-                    .GroupBy(x => x.ServiceType.ResolveServiceType().Assembly)
-                    .OrderBy(x => x.Key.FullName)
-                    .ToArray();
-
-                var display = input.BuildPlansFlag ? WhatDoIHaveDisplay.BuildPlan : WhatDoIHaveDisplay.Summary;
-
-                WriteSummaries(input, configurations, display, container);
-                
-
-                
-                if (input.FileFlag.IsNotEmpty())
+                var extension = Path.GetExtension(fullPath);
+                if (extension.EndsWith("htm", StringComparison.OrdinalIgnoreCase) ||
+                    extension.EndsWith("html", StringComparison.OrdinalIgnoreCase))
                 {
-                    var fullPath = input.FileFlag.ToFullPath();
-                    Console.WriteLine("Writing the query results to " + fullPath);
-
-                    var extension = Path.GetExtension(fullPath);
-                    if (extension.EndsWith("htm", StringComparison.OrdinalIgnoreCase) ||
-                        extension.EndsWith("html", StringComparison.OrdinalIgnoreCase))
-                    {
-                        File.WriteAllText(fullPath,AnsiConsole.ExportHtml());
-                    }
-                    else
-                    {
-                        File.WriteAllText(fullPath,AnsiConsole.ExportText());
-                    }
-                    
-                    
+                    File.WriteAllText(fullPath,AnsiConsole.ExportHtml());
                 }
+                else
+                {
+                    File.WriteAllText(fullPath,AnsiConsole.ExportText());
+                }
+                    
+                    
             }
 
             return true;
@@ -77,12 +75,12 @@ namespace Lamar.Diagnostics
 
                 var rule = new Rule($"[blue]Assembly Name (Assembly Version)[/]")
                     {Alignment = Justify.Left};
-                AnsiConsole.Render(rule);
+                AnsiConsole.Write(rule);
 
 
                 var node = new Tree("{Service Type Namespace}");
                 node.AddNode("{Service Type Full Name}").AddNode("{Lifetime}: {Description of Registration}");
-                AnsiConsole.Render(node);
+                AnsiConsole.Write(node);
                 Console.WriteLine();
                 Console.WriteLine();
             }
@@ -105,7 +103,7 @@ namespace Lamar.Diagnostics
         {
             var rule = new Rule($"[blue]{@group.Key.GetName().Name} ({@group.Key.GetName().Version})[/]")
                 {Alignment = Justify.Left};
-            AnsiConsole.Render(rule);
+            AnsiConsole.Write(rule);
 
             var namespaces = @group.GroupBy(x => x.ServiceType.ResolveServiceType().Namespace);
             foreach (var ns in namespaces)
@@ -127,7 +125,7 @@ namespace Lamar.Diagnostics
                 WriteInstances(node, configuration, input, displayMode, container);
             }
 
-            AnsiConsole.Render(top);
+            AnsiConsole.Write(top);
 
             Console.WriteLine();
         }

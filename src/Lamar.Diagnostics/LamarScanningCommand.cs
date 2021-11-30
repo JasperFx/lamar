@@ -10,7 +10,7 @@ namespace Lamar.Diagnostics
     {
         public override bool Execute(NetCoreInput input)
         {
-            AnsiConsole.Render(new FigletText("Lamar"){Color = Color.Blue});
+            AnsiConsole.Write(new FigletText("Lamar"){Color = Color.Blue});
 
             
             using (var host = input.BuildHost())
