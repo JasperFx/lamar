@@ -69,7 +69,7 @@ namespace Lamar
 
             await base.DisposeAsync();
 
-            if (ReferenceEquals(Root, this)) ServiceGraph.DisposeAsync();
+            if (ReferenceEquals(Root, this)) await ServiceGraph.DisposeAsync();
         }
 
 
