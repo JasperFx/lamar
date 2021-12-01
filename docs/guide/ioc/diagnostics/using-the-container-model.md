@@ -95,14 +95,12 @@ If our interface is this below:
 <!-- snippet: sample_istartable -->
 <a id='snippet-sample_istartable'></a>
 ```cs
-public interface IStartable
+public interface IStartable : IDisposable
 {
-    bool WasStarted { get; }
-
     void Start();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L267-L275' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L305-L312' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_istartable-1'></a>
 ```cs
 public interface IStartable
@@ -112,7 +110,17 @@ public interface IStartable
     void Start();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Query/ModelIntegrationTester.cs#L188-L196' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L267-L275' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable-1' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_istartable-2'></a>
+```cs
+public interface IStartable
+{
+    bool WasStarted { get; }
+
+    void Start();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Query/ModelIntegrationTester.cs#L188-L196' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable-2' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 We could walk through the entire Lamar model and find every registered instance that implements this interface, create each, and call the `Start()` method like in this code below:

@@ -57,7 +57,7 @@ public class WidgetDecorator : IWidget
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/decorators.cs#L235-L252' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_widgetholder-decorator' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/decorators.cs#L234-L251' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_widgetholder-decorator' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 We can configure Lamar to add a decorator around all other `IWidget` registrations with this syntax:
@@ -83,7 +83,7 @@ container.GetInstance<IWidget>()
     .ShouldBeOfType<WidgetDecorator>()
     .Inner.ShouldBeOfType<AWidget>();
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/decorators.cs#L18-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_decorator-sample' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/decorators.cs#L17-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_decorator-sample' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## Activators
@@ -102,27 +102,120 @@ to perform any kind of work besides putting together necessary state in a constr
 so you likely have some kind of `Start()` method on the polling service to actually start
 things up like this class:
 
-snippet: sample_poller
+<!-- snippet: sample_poller -->
+<a id='snippet-sample_poller'></a>
+```cs
+public class Poller : IPoller
+{
+    public void Start()
+    {
+        // start the actual polling
+    }
+    
+    public void Dispose()
+    {
+        // stop polling
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L272-L287' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_poller' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 When we register the class above with Lamar, we can supply a Lambda function to start up
 `Poller` like this:
 
-snippet: sample_using_activator_on_one_registration
+<!-- snippet: sample_using_activator_on_one_registration -->
+<a id='snippet-sample_using_activator_on_one_registration'></a>
+```cs
+var container = new Container(x =>
+{
+    x.For<IPoller>().Use<Poller>()
+        
+        // This registers an activator on just this
+        // one registration
+        .OnCreation(poller => poller.Start());
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L291-L302' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using_activator_on_one_registration' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 In the sample above, we registered an activator on one and only one service registration. Lamar
 will also let you apply an activator across service registrations that implement or inherit from
 a common type. Back to the polling example, what if we introduce a new marker interface
 to denote objects that need to be started or activated like this:
 
-snippet: sample_IStartable
+<!-- snippet: sample_IStartable -->
+<a id='snippet-sample_istartable'></a>
+```cs
+public interface IStartable : IDisposable
+{
+    void Start();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L305-L312' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_istartable-1'></a>
+```cs
+public interface IStartable
+{
+    bool WasStarted { get; }
+
+    void Start();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L267-L275' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable-1' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-sample_istartable-2'></a>
+```cs
+public interface IStartable
+{
+    bool WasStarted { get; }
+
+    void Start();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Query/ModelIntegrationTester.cs#L188-L196' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_istartable-2' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Now, let's create a new `StartablePoller`:
 
-snippet: sample_StartablePoller
+<!-- snippet: sample_StartablePoller -->
+<a id='snippet-sample_startablepoller'></a>
+```cs
+public class StartablePoller : IPoller, IStartable
+{
+    public void Dispose()
+    {
+        // shut things down
+    }
+
+    public void Start()
+    {
+        // start up the polling
+    }
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L314-L328' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_startablepoller' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 And going back to the `IPoller` registration, we could now do this:
 
-snippet: sample_activator_by_marker_type
+<!-- snippet: sample_activator_by_marker_type -->
+<a id='snippet-sample_activator_by_marker_type'></a>
+```cs
+var container = new Container(services =>
+{
+    // Remember that Lamar natively understands .Net
+    // DI registrations w/o any adapter
+    services.AddSingleton<IPoller, StartablePoller>();
+    
+    // Other registrations that might include other 
+    // IStartable types
+    
+    services.For<IStartable>()
+        .OnCreationForAll(x => x.Start());
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L332-L347' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_activator_by_marker_type' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 The call to `For<T>().OnCreationForAll(Action<T>)` will apply to any registrations of
 type `T` or any registrations where the implementation type can be cast to `T`. So in th case
@@ -133,12 +226,45 @@ an activator if you need access to other services. Let's say that for some kind 
 in our system, we want to track what `IStartable` objects have been created and floating
 around in our system at any time with this simple class:
 
-snippet: sample_StartableTracker
+<!-- snippet: sample_StartableTracker -->
+<a id='snippet-sample_startabletracker'></a>
+```cs
+public class StartableTracker
+{
+    public List<IStartable> Startables { get; }
+        = new List<IStartable>();
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L350-L358' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_startabletracker' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Now, we'd like our `IStartable` objects to both `Start()` and be tracked by the class above,
 so we'll use an activator like this:
 
-snippet: sample_startable_and_tracker_registration
+<!-- snippet: sample_startable_and_tracker_registration -->
+<a id='snippet-sample_startable_and_tracker_registration'></a>
+```cs
+var container = new Container(services =>
+{
+    services.AddSingleton<IPoller, StartablePoller>();
+    
+    // Other registrations that might include other 
+    // IStartable types
+    
+    services.AddSingleton<StartableTracker>();
+
+    services.For<IStartable>()
+        .OnCreationForAll((context, startable) =>
+        {
+            var tracker = context.GetInstance<StartableTracker>();
+            tracker.Startables.Add(startable);
+
+            startable.Start();
+        });
+});
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L362-L383' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_startable_and_tracker_registration' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## Interceptors
 
@@ -156,7 +282,32 @@ Programming
    
 Here's a sample from the unit tests:
 
-snippet: sample_intercept_a_single_instance
+<!-- snippet: sample_intercept_a_single_instance -->
+<a id='snippet-sample_intercept_a_single_instance'></a>
+```cs
+[Fact]
+public void intercept_a_single_instance()
+{
+    var container = new Container(x =>
+    {
+        x.For<IWidget>().Add<ActivatedWidget>()
+            .Named("yes")
+            .OnCreation(w => new DecoratedWidget(w));
+
+        x.For<IWidget>().Add<ActivatedWidget>().Named("no");
+    });
+
+    container.GetInstance<IWidget>("yes")
+        .ShouldBeOfType<DecoratedWidget>()
+        .Inner.ShouldBeOfType<ActivatedWidget>();
+
+    container.GetInstance<IWidget>("no")
+        .ShouldBeOfType<ActivatedWidget>();
+
+}
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/activation_and_interception.cs#L87-L110' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_intercept_a_single_instance' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 Just like activators, there is the option to only use the original object or the ability
 to use the original object and the constructing container.

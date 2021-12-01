@@ -142,43 +142,42 @@ HTTP requests.
 
 ## Lamar with ASP.NET Core Minimal Hosting
 
-Minimal hosting provides you with a condensed programming experience, only exposing the minimum required to get an ASP.NET Core application running. You can still use Lamar with the minimal hosting approach, but you will be required to take a few additional steps to wire the Lamar container correctly into the ASP.NET Core infrastructure. Follow the example below. You will still need the NuGet packages mentioned in the previous section.
+::: tip
+The `[FromServices]` attribute is not necessary when using Lamar as the backing DI container behind [Minimal API](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-6.0) applications because
+Lamar implements the ASP.Net `IServiceProviderIsService` interface. 
+:::
 
-```c#
-using Lamar;
-using Lamar.Microsoft.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
+Minimal hosting provides you with a condensed programming experience, only exposing the minimum required to get an ASP.NET Core application running. You can still use Lamar with the minimal hosting approach with the existing `UseLamar()` extension methods to wire Lamar into the ASP.NET Core infrastructure. Follow the example below. You will still need the NuGet packages mentioned in the previous section.
 
+<!-- snippet: sample_using_lamar_with_minimal_api -->
+<a id='snippet-sample_using_lamar_with_minimal_api'></a>
+```cs
 var builder = WebApplication.CreateBuilder(args);
 
-// Step 1. Add Lamar as the Host Container
-builder.Host.UseLamar();
+// use Lamar as DI.
+builder.Host.UseLamar((context, registry) =>
+{
+    // register services using Lamar
+    registry.For<ITest>().Use<MyTest>();
+    registry.IncludeRegistry<MyRegistry>();
 
-// Step 2. Add Lamar and registrations to ASP.NET Core 
-builder.Services.AddLamar(ServiceRegistry.For(registry => {
-    registry.AddScoped<IService, MyService>();
-}));
+    // add the controllers
+    registry.AddControllers();
+});
 
 var app = builder.Build();
+app.MapControllers();
 
-// Step 3. Use [FromServices] Attribute
-// Note: Blows up with "inferred" exception without it
+app.MapGet("/", (ITest service) => service.SayHello());
 
-app.MapGet("/", ([FromServices] IService service) => service.Hi());
 app.Run();
-
-public class MyService : IService {
-    public string Hi() {
-        return "Hello, World!";
-    }
-}
-
-public interface IService {
-    string Hi();
-}
 ```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarWithMinimalApiOnNet6/Program.cs#L8-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using_lamar_with_minimal_api' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
-**Note: It's important that services injected into minimal endpoints have a `[FromServices]` attribute.**
+::: tip
+Note, there are a couple overloads for `UseLamar()` that may be more or less appropriate for your exact application's needs.
+:::
 
 ## Lamar for Runtime Code Generation & Compilation
 

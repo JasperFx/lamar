@@ -4,36 +4,31 @@ using Lamar.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+
+#region sample_using_lamar_with_minimal_api
 
 var builder = WebApplication.CreateBuilder(args);
 
 // use Lamar as DI.
-builder.Host.UseLamar();
-builder.Host.ConfigureContainer<ServiceRegistry>(services =>
+builder.Host.UseLamar((context, registry) =>
 {
     // register services using Lamar
-    services.For<ITest>().Use<MyTest>();
-    services.IncludeRegistry<MyRegistry>();
+    registry.For<ITest>().Use<MyTest>();
+    registry.IncludeRegistry<MyRegistry>();
 
     // add the controllers
-    services.AddControllers();
+    registry.AddControllers();
 });
+
 
 var app = builder.Build();
 app.MapControllers();
 
 app.MapGet("/", (ITest service) => service.SayHello());
 
-// resolve services during start up
-using (var scope = app.Services.CreateScope())
-{
-    var testService = scope.ServiceProvider.GetRequiredService<ITest>();
-    Console.WriteLine(testService.SayHello());
-}
-
-
 app.Run();
+
+        #endregion
 
 [Route("api/[controller]")]
 [ApiController]

@@ -193,7 +193,7 @@ function getIOCSideBar() {
       link: '/guide/ioc/injecting-at-runtime'
     },
     {
-      text: 'Lamar and IDisposable',
+      text: 'Lamar, IDisposable, and IAsyncDisposable',
       link: '/guide/ioc/disposing'
     },
     {

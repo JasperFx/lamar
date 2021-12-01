@@ -13,22 +13,22 @@ static Task<int> Main(string[] args)
     return new HostBuilder()
         .UseLamar((context, services) =>
         {
-// This adds a Container validation
-// to the Oakton "check-env" command
-services.CheckLamarConfiguration();
-            
-            // And the rest of your application's 
+            // This adds a Container validation
+            // to the Oakton "check-env" command
+            services.CheckLamarConfiguration();
+
+            // And the rest of your application's
             // DI registrations.
             services.IncludeRegistry<TestClassRegistry>();
         })
-        
+
         // Call this method to start your application
         // with Oakton handling the command line parsing
         // and delegation
         .RunOaktonCommands(args);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L18-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L15-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Once the `Lamar.Diagnostics` NuGet is installed to your application and you've opted into Oakton to handle command line options, typing this command at the root of your project will show all the installed commands:

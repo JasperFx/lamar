@@ -1,6 +1,42 @@
-# Lamar and IDisposable
+# Lamar and IDisposable/IAsyncDisposable
 
-One of the main reasons to use an IoC container is to offload the work of disposing created objects at the right time in the application scope. Sure, it's something you should be aware of, but developers are less likely to make mistakes if that's just handled for them.
+::: tip
+Lamar v7.0 added support for `IAsyncDisposable` handling. Finally.
+:::
+
+One of the main reasons to use an IoC container is to offload the work of disposing created objects at the right time in the application scope. Sure, it's something you should be aware of, but developers are less likely to make mistakes if that's just handled for them. To
+simplify the usage of `IDisposable` and `IAsyncDisposable`. In summary, Lamar tracks all objects
+it creates **in the container that created the object** that implements either `IDisposable` **or** `IAsyncDisposable`, and these tracked objects
+are disposed when the creating container is disposed. 
+
+## IAsyncDisposable
+
+The Lamar `IContainer` itself, and all nested containers (scoped containers in .Net DI nomenclature)
+implement both `IDisposable` and `IAsyncDisposable`. It is **not** necessary to call both
+`Dispose()` and `DisposeAsync()` as either method will dispose all tracked 
+`IDisposable` / `IAsyncDisposable` objects when either method is called. 
+
+<!-- snippet: sample_calling_async_disposable -->
+<a id='snippet-sample_calling_async_disposable'></a>
+```cs
+// Asynchronously disposing the container
+await container.DisposeAsync();
+```
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/disposing_container.cs#L472-L476' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_calling_async_disposable' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+The following table explains what method is called on a tracked object when the creating
+container is disposed:
+
+|If an object implements...           |Container.Dispose()                       |Container.DisposeAsync()|
+|-------------------------------------|------------------------------------------|------------------------|
+|`IDisposable`                        |`Dispose()`                               |`Dispose()`             |
+|`IAsyncDisposable`                   |`DisposeAsync().GetAwaiter().GetResult()` |`DisposeAsync()`        |
+|`IDisposable` and `IAsyncDisposable` |`DisposeAsync()`                          |`DisposeAsync()`        |
+
+If any objects are being created by Lamar that only implement `IAsyncDisposable`, it is probably
+best to strictly use `Container.DisposeAsync()` to avoid any problematic mixing of sync
+and async code.
 
 ## Singletons
 

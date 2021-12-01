@@ -12,7 +12,7 @@ Lamar's `Container` class subclasses another class in Lamar called `Scope` that 
 public class Container : Scope, IContainer, INestedContainer, IServiceScopeFactory, IServiceScope,
         ISupportRequiredService
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/Container.cs#L13-L16' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-declaration' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/Container.cs#L13-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-declaration' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 `Scope` itself directly implements several other ASP.Net Core related interfaces:
@@ -21,8 +21,11 @@ public class Container : Scope, IContainer, INestedContainer, IServiceScopeFacto
 <a id='snippet-sample_scope-declarations'></a>
 ```cs
 public class Scope : IServiceContext
+#if NET6_0_OR_GREATER
+        , IServiceProviderIsService
+#endif
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L20-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L21-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 [IServiceScope](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope?view=aspnetcore-2.1), [ISupportRequiredService](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.isupportrequiredservice?view=aspnetcore-2.1), [IServiceScopeFactory](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory?view=aspnetcore-2.1) are all ASP.Net Core DI abstractions.

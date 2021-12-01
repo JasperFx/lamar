@@ -468,7 +468,12 @@ namespace StructureMap.Testing.Pipeline
 
             var service = container.GetInstance<Disposable>();
             container.DisposalLock = disposalLock;
+
+            #region sample_calling_async_disposable
+            // Asynchronously disposing the container
             await container.DisposeAsync();
+
+            #endregion
 
             container.AllDisposables.ShouldBeEmpty();
         }
