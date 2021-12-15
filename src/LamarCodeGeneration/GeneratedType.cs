@@ -231,9 +231,10 @@ namespace LamarCodeGeneration
 
         public string FullName => $"{Namespace}.{TypeName}";
 
-        public void FindType(Type[] generated)
+        public Type FindType(IEnumerable<Type> types)
         {
-            CompiledType = generated.Single(x => x.FullName == FullName);
+            CompiledType = types.SingleOrDefault(x => x.FullName == FullName);
+            return CompiledType;
         }
 
         public void ArrangeFrames(IServiceVariableSource services = null)

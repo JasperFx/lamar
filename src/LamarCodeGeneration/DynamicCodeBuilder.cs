@@ -21,6 +21,8 @@ namespace LamarCodeGeneration
             _generators = generators;
         }
 
+        public IServiceVariableSource ServiceVariableSource { get; set; }
+
         public string GenerateAllCode()
         {
             var writer = new StringWriter();
@@ -36,12 +38,22 @@ namespace LamarCodeGeneration
             return writer.ToString();
         }
 
-        public string GenerateCodeFor(string codeType)
+        public string DeleteAllGeneratedCode()
         {
-            var generator = _generators.FirstOrDefault(x => StringExtensions.EqualsIgnoreCase(x.CodeType, codeType));
+            var directory = _rules.GeneratedCodeOutputPath.ToFullPath();
+            var fileSystem = new FileSystem();
+            fileSystem.CleanDirectory(directory);
+            fileSystem.DeleteDirectory(directory);
+
+            return directory;
+        }
+
+        public string GenerateCodeFor(string childNamespace)
+        {
+            var generator = _generators.FirstOrDefault(x => x.ChildNamespace.EqualsIgnoreCase(childNamespace));
             if (generator == null)
             {
-                throw new ArgumentOutOfRangeException($"Unknown {nameof(codeType)} '{codeType}'. Known code types are {CodeTypes.Join(", ")}");
+                throw new ArgumentOutOfRangeException($"Unknown {nameof(childNamespace)} '{childNamespace}'. Known code types are {ChildNamespaces.Join(", ")}");
             }
 
             return generateCode(generator);
@@ -50,26 +62,47 @@ namespace LamarCodeGeneration
         public void WriteGeneratedCode(Action<string> onFileWritten, string directory = null)
         {
             directory = directory ?? _rules.GeneratedCodeOutputPath.ToFullPath();
+            
+            
             new FileSystem().CreateDirectory(directory);
 
 
             foreach (var generator in _generators)
             {
-                var code = generateCode(generator);
-                var fileName = Path.Combine(directory, generator.CodeType.Replace(" ", "_") + ".cs");
+                var exportDirectory = generator.ToExportDirectory(directory);
+                new FileSystem().CreateDirectory(exportDirectory);
+                
+                foreach (var file in generator.BuildFiles())
+                {
+                    var generatedAssembly = generator.StartAssembly(_rules);
+                    file.AssembleTypes(generatedAssembly);
 
-                File.WriteAllText(fileName, code);
-                onFileWritten(fileName);
+                    var code = generatedAssembly.GenerateCode(ServiceVariableSource);
+                    var fileName = Path.Combine(exportDirectory, file.FileName.Replace(" ", "_") + ".cs");
+                    File.WriteAllText(fileName, code);
+                    onFileWritten(fileName);
+                }
+
             }
         }
 
         private string generateCode(IGeneratesCode generator)
         {
-            var generatedAssembly = new GeneratedAssembly(_rules);
-            var serviceVariables = generator.AssemblyTypes(_rules, generatedAssembly);
+            if (generator.ChildNamespace.IsEmpty())
+            {
+                throw new InvalidOperationException($"Missing {nameof(IGeneratesCode.ChildNamespace)} for {generator}");
+            }
 
-            var code = generatedAssembly.GenerateCode(serviceVariables);
-            return code;
+            var @namespace = $"{_rules.ApplicationNamespace}.{generator.ChildNamespace}";
+            
+            var generatedAssembly = new GeneratedAssembly(_rules, @namespace);
+            var files = generator.BuildFiles();
+            foreach (var file in files)
+            {
+                file.AssembleTypes(generatedAssembly);
+            }
+
+            return generatedAssembly.GenerateCode(ServiceVariableSource);
         }
 
         /// <summary>
@@ -81,12 +114,11 @@ namespace LamarCodeGeneration
         {
             foreach (var generator in _generators)
             {
-                var generatedAssembly = new GeneratedAssembly(_rules);
-                var serviceVariables = generator.AssemblyTypes(_rules, generatedAssembly);
+                var generatedAssembly = generator.AssembleTypes(_rules);
 
                 try
                 {
-                    withAssembly(generatedAssembly, serviceVariables);
+                    withAssembly(generatedAssembly, ServiceVariableSource);
                 }
                 catch (Exception e)
                 {
@@ -103,11 +135,14 @@ namespace LamarCodeGeneration
         {
             foreach (var generator in _generators)
             {
-                await generator.AttachTypes(_rules, assembly ?? _rules.ApplicationAssembly, _services);
+                foreach (var file in generator.BuildFiles())
+                {
+                    await file.AttachTypes(_rules, assembly ?? _rules.ApplicationAssembly, _services);
+                }
             }
         }
 
-        public string[] CodeTypes => _generators.Select(x => x.CodeType).ToArray();
+        public string[] ChildNamespaces => _generators.Select(x => x.ChildNamespace).ToArray();
 
     }
 }

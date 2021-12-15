@@ -16,14 +16,8 @@ namespace GeneratorTarget
             return Host.CreateDefaultBuilder()
                 .UseLamar((c, services) =>
                 {
-                    services.AddSingleton<IGeneratesCode>(new ConsoleWriterGenerator("Writer1",
-                        "Hello from writer 1", "Writer1"));
-                    
-                    services.AddSingleton<IGeneratesCode>(new ConsoleWriterGenerator("Writer2",
-                        "Hello from writer 2", "Writer2"));
-                    
-                    services.AddSingleton<IGeneratesCode>(new ConsoleWriterGenerator("Writer3",
-                        "Hello from writer 3", "Writer3"));
+                    services.AddSingleton<IGeneratesCode>(new GreeterGenerator());
+                    services.AddSingleton<IGeneratesCode>(new GreeterGenerator2());
                 })
                 .RunOaktonCommands(args);
 
