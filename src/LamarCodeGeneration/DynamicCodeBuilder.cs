@@ -103,26 +103,11 @@ namespace LamarCodeGeneration
         {
             foreach (var generator in _generators)
             {
-                await generator.AttachPreBuiltTypes(_rules, assembly ?? _rules.ApplicationAssembly, _services);
+                await generator.AttachTypes(_rules, assembly ?? _rules.ApplicationAssembly, _services);
             }
         }
 
         public string[] CodeTypes => _generators.Select(x => x.CodeType).ToArray();
 
-
-        /// <summary>
-        /// Allow each IGeneratesCode service to find and create objects from the newly
-        /// compiled assembly
-        /// compiled assembly
-        /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public async Task AttachAllCompiledTypes(IServiceProvider services)
-        {
-            foreach (var generatesCode in _generators)
-            {
-                await generatesCode.AttachGeneratedTypes(_rules, services);
-            }
-        }
     }
 }

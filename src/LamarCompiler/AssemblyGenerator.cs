@@ -177,7 +177,7 @@ namespace LamarCompiler
 			generator1.ReferenceAssembly(GetType().Assembly);
 			generator1.ReferenceAssembly(typeof(Task).Assembly);
 
-			foreach (var assembly1 in generatedAssembly.Generation.Assemblies)
+			foreach (var assembly1 in generatedAssembly.Rules.Assemblies)
 			{
 				generator1.ReferenceAssembly(assembly1);
 			}

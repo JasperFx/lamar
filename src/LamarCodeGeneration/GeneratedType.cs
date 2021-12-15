@@ -29,6 +29,14 @@ namespace LamarCodeGeneration
         {
             Rules = rules;
             TypeName = typeName;
+            Namespace = rules.ApplicationNamespace;
+        }
+
+        public GeneratedType(GeneratedAssembly parent, string typeName)
+        {
+            Rules = parent.Rules;
+            TypeName = typeName;
+            Namespace = parent.Namespace;
         }
 
         public GenerationRules Rules { get; }
@@ -36,9 +44,8 @@ namespace LamarCodeGeneration
         public IList<Setter> Setters { get; } = new List<Setter>();
 
         public string TypeName { get; }
-
-        // TODO -- do something with this?
-        public Visibility Visibility { get; set; } = Visibility.Public;
+        
+        public string Namespace { get; internal set; }
 
         public Type BaseType { get; private set; }
 
@@ -222,9 +229,11 @@ namespace LamarCodeGeneration
             foreach (var @interface in Interfaces) yield return @interface;
         }
 
+        public string FullName => $"{Namespace}.{TypeName}";
+
         public void FindType(Type[] generated)
         {
-            CompiledType = generated.Single(x => x.Name == TypeName);
+            CompiledType = generated.Single(x => x.FullName == FullName);
         }
 
         public void ArrangeFrames(IServiceVariableSource services = null)

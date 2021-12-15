@@ -12,15 +12,15 @@ namespace LamarCodeGeneration
     {
         public readonly List<GeneratedType> GeneratedTypes = new List<GeneratedType>();
 
-        public GeneratedAssembly(GenerationRules generation)
+        public GeneratedAssembly(GenerationRules rules)
         {
-            Generation = generation;
-            Namespace = generation.ApplicationNamespace;
+            Rules = rules;
+            Namespace = rules.ApplicationNamespace;
         }
 
         public string Namespace { get; }
 
-        public GenerationRules Generation { get; }
+        public GenerationRules Rules { get; }
         
         private readonly IList<Assembly> _assemblies = new List<Assembly>();
 
@@ -33,7 +33,7 @@ namespace LamarCodeGeneration
         {
             // TODO -- assert that it's been generated already?
 
-            var generatedType = new GeneratedType(Generation, typeName);
+            var generatedType = new GeneratedType(this, typeName);
             if (baseType.IsInterface)
             {
                 generatedType.Implements(baseType);

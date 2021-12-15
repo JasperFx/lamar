@@ -32,15 +32,20 @@ namespace GeneratorTarget
             var generatedMethod = _generatedType.MethodFor(nameof(IConsoleWriter.Write));
             var consoleMethod = typeof(Console).GetMethods().Single(x => x.Name == nameof(Console.WriteLine) && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof(string));
             
-            var @call = new MethodCall(typeof(Console),consoleMethod);
-            @call.Arguments[0] = new Value(Message);
+            var @call = new MethodCall(typeof(Console),consoleMethod)
+            {
+                Arguments =
+                {
+                    [0] = new Value(Message)
+                }
+            };
 
             generatedMethod.Frames.Add(@call);
 
             return null;
         }
 
-        public Task AttachPreBuiltTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
+        public Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
         {
             var type = assembly.GetExportedTypes().FirstOrDefault(x => x.Name == TypeName);
             if (type == null)
@@ -50,12 +55,6 @@ namespace GeneratorTarget
 
             _writer = Activator.CreateInstance(type).As<IConsoleWriter>();
 
-            return Task.CompletedTask;
-        }
-
-        public Task AttachGeneratedTypes(GenerationRules rules, IServiceProvider services)
-        {
-            _writer = services.As<IContainer>().GetInstance(_generatedType.CompiledType).As<IConsoleWriter>();
             return Task.CompletedTask;
         }
 

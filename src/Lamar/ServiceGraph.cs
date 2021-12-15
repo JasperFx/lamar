@@ -157,7 +157,7 @@ namespace Lamar
             // TODO -- will need to get at the GenerationRules from somewhere
             var generatedAssembly = new GeneratedAssembly(new GenerationRules(@namespace ?? "Lamar.Generated"));
 
-            generatedAssembly.Generation.Assemblies.Fill(_allAssemblies);
+            generatedAssembly.Rules.Assemblies.Fill(_allAssemblies);
 
             return generatedAssembly;
         }
