@@ -8,7 +8,7 @@ namespace LamarCodeGeneration
 {
     public interface IGeneratesCode
     {
-        IReadOnlyList<CodeFile> BuildFiles();
+        IReadOnlyList<ICodeFile> BuildFiles();
         
         /// <summary>
         /// Appending 
@@ -16,13 +16,13 @@ namespace LamarCodeGeneration
         string ChildNamespace { get; }    
     }
 
-    public abstract class CodeFile
+    public interface ICodeFile
     {
-        public abstract string FileName { get; }
+        string FileName { get; }
 
-        public abstract void AssembleTypes(GeneratedAssembly assembly);
+        void AssembleTypes(GeneratedAssembly assembly);
         
-        public abstract Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services);
+        Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services);
     }
 
 }

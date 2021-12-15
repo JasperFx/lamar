@@ -16,7 +16,7 @@ namespace GeneratorTarget
         string Greetings();
     }
 
-    public class GreeterFile : CodeFile
+    public class GreeterFile : ICodeFile
     {
         private GeneratedType _type;
 
@@ -28,15 +28,15 @@ namespace GeneratorTarget
 
         public string TypeName { get; set; }
 
-        public override string FileName { get; }
-        public override void AssembleTypes(GeneratedAssembly assembly)
+        public string FileName { get; }
+        public void AssembleTypes(GeneratedAssembly assembly)
         {
             _type = assembly.AddType(TypeName, typeof(IGreeter));
             var method = _type.MethodFor(nameof(IGreeter.Greetings));
             method.Frames.Code($"return \"{FileName}\";");
         }
 
-        public override Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
+        public Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
         {
             var type = _type.FindType(assembly.GetExportedTypes());
             if (type == null)
@@ -50,9 +50,9 @@ namespace GeneratorTarget
     
     public class GreeterGenerator : IGeneratesCode
     {
-        public IReadOnlyList<CodeFile> BuildFiles()
+        public IReadOnlyList<ICodeFile> BuildFiles()
         {
-            return new List<CodeFile>
+            return new List<ICodeFile>
             {
                 new GreeterFile("Hey"),
                 new GreeterFile("Bye"),
@@ -66,9 +66,9 @@ namespace GeneratorTarget
     
     public class GreeterGenerator2 : IGeneratesCode
     {
-        public IReadOnlyList<CodeFile> BuildFiles()
+        public IReadOnlyList<ICodeFile> BuildFiles()
         {
-            return new List<CodeFile>
+            return new List<ICodeFile>
             {
                 new GreeterFile("Laters"),
             };
