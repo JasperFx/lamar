@@ -150,8 +150,6 @@ namespace LamarCodeGeneration
 
         public void Write(ISourceWriter writer)
         {
-
-            
             writeDeclaration(writer);
 
             if (AllInjectedFields.Any())

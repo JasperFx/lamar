@@ -15,7 +15,10 @@ namespace LamarCodeGeneration
         public GeneratedAssembly(GenerationRules generation)
         {
             Generation = generation;
+            Namespace = generation.ApplicationNamespace;
         }
+
+        public string Namespace { get; }
 
         public GenerationRules Generation { get; }
         
@@ -59,7 +62,7 @@ namespace LamarCodeGeneration
         /// Extra namespaces to be written out as using blocks
         /// in the generated code
         /// </summary>
-        public IList<string> Namespaces { get; } = new List<string>();
+        public IList<string> UsingNamespaces { get; } = new List<string>();
 
         public string GenerateCode(IServiceVariableSource services = null)
         {
@@ -83,7 +86,7 @@ namespace LamarCodeGeneration
 
                 writer.BlankLine();
 
-                writer.Namespace(Generation.ApplicationNamespace);
+                writer.Namespace(Namespace);
 
                 foreach (var @class in GeneratedTypes)
                 {
@@ -100,7 +103,7 @@ namespace LamarCodeGeneration
 
                 var code = writer.Code();
 
-                attachSourceCodeToChains(ref code);
+                attachSourceCodeToTypes(ref code);
 
                 return code;
             }
@@ -111,14 +114,14 @@ namespace LamarCodeGeneration
             var namespaces = GeneratedTypes
                 .SelectMany(x => x.AllInjectedFields)
                 .Select(x => x.ArgType.Namespace)
-                .Concat(Namespaces)
+                .Concat(UsingNamespaces)
                 .Distinct()
                 .Where(x => x.IsNotEmpty()) // weed out blank namespaces, thank you F#!
                 .ToList();
             return namespaces;
         }
 
-        private void attachSourceCodeToChains(ref string code)
+        private void attachSourceCodeToTypes(ref string code)
         {
             using (var parser = new SourceCodeParser(code))
             {

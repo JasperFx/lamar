@@ -8,6 +8,8 @@ namespace LamarCodeGeneration
     public interface IGeneratesCode
     {
         IServiceVariableSource AssemblyTypes(GenerationRules rules, GeneratedAssembly assembly);
+        
+        // TODO -- fold these together
         Task AttachPreBuiltTypes(GenerationRules rules, Assembly assembly, IServiceProvider services);
 
         Task AttachGeneratedTypes(GenerationRules rules, IServiceProvider services);

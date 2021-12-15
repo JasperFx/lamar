@@ -127,12 +127,10 @@ namespace LamarCompiler
 		/// <returns></returns>
 		public Assembly Generate(Action<ISourceWriter> write)
 		{
-            using (var writer = new SourceWriter())
-            {
-                write(writer);
-                return Generate(writer.Code());
-            }
-        }
+			using var writer = new SourceWriter();
+			write(writer);
+			return Generate(writer.Code());
+		}
 
 		/// <summary>
 		/// Compile the code passed into this method to a new assembly in memory
@@ -150,30 +148,25 @@ namespace LamarCompiler
 				new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
 
-			using (var stream = new MemoryStream())
+			using var stream = new MemoryStream();
+			var result = compilation.Emit(stream);
+			if (!result.Success)
 			{
-				var result = compilation.Emit(stream);
-				if (!result.Success)
-				{
-					var failures = result.Diagnostics.Where(diagnostic =>
-						diagnostic.IsWarningAsError ||
-						diagnostic.Severity == DiagnosticSeverity.Error);
+				var failures = result.Diagnostics.Where(diagnostic =>
+					diagnostic.IsWarningAsError ||
+					diagnostic.Severity == DiagnosticSeverity.Error);
 
 
-					var message = failures.Select(x => $"{x.Id}: {x.GetMessage()}").Join("\n");
+				var message = failures.Select(x => $"{x.Id}: {x.GetMessage()}").Join("\n");
 
 
-					throw new InvalidOperationException("Compilation failures!\n\n" + message + "\n\nCode:\n\n" + code);
-				}
-
-				stream.Seek(0, SeekOrigin.Begin);
-
-				using (var context = new CustomAssemblyLoadContext())
-				{
-					return context.LoadFromStream(stream);
-				}
+				throw new InvalidOperationException("Compilation failures!\n\n" + message + "\n\nCode:\n\n" + code);
 			}
 
+			stream.Seek(0, SeekOrigin.Begin);
+
+			using var context = new CustomAssemblyLoadContext();
+			return context.LoadFromStream(stream);
 		}
 
 		public void Compile(GeneratedAssembly generatedAssembly, IServiceVariableSource services = null)
