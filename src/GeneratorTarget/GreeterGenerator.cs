@@ -36,12 +36,15 @@ namespace GeneratorTarget
             method.Frames.Code($"return \"{FileName}\";");
         }
 
-        public Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
+        public Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services,
+            string containingNamespace)
         {
-            var type = _type.FindType(assembly.GetExportedTypes());
+            var typeName = $"{containingNamespace}.{TypeName}";
+            var type = assembly.GetExportedTypes().FirstOrDefault(x => x.FullName == typeName);
+            
             if (type == null)
             {
-                throw new Exception("Cannot find type with full name " + _type.FullName);
+                return Task.FromResult(false);
             }
 
             return Task.FromResult(true);

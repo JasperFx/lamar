@@ -37,7 +37,10 @@ namespace LamarCodeGeneration
         
         public GeneratedType AddType(string typeName, Type baseType)
         {
-            // TODO -- assert that it's been generated already?
+            if (Assembly != null)
+            {
+                throw new InvalidOperationException("This generated assembly has already been compiled");
+            }
 
             var generatedType = new GeneratedType(this, typeName);
             if (baseType.IsInterface)
@@ -62,7 +65,11 @@ namespace LamarCodeGeneration
             {
                 generatedType.FindType(generated);
             }
+
+            Assembly = assembly;
         }
+        
+        public Assembly Assembly { get; private set; }
         
         /// <summary>
         /// Extra namespaces to be written out as using blocks

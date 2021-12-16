@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Baseline;
 using Lamar;
 using LamarCodeGeneration;
@@ -7,16 +9,25 @@ using Oakton;
 
 namespace GeneratorTarget
 {
-    public class WriteCommand : OaktonCommand<NetCoreInput>
+    public class WriteCommand : OaktonAsyncCommand<NetCoreInput>
     {
-        public override bool Execute(NetCoreInput input)
+        public override async Task<bool> Execute(NetCoreInput input)
         {
             using var host = input.BuildHost();
             var generator = host.Services.GetRequiredService<DynamicCodeBuilder>();
-            //generator.TryBuildAndCompileAll((a, s) => new AssemblyGenerator().Compile(a, s));
-            //generator.AttachAllCompiledTypes(host.Services);
-                
-            generator.LoadPrebuiltTypes();
+
+            generator.Rules.TypeLoadMode = TypeLoadMode.Static;
+
+
+
+            foreach (var generatesCode in generator.Generators)
+            {
+                foreach (var file in generatesCode.BuildFiles())
+                {
+                    await file.Initialize(generator.Rules, generatesCode, generator.Services);
+                }
+            }
+            
 
             return true;
         }

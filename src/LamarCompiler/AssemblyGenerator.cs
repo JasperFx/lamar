@@ -168,11 +168,13 @@ namespace LamarCompiler
 			using var context = new CustomAssemblyLoadContext();
 			return context.LoadFromStream(stream);
 		}
+		
+		public string Code { get; private set; }
 
 		public void Compile(GeneratedAssembly generatedAssembly, IServiceVariableSource services = null)
 		{
-			var code = generatedAssembly.GenerateCode(services);
-
+			Code = generatedAssembly.GenerateCode(services);
+			
 			var generator1 = new AssemblyGenerator();
 			generator1.ReferenceAssembly(GetType().Assembly);
 			generator1.ReferenceAssembly(typeof(Task).Assembly);
@@ -196,9 +198,11 @@ namespace LamarCompiler
             
 			var generator = generator1;
 
-			var assembly = generator.Generate(code);
+			var assembly = generator.Generate(Code);
 
 			generatedAssembly.AttachAssembly(assembly);
+
+			
 		}
 		
 		

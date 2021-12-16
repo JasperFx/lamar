@@ -18,6 +18,11 @@ namespace LamarCodeGeneration
             return new GeneratedAssembly(rules, @namespace);
         }
 
+        public static string ToNamespace(this IGeneratesCode generatesCode, GenerationRules rules)
+        {
+            return $"{rules.ApplicationNamespace}.{generatesCode.ChildNamespace}";
+        }
+
         public static string ToExportDirectory(this IGeneratesCode generator, string exportDirectory)
         {
             if (generator.ChildNamespace.IsEmpty())
@@ -31,6 +36,8 @@ namespace LamarCodeGeneration
             {
                 generatorDirectory = Path.Combine(generatorDirectory, part);
             }
+            
+            new FileSystem().CreateDirectory(generatorDirectory);
 
             return generatorDirectory;
         }
@@ -45,5 +52,6 @@ namespace LamarCodeGeneration
 
             return generatedAssembly;
         }
+        
     }
 }

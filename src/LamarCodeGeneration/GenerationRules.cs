@@ -7,8 +7,24 @@ namespace LamarCodeGeneration
 
     public enum TypeLoadMode
     {
+        /// <summary>
+        /// Always generate new types at runtime. This is appropriate for
+        /// development time when configuration may be in flux
+        /// </summary>
         Dynamic,
-        LoadFromPreBuiltAssembly
+        
+        /// <summary>
+        /// Try to load generated types from the target application assembly,
+        /// but generate types if there is no pre-built types and export
+        /// the new source code
+        /// </summary>
+        Auto,
+        
+        /// <summary>
+        /// Types must be loaded from the pre-built application assembly, or
+        /// the loading will throw exceptions
+        /// </summary>
+        Static
     }
     
     public class GenerationRules

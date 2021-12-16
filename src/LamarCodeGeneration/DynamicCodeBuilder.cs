@@ -10,16 +10,14 @@ namespace LamarCodeGeneration
 {
     public class DynamicCodeBuilder
     {
-        private readonly GenerationRules _rules;
-        private readonly IServiceProvider _services;
-        private readonly IGeneratesCode[] _generators;
-
         public DynamicCodeBuilder(GenerationRules rules, IServiceProvider services, IGeneratesCode[] generators)
         {
-            _rules = rules;
-            _services = services;
-            _generators = generators;
+            Rules = rules;
+            Services = services;
+            Generators = generators;
         }
+
+        public GenerationRules Rules { get; }
 
         public IServiceVariableSource ServiceVariableSource { get; set; }
 
@@ -27,7 +25,7 @@ namespace LamarCodeGeneration
         {
             var writer = new StringWriter();
 
-            foreach (var generator in _generators)
+            foreach (var generator in Generators)
             {
                 var code = generateCode(generator);
                 writer.WriteLine(code);
@@ -40,7 +38,7 @@ namespace LamarCodeGeneration
 
         public string DeleteAllGeneratedCode()
         {
-            var directory = _rules.GeneratedCodeOutputPath.ToFullPath();
+            var directory = Rules.GeneratedCodeOutputPath.ToFullPath();
             var fileSystem = new FileSystem();
             fileSystem.CleanDirectory(directory);
             fileSystem.DeleteDirectory(directory);
@@ -50,7 +48,7 @@ namespace LamarCodeGeneration
 
         public string GenerateCodeFor(string childNamespace)
         {
-            var generator = _generators.FirstOrDefault(x => x.ChildNamespace.EqualsIgnoreCase(childNamespace));
+            var generator = Generators.FirstOrDefault(x => x.ChildNamespace.EqualsIgnoreCase(childNamespace));
             if (generator == null)
             {
                 throw new ArgumentOutOfRangeException($"Unknown {nameof(childNamespace)} '{childNamespace}'. Known code types are {ChildNamespaces.Join(", ")}");
@@ -61,20 +59,20 @@ namespace LamarCodeGeneration
 
         public void WriteGeneratedCode(Action<string> onFileWritten, string directory = null)
         {
-            directory = directory ?? _rules.GeneratedCodeOutputPath.ToFullPath();
+            directory = directory ?? Rules.GeneratedCodeOutputPath.ToFullPath();
             
             
             new FileSystem().CreateDirectory(directory);
 
 
-            foreach (var generator in _generators)
+            foreach (var generator in Generators)
             {
                 var exportDirectory = generator.ToExportDirectory(directory);
-                new FileSystem().CreateDirectory(exportDirectory);
+                
                 
                 foreach (var file in generator.BuildFiles())
                 {
-                    var generatedAssembly = generator.StartAssembly(_rules);
+                    var generatedAssembly = generator.StartAssembly(Rules);
                     file.AssembleTypes(generatedAssembly);
 
                     var code = generatedAssembly.GenerateCode(ServiceVariableSource);
@@ -93,9 +91,9 @@ namespace LamarCodeGeneration
                 throw new InvalidOperationException($"Missing {nameof(IGeneratesCode.ChildNamespace)} for {generator}");
             }
 
-            var @namespace = $"{_rules.ApplicationNamespace}.{generator.ChildNamespace}";
+            var @namespace = generator.ToNamespace(Rules);
             
-            var generatedAssembly = new GeneratedAssembly(_rules, @namespace);
+            var generatedAssembly = new GeneratedAssembly(Rules, @namespace);
             var files = generator.BuildFiles();
             foreach (var file in files)
             {
@@ -112,9 +110,9 @@ namespace LamarCodeGeneration
         /// <exception cref="GeneratorCompilationFailureException"></exception>
         public void TryBuildAndCompileAll(Action<GeneratedAssembly, IServiceVariableSource> withAssembly)
         {
-            foreach (var generator in _generators)
+            foreach (var generator in Generators)
             {
-                var generatedAssembly = generator.AssembleTypes(_rules);
+                var generatedAssembly = generator.AssembleTypes(Rules);
 
                 try
                 {
@@ -133,16 +131,20 @@ namespace LamarCodeGeneration
         /// <param name="assembly">The assembly containing the pre-built types. If null, this falls back to the entry assembly of the running application</param>
         public async Task LoadPrebuiltTypes(Assembly assembly = null)
         {
-            foreach (var generator in _generators)
+            foreach (var generator in Generators)
             {
                 foreach (var file in generator.BuildFiles())
                 {
-                    await file.AttachTypes(_rules, assembly ?? _rules.ApplicationAssembly, _services);
+                    var @namespace = $"{Rules.ApplicationNamespace}.{generator.ChildNamespace}";
+                    await file.AttachTypes(Rules, assembly ?? Rules.ApplicationAssembly, Services, @namespace);
                 }
             }
         }
 
-        public string[] ChildNamespaces => _generators.Select(x => x.ChildNamespace).ToArray();
+        public string[] ChildNamespaces => Generators.Select(x => x.ChildNamespace).ToArray();
 
+        public IServiceProvider Services { get; }
+
+        public IGeneratesCode[] Generators { get; }
     }
 }
