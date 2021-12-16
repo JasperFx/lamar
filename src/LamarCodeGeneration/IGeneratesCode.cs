@@ -22,7 +22,7 @@ namespace LamarCodeGeneration
 
         void AssembleTypes(GeneratedAssembly assembly);
         
-        Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services);
+        Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services);
     }
 
 }

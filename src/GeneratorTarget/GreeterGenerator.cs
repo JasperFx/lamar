@@ -36,7 +36,7 @@ namespace GeneratorTarget
             method.Frames.Code($"return \"{FileName}\";");
         }
 
-        public Task AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
+        public Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services)
         {
             var type = _type.FindType(assembly.GetExportedTypes());
             if (type == null)
@@ -44,7 +44,7 @@ namespace GeneratorTarget
                 throw new Exception("Cannot find type with full name " + _type.FullName);
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
     }
     
