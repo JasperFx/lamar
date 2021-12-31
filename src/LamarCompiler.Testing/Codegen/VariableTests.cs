@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+
 using LamarCodeGeneration.Model;
+
 using Shouldly;
+
 using Xunit;
 
 namespace LamarCompiler.Testing.Codegen
@@ -10,12 +13,12 @@ namespace LamarCompiler.Testing.Codegen
         [Fact]
         public void override_the_name()
         {
-            var variable = Variable.For<HyperdriveMotivator>();
+            Variable variable = Variable.For<HyperdriveMotivator>();
             variable.OverrideName("thing");
-            
+
             variable.Usage.ShouldBe("thing");
         }
-        
+
         [Fact]
         public void default_arg_name_of_normal_class()
         {
@@ -51,6 +54,16 @@ namespace LamarCompiler.Testing.Codegen
         }
 
         [Fact]
+        public void default_arg_name_of_Collection()
+        {
+            Variable.DefaultArgName<ICollection<IWidget>>()
+                .ShouldBe("widgetICollection");
+
+            Variable.DefaultArgName<IReadOnlyCollection<IWidget>>()
+                .ShouldBe("widgetIReadOnlyCollection");
+        }
+
+        [Fact]
         public void default_arg_name_of_enumerable()
         {
             Variable.DefaultArgName<IEnumerable<IWidget>>()
@@ -70,13 +83,13 @@ namespace LamarCompiler.Testing.Codegen
             Variable.DefaultArgName<IFooHandler<HyperdriveMotivator>>()
                 .ShouldBe("fooHandler");
         }
-        
+
         [Fact]
         public void default_arg_name_of_open_generic_type()
         {
             Variable.DefaultArgName(typeof(IOpenGeneric<>))
                 .ShouldBe("openGeneric");
-            
+
             Variable.DefaultArgName(typeof(FooHandler<>)).ShouldBe("fooHandler");
         }
 
@@ -94,36 +107,35 @@ namespace LamarCompiler.Testing.Codegen
                 .ShouldBe("innerThing");
         }
     }
-    
-    public interface IWidget{}
+
+    public interface IWidget
+    {
+    }
 
     public class FooHandler<T>
     {
-
     }
-    
-    public interface IOpenGeneric<T>{}
+
+    public interface IOpenGeneric<T>
+    {
+    }
 
     public interface IFooHandler<T>
     {
-
     }
 
     public interface IHyperdriveMotivator
     {
-
     }
 
     public class HyperdriveMotivator
     {
         public class InnerThing
         {
-
         }
 
         public interface IInnerThing
         {
-
         }
     }
 }
