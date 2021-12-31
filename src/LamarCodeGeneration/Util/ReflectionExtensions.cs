@@ -31,7 +31,8 @@ namespace LamarCodeGeneration.Util
             typeof (IList<>),
             typeof (IReadOnlyList<>),
             typeof (List<>),
-            typeof (ICollection<>)
+            typeof (ICollection<>),
+            typeof (IReadOnlyCollection<>)
         };
 
         public static T GetAttribute<T>(this MemberInfo provider) where T : Attribute

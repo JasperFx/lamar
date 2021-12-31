@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lamar\Lamar.csproj" />
     <ProjectReference Include="..\Widget.Core\Widget.Core.csproj" />
   </ItemGroup>
 
