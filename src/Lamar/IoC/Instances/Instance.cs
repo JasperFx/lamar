@@ -18,6 +18,8 @@ namespace Lamar.IoC.Instances
         
         public bool IsOnlyOneOfServiceType { get; set; }
 
+        public bool IsExplicitlyNamed { get; set; }
+
         public ServiceDescriptor ToDescriptor()
         {
             return new ServiceDescriptor(ServiceType, this);
@@ -31,7 +33,6 @@ namespace Lamar.IoC.Instances
             {
                 argName += "_of_" + ServiceType.GetGenericArguments().Select(t => t.NameInCode().Sanitize()).Join("_");
             }
-            
             
             return IsOnlyOneOfServiceType ? argName : argName + HashCode(ServiceType, Name).ToString().Replace("-", "_");
         }

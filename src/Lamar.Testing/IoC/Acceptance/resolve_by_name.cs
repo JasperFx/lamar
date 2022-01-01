@@ -1,4 +1,9 @@
-﻿using Shouldly;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Lamar.Diagnostics;
+
+using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 
