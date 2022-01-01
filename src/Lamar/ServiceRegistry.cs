@@ -15,17 +15,19 @@ namespace Lamar
         public static T Named<T>(this T instance, string name) where T : Instance
         {
             instance.Name = name;
+            instance.IsExplicitlyNamed = true;
+            
             return instance;
         }
 
         public static T Scoped<T>(this T instance) where T : Instance
         {
-            assertNotObjectInstance(instance);
+            AssertNotObjectInstance(instance);
             instance.Lifetime = ServiceLifetime.Scoped;
             return instance;
         }
 
-        private static void assertNotObjectInstance<T>(T instance) where T : Instance
+        private static void AssertNotObjectInstance<T>(T instance) where T : Instance
         {
             if (instance is ObjectInstance)
                 throw new InvalidOperationException(
@@ -40,7 +42,7 @@ namespace Lamar
 
         public static T Transient<T>(this T instance) where T : Instance
         {
-            assertNotObjectInstance(instance);
+            AssertNotObjectInstance(instance);
             instance.Lifetime = ServiceLifetime.Transient;
             return instance;
         }
