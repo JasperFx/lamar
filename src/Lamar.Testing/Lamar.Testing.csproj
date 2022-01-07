@@ -10,9 +10,6 @@
     <PackageReference Include="NSubstitute" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Widget.Core\Widget.Core.csproj" />
-    <ProjectReference Include="..\..\Widget.Instance\Widget.Instance.csproj" />
-    <ProjectReference Include="..\..\Widget.Registration\Widget.Registration.csproj" />
     <ProjectReference Include="..\Aspect.Logger\Widget.Aspect.Logger.csproj" />
     <ProjectReference Include="..\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
     <ProjectReference Include="..\Lamar\Lamar.csproj" />
