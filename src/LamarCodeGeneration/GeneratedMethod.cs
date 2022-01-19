@@ -34,6 +34,16 @@ namespace LamarCodeGeneration
             return new GeneratedMethod(name, typeof(TReturn), new Argument[0]);
         }
 
+        public override string ToString()
+        {
+            if (Arguments?.Any() ?? false)
+            {
+                return $"{MethodName}({Arguments.Select(x => x.Declaration).Join(", ")})";
+            }
+            
+            return $"{MethodName}()";
+        }
+
         private AsyncMode _asyncMode = AsyncMode.None;
         private Frame _top;
         private MethodInfo _parentMethod;

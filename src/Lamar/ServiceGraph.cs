@@ -155,7 +155,7 @@ namespace Lamar
         internal GeneratedAssembly ToGeneratedAssembly(string @namespace = null)
         {
             // TODO -- will need to get at the GenerationRules from somewhere
-            var generatedAssembly = new GeneratedAssembly(new GenerationRules(@namespace ?? "Jasper.Generated"));
+            var generatedAssembly = new GeneratedAssembly(new GenerationRules(@namespace ?? "Lamar.Generated"));
 
             generatedAssembly.Generation.Assemblies.Fill(_allAssemblies);
 
