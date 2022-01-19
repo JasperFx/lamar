@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <Description>Code Generation Chicanery for .Net</Description>
-        <Version>4.0.0</Version>
+        <Version>4.0.1</Version>
         <Authors>Jeremy D. Miller</Authors>
         <TargetFramework>netstandard2.0</TargetFramework>
         <DebugType>portable</DebugType>

@@ -133,6 +133,14 @@ namespace StructureMap.Testing.Acceptance
         }
 
         [Fact]
+        public void retrieve_as_readonlycollection()
+        {
+            container.GetInstance<IReadOnlyCollection<IWidget>>()
+                .Select(x => x.GetType())
+                .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
+        }
+
+        [Fact]
         public void retrieve_as_array()
         {
             var code = container.Model.For<IWidget[]>().Default.DescribeBuildPlan();
@@ -189,13 +197,13 @@ namespace StructureMap.Testing.Acceptance
                 .Single().ShouldBeOfType<DefaultWidget>();
         }
 
-
         [Theory]
         [InlineData(typeof(WidgetArrayHolder))]
         [InlineData(typeof(WidgetListHolder))]
         [InlineData(typeof(WidgetIListHolder))]
         [InlineData(typeof(WidgetIEnumerableHolder))]
         [InlineData(typeof(WidgetICollectionHolder))]
+        [InlineData(typeof(WidgetIReadOnlyCollectionHolder))]
         public void can_use_as_a_dependency(Type concreteType)
         {
             container.GetInstance(concreteType).As<IWidgetHolder>()
@@ -256,6 +264,16 @@ namespace StructureMap.Testing.Acceptance
         public IWidget[] Widgets { get; }
 
         public WidgetICollectionHolder(ICollection<IWidget> widgets)
+        {
+            Widgets = widgets.ToArray();
+        }
+    }
+
+    public class WidgetIReadOnlyCollectionHolder : IWidgetHolder
+    {
+        public IWidget[] Widgets { get; }
+
+        public WidgetIReadOnlyCollectionHolder(IReadOnlyCollection<IWidget> widgets)
         {
             Widgets = widgets.ToArray();
         }
