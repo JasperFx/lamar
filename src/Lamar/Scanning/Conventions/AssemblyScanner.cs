@@ -218,7 +218,7 @@ namespace Lamar.Scanning.Conventions
         public void AssembliesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter)
         {
             var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter,
-                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); });
+                txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); });
 
             foreach (var assembly in assemblies) Assembly(assembly);
         }
@@ -232,7 +232,7 @@ namespace Lamar.Scanning.Conventions
         public void AssembliesAndExecutablesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter = null)
         {
             var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter,
-                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true);
+                txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); }, true);
 
             foreach (var assembly in assemblies) Assembly(assembly);
         }
@@ -243,7 +243,7 @@ namespace Lamar.Scanning.Conventions
             var assemblies = AssemblyFinder.FindAssemblies(a => true, path,
                 txt =>
                 {
-                    Console.WriteLine("Jasper could not load assembly from file " + txt);
+                    Console.WriteLine("Lamar could not load assembly from file " + txt);
                 }, true);
 
             foreach (var assembly in assemblies) Assembly(assembly);
@@ -253,7 +253,7 @@ namespace Lamar.Scanning.Conventions
         public void AssembliesFromPath(string path)
         {
             var assemblies = AssemblyFinder.FindAssemblies(a => true, path,
-                txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false);
+                txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); }, false);
 
             foreach (var assembly in assemblies) Assembly(assembly);
         }
@@ -262,7 +262,7 @@ namespace Lamar.Scanning.Conventions
             Func<Assembly, bool> assemblyFilter)
         {
             var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, path,
-                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, true);
+                    txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); }, true);
 
 
             foreach (var assembly in assemblies) Assembly(assembly);
@@ -272,7 +272,7 @@ namespace Lamar.Scanning.Conventions
             Func<Assembly, bool> assemblyFilter)
         {
             var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, path,
-                    txt => { Console.WriteLine("Jasper could not load assembly from file " + txt); }, false);
+                    txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); }, false);
 
 
             foreach (var assembly in assemblies) Assembly(assembly);
