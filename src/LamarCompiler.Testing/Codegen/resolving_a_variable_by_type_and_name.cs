@@ -98,7 +98,7 @@ namespace LamarCompiler.Testing.Codegen
             method.Sources.Add(source1);
             method.Sources.Add(source2);
 
-            Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() =>
+            Exception<UnResolvableVariableException>.ShouldBeThrownBy(() =>
             {
                 method.ToArranger().FindVariableByName(typeof(string), "missing");
             });
@@ -120,7 +120,7 @@ namespace LamarCompiler.Testing.Codegen
             method.Sources.Add(source1);
             method.Sources.Add(source2);
 
-            Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() =>
+            Exception<UnResolvableVariableException>.ShouldBeThrownBy(() =>
             {
                 method.ToArranger().FindVariableByName(typeof(int), "ccc");
             });

@@ -156,7 +156,15 @@ namespace LamarCodeGeneration
             services?.StartNewMethod();
 
             var compiler = new MethodFrameArranger(this, type, services);
-            compiler.Arrange(out _asyncMode, out _top);
+            try
+            {
+                compiler.Arrange(out _asyncMode, out _top);
+            }
+            catch (UnResolvableVariableException e)
+            {
+                e.Type = type;
+                throw;
+            }
         }
 
         public string ToExitStatement()

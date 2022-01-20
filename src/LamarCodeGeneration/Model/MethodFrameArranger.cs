@@ -156,7 +156,8 @@ namespace LamarCodeGeneration.Model
         {
             if (TryFindVariableByName(dependency, name, out var variable)) return variable;
 
-            throw new ArgumentOutOfRangeException(nameof(dependency), $"Cannot find a matching variable {dependency.FullName} {name} inside of method {_method}");
+            throw new UnResolvableVariableException(dependency, name, _method);
+            
         }
 
         public Variable FindVariable(Type type)
@@ -169,8 +170,7 @@ namespace LamarCodeGeneration.Model
             var variable = findVariable(type, VariableSource.All);
             if (variable == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(type),
-                    $"Lamar doesn't know how to build a variable of type '{type.FullName}' inside of method {_method}");
+                throw new UnResolvableVariableException(type, _method);
             }
 
             _variables.Add(type, variable);
