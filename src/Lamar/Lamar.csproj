@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-    <Version>7.1.0</Version>
+    <Version>7.1.1</Version>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar</AssemblyName>
     <PackageId>Lamar</PackageId>
