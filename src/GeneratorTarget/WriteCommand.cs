@@ -16,7 +16,7 @@ namespace GeneratorTarget
             using var host = input.BuildHost();
             var generator = host.Services.GetRequiredService<DynamicCodeBuilder>();
 
-            generator.Rules.TypeLoadMode = TypeLoadMode.Static;
+            generator.Rules.TypeLoadMode = TypeLoadMode.Dynamic;
 
 
 
