@@ -21,7 +21,7 @@ namespace LamarCompiler
                 
                 var generatedAssembly = parent.StartAssembly(rules);
                 file.AssembleTypes(generatedAssembly);
-                var serviceVariables = services.GetService(typeof(IServiceVariableSource)) as IServiceVariableSource;
+                var serviceVariables = services?.GetService(typeof(IServiceVariableSource)) as IServiceVariableSource;
                         
                 var compiler = new AssemblyGenerator();
                 compiler.Compile(generatedAssembly, serviceVariables);
@@ -116,7 +116,7 @@ namespace LamarCompiler
                 
                 var generatedAssembly = parent.StartAssembly(rules);
                 file.AssembleTypes(generatedAssembly);
-                var serviceVariables = services.GetService(typeof(IServiceVariableSource)) as IServiceVariableSource;
+                var serviceVariables = services?.GetService(typeof(IServiceVariableSource)) as IServiceVariableSource;
                 var code = generatedAssembly.GenerateCode(serviceVariables);
                 try
                 {
