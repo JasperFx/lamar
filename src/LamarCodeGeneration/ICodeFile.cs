@@ -12,5 +12,8 @@ namespace LamarCodeGeneration
         
         Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services,
             string containingNamespace);
+
+        bool AttachTypesSynchronously(GenerationRules rules, Assembly assembly, IServiceProvider services,
+            string containingNamespace);
     }
 }

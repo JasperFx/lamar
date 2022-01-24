@@ -49,6 +49,15 @@ namespace GeneratorTarget
 
             return Task.FromResult(true);
         }
+
+        public bool AttachTypesSynchronously(GenerationRules rules, Assembly assembly, IServiceProvider services,
+            string containingNamespace)
+        {
+            var typeName = $"{containingNamespace}.{TypeName}";
+            var type = assembly.GetExportedTypes().FirstOrDefault(x => x.FullName == typeName);
+
+            return type != null;
+        }
     }
     
     public class GreeterGenerator : IGeneratesCode
