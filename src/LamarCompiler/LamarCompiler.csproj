@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Runtime Roslyn Compilation and Code Generation Chicanery</Description>
-    <Version>5.2.0</Version>
+    <Version>5.2.1</Version>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <DebugType>portable</DebugType>

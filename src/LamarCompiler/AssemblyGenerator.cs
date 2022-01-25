@@ -131,7 +131,7 @@ namespace LamarCompiler
 			write(writer);
 			return Generate(writer.Code());
 		}
-
+		
 		/// <summary>
 		/// Compile the code passed into this method to a new assembly in memory
 		/// </summary>

@@ -47,24 +47,16 @@ namespace LamarCompiler
                 var generatedAssembly = parent.StartAssembly(rules);
                 file.AssembleTypes(generatedAssembly);
                 var serviceVariables = services?.GetService(typeof(IServiceVariableSource)) as IServiceVariableSource;
-                var code = generatedAssembly.GenerateCode(serviceVariables);
-                try
-                {
-                    var directory = parent.ToExportDirectory(rules.GeneratedCodeOutputPath);
-                    var fileName = Path.Combine(directory, file.FileName.Replace(" ", "_") + ".cs");
-                    File.WriteAllText(fileName, code);
-                    Console.WriteLine("Generated code to " + fileName.ToFullPath());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Unable to write code file");
-                    Console.WriteLine(e.ToString());
-                }        
                 
                 
                 var compiler = new AssemblyGenerator();
-                var assembly = compiler.Generate(code);
-                await file.AttachTypes(rules, assembly, services, @namespace);
+                compiler.Compile(generatedAssembly, serviceVariables);
+                
+                await file.AttachTypes(rules, generatedAssembly.Assembly, services, @namespace);
+                
+                var code = compiler.Code;
+                file.WriteCodeFile(parent, rules, code);
+                
                 Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
             }
             
@@ -117,28 +109,36 @@ namespace LamarCompiler
                 var generatedAssembly = parent.StartAssembly(rules);
                 file.AssembleTypes(generatedAssembly);
                 var serviceVariables = services?.GetService(typeof(IServiceVariableSource)) as IServiceVariableSource;
-                var code = generatedAssembly.GenerateCode(serviceVariables);
-                try
-                {
-                    var directory = parent.ToExportDirectory(rules.GeneratedCodeOutputPath);
-                    var fileName = Path.Combine(directory, file.FileName.Replace(" ", "_") + ".cs");
-                    File.WriteAllText(fileName, code);
-                    Console.WriteLine("Generated code to " + fileName.ToFullPath());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Unable to write code file");
-                    Console.WriteLine(e.ToString());
-                }        
                 
                 
                 var compiler = new AssemblyGenerator();
-                var assembly = compiler.Generate(code);
-                file.AttachTypesSynchronously(rules, assembly, services, @namespace);
+                compiler.Compile(generatedAssembly, serviceVariables);
+                
+                file.AttachTypesSynchronously(rules, generatedAssembly.Assembly, services, @namespace);
+                
+                var code = compiler.Code;
+                file.WriteCodeFile(parent, rules, code);
+                
                 Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
             }
             
 
+        }
+
+        public static void WriteCodeFile(this ICodeFile file, IGeneratesCode parent, GenerationRules rules, string code)
+        {
+            try
+            {
+                var directory = parent.ToExportDirectory(rules.GeneratedCodeOutputPath);
+                var fileName = Path.Combine(directory, file.FileName.Replace(" ", "_") + ".cs");
+                File.WriteAllText(fileName, code);
+                Console.WriteLine("Generated code to " + fileName.ToFullPath());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unable to write code file");
+                Console.WriteLine(e.ToString());
+            }  
         }
     }
 }
