@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 
 namespace LamarCodeGeneration
 {
@@ -33,7 +36,13 @@ namespace LamarCodeGeneration
         {
             ApplicationNamespace = applicationNamespace;
         }
-        
+
+        public GenerationRules(string applicationNamespace, TypeLoadMode typeLoadMode)
+        {
+            ApplicationNamespace = applicationNamespace;
+            TypeLoadMode = typeLoadMode;
+        }
+
         public GenerationRules()
         {
         }
@@ -44,6 +53,28 @@ namespace LamarCodeGeneration
         
         public string GeneratedCodeOutputPath {get;set;} = "Internal/Generated";
 
+        /// <summary>
+        /// Reference the given assembly in the compilation
+        /// </summary>
+        /// <param name="assembly"></param>
+        public void ReferenceAssembly(Assembly assembly)
+        {
+            Assemblies.Fill(assembly);
+        }
+
+        /// <summary>
+        /// Recursively reference assemblies from the supplied types, including generic
+        /// argument types
+        /// </summary>
+        /// <param name="types"></param>
+        public void ReferenceTypes(params Type[] types)
+        {
+            foreach (var assembly in WalkReferencedAssemblies.ForTypes(types).Distinct())
+            {
+                Assemblies.Fill(assembly);
+            }
+        }
+
         public readonly IList<IVariableSource> Sources = new List<IVariableSource>();
 
         public readonly IList<Assembly> Assemblies = new List<Assembly>();
@@ -52,6 +83,41 @@ namespace LamarCodeGeneration
 
         public Assembly ApplicationAssembly { get; set; } = Assembly.GetEntryAssembly();
         
+    }
+    
+    /// <summary>
+    /// Find unique assemblies from the supplied types, including types
+    /// from generic arguments
+    /// </summary>
+    public static class WalkReferencedAssemblies
+    {
+        public static IEnumerable<Assembly> ForTypes(params Type[] types)
+        {
+            var stack = new Stack<Type>();
+
+            foreach (var type in types)
+            {
+                stack.Push(type);
+
+                while (stack.Count > 0)
+                {
+                    var current = stack.Pop();
+                    yield return current.Assembly;
+
+                    if (!current.IsGenericType || current.IsGenericTypeDefinition)
+                    {
+                        continue;
+                    }
+
+                    var typeArguments = current.GetGenericArguments();
+                    foreach (var typeArgument in typeArguments)
+                    {
+                        stack.Push(typeArgument);
+                    }
+                }
+            }
+        }
+
     }
 
 

@@ -63,8 +63,8 @@ namespace LamarCompiler
                 
                 
                 var compiler = new AssemblyGenerator();
-                compiler.Compile(generatedAssembly, serviceVariables);
-                await file.AttachTypes(rules, generatedAssembly.Assembly, services, @namespace);
+                var assembly = compiler.Generate(code);
+                await file.AttachTypes(rules, assembly, services, @namespace);
                 Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
             }
             
@@ -133,8 +133,8 @@ namespace LamarCompiler
                 
                 
                 var compiler = new AssemblyGenerator();
-                compiler.Compile(generatedAssembly, serviceVariables);
-                file.AttachTypesSynchronously(rules, generatedAssembly.Assembly, services, @namespace);
+                var assembly = compiler.Generate(code);
+                file.AttachTypesSynchronously(rules, assembly, services, @namespace);
                 Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
             }
             
