@@ -25,7 +25,7 @@ namespace LamarCompiler.Testing.Codegen
             var type = new GeneratedType("SomeClass");
             type.CommentType("some comment text");
             
-            type.Comment.ShouldBeOfType<OneLineComment>()
+            type.Header.ShouldBeOfType<OneLineComment>()
                 .Text.ShouldBe("some comment text");
         }
 
@@ -35,6 +35,20 @@ namespace LamarCompiler.Testing.Codegen
             var assembly = new GeneratedAssembly(new GenerationRules());
             var type = assembly.AddType("SomeClass", typeof(ClassWithGenericParameter<SomeInnerClass>));
             type.CommentType("Hey, look at this!");
+            
+            assembly.CompileAll();
+            
+            type.SourceCode.ReadLines()
+                .ShouldContain("    // Hey, look at this!");
+            _output.WriteLine(type.SourceCode);
+        }
+        
+        [Fact]
+        public void write_footer_into_source_code()
+        {
+            var assembly = new GeneratedAssembly(new GenerationRules());
+            var type = assembly.AddType("SomeClass", typeof(ClassWithGenericParameter<SomeInnerClass>));
+            type.Footer = new OneLineComment("Hey, look at this!");
             
             assembly.CompileAll();
             

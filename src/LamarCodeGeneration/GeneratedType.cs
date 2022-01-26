@@ -41,11 +41,25 @@ namespace LamarCodeGeneration
             Namespace = parent.Namespace;
         }
         
-        public IComment Comment { get; set; }
+        /// <summary>
+        /// <summary>
+        /// Optional code fragment to write at the beginning of this
+        /// type in code
+        /// </summary>
+        public ICodeFragment Header { get; set; }
+        
+        /// <summary>
+        /// Optional code fragment to write at the end of this type in code
+        /// </summary>
+        public ICodeFragment Footer { get; set; }
 
+        /// <summary>
+        /// Add a single line comment as the header to this type
+        /// </summary>
+        /// <param name="text"></param>
         public void CommentType(string text)
         {
-            Comment = new OneLineComment(text);
+            Header = new OneLineComment(text);
         }
 
         public GenerationRules Rules { get; }
@@ -166,7 +180,7 @@ namespace LamarCodeGeneration
 
         public void Write(ISourceWriter writer)
         {
-            Comment?.Write(writer);
+            Header?.Write(writer);
             writeDeclaration(writer);
 
             if (AllInjectedFields.Any())
@@ -185,6 +199,7 @@ namespace LamarCodeGeneration
             }
 
             writer.FinishBlock();
+            Footer?.Write(writer);
         }
 
         private void writeSetters(ISourceWriter writer)

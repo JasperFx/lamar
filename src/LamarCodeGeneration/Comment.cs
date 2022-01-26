@@ -1,11 +1,11 @@
 namespace LamarCodeGeneration
 {
-    public interface IComment
+    public interface ICodeFragment
     {
         void Write(ISourceWriter writer);
     }
 
-    public class OneLineComment : IComment
+    public class OneLineComment : ICodeFragment
     {
         public string Text { get; }
 
@@ -17,6 +17,34 @@ namespace LamarCodeGeneration
         public void Write(ISourceWriter writer)
         {
             writer.WriteComment(Text);
+        }
+    }
+
+    public static class ConditionalCompilation
+    {
+        public static OneLineCodeFragment If(string target)
+        {
+            return new OneLineCodeFragment($"#if {target}");
+        }
+        
+        public static OneLineCodeFragment EndIf()
+        {
+            return new OneLineCodeFragment($"#endif");
+        }
+    }
+
+    public class OneLineCodeFragment : ICodeFragment
+    {
+        public string Text { get; }
+
+        public OneLineCodeFragment(string text)
+        {
+            Text = text;
+        }
+
+        public void Write(ISourceWriter writer)
+        {
+            writer.WriteLine(Text);
         }
     }
     
