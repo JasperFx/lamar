@@ -196,6 +196,14 @@ namespace LamarCodeGeneration
             }
         }
 
+        /// <summary>
+        /// Creates a deterministic class name for the supplied type
+        /// and suffix. Uses a hash of the type's full name to disambiguate
+        /// between derivations on the same original type name
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="suffix"></param>
+        /// <returns></returns>
         public static string ToSuffixedTypeName(this Type type, string suffix)
         {
             var prefix = type.Name.Split('`').First();

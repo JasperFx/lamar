@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Baseline;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using Shouldly;
@@ -16,6 +17,30 @@ namespace LamarCompiler.Testing.Codegen
         public GeneratedTypeTests(ITestOutputHelper output)
         {
             _output = output;
+        }
+
+        [Fact]
+        public void write_comment()
+        {
+            var type = new GeneratedType("SomeClass");
+            type.CommentType("some comment text");
+            
+            type.Comment.ShouldBeOfType<OneLineComment>()
+                .Text.ShouldBe("some comment text");
+        }
+
+        [Fact]
+        public void write_comment_text_into_source_code()
+        {
+            var assembly = new GeneratedAssembly(new GenerationRules());
+            var type = assembly.AddType("SomeClass", typeof(ClassWithGenericParameter<SomeInnerClass>));
+            type.CommentType("Hey, look at this!");
+            
+            assembly.CompileAll();
+            
+            type.SourceCode.ReadLines()
+                .ShouldContain("    // Hey, look at this!");
+            _output.WriteLine(type.SourceCode);
         }
 
         [Fact]

@@ -8,6 +8,8 @@ using LamarCodeGeneration.Util;
 
 namespace LamarCodeGeneration
 {
+    
+    
     public interface IGeneratedType
     {
         IList<Setter> Setters { get; }
@@ -37,6 +39,13 @@ namespace LamarCodeGeneration
             Rules = parent.Rules;
             TypeName = typeName;
             Namespace = parent.Namespace;
+        }
+        
+        public IComment Comment { get; set; }
+
+        public void CommentType(string text)
+        {
+            Comment = new OneLineComment(text);
         }
 
         public GenerationRules Rules { get; }
@@ -76,7 +85,7 @@ namespace LamarCodeGeneration
         {
             return InheritsFrom(typeof(T));
         }
-
+        
         // TODO -- need ut's
         public GeneratedType InheritsFrom(Type baseType)
         {
@@ -157,6 +166,7 @@ namespace LamarCodeGeneration
 
         public void Write(ISourceWriter writer)
         {
+            Comment?.Write(writer);
             writeDeclaration(writer);
 
             if (AllInjectedFields.Any())
