@@ -131,6 +131,21 @@ namespace LamarCompiler.Testing.Codegen
 
             createdName.ShouldBe("GenericTestClassWithNested<>.NestedGenericTestClass<>");
         }
+
+        [Fact]
+        public void to_suffixed_type_name_with_closed_name()
+        {
+            var name1 = typeof(Thing).ToSuffixedTypeName("Builder");
+            name1.ShouldBe("ThingBuilder435393595");
+        }
+
+        [Fact]
+        public void to_suffixed_type_name_with_generic_type()
+        {
+            var type = typeof(Handler<string>);
+            type.ToSuffixedTypeName("Service")
+                .ShouldBe("HandlerService1900664620");
+        }
     }
 
     public class ThingHolder
