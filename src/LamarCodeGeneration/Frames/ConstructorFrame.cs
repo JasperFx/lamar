@@ -92,7 +92,7 @@ namespace LamarCodeGeneration.Frames
 
         public Variable[] Parameters { get; set; }
 
-        public FramesCollection ActivatorFrames { get; } = new FramesCollection();
+        public FramesCollection ActivatorFrames { get; } = new FramesCollection(null);
 
         public ConstructorCallMode Mode { get; set; } = ConstructorCallMode.Variable;
 

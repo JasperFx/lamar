@@ -54,6 +54,8 @@ namespace LamarCodeGeneration
             ReturnType = method.ReturnType;
             Arguments = method.GetParameters().Select(x => new Argument(x)).ToArray();
             MethodName = method.Name;
+
+            Frames = new FramesCollection(this);
         }
 
         public GeneratedMethod(string methodName, Type returnType, params Argument[] arguments)
@@ -61,6 +63,8 @@ namespace LamarCodeGeneration
             ReturnType = returnType;
             Arguments = arguments;
             MethodName = methodName;
+            
+            Frames = new FramesCollection(this);
         }
 
         /// <summary>
@@ -182,6 +186,8 @@ namespace LamarCodeGeneration
             Frames.Return(ReturnType);
         }
         
-        public FramesCollection Frames { get; } = new FramesCollection();
+        public GeneratedType ParentType { get; set; }
+        
+        public FramesCollection Frames { get; }
     }
 }

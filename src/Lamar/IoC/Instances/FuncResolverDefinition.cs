@@ -22,7 +22,7 @@ namespace Lamar.IoC.Instances
             _scopeArgument = new Argument(typeof(Scope), "scope");
             var frame = instance.CreateBuildFrame();
 
-            _frames = new FramesCollection {frame};
+            _frames = new FramesCollection(null) {frame};
         }
 
         IList<Setter> IGeneratedType.Setters { get; } = new List<Setter>();

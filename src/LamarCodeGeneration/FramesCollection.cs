@@ -7,6 +7,17 @@ namespace LamarCodeGeneration
 {
     public class FramesCollection : List<Frame>
     {
+        public GeneratedMethod ParentMethod { get; }
+
+        public FramesCollection(GeneratedMethod parentMethod)
+        {
+            ParentMethod = parentMethod;
+        }
+
+        public FramesCollection()
+        {
+        }
+
         /// <summary>
         /// Adds a ReturnFrame to the method that will return a variable of the specified type
         /// </summary>

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
 
 namespace LamarCodeGeneration
@@ -51,6 +52,35 @@ namespace LamarCodeGeneration
             }
 
             return generatedAssembly;
+        }
+        
+        /// <summary>
+        /// Add a new string constant to the generated type
+        /// </summary>
+        /// <param name="generatedType"></param>
+        /// <param name="constantName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Setter AddStringConstant(this GeneratedType generatedType, string constantName, string value)
+        {
+            var setter = Setter.Constant(constantName, Constant.ForString(value));
+            generatedType.Setters.Add(setter);
+
+            return setter;
+        }
+
+        /// <summary>
+        /// Creates a new string constant value on the holding type and uses that value as the return
+        /// value for this method
+        /// </summary>
+        /// <param name="frames"></param>
+        /// <param name="constantName"></param>
+        /// <param name="value"></param>
+        public static void ReturnNewStringConstant(this FramesCollection frames, 
+            string constantName, string value)
+        {
+            var setter = frames.ParentMethod.ParentType.AddStringConstant(constantName, value);
+            frames.Return(setter);
         }
         
     }

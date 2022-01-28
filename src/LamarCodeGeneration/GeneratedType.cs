@@ -121,7 +121,7 @@ namespace LamarCodeGeneration
 
             BaseType = baseType;
             foreach (var methodInfo in baseType.GetMethods().Where(x => x.DeclaringType != typeof(object))
-                .Where(x => x.CanBeOverridden())) _methods.Add(new GeneratedMethod(methodInfo) {Overrides = true});
+                .Where(x => x.CanBeOverridden())) _methods.Add(new GeneratedMethod(methodInfo) {Overrides = true, ParentType = this});
 
 
             return this;
@@ -137,7 +137,7 @@ namespace LamarCodeGeneration
             _interfaces.Add(type);
 
             foreach (var methodInfo in type.GetMethods().Where(x => x.DeclaringType != typeof(object)))
-                _methods.Add(new GeneratedMethod(methodInfo));
+                _methods.Add(new GeneratedMethod(methodInfo){ParentType = this});
 
             return this;
         }
@@ -162,7 +162,7 @@ namespace LamarCodeGeneration
         // TODO -- UT's
         public GeneratedMethod AddVoidMethod(string name, params Argument[] args)
         {
-            var method = new GeneratedMethod(name, typeof(void), args);
+            var method = new GeneratedMethod(name, typeof(void), args){ParentType = this};
             AddMethod(method);
 
             return method;
@@ -171,7 +171,7 @@ namespace LamarCodeGeneration
         // TODO -- UT's
         public GeneratedMethod AddMethodThatReturns<TReturn>(string name, params Argument[] args)
         {
-            var method = new GeneratedMethod(name, typeof(TReturn), args);
+            var method = new GeneratedMethod(name, typeof(TReturn), args){ParentType = this};
             AddMethod(method);
 
             return method;
