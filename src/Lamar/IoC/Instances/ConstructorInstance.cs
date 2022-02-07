@@ -388,13 +388,13 @@ namespace Lamar.IoC.Instances
             {
                 if (parameter.DefaultValue == null)
                 {
-                    return services.FindDefault(dependencyType) ?? new NullInstance(dependencyType);
+                    return services.FindInstance(parameter) ?? new NullInstance(dependencyType);
                 }
 
                 return new ObjectInstance(parameter.ParameterType, parameter.DefaultValue);
             }
 
-            return services.FindDefault(dependencyType);
+            return services.FindInstance(parameter);
 
         }
 
