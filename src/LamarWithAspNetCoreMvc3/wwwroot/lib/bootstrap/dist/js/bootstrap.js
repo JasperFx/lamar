@@ -2725,7 +2725,7 @@
     for (var i = 0, len = elements.length; i < len; i++) {
       var _ret = _loop(i, len);
 
-      if (_ret === "continue") continue;
+      if (_ret === "continue") 
     }
 
     return createdDocument.body.innerHTML;

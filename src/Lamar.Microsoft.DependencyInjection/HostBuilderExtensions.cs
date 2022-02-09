@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Options;
 namespace Lamar.Microsoft.DependencyInjection
 {
 
-    public static class WebHostBuilderExtensions
+    public static class HostBuilderExtensions
     {
         /// <summary>
         /// Apply Lamar service overrides regardless of the order of .Net service registrations. This is primarily
@@ -24,53 +23,7 @@ namespace Lamar.Microsoft.DependencyInjection
             return builder.ConfigureServices(x => x.OverrideServices(overrides));
         }
         
-        /// <summary>
-        /// Apply Lamar service overrides regardless of the order of .Net service registrations. This is primarily
-        /// meant for test automation scenarios
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="overrides"></param>
-        /// <returns></returns>
-        public static IWebHostBuilder OverrideServices(this IWebHostBuilder builder, Action<ServiceRegistry> overrides)
-        {
-            return builder.ConfigureServices(x => x.OverrideServices(overrides));
-        }
-        
-        public static IWebHostBuilder UseLamar<T>(this IWebHostBuilder builder, Action<WebHostBuilderContext, T> configure = null) where T : ServiceRegistry, new()
-        {
-            return builder.ConfigureServices((context, services) =>
-            {
-                var registry = new T();
-                configure?.Invoke(context, registry);
 
-                services.AddLamar(registry);
-            });
-        }
-        
-        public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, Action<WebHostBuilderContext, ServiceRegistry> configure = null)
-        {
-            return builder
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddLamar();
-                    var registry = new ServiceRegistry(services);
-                
-                    configure?.Invoke(context, registry);
-                
-                    services.Clear();
-                    services.AddRange(registry);
-
-#if NET6_0_OR_GREATER
-                    services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
-#endif
-                    
-                });
-        }
-        
-        public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, ServiceRegistry registry)
-        {
-            return builder.ConfigureServices((context, services) => { services.AddLamar(registry); });
-        }
 
         /// <summary>
         /// Shortcut to replace the built in DI container with Lamar using the extra service registrations

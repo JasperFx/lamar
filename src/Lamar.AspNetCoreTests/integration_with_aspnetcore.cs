@@ -7,27 +7,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.AspNetCore;
 using Baseline;
-using Lamar.Microsoft.DependencyInjection;
 using IdentityServer4.Models;
+using Lamar.IoC.Instances;
+using Lamar.Microsoft.DependencyInjection;
+using LamarCodeGeneration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal;
-using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
-using Lamar.IoC.Instances;
-using LamarCodeGeneration;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Xunit.Abstractions;
 
 namespace Lamar.Testing.AspNetCoreIntegration
@@ -36,16 +31,16 @@ namespace Lamar.Testing.AspNetCoreIntegration
     {
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return Host.CreateDefaultBuilder() 
+            return Host.CreateDefaultBuilder()
                 .UseLamar()
-                
+
                 // This is the override
                 .OverrideServices(s => s.For<IServer>().Use<integration_with_aspnetcore.FakeServer>())
                 .ConfigureWebHostDefaults(b => b.UseStartup<Startup>());
             ;
         }
     }
-    
+
     public class integration_with_aspnetcore
     {
         private readonly ITestOutputHelper _output;
@@ -81,32 +76,16 @@ namespace Lamar.Testing.AspNetCoreIntegration
             container.GetInstance<Foo>().Context.ShouldNotBeNull();
         }
 
-        public class Foo
-        {
-            public AppDbContext Context { get; }
-
-            public Foo(AppDbContext context)
-            {
-                Context = context;
-            }
-        }
-
-
-
-
-
-
 
         [Fact]
         public void see_singleton_registrations()
         {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Startup>();
+            });
 
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
 
             using (var host = builder.Start())
             {
@@ -118,26 +97,18 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     .Where(x => x.Instance is GeneratedInstance);
 
                 foreach (var singleton in singletons)
-                {
                     _output.WriteLine($"{singleton.ServiceType.FullNameInCode()} --> {singleton.Instance}");
-                }
             }
-
-
-
         }
 
         [Fact]
         public void use_in_app()
         {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-
-                .UseStartup<Startup>();
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Startup>();
+            });
 
             var failures = new List<Type>();
 
@@ -158,15 +129,15 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
                     .SelectMany(x => x.Instance.ErrorMessages).ToArray();
 
-                if (errors.Any()) throw new Exception(errors.Join(", "));
-
+                if (errors.Any())
+                {
+                    throw new Exception(errors.Join(", "));
+                }
 
 
                 starting = stopwatch.ElapsedMilliseconds;
                 foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
-                {
                     instance.Resolve().ShouldNotBeNull();
-                }
 
                 ending = stopwatch.ElapsedMilliseconds;
                 stopwatch.Stop();
@@ -183,23 +154,19 @@ namespace Lamar.Testing.AspNetCoreIntegration
             _output.WriteLine("Building all:  " + (ending - starting));
 
 
-            
-
             if (failures.Any())
             {
                 throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
             }
         }
-        
-        public class FakeServer : NulloServer{}
-        
+
         [Fact]
         public void can_override_registrations_on_host_builder()
         {
             var builder = Host.CreateDefaultBuilder();
             builder
                 .UseLamar()
-                
+
                 // This is the override
                 .OverrideServices(s => s.For<IServer>().Use<FakeServer>())
                 .ConfigureWebHostDefaults(b => b.UseStartup<Startup>());
@@ -220,10 +187,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 .CreateHostBuilder(Array.Empty<string>())
 
                 // This is our chance to make service overrides
-                .OverrideServices(s =>
-                {
-                    s.For<IServer>().Use<FakeServer>();
-                });
+                .OverrideServices(s => { s.For<IServer>().Use<FakeServer>(); });
 
             using var host = builder.Build();
 
@@ -237,55 +201,47 @@ namespace Lamar.Testing.AspNetCoreIntegration
         [Fact]
         public void can_override_registrations()
         {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-                
-                // This is the override
-                .OverrideServices(s => s.For<IServer>().Use<FakeServer>())
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+                {
+                    x.UseServer(new NulloServer());
+                    x.UseStartup<Startup>();
+                })
 
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
+                // This is the override
+                .OverrideServices(s => s.For<IServer>().Use<FakeServer>());
 
             using var host = builder.Build();
 
             host.Services.GetRequiredService<IServer>()
                 .ShouldBeOfType<FakeServer>();
         }
-        
+
         [Fact]
         public void how_do_i_build_with_everything()
         {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Startup>();
+            });
 
             using (var host = builder.Start())
             {
                 var container = host.Services.ShouldBeOfType<Container>();
-                
+
 
                 _output.WriteLine(container.HowDoIBuild());
             }
-
-
         }
 
         [Fact]
         public void bug_103_multithreaded_access_to_options()
         {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Startup>();
+            });
 
 
             using (var host = builder.Build())
@@ -300,15 +256,12 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 void tryToResolveAll()
                 {
-                    foreach (var optionType in optionTypes)
-                    {
-                        container.GetInstance(optionType).ShouldNotBeNull();
-                    }
+                    foreach (var optionType in optionTypes) container.GetInstance(optionType).ShouldNotBeNull();
                 }
 
                 var list = new List<Task>();
 
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     list.Add(Task.Factory.StartNew(tryToResolveAll));
                 }
@@ -317,9 +270,194 @@ namespace Lamar.Testing.AspNetCoreIntegration
             }
         }
 
+        [Fact]
+        public void bug_159_register_service_using_ServiceDescriptor_instance()
+        {
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Bug159.Startup>();
+            });
+            
+
+            using (var host = builder.Build())
+            {
+                var service = host.Services.GetRequiredService<Bug159>();
+            }
+        }
+
+        [Fact]
+        public void can_assert_configuration_is_valid_config_only()
+        {
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Bug159.Startup>();
+            });
+
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+
+
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+                if (errors.Any())
+                {
+                    throw new Exception(errors.Join(", "));
+                }
+
+
+                container.AssertConfigurationIsValid(AssertMode.ConfigOnly);
+            }
+        }
+
+        [Fact]
+        public void can_assert_configuration_is_valid_config_full()
+        {
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Bug159.Startup>();
+            });
+
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+
+
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+                if (errors.Any())
+                {
+                    throw new Exception(errors.Join(", "));
+                }
+
+
+                container.AssertConfigurationIsValid();
+            }
+        }
+
+        [Fact]
+        public void can_assert_configuration_is_valid_with_service_that_requires_IServiceScopeFactory()
+        {
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+                {
+                    x.UseServer(new NulloServer());
+                    x.UseStartup<Bug159.Startup>();
+                })
+                .ConfigureServices(services =>
+                {
+                    // AddHealthChecks configures DefaultHealthCheckService which depends on IServiceScopeFactory
+                    services.AddHealthChecks();
+                });
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+                if (errors.Any())
+                {
+                    throw new Exception(errors.Join(", "));
+                }
+
+                container.AssertConfigurationIsValid();
+            }
+        }
+
+        [Fact]
+        public void use_in_app_with_ambigious_references()
+        {
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Bug159.Startup>();
+            }).UseMetrics();
+
+            var failures = new List<Type>();
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+
+
+                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
+                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
+
+                if (errors.Any())
+                {
+                    throw new Exception(errors.Join(", "));
+                }
+
+
+                foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
+                    instance.Resolve().ShouldNotBeNull();
+
+                //                    try
+                //                    {
+                //
+                //                    }
+                //                    catch (Exception e)
+                //                    {
+                //                        failures.Add(instance.ServiceType);
+                //                    }
+            }
+
+            if (failures.Any())
+            {
+                throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
+            }
+        }
+
+
+        [Fact]
+        public void can_build_resolvers_for_everything()
+        {
+            var builder = Host.CreateDefaultBuilder().UseLamar().ConfigureWebHostDefaults(x =>
+            {
+                x.UseServer(new NulloServer());
+                x.UseStartup<Bug159.Startup>();
+            });
+
+
+            using (var host = builder.Start())
+            {
+                var container = host.Services.ShouldBeOfType<Container>();
+                var instances = container.Model.AllInstances.Select(x => x.Instance)
+                    .Where(x => !x.ServiceType.IsOpenGeneric()).OfType<GeneratedInstance>().ToArray();
+
+
+                foreach (var instance in instances)
+                {
+                    _output.WriteLine($"{instance.ServiceType} / {instance.ImplementationType}");
+                    instance.BuildFuncResolver(container).ShouldNotBeNull();
+                }
+            }
+        }
+
+        public class Foo
+        {
+            public Foo(AppDbContext context)
+            {
+                Context = context;
+            }
+
+            public AppDbContext Context { get; }
+        }
+
+        public class FakeServer : NulloServer
+        {
+        }
+
         public class Bug159
         {
-            Bug159(IMessageMaker msg)
+            private Bug159(IMessageMaker msg)
             {
             }
 
@@ -339,187 +477,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 }
             }
         }
-
-        [Fact]
-        public void bug_159_register_service_using_ServiceDescriptor_instance()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Bug159.Startup>();
-
-
-            using (var host = builder.Build())
-            {
-                var service = host.Services.GetRequiredService<Bug159>();
-            }
-        }
-
-        [Fact]
-        public void can_assert_configuration_is_valid_config_only()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
-
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-
-
-                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
-                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
-
-                if (errors.Any()) throw new Exception(errors.Join(", "));
-
-
-                container.AssertConfigurationIsValid(AssertMode.ConfigOnly);
-            }
-        }
-        
-        [Fact]
-        public void can_assert_configuration_is_valid_config_full()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
-
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-
-
-                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
-                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
-
-                if (errors.Any()) throw new Exception(errors.Join(", "));
-
-
-                container.AssertConfigurationIsValid(AssertMode.Full);
-            }
-        }
-
-        [Fact]
-        public void can_assert_configuration_is_valid_with_service_that_requires_IServiceScopeFactory()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .ConfigureServices(services =>
-                {
-                    // AddHealthChecks configures DefaultHealthCheckService which depends on IServiceScopeFactory
-                    services.AddHealthChecks();
-                })
-                .UseStartup<Startup>();
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
-                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
-
-                if (errors.Any()) throw new Exception(errors.Join(", "));
-                container.AssertConfigurationIsValid();
-            }
-        }
-        
-        [Fact]
-        public void use_in_app_with_ambigious_references()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-                .UseMetrics()
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
-
-            var failures = new List<Type>();
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-
-
-                var errors = container.Model.AllInstances.Where(x => x.Instance.ErrorMessages.Any())
-                    .SelectMany(x => x.Instance.ErrorMessages).ToArray();
-
-                if (errors.Any()) throw new Exception(errors.Join(", "));
-
-
-
-
-                foreach (var instance in container.Model.AllInstances.Where(x => !x.ServiceType.IsOpenGeneric()))
-                {
-                    instance.Resolve().ShouldNotBeNull();
-
-                    //                    try
-                    //                    {
-                    //
-                    //                    }
-                    //                    catch (Exception e)
-                    //                    {
-                    //                        failures.Add(instance.ServiceType);
-                    //                    }
-                }
-            }
-
-            if (failures.Any())
-            {
-                throw new Exception(failures.Select(x => x.FullNameInCode()).Join(Environment.NewLine));
-            }
-        }
-        
-        
-        
-        
-        [Fact]
-        public void can_build_resolvers_for_everything()
-        {
-            var builder = new WebHostBuilder();
-            builder
-                .UseLamar()
-
-                .UseUrls("http://localhost:5002")
-                .UseServer(new NulloServer())
-                .UseStartup<Startup>();
-
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-                var instances = container.Model.AllInstances.Select(x => x.Instance).Where(x => !x.ServiceType.IsOpenGeneric()).OfType<GeneratedInstance>().ToArray();
-
-
-
-                foreach (var instance in instances)
-                {
-                    _output.WriteLine($"{instance.ServiceType} / {instance.ImplementationType}");
-                    instance.BuildFuncResolver(container).ShouldNotBeNull();
-                }
-            }
-
-        }
-
-        
-        
-        
-
     }
 
     public class AppDbContext : DbContext
@@ -566,7 +523,7 @@ namespace Lamar.Testing.AspNetCoreIntegration
             services.For<IMessageMaker>().Use(new MessageMaker("Hey there."));
 
             services.AddHealthChecks();
-            
+
             services.AddHealthChecksUI();
 
             services.AddAuthentication()
@@ -575,35 +532,34 @@ namespace Lamar.Testing.AspNetCoreIntegration
                     options.Authority = "auth";
                     options.RequireHttpsMetadata = true;
                 });
-
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseIdentityServer();
-            
+
             app.UseHealthChecks("/hc",
                 new HealthCheckOptions
                 {
-                    Predicate = hc => true,
+                    Predicate = hc => true
                 });
 
             app.UseHealthChecks("/hc-cache",
                 new HealthCheckOptions
                 {
-                    Predicate = hc => hc.Tags.Contains("cache"),
+                    Predicate = hc => hc.Tags.Contains("cache")
                 });
 
             app.UseHealthChecks("/hc-db",
                 new HealthCheckOptions
                 {
-                    Predicate = hc => hc.Tags.Contains("database"),
+                    Predicate = hc => hc.Tags.Contains("database")
                 });
 
             app.UseHealthChecks("/hc-domain",
                 new HealthCheckOptions
                 {
-                    Predicate = hc => hc.Tags.Contains("domainservice"),
+                    Predicate = hc => hc.Tags.Contains("domainservice")
                 });
 
 
@@ -649,29 +605,41 @@ namespace Lamar.Testing.AspNetCoreIntegration
         }
     }
 
-    public class Config {
-        public static IEnumerable<ApiResource> GetApiResources() => new List<ApiResource> {
-            new ApiResource("api1", "My API")
-        };
+    public class Config
+    {
+        public static IEnumerable<ApiResource> GetApiResources()
+        {
+            return new List<ApiResource>
+            {
+                new("api1", "My API")
+            };
+        }
 
-        public static IEnumerable<Client> GetClients() => new List<Client> {
-            new Client {
-                ClientId = "client",
+        public static IEnumerable<Client> GetClients()
+        {
+            return new List<Client>
+            {
+                new()
+                {
+                    ClientId = "client",
 
-                // no interactive user, use the clientid/secret for authentication
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
 
-                // secret for authentication
-                ClientSecrets = {
-                    new Secret("secret".Sha256())
-                },
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
 
-                // scopes that client has access to
-                AllowedScopes = {
-                    "api1"
+                    // scopes that client has access to
+                    AllowedScopes =
+                    {
+                        "api1"
+                    }
                 }
-            }
-        };
+            };
+        }
     }
 
     public interface IMessageMaker
