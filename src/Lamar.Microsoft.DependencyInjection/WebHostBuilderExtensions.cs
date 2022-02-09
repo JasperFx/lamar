@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
+using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -48,7 +49,22 @@ namespace Lamar.Microsoft.DependencyInjection
         
         public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, Action<WebHostBuilderContext, ServiceRegistry> configure = null)
         {
-            return builder.UseLamar<ServiceRegistry>(configure);
+            return builder
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddLamar();
+                    var registry = new ServiceRegistry(services);
+                
+                    configure?.Invoke(context, registry);
+                
+                    services.Clear();
+                    services.AddRange(registry);
+
+#if NET6_0_OR_GREATER
+                    services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+#endif
+                    
+                });
         }
         
         public static IWebHostBuilder UseLamar(this IWebHostBuilder builder, ServiceRegistry registry)
@@ -78,15 +94,35 @@ namespace Lamar.Microsoft.DependencyInjection
         
         /// <summary>
         /// Shortcut to replace the built in DI container with Lamar using service registrations
-        /// dependent upon the application's environment and configuration
+        /// dependent upon the application's environment and configuration.
+        ///
+        /// THIS IS THE ONLY OVERLOAD THAT SHOULD BE USED WITH ASP.NET CORE MINIMAL API!
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="registry"></param>
         /// <returns></returns>
         public static IHostBuilder UseLamar(this IHostBuilder builder, Action<HostBuilderContext, ServiceRegistry> configure = null)
         {
-            return builder.UseLamar<ServiceRegistry>(configure);
+            return builder
+                .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory())
+                .UseServiceProviderFactory<IServiceCollection>(new LamarServiceProviderFactory())
+                .ConfigureServices((context, services) =>
+                {
+                    var registry = new ServiceRegistry(services);
+                
+                    configure?.Invoke(context, registry);
+                
+                    services.Clear();
+                    services.AddRange(registry);
+
+#if NET6_0_OR_GREATER
+                    services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+#endif
+                    
+                });
         }
+        
+        
 
 
         /// <summary>
@@ -121,7 +157,6 @@ namespace Lamar.Microsoft.DependencyInjection
         /// <param name="registry"></param>
         /// <returns></returns>
         public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry = null)
-
         {
             services.AddSingleton<ILoggerFactory, LoggerFactory>(sp =>
                 new LoggerFactory(

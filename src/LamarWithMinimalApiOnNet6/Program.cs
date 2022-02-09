@@ -34,18 +34,18 @@ app.Run();
 [ApiController]
 public class HelloController : ControllerBase
 {
-    private readonly ITest test;
-    private readonly ITestTime testTime;
+    private readonly ITest _test;
+    private readonly ITestTime _testTime;
 
     public HelloController(ITest test, ITestTime testTime)
     {
-        this.test = test;
-        this.testTime = testTime;
+        _test = test;
+        _testTime = testTime;
     }
 
     [HttpGet]
     public IActionResult Get()
-    => this.Ok($"{this.test.SayHello()}@{this.testTime.GetTime()}");
+    => this.Ok($"{_test.SayHello()}@{_testTime.GetTime()}");
 }
 
 public interface ITest

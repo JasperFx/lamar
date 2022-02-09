@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Registration", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithMinimalApiOnNet6", "src\LamarWithMinimalApiOnNet6\LamarWithMinimalApiOnNet6.csproj", "{D39497B9-192B-4F4B-9B8D-024935124B93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalApiTests", "src\MinimalApiTests\MinimalApiTests.csproj", "{23D34C12-A3A0-4399-94A3-08616AE7C934}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,10 @@ Global
 		{D39497B9-192B-4F4B-9B8D-024935124B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D39497B9-192B-4F4B-9B8D-024935124B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D39497B9-192B-4F4B-9B8D-024935124B93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

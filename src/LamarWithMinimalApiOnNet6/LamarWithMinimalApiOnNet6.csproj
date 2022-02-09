@@ -4,14 +4,20 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+
 	</PropertyGroup>
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="MinimalApiTests" />
 		<ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Shouldly" Version="4.0.3" />
 	</ItemGroup>
 
 </Project>

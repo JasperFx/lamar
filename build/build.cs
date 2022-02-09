@@ -85,6 +85,7 @@ documentation/compilation/frames/injected-fields/
                 RunTests("Lamar.Testing");
                 RunTests("Lamar.AspNetCoreTests");
                 RunTests("Lamar.AspNetCoreTests.Integration");
+                RunTests("MinimalApiTests");
             });
             
             Target("commands", DependsOn("compile"),() =>
