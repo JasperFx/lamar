@@ -26,30 +26,8 @@ namespace Lamar.Microsoft.DependencyInjection
 
 
         /// <summary>
-        /// Shortcut to replace the built in DI container with Lamar using the extra service registrations
-        /// in the ServiceRegistry
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="registry"></param>
-        /// <returns></returns>
-        public static IHostBuilder UseLamar(this IHostBuilder builder, ServiceRegistry registry)
-        {
-            return 
-                
-                
-                builder
-                    .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory())
-                    .UseServiceProviderFactory<IServiceCollection>(new LamarServiceProviderFactory())
-                    
-                    .ConfigureServices((context, x) => x.AddLamar(registry));
-            
-        }
-        
-        /// <summary>
         /// Shortcut to replace the built in DI container with Lamar using service registrations
         /// dependent upon the application's environment and configuration.
-        ///
-        /// THIS IS THE ONLY OVERLOAD THAT SHOULD BE USED WITH ASP.NET CORE MINIMAL API!
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="registry"></param>
@@ -75,31 +53,20 @@ namespace Lamar.Microsoft.DependencyInjection
                 });
         }
         
-        
-
-
         /// <summary>
-        /// Shortcut to replace the built in DI container with Lamar using the extra service registrations
-        /// in the "T" ServiceRegistry
+        /// Shortcut to replace the built in DI container with Lamar using service registrations
+        /// dependent upon the application's environment and configuration.
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="configure">Add additional service registrations</param>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="registry"></param>
         /// <returns></returns>
-        public static IHostBuilder UseLamar<T>(this IHostBuilder builder, Action<HostBuilderContext, T> configure = null) where T : ServiceRegistry, new()
+        public static IHostBuilder UseLamar(this IHostBuilder builder, Action<ServiceRegistry> configure)
         {
-            return builder
-                .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory())
-                .ConfigureServices((context, services) =>
-            {
-                var registry = new T();
-                
-                configure?.Invoke(context, registry);
-                
-                services.AddLamar(registry);
-            });
+            return builder.UseLamar((c, s) => configure.Invoke(s));
         }
         
+        
+
 
 
         /// <summary>

@@ -59,7 +59,7 @@ namespace Lamar.AspNetCoreTests
         [Fact]
         public void open_generic_types_issue()
         {
-            var builder = new HostBuilder().UseLamar<DefaultRegistry>();
+            var builder = new HostBuilder().UseLamar((c, s) => s.IncludeRegistry<DefaultRegistry>());
             using (var host = builder.Build())
             {
             }
@@ -69,7 +69,7 @@ namespace Lamar.AspNetCoreTests
         public void use_lamar_with_registry_type()
         {
             var builder = new HostBuilder()
-                .UseLamar<CustomRegistry>();
+                .UseLamar(x => x.IncludeRegistry<CustomRegistry>());
 
             using (var host = builder.Build())
             {
@@ -161,39 +161,6 @@ namespace Lamar.AspNetCoreTests
             container.AssertConfigurationIsValid(AssertMode.Full);
         }
 
-        [Fact]
-        public void can_initialize_from_ServiceRegistry()
-        {
-            var builder = new HostBuilder()
-                .UseLamar(new MyServiceRegistry())
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    config.AddJsonFile("appsettings.json", false);
-                })
-                .ConfigureServices((context, services) =>
-                {
-                    // This is needed because of https://github.com/aspnet/Logging/issues/691
-                    services.AddSingleton<ILoggerFactory, LoggerFactory>(sp =>
-                        new LoggerFactory(
-                            sp.GetRequiredService<IEnumerable<ILoggerProvider>>(),
-                            sp.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
-                        )
-                    );
-
-                    services.Configure<MyServiceConfig>(context.Configuration.GetSection(nameof(MyServiceConfig)));
-                })
-                .ConfigureContainer<ServiceRegistry>((context, services) =>
-                {
-                });
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-                var service = host.Services.GetService<IHostedService>().ShouldBeOfType<MyServiceImpl>();
-
-                service.Greeting.ShouldBe("Hello World!");
-            }
-        }
 
         [Fact]
         public void use_setter_injection_with_controller()

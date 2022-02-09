@@ -111,52 +111,6 @@ namespace Lamar.AspNetCoreTests
             }
         }
 
-        [Fact]
-        public void can_initialize_from_ServiceRegistry()
-        {
-            var builder = new HostBuilder()
-                .UseLamar(new MyServiceRegistry())
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    config.AddJsonFile("appsettings.json", false);
-                })
-                .ConfigureServices((context, services) =>
-                {
-                    // This is needed because of https://github.com/aspnet/Logging/issues/691
-                    services.AddSingleton<ILoggerFactory, LoggerFactory>(sp =>
-                        new LoggerFactory(
-                            sp.GetRequiredService<IEnumerable<ILoggerProvider>>(),
-                            sp.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
-                        )
-                    );
-
-                    services.Configure<MyServiceConfig>(context.Configuration.GetSection(nameof(MyServiceConfig)));
-                })
-                .ConfigureContainer<ServiceRegistry>((context, services) =>
-                {
-                });
-
-            using (var host = builder.Start())
-            {
-                var container = host.Services.ShouldBeOfType<Container>();
-                var service = host.Services.GetService<IHostedService>().ShouldBeOfType<MyServiceImpl>();
-
-                service.Greeting.ShouldBe("Hello World!");
-            }
-        }
-
-        public class MyServiceRegistry : ServiceRegistry
-        {
-            public MyServiceRegistry()
-            {
-                Scan(scan =>
-                {
-                    scan.AssemblyContainingType<MyServiceImpl>();
-                    scan.WithDefaultConventions();
-                    scan.AddAllTypesOf<IHostedService>();
-                });
-            }
-        }
 
         public class MyServiceConfig
         {
