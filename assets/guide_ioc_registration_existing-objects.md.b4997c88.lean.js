@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const h='{"title":"Registering Existing Objects","description":"","frontmatter":{},"relativePath":"guide/ioc/registration/existing-objects.md","lastUpdated":1644423598335}',e={},o=t("",7),p=[o];function c(i,l,r,u,d,k){return a(),s("div",null,p)}var _=n(e,[["render",c]]);export{h as __pageData,_ as default};

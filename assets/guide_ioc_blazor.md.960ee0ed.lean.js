@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const g='{"title":"Integration with Blazor","description":"","frontmatter":{},"relativePath":"guide/ioc/blazor.md","lastUpdated":1644423598331}',p={},o=t("",5),e=[o];function c(l,u,i,r,k,d){return a(),s("div",null,e)}var y=n(p,[["render",c]]);export{g as __pageData,y as default};

@@ -1,0 +1,1 @@
+import{_ as e,c as a,o as n,a as s}from"./app.35d600bb.js";const f='{"title":"Lamar as IoC Container","description":"","frontmatter":{},"relativePath":"guide/ioc/index.md","lastUpdated":1644423598327}',t={},r=s("",12),o=[r];function p(c,i,l,d,u,m){return n(),a("div",null,o)}var _=e(t,[["render",p]]);export{f as __pageData,_ as default};

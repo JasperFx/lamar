@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as e}from"./app.35d600bb.js";const m='{"title":"Auto Resolving Concrete Types","description":"","frontmatter":{},"relativePath":"guide/ioc/resolving/requesting-a-concrete-type.md","lastUpdated":1644423598339}',t={},o=e("",15),p=[o];function c(l,r,i,u,k,d){return a(),s("div",null,p)}var y=n(t,[["render",c]]);export{m as __pageData,y as default};

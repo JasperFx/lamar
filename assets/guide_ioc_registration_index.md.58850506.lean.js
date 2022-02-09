@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const m='{"title":"Registration","description":"","frontmatter":{},"relativePath":"guide/ioc/registration/index.md","lastUpdated":1644423598331}',e={},o=t("",33),p=[o];function c(i,r,l,u,k,d){return a(),s("div",null,p)}var h=n(e,[["render",c]]);export{m as __pageData,h as default};

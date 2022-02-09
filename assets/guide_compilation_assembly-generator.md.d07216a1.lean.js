@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const y='{"title":"Compiling Code with AssemblyGenerator","description":"","frontmatter":{},"relativePath":"guide/compilation/assembly-generator.md","lastUpdated":1644423598327}',e={},p=t("",17),o=[p];function c(l,i,u,r,k,m){return a(),s("div",null,o)}var h=n(e,[["render",c]]);export{y as __pageData,h as default};

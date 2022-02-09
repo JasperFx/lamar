@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const h='{"title":"Nested Containers (Per Request/Transaction)","description":"","frontmatter":{},"relativePath":"guide/ioc/nested-containers.md","lastUpdated":1644423598327}',e={},p=t("",8),o=[p];function c(i,u,l,r,k,d){return a(),s("div",null,o)}var g=n(e,[["render",c]]);export{h as __pageData,g as default};

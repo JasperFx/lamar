@@ -1,0 +1,1 @@
+import{_ as n,c as a,o as s,a as t}from"./app.35d600bb.js";const h='{"title":"Injected Fields","description":"","frontmatter":{},"relativePath":"guide/compilation/frames/injected-fields.md","lastUpdated":1644423598327}',e={},p=t("",9),o=[p];function c(l,i,u,k,r,d){return s(),a("div",null,o)}var f=n(e,[["render",c]]);export{h as __pageData,f as default};

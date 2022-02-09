@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as n,a}from"./app.35d600bb.js";const k='{"title":"Environment Tests","description":"","frontmatter":{},"relativePath":"guide/ioc/diagnostics/environment-tests.md","lastUpdated":1644423598339}',s={},o=a("",9),i=[o];function p(c,r,l,d,u,m){return n(),t("div",null,i)}var y=e(s,[["render",p]]);export{k as __pageData,y as default};

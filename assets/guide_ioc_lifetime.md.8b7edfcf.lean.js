@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const f='{"title":"Service Lifetimes","description":"","frontmatter":{},"relativePath":"guide/ioc/lifetime.md","lastUpdated":1644423598331}',e={},p=t("",9),o=[p];function c(i,l,u,r,k,d){return a(),s("div",null,o)}var h=n(e,[["render",c]]);export{f as __pageData,h as default};

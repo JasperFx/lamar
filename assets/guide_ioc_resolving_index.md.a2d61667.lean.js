@@ -1,0 +1,1 @@
+import{_ as e,c as r,o as t,a}from"./app.35d600bb.js";const f='{"title":"Resolving Services","description":"","frontmatter":{},"relativePath":"guide/ioc/resolving/index.md","lastUpdated":1644423598339}',i={},o=a("",3),s=[o];function n(c,l,d,p,_,v){return t(),r("div",null,s)}var u=e(i,[["render",n]]);export{f as __pageData,u as default};

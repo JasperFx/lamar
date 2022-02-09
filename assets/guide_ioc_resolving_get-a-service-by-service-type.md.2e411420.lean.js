@@ -1,0 +1,1 @@
+import{_ as n,c as s,o as a,a as t}from"./app.35d600bb.js";const m='{"title":"Get a Service by ServiceType","description":"","frontmatter":{},"relativePath":"guide/ioc/resolving/get-a-service-by-service-type.md","lastUpdated":1644423598339}',p={},e=t("",7),c=[e];function o(u,i,l,k,r,d){return a(),s("div",null,c)}var h=n(p,[["render",o]]);export{m as __pageData,h as default};
