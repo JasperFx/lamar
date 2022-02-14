@@ -61,7 +61,7 @@ namespace Lamar.IoC.Activation
                         var raw = inner.Resolve(s);
                         return raw switch
                         {
-                            TImplementation inner => interceptor(s.Root, inner),
+                            TImplementation inner => interceptor(s, inner),
                             null => throw new InvalidOperationException(
                                 $"Inner instance {inner} of activator returned null"),
                             _ => throw new InvalidCastException(
