@@ -181,4 +181,4 @@ Note, there are a couple overloads for `UseLamar()` that may be more or less app
 
 ## Lamar for Runtime Code Generation & Compilation
 
-Please see [compilation](/guide/compilation/) for more information.
+Please see [compilation](/lamar/guide/compilation/) for more information.
