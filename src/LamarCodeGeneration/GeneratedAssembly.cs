@@ -10,7 +10,9 @@ namespace LamarCodeGeneration
 {
     public class GeneratedAssembly
     {
-        public readonly List<GeneratedType> GeneratedTypes = new List<GeneratedType>();
+        private readonly List<GeneratedType> _generatedTypes = new List<GeneratedType>();
+        
+        public IReadOnlyList<GeneratedType> GeneratedTypes => _generatedTypes;
 
         public GeneratedAssembly(GenerationRules rules)
         {
@@ -52,7 +54,8 @@ namespace LamarCodeGeneration
                 generatedType.InheritsFrom(baseType);
             }
 
-            GeneratedTypes.Add(generatedType);
+            generatedType.ParentAssembly = this;
+            _generatedTypes.Add(generatedType);
 
             return generatedType;
         }

@@ -7,11 +7,11 @@ namespace LamarCodeGeneration
 {
     public static class CodeGenerationExtensions
     {
-        public static GeneratedAssembly StartAssembly(this IGeneratesCode generator, GenerationRules rules)
+        public static GeneratedAssembly StartAssembly(this ICodeFileCollection generator, GenerationRules rules)
         {
             if (generator.ChildNamespace.IsEmpty())
             {
-                throw new InvalidOperationException($"Missing {nameof(IGeneratesCode.ChildNamespace)} for {generator}");
+                throw new InvalidOperationException($"Missing {nameof(ICodeFileCollection.ChildNamespace)} for {generator}");
             }
                 
             var @namespace = $"{rules.ApplicationNamespace}.{generator.ChildNamespace}";
@@ -19,16 +19,16 @@ namespace LamarCodeGeneration
             return new GeneratedAssembly(rules, @namespace);
         }
 
-        public static string ToNamespace(this IGeneratesCode generatesCode, GenerationRules rules)
+        public static string ToNamespace(this ICodeFileCollection codeFileCollection, GenerationRules rules)
         {
-            return $"{rules.ApplicationNamespace}.{generatesCode.ChildNamespace}";
+            return $"{rules.ApplicationNamespace}.{codeFileCollection.ChildNamespace}";
         }
 
-        public static string ToExportDirectory(this IGeneratesCode generator, string exportDirectory)
+        public static string ToExportDirectory(this ICodeFileCollection generator, string exportDirectory)
         {
             if (generator.ChildNamespace.IsEmpty())
             {
-                throw new InvalidOperationException($"Missing {nameof(IGeneratesCode.ChildNamespace)} for {generator}");
+                throw new InvalidOperationException($"Missing {nameof(ICodeFileCollection.ChildNamespace)} for {generator}");
             }
 
             var generatorDirectory = exportDirectory;
@@ -43,7 +43,7 @@ namespace LamarCodeGeneration
             return generatorDirectory;
         }
 
-        public static GeneratedAssembly AssembleTypes(this IGeneratesCode generator, GenerationRules rules)
+        public static GeneratedAssembly AssembleTypes(this ICodeFileCollection generator, GenerationRules rules)
         {
             var generatedAssembly = generator.StartAssembly(rules);
             foreach (var file in generator.BuildFiles())

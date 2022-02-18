@@ -10,7 +10,7 @@ namespace LamarCodeGeneration
 {
     public class DynamicCodeBuilder
     {
-        public DynamicCodeBuilder(GenerationRules rules, IServiceProvider services, IGeneratesCode[] generators)
+        public DynamicCodeBuilder(GenerationRules rules, IServiceProvider services, ICodeFileCollection[] generators)
         {
             Rules = rules;
             Services = services;
@@ -84,11 +84,11 @@ namespace LamarCodeGeneration
             }
         }
 
-        private string generateCode(IGeneratesCode generator)
+        private string generateCode(ICodeFileCollection generator)
         {
             if (generator.ChildNamespace.IsEmpty())
             {
-                throw new InvalidOperationException($"Missing {nameof(IGeneratesCode.ChildNamespace)} for {generator}");
+                throw new InvalidOperationException($"Missing {nameof(ICodeFileCollection.ChildNamespace)} for {generator}");
             }
 
             var @namespace = generator.ToNamespace(Rules);
@@ -145,6 +145,6 @@ namespace LamarCodeGeneration
 
         public IServiceProvider Services { get; }
 
-        public IGeneratesCode[] Generators { get; }
+        public ICodeFileCollection[] Generators { get; }
     }
 }

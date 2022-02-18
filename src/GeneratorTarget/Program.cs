@@ -16,8 +16,8 @@ namespace GeneratorTarget
             return Host.CreateDefaultBuilder()
                 .UseLamar((c, services) =>
                 {
-                    services.AddSingleton<IGeneratesCode>(new GreeterGenerator());
-                    services.AddSingleton<IGeneratesCode>(new GreeterGenerator2());
+                    services.AddSingleton<ICodeFileCollection>(new GreeterGenerator());
+                    services.AddSingleton<ICodeFileCollection>(new GreeterGenerator2());
                 })
                 .RunOaktonCommands(args);
 

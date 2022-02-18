@@ -24,6 +24,20 @@ namespace LamarCodeGeneration.Frames
         public CodeFrame(bool isAsync, string format, params object[] values) : base(isAsync)
         {
             // This is to do a 
+            validateFormat(format, values);
+
+            _format = format;
+            _values = values;
+            
+            
+
+            // For dependency ordering later
+            uses.AddRange(values.OfType<Variable>());
+
+        }
+
+        private static void validateFormat(string format, object[] values)
+        {
             var fake = values.Select(x => string.Empty).ToArray();
             try
             {
@@ -33,15 +47,6 @@ namespace LamarCodeGeneration.Frames
             {
                 throw new InvalidOperationException("Invalid code format: " + format, e);
             }
-            
-            _format = format;
-            _values = values;
-            
-            
-
-            // For dependency ordering later
-            uses.AddRange(values.OfType<Variable>());
-
         }
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)

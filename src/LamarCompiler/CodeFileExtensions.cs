@@ -11,7 +11,7 @@ namespace LamarCompiler
 {
     public static class CodeFileExtensions
     {
-        public static async Task Initialize(this ICodeFile file, GenerationRules rules, IGeneratesCode parent, IServiceProvider? services)
+        public static async Task Initialize(this ICodeFile file, GenerationRules rules, ICodeFileCollection parent, IServiceProvider? services)
         {
             var @namespace = parent.ToNamespace(rules);
             
@@ -76,7 +76,7 @@ namespace LamarCompiler
         /// <param name="parent"></param>
         /// <param name="services"></param>
         /// <exception cref="ExpectedTypeMissingException"></exception>
-        public static void InitializeSynchronously(this ICodeFile file, GenerationRules rules, IGeneratesCode parent, IServiceProvider? services)
+        public static void InitializeSynchronously(this ICodeFile file, GenerationRules rules, ICodeFileCollection parent, IServiceProvider? services)
         {
             var @namespace = parent.ToNamespace(rules);
             
@@ -131,7 +131,7 @@ namespace LamarCompiler
 
         }
 
-        public static void WriteCodeFile(this ICodeFile file, IGeneratesCode parent, GenerationRules rules, string code)
+        public static void WriteCodeFile(this ICodeFile file, ICodeFileCollection parent, GenerationRules rules, string code)
         {
             try
             {

@@ -255,6 +255,7 @@ namespace LamarCodeGeneration
         }
 
         public string FullName => $"{Namespace}.{TypeName}";
+        public GeneratedAssembly ParentAssembly { get; internal set; }
 
         public Type FindType(IEnumerable<Type> types)
         {

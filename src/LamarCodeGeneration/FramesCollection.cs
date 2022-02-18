@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using LamarCodeGeneration.Frames;
+using LamarCodeGeneration.Util;
 
 namespace LamarCodeGeneration
 {
@@ -16,6 +17,14 @@ namespace LamarCodeGeneration
 
         public FramesCollection()
         {
+        }
+
+        // TODO -- another version that takes in variables maybe?
+        
+        public ICodeFrame ReturnNewGeneratedTypeObject(GeneratedType typeBeingReturned, params string[] values)
+        {
+            return Code(
+                $"return new {ParentMethod.ParentType.ParentAssembly.Namespace}.{typeBeingReturned.TypeName}({values.Join(", ")})");
         }
 
         /// <summary>

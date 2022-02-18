@@ -32,24 +32,32 @@ namespace LamarCodeGeneration
     
     public class GenerationRules
     {
-        public GenerationRules(string applicationNamespace)
+        public GenerationRules(string applicationNamespace) : this()
         {
             ApplicationNamespace = applicationNamespace;
         }
 
-        public GenerationRules(string applicationNamespace, TypeLoadMode typeLoadMode)
+        public GenerationRules(string applicationNamespace, TypeLoadMode typeLoadMode) : this(applicationNamespace)
         {
-            ApplicationNamespace = applicationNamespace;
             TypeLoadMode = typeLoadMode;
         }
 
         public GenerationRules()
         {
+
         }
 
         public bool SourceCodeWritingEnabled { get; set; } = true;
 
-        public string ApplicationNamespace { get; set; } = "JasperGenerated";
+        
+        public string GeneratedNamespace { get; set; }= "Internal.Generated";
+
+        [Obsolete("Use GeneratedNamespace instead")]
+        public string ApplicationNamespace
+        {
+            get => GeneratedNamespace;
+            set => GeneratedNamespace = value;
+        } 
 
         public TypeLoadMode TypeLoadMode { get; set; } = TypeLoadMode.Dynamic;
         

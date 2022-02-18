@@ -33,7 +33,7 @@ namespace LamarCodeGeneration.Commands
             
             if (!builder.ChildNamespaces.Any())
             {
-                Console.WriteLine($"No registered {nameof(IGeneratesCode)} services registered, exiting");
+                Console.WriteLine($"No registered {nameof(ICodeFileCollection)} services registered, exiting");
                 return true;
             }
 

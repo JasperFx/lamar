@@ -5,7 +5,7 @@ namespace LamarCodeGeneration
 {
     public class GeneratorCompilationFailureException : Exception
     {
-        public GeneratorCompilationFailureException(IGeneratesCode generator, Exception innerException) : base($"Failure when trying to generate code for {generator.GetType().GetFullName()}", innerException)
+        public GeneratorCompilationFailureException(ICodeFileCollection generator, Exception innerException) : base($"Failure when trying to generate code for {generator.GetType().GetFullName()}", innerException)
         {
         }
     }

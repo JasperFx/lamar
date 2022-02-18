@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LamarCodeGeneration
 {
-    public interface IGeneratesCode
+    public interface ICodeFileCollection
     {
         IReadOnlyList<ICodeFile> BuildFiles();
         

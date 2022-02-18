@@ -60,7 +60,7 @@ namespace GeneratorTarget
         }
     }
     
-    public class GreeterGenerator : IGeneratesCode
+    public class GreeterGenerator : ICodeFileCollection
     {
         public IReadOnlyList<ICodeFile> BuildFiles()
         {
@@ -76,7 +76,7 @@ namespace GeneratorTarget
         public string ChildNamespace { get; } = "Helpers.Greeters";
     }
     
-    public class GreeterGenerator2 : IGeneratesCode
+    public class GreeterGenerator2 : ICodeFileCollection
     {
         public IReadOnlyList<ICodeFile> BuildFiles()
         {
