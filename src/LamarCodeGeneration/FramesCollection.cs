@@ -24,7 +24,7 @@ namespace LamarCodeGeneration
         public ICodeFrame ReturnNewGeneratedTypeObject(GeneratedType typeBeingReturned, params string[] values)
         {
             return Code(
-                $"return new {ParentMethod.ParentType.ParentAssembly.Namespace}.{typeBeingReturned.TypeName}({values.Join(", ")})");
+                $"return new {ParentMethod.ParentType.ParentAssembly.Namespace}.{typeBeingReturned.TypeName}({values.Join(", ")});");
         }
 
         /// <summary>
