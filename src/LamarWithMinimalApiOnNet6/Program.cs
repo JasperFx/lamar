@@ -14,9 +14,14 @@ builder.Host.UseLamar((context, registry) =>
 {
     // register services using Lamar
     registry.For<ITest>().Use<MyTest>();
+    
+    // Add your own Lamar ServiceRegistry collections
+    // of registrations
     registry.IncludeRegistry<MyRegistry>();
 
-    // add the controllers
+    // discover MVC controllers -- this was problematic
+    // inside of the UseLamar() method, but is "fixed" in
+    // Lamar V8
     registry.AddControllers();
 });
 
@@ -24,6 +29,7 @@ builder.Host.UseLamar((context, registry) =>
 var app = builder.Build();
 app.MapControllers();
 
+// Add Minimal API routes
 app.MapGet("/", (ITest service) => service.SayHello());
 
 app.Run();

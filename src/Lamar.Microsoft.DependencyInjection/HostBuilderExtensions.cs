@@ -47,7 +47,8 @@ namespace Lamar.Microsoft.DependencyInjection
                     services.AddRange(registry);
 
 #if NET6_0_OR_GREATER
-                    services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+                    // This enables the usage of implicit services in Minimal APIs
+                    services.AddSingleton(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
 #endif
                     
                 });
