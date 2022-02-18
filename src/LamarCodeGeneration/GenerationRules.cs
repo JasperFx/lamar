@@ -47,6 +47,8 @@ namespace LamarCodeGeneration
         {
         }
 
+        public bool SourceCodeWritingEnabled { get; set; } = true;
+
         public string ApplicationNamespace { get; set; } = "JasperGenerated";
 
         public TypeLoadMode TypeLoadMode { get; set; } = TypeLoadMode.Dynamic;

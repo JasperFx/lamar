@@ -53,9 +53,12 @@ namespace LamarCompiler
                 compiler.Compile(generatedAssembly, serviceVariables);
                 
                 await file.AttachTypes(rules, generatedAssembly.Assembly, services, @namespace);
-                
-                var code = compiler.Code;
-                file.WriteCodeFile(parent, rules, code);
+
+                if (rules.SourceCodeWritingEnabled)
+                {
+                    var code = compiler.Code;
+                    file.WriteCodeFile(parent, rules, code);
+                }
                 
                 Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
             }
@@ -115,9 +118,12 @@ namespace LamarCompiler
                 compiler.Compile(generatedAssembly, serviceVariables);
                 
                 file.AttachTypesSynchronously(rules, generatedAssembly.Assembly, services, @namespace);
-                
-                var code = compiler.Code;
-                file.WriteCodeFile(parent, rules, code);
+
+                if (rules.SourceCodeWritingEnabled)
+                {
+                    var code = compiler.Code;
+                    file.WriteCodeFile(parent, rules, code);
+                }
                 
                 Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
             }
