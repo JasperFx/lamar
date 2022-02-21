@@ -56,13 +56,13 @@ namespace LamarCodeGeneration
             return generateCode(generator);
         }
 
-        public void WriteGeneratedCode(Action<string> onFileWritten, string directory = null)
+        public void WriteGeneratedCode(Action<string> onFileWritten)
         {
             var fileSystem = new FileSystem();
 
             foreach (var collection in Collections)
             {
-                directory = directory ?? collection.Rules.GeneratedCodeOutputPath.ToFullPath();
+                var directory = collection.Rules.GeneratedCodeOutputPath.ToFullPath();
                 fileSystem.CreateDirectory(directory);
                 
                 var exportDirectory = collection.ToExportDirectory(directory);
