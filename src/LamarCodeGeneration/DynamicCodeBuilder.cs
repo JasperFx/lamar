@@ -10,14 +10,11 @@ namespace LamarCodeGeneration
 {
     public class DynamicCodeBuilder
     {
-        public DynamicCodeBuilder(GenerationRules rules, IServiceProvider services, ICodeFileCollection[] generators)
+        public DynamicCodeBuilder(IServiceProvider services, ICodeFileCollection[] collections)
         {
-            Rules = rules;
             Services = services;
-            Generators = generators;
+            Collections = collections;
         }
-
-        public GenerationRules Rules { get; }
 
         public IServiceVariableSource ServiceVariableSource { get; set; }
 
@@ -25,7 +22,7 @@ namespace LamarCodeGeneration
         {
             var writer = new StringWriter();
 
-            foreach (var generator in Generators)
+            foreach (var generator in Collections)
             {
                 var code = generateCode(generator);
                 writer.WriteLine(code);
@@ -36,19 +33,21 @@ namespace LamarCodeGeneration
             return writer.ToString();
         }
 
-        public string DeleteAllGeneratedCode()
+        public void DeleteAllGeneratedCode()
         {
-            var directory = Rules.GeneratedCodeOutputPath.ToFullPath();
             var fileSystem = new FileSystem();
-            fileSystem.CleanDirectory(directory);
-            fileSystem.DeleteDirectory(directory);
-
-            return directory;
+            foreach (var directory in Collections.Select(x => x.Rules.GeneratedCodeOutputPath).Distinct())
+            {
+                fileSystem.CleanDirectory(directory);
+                fileSystem.DeleteDirectory(directory);
+                
+                Console.WriteLine($"Deleted directory {directory}");
+            }
         }
 
         public string GenerateCodeFor(string childNamespace)
         {
-            var generator = Generators.FirstOrDefault(x => x.ChildNamespace.EqualsIgnoreCase(childNamespace));
+            var generator = Collections.FirstOrDefault(x => x.ChildNamespace.EqualsIgnoreCase(childNamespace));
             if (generator == null)
             {
                 throw new ArgumentOutOfRangeException($"Unknown {nameof(childNamespace)} '{childNamespace}'. Known code types are {ChildNamespaces.Join(", ")}");
@@ -59,20 +58,19 @@ namespace LamarCodeGeneration
 
         public void WriteGeneratedCode(Action<string> onFileWritten, string directory = null)
         {
-            directory = directory ?? Rules.GeneratedCodeOutputPath.ToFullPath();
-            
-            
-            new FileSystem().CreateDirectory(directory);
+            var fileSystem = new FileSystem();
 
-
-            foreach (var generator in Generators)
+            foreach (var collection in Collections)
             {
-                var exportDirectory = generator.ToExportDirectory(directory);
+                directory = directory ?? collection.Rules.GeneratedCodeOutputPath.ToFullPath();
+                fileSystem.CreateDirectory(directory);
+                
+                var exportDirectory = collection.ToExportDirectory(directory);
                 
                 
-                foreach (var file in generator.BuildFiles())
+                foreach (var file in collection.BuildFiles())
                 {
-                    var generatedAssembly = generator.StartAssembly(Rules);
+                    var generatedAssembly = collection.StartAssembly(collection.Rules);
                     file.AssembleTypes(generatedAssembly);
 
                     var code = generatedAssembly.GenerateCode(ServiceVariableSource);
@@ -84,17 +82,17 @@ namespace LamarCodeGeneration
             }
         }
 
-        private string generateCode(ICodeFileCollection generator)
+        private string generateCode(ICodeFileCollection collection)
         {
-            if (generator.ChildNamespace.IsEmpty())
+            if (collection.ChildNamespace.IsEmpty())
             {
-                throw new InvalidOperationException($"Missing {nameof(ICodeFileCollection.ChildNamespace)} for {generator}");
+                throw new InvalidOperationException($"Missing {nameof(ICodeFileCollection.ChildNamespace)} for {collection}");
             }
 
-            var @namespace = generator.ToNamespace(Rules);
+            var @namespace = collection.ToNamespace(collection.Rules);
             
-            var generatedAssembly = new GeneratedAssembly(Rules, @namespace);
-            var files = generator.BuildFiles();
+            var generatedAssembly = new GeneratedAssembly(collection.Rules, @namespace);
+            var files = collection.BuildFiles();
             foreach (var file in files)
             {
                 file.AssembleTypes(generatedAssembly);
@@ -110,9 +108,9 @@ namespace LamarCodeGeneration
         /// <exception cref="GeneratorCompilationFailureException"></exception>
         public void TryBuildAndCompileAll(Action<GeneratedAssembly, IServiceVariableSource> withAssembly)
         {
-            foreach (var generator in Generators)
+            foreach (var collection in Collections)
             {
-                var generatedAssembly = generator.AssembleTypes(Rules);
+                var generatedAssembly = collection.AssembleTypes(collection.Rules);
 
                 try
                 {
@@ -120,7 +118,7 @@ namespace LamarCodeGeneration
                 }
                 catch (Exception e)
                 {
-                    throw new GeneratorCompilationFailureException(generator, e);
+                    throw new GeneratorCompilationFailureException(collection, e);
                 }
             }
         }
@@ -131,20 +129,20 @@ namespace LamarCodeGeneration
         /// <param name="assembly">The assembly containing the pre-built types. If null, this falls back to the entry assembly of the running application</param>
         public async Task LoadPrebuiltTypes(Assembly assembly = null)
         {
-            foreach (var generator in Generators)
+            foreach (var collection in Collections)
             {
-                foreach (var file in generator.BuildFiles())
+                foreach (var file in collection.BuildFiles())
                 {
-                    var @namespace = $"{Rules.ApplicationNamespace}.{generator.ChildNamespace}";
-                    await file.AttachTypes(Rules, assembly ?? Rules.ApplicationAssembly, Services, @namespace);
+                    var @namespace = $"{collection.Rules.ApplicationNamespace}.{collection.ChildNamespace}";
+                    await file.AttachTypes(collection.Rules, assembly ?? collection.Rules.ApplicationAssembly, Services, @namespace);
                 }
             }
         }
 
-        public string[] ChildNamespaces => Generators.Select(x => x.ChildNamespace).ToArray();
+        public string[] ChildNamespaces => Collections.Select(x => x.ChildNamespace).ToArray();
 
         public IServiceProvider Services { get; }
 
-        public ICodeFileCollection[] Generators { get; }
+        public ICodeFileCollection[] Collections { get; }
     }
 }

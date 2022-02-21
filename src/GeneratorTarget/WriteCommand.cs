@@ -14,17 +14,14 @@ namespace GeneratorTarget
         public override async Task<bool> Execute(NetCoreInput input)
         {
             using var host = input.BuildHost();
-            var generator = host.Services.GetRequiredService<DynamicCodeBuilder>();
+            var collections = host.Services.GetServices<ICodeFileCollection>();
 
-            generator.Rules.TypeLoadMode = TypeLoadMode.Dynamic;
-
-
-
-            foreach (var generatesCode in generator.Generators)
+            foreach (var collection in collections)
             {
-                foreach (var file in generatesCode.BuildFiles())
+                foreach (var file in collection.BuildFiles())
                 {
-                    await file.Initialize(generator.Rules, generatesCode, generator.Services);
+                    collection.Rules.TypeLoadMode = TypeLoadMode.Dynamic;
+                    await file.Initialize(collection.Rules, collection, host.Services);
                 }
             }
             

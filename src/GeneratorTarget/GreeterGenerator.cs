@@ -74,6 +74,14 @@ namespace GeneratorTarget
         }
 
         public string ChildNamespace { get; } = "Helpers.Greeters";
+        
+        public GenerationRules Rules { get; } = new GenerationRules
+        {
+            GeneratedNamespace = "Internal.Generated",
+            ApplicationAssembly = typeof(GreeterGenerator).Assembly,
+            GeneratedCodeOutputPath = AppContext.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory()
+                .AppendPath("Internal", "Generated")
+        };
     }
     
     public class GreeterGenerator2 : ICodeFileCollection
@@ -87,5 +95,13 @@ namespace GeneratorTarget
         }
 
         public string ChildNamespace { get; } = "Helpers.Greeters2";
+
+        public GenerationRules Rules { get; } = new GenerationRules
+        {
+            GeneratedNamespace = "Internal.Generated",
+            ApplicationAssembly = typeof(GreeterGenerator).Assembly,
+            GeneratedCodeOutputPath = AppContext.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory()
+                .AppendPath("Internal", "Generated")
+        };
     }
 }

@@ -10,5 +10,7 @@ namespace LamarCodeGeneration
         /// Appending 
         /// </summary>
         string ChildNamespace { get; }    
+        
+        GenerationRules Rules { get; }
     }
 }

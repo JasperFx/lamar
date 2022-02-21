@@ -28,14 +28,18 @@ namespace LamarCodeGeneration.Commands
         public override bool Execute(GenerateCodeInput input)
         {
             using var host = input.BuildHost();
-            var builder = host.Services.GetRequiredService<DynamicCodeBuilder>();
-            builder.ServiceVariableSource = host.Services.GetService<IServiceVariableSource>();
-            
-            if (!builder.ChildNamespaces.Any())
+
+            var collections = host.Services.GetServices<ICodeFileCollection>().ToArray();
+            if (!collections.Any())
             {
-                Console.WriteLine($"No registered {nameof(ICodeFileCollection)} services registered, exiting");
-                return true;
+                ConsoleWriter.Write(ConsoleColor.Red, $"No registered {nameof(ICodeFileCollection)} services were detected, aborting.");
+                return false;
             }
+
+            var builder = new DynamicCodeBuilder(host.Services, collections)
+            {
+                ServiceVariableSource = host.Services.GetService<IServiceVariableSource>()
+            };
 
             switch (input.Action)
             {
@@ -51,8 +55,7 @@ namespace LamarCodeGeneration.Commands
                     break;
                     
                 case CodeAction.delete:
-                    var directory = builder.DeleteAllGeneratedCode();
-                    Console.WriteLine("Deleting all files in directory " + directory);
+                    builder.DeleteAllGeneratedCode();
                     
                     break;
                     
