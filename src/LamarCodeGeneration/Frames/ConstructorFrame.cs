@@ -129,16 +129,13 @@ namespace LamarCodeGeneration.Frames
                         writer.Write($"return {Invocation()};");
                         Next?.GenerateCode(method, writer);
                     }
-
-
+                    
                     break;
 
                 case ConstructorCallMode.UsingNestedVariable:
-                    writer.UsingBlock(Declaration(), w =>
-                    {
-                        ActivatorFrames.Write(method, writer);
-                        Next?.GenerateCode(method, w);
-                    });
+                    writer.WriteLine($"using {Declaration()};");
+                    ActivatorFrames.Write(method, writer);
+                    Next?.GenerateCode(method, writer);
                     break;
             }
         }

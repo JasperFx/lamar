@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
@@ -75,7 +76,7 @@ namespace LamarCompiler.Testing.Codegen
                 m.Frames.Call<NoArgGuyCatcher>(x => x.Catch(null));
             });
             
-            result.LinesOfCode.ShouldContain($"using (var noArgGuy = new {typeof(NoArgGuy).FullNameInCode()}())");
+            result.LinesOfCode.ShouldContain($"using var noArgGuy = new {typeof(NoArgGuy).FullNameInCode()}();");
             
             var catcher = new NoArgGuyCatcher();
             result.Object.DoStuff(catcher);
@@ -302,7 +303,7 @@ namespace LamarCompiler.Testing.Codegen
         }
         
         [Fact]
-        public void activator_with_nested_in_using()
+        public void activator_with_using()
         {
             var result = CodegenScenario.ForAction<NoArgGuyCatcher>(m =>
             {
@@ -313,6 +314,8 @@ namespace LamarCompiler.Testing.Codegen
                 });
 
             });
+            
+            Debug.WriteLine(result.Code);
             
 
             var catcher = new NoArgGuyCatcher();
