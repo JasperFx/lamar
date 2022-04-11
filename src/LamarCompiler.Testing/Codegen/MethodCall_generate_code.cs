@@ -149,14 +149,12 @@ namespace LamarCompiler.Testing.Codegen
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             WriteMethod(x => x.GoAsync())
                 .Single()
-#if NET461 || NET48
+
                 .ShouldBe("await target.GoAsync().ConfigureAwait(false);");
-#else
-                .ShouldBe("await target.GoAsync();");
-#endif
+
         }
 
-#if NET461 || NET48
+
         [Fact]
         public void return_task_as_async_with_configure_await_in_full_framework()
         {
@@ -165,7 +163,7 @@ namespace LamarCompiler.Testing.Codegen
                 .Single()
                 .ShouldBe("await target.GoAsync().ConfigureAwait(false);");
         }
-#endif
+
         
         [Fact]
         public void return_async_value_with_return_from_last_node()
@@ -188,20 +186,24 @@ namespace LamarCompiler.Testing.Codegen
                     x.Arguments[0] = Variable.For<Arg2>();
                     x.Arguments[1] = Variable.For<Arg3>();
                 }).Single()
-#if NET461 || NET48
+
                 .ShouldBe("var arg1 = await target.OtherAsync(arg2, arg3).ConfigureAwait(false);");
-#else
-                .ShouldBe("var arg1 = await target.OtherAsync(arg2, arg3);");
-#endif
+
         }
         
         [Fact]
         public void disposable_return_value_on_sync_and_disposal_using()
         {
             var lines = WriteMethod(x => x.GetDisposable());
-            lines[0].ShouldBe("using (var disposableThing = target.GetDisposable())");
-            lines.ShouldContain("{");
-            lines.ShouldContain("}");
+            lines[0].ShouldBe("using var disposableThing = target.GetDisposable();");
+        }
+        
+        [Fact]
+        public void disposable_return_value_on_sync_and_asyncdisposal_using()
+        {
+            theMethod.AsyncMode = AsyncMode.AsyncTask;
+            var lines = WriteMethod(x => x.GetAsyncDisposable());
+            lines[0].ShouldBe("await using var asyncDisposableThing = target.GetAsyncDisposable();");
         }
         
         [Fact]
@@ -210,6 +212,16 @@ namespace LamarCompiler.Testing.Codegen
             WriteMethod(x => x.GetDisposable(), x => x.DisposalMode = DisposalMode.None)
                 .Single()
                 .ShouldBe("var disposableThing = target.GetDisposable();");
+            
+            
+        }
+        
+        [Fact]
+        public void asyncdisposable_return_value_on_sync_no_disposal()
+        {
+            WriteMethod(x => x.GetAsyncDisposable(), x => x.DisposalMode = DisposalMode.None)
+                .Single()
+                .ShouldBe("var asyncDisposableThing = target.GetAsyncDisposable();");
             
             
         }
@@ -230,13 +242,8 @@ namespace LamarCompiler.Testing.Codegen
         {
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             var lines = WriteMethod(x => x.AsyncDisposable());
-#if NET461 || NET48
-            lines[0].ShouldBe("using (var disposableThing = await target.AsyncDisposable().ConfigureAwait(false))");
-#else
-            lines[0].ShouldBe("using (var disposableThing = await target.AsyncDisposable())");
-#endif
-            lines.ShouldContain("{");
-            lines.ShouldContain("}");
+
+            lines[0].ShouldBe("using var disposableThing = await target.AsyncDisposable().ConfigureAwait(false);");
         }
         
         [Fact]
@@ -245,12 +252,8 @@ namespace LamarCompiler.Testing.Codegen
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             WriteMethod(x => x.AsyncDisposable(), x => x.DisposalMode = DisposalMode.None)
                 .Single()
-#if NET461 || NET48
                 .ShouldBe("var disposableThing = await target.AsyncDisposable().ConfigureAwait(false);");
-#else
-                .ShouldBe("var disposableThing = await target.AsyncDisposable();");
-#endif
-
+            
         }
 
 #if !NET461 && !NET48
@@ -269,8 +272,8 @@ namespace LamarCompiler.Testing.Codegen
             theMethod.AsyncMode = AsyncMode.AsyncTask;
             var usage = WriteMethod(x => x.AsyncReturnTuple())
                 .First();
-            usage.ShouldContain("(var red, var blue, var green) = await target.AsyncReturnTuple();");
-            usage.ShouldNotContain("var (var red, var blue, var green) = await target.AsyncReturnTuple();");
+            usage.ShouldContain("(var red, var blue, var green) = await target.AsyncReturnTuple().ConfigureAwait(false);");
+            usage.ShouldNotContain("var (var red, var blue, var green) = await target.AsyncReturnTuple().ConfigureAwait(false);");
         }
 #endif
 
@@ -317,11 +320,9 @@ namespace LamarCompiler.Testing.Codegen
                 m.Arguments[1] = Variable.For<int>("y");
 
             });
-#if NET461 || NET48
+
             code[0].ShouldBe("number = await target.AddAsync(x, y).ConfigureAwait(false);");
-#else
-            code[0].ShouldBe("number = await target.AddAsync(x, y);");
-            #endif
+
         }
         
         [Fact]
@@ -335,11 +336,9 @@ namespace LamarCompiler.Testing.Codegen
                 m.Arguments[1] = Variable.For<int>("y");
 
             });
-#if NET461 || NET48
+
             code[0].ShouldBe("return await target.AddAsync(x, y).ConfigureAwait(false);");
-#else
-            code[0].ShouldBe("return await target.AddAsync(x, y);");
-            #endif
+
         }
     }
     
@@ -367,7 +366,20 @@ namespace LamarCompiler.Testing.Codegen
         public DisposableThing GetDisposable()
         {
             return new DisposableThing();
-        }        
+        }
+
+        public AsyncDisposableThing GetAsyncDisposable()
+        {
+            return new AsyncDisposableThing();
+        }
+
+        public class AsyncDisposableThing : IAsyncDisposable
+        {
+            public ValueTask DisposeAsync()
+            {
+                return new ValueTask();
+            }
+        }
         
         
         public Task<Arg1> OtherAsync(Arg2 two, Arg3 three)

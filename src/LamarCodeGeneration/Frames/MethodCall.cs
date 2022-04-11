@@ -42,8 +42,7 @@ namespace LamarCodeGeneration.Frames
 
         public Type HandlerType { get; }
         public MethodInfo Method { get; }
-
-
+        
         public void AssignResultTo(Variable variable)
         {
             ReturnVariable = variable;
@@ -256,7 +255,7 @@ namespace LamarCodeGeneration.Frames
 
             if (IsAsync && method.AsyncMode == AsyncMode.ReturnFromLastNode) return false;
 
-            return ReturnVariable.VariableType.CanBeCastTo<IDisposable>() && DisposalMode == DisposalMode.UsingBlock;
+            return (ReturnVariable.VariableType.CanBeCastTo<IDisposable>() || ReturnVariable.VariableType.CanBeCastTo<IAsyncDisposable>()) && DisposalMode == DisposalMode.UsingBlock;
         }
 
         public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
@@ -270,21 +269,25 @@ namespace LamarCodeGeneration.Frames
 
             if (shouldWriteInUsingBlock(method))
             {
-                writer.UsingBlock($"{returnActionCode(method)}{invokeMethod}", w => Next?.GenerateCode(method, writer));
+                var usingPrefix = ReturnType.CanBeCastTo<IAsyncDisposable>() && method.AsyncMode != AsyncMode.None
+                    ? "await using"
+                    : "using";
+                
+                writer.Write($"{usingPrefix} {returnActionCode(method)}{invokeMethod};");
             }
             else
             {
                 writer.Write($"{returnActionCode(method)}{invokeMethod};");
-
-                // This is just to make the generated code a little
-                // easier to read
-                if (CommentText.IsNotEmpty())
-                {
-                    writer.BlankLine();
-                }
-                
-                Next?.GenerateCode(method, writer);
             }
+            
+            // This is just to make the generated code a little
+            // easier to read
+            if (CommentText.IsNotEmpty())
+            {
+                writer.BlankLine();
+            }
+                
+            Next?.GenerateCode(method, writer);
 
 
         }
@@ -313,16 +316,10 @@ namespace LamarCodeGeneration.Frames
         public string InvocationCode(GeneratedMethod method)
         {
             var code = invocationCode();
-            
-
 
             if (IsAsync && method.AsyncMode != AsyncMode.ReturnFromLastNode)
             {
-#if NET461 || NET48
                 code = $"await {code}.ConfigureAwait(false)";
-                #else
-                code = $"await {code}";
-#endif
             }
 
             return code;
