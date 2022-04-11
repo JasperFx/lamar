@@ -109,7 +109,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, DisposedWidget>();
 
 
-            theCode.ShouldContain("using (var disposedWidget = new Lamar.Testing.IoC.Acceptance.DisposedWidget())");
+            theCode.ShouldContain("using var disposedWidget = new Lamar.Testing.IoC.Acceptance.DisposedWidget();");
             theCode.ShouldContain("var messageTracker = new Lamar.Testing.IoC.Acceptance.MessageTracker();");
             theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(messageTracker, disposedWidget);");
         }
@@ -123,8 +123,8 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, DisposedWidget>();
 
 
-            theCode.ShouldContain("using (var disposedMessageTracker = new Lamar.Testing.IoC.Acceptance.DisposedMessageTracker())");
-            theCode.ShouldContain("using (var disposedWidget = new Lamar.Testing.IoC.Acceptance.DisposedWidget())");
+            theCode.ShouldContain("using var disposedMessageTracker = new Lamar.Testing.IoC.Acceptance.DisposedMessageTracker();");
+            theCode.ShouldContain("using var disposedWidget = new Lamar.Testing.IoC.Acceptance.DisposedWidget();");
             theCode.ShouldContain("var multipleArgMethod = new Lamar.Testing.IoC.Acceptance.MultipleArgMethod(disposedMessageTracker, disposedWidget);");
         }
 
@@ -146,7 +146,7 @@ namespace Lamar.Testing.IoC.Acceptance
 
             theServices.AddTransient<MessageTracker, DisposedMessageTracker>();
 
-            theCode.ShouldContain("using (var disposedMessageTracker = new Lamar.Testing.IoC.Acceptance.DisposedMessageTracker())");
+            theCode.ShouldContain("using var disposedMessageTracker = new Lamar.Testing.IoC.Acceptance.DisposedMessageTracker();");
             theCode.ShouldContain("var singletonArgMethod = new Lamar.Testing.IoC.Acceptance.SingletonArgMethod(disposedMessageTracker);");
         }
 
@@ -191,8 +191,8 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddSingleton(new MessageTracker());
 
 
-            theCode.ShouldContain("using (var disposedWidget1 = new Lamar.Testing.IoC.Acceptance.DisposedWidget())");
-            theCode.ShouldContain("using (var disposedWidget2 = new Lamar.Testing.IoC.Acceptance.DisposedWidget())");
+            theCode.ShouldContain("using var disposedWidget1 = new Lamar.Testing.IoC.Acceptance.DisposedWidget();");
+            theCode.ShouldContain("using var disposedWidget2 = new Lamar.Testing.IoC.Acceptance.DisposedWidget();");
         }
 
         [Fact]
