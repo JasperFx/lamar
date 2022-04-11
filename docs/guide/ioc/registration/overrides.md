@@ -57,4 +57,39 @@ have been combined**. In effect, this means that any registrations -- or removal
 the `OverrideServices()` call are guaranteed to be processed last and reliably
 override any original registrations.
 
-The `OverrideServices()` extension methods are available for both `IHostBuilder` and `IWebHostBuilder`.
+The `OverrideServices()` extension is only available for `IHostBuilder`.
+
+If you are needing to create a test client or server to run integration tests you will need to use the `ConfigWebHost()` method of `IHostBuilder` to specifically create a test server, otherwise using `host.GetTestServer()` or `host.GetTestClient()` will throw a [System.InvalidCastException](https://github.com/dotnet/aspnetcore/issues/14873). Additionally you'll want to use `StartHost()` rather than `Build()`
+
+For example: 
+```cs
+[Fact]
+public async Task sample_of_testing_with_client()
+{
+    // Arrange
+    var builder = Program.CreateHostBuilder(Array.Empty<string>())
+        // Make service overrides
+        .OverrideServices(s => {
+             s.For<IServer>().Use<FakeServer>();
+        })
+        .ConfigureWebHost(webHost =>
+        {
+            // Add TestServer
+            webHost.UseTestServer();
+        });
+     
+     
+    // Start the test server
+    var host = await builder.StartAsync();
+    // Get a test client and do anything you need here like adding headers
+    var client = host.GetTestClient();
+
+    // Act
+    var response = await client.GetAsync("api/controller/action");
+    var content = await response.Content.ReadAsStringAsync();
+
+    // Assert
+    Assert.Equal(result.StatusCode, StatusCodes.Status200OK);
+}
+```
+
