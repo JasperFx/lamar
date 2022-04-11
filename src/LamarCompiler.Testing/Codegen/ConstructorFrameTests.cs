@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
@@ -175,6 +177,17 @@ namespace LamarCompiler.Testing.Codegen
             noArgGuy.String.ShouldBe("Explicit");
         }
 
+        public class AsyncGuy : IAsyncDisposable
+        {
+            public ValueTask DisposeAsync()
+            {
+                WasDisposed = true;
+                return new ValueTask();
+            }
+
+            public bool WasDisposed { get; set; }
+        }
+
         public class MultiArgGuy
         {
             public int Number { get; }
@@ -199,6 +212,8 @@ namespace LamarCompiler.Testing.Codegen
                 Name = name;
             }
         }
+
+
 
         [Fact]
         public void one_argument_constructor()
@@ -314,9 +329,7 @@ namespace LamarCompiler.Testing.Codegen
                 });
 
             });
-            
-            Debug.WriteLine(result.Code);
-            
+
 
             var catcher = new NoArgGuyCatcher();
             result.Object.DoStuff(catcher);
@@ -324,6 +337,44 @@ namespace LamarCompiler.Testing.Codegen
             catcher.Guy.ShouldNotBeNull();
             catcher.Guy.WasDisposed.ShouldBeTrue();
         }
+        
+        [Fact]
+        public async Task use_async_disposable()
+        {
+            AsyncUser.LastGuy = null; // Make sure the test is clean from previous runs
+            
+            var assembly = new GeneratedAssembly(new GenerationRules());
+            var type = assembly.AddType("AsyncHandler", typeof(IHandler));
+            var method = type.MethodFor(nameof(IHandler.DoStuff));
+            method.Frames.Add(new ConstructorFrame(typeof(AsyncGuy), typeof(AsyncGuy).GetConstructors().Single()){Mode = ConstructorCallMode.UsingNestedVariable});
+            method.Frames.Add(new MethodCall(typeof(AsyncUser), nameof(AsyncUser.DoStuff)));
+            
+            new AssemblyGenerator().Compile(assembly, null);
+            
+            type.SourceCode.ShouldContain("await using var asyncGuy = new LamarCompiler.Testing.Codegen.ConstructorFrameTests.AsyncGuy();");
 
+            var handler = (IHandler)Activator.CreateInstance(type.CompiledType);
+
+            await handler.DoStuff();
+            
+            AsyncUser.LastGuy.WasDisposed.ShouldBeTrue();
+        }
+
+        public interface IHandler
+        {
+            Task DoStuff();
+        }
+
+        public static class AsyncUser
+        {
+            public static Task DoStuff(AsyncGuy guy)
+            {
+                LastGuy = guy;
+                return Task.CompletedTask;
+            }
+
+            public static AsyncGuy LastGuy { get; set; }
+        }
+        
     }
 }

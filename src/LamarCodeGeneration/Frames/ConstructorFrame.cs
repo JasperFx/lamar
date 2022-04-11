@@ -72,6 +72,8 @@ namespace LamarCodeGeneration.Frames
 
             BuiltType = builtType;
             Variable = new Variable(BuiltType, this);
+
+            IsAsync = builtType.CanBeCastTo<IAsyncDisposable>();
         }
 
         public ConstructorFrame(Type builtType, ConstructorInfo ctor, Func<ConstructorFrame, Variable> variableSource)
@@ -133,7 +135,15 @@ namespace LamarCodeGeneration.Frames
                     break;
 
                 case ConstructorCallMode.UsingNestedVariable:
-                    writer.WriteLine($"using {Declaration()};");
+                    if (BuiltType.CanBeCastTo<IAsyncDisposable>())
+                    {
+                        writer.WriteLine($"await using {Declaration()};");
+                    }
+                    else
+                    {
+                        writer.WriteLine($"using {Declaration()};");
+                    }
+                    
                     ActivatorFrames.Write(method, writer);
                     Next?.GenerateCode(method, writer);
                     break;

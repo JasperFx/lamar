@@ -54,7 +54,7 @@ namespace LamarCodeGeneration.Frames
             IsAsync = isAsync;
         }
 
-        public bool IsAsync { get; }
+        public bool IsAsync { get; protected set; }
         public bool Wraps { get; protected set; } = false;
 
         public Frame Next
