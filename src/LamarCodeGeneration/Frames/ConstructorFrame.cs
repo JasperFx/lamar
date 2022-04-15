@@ -84,6 +84,8 @@ namespace LamarCodeGeneration.Frames
 
             BuiltType = builtType;
             Variable = variableSource(this);
+            
+            IsAsync = builtType.CanBeCastTo<IAsyncDisposable>();
         }
 
         public Type BuiltType { get; }

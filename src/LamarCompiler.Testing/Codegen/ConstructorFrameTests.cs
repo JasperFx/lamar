@@ -346,7 +346,10 @@ namespace LamarCompiler.Testing.Codegen
             var assembly = new GeneratedAssembly(new GenerationRules());
             var type = assembly.AddType("AsyncHandler", typeof(IHandler));
             var method = type.MethodFor(nameof(IHandler.DoStuff));
-            method.Frames.Add(new ConstructorFrame(typeof(AsyncGuy), typeof(AsyncGuy).GetConstructors().Single()){Mode = ConstructorCallMode.UsingNestedVariable});
+            var constructorFrame = new ConstructorFrame(typeof(AsyncGuy), typeof(AsyncGuy).GetConstructors().Single()){Mode = ConstructorCallMode.UsingNestedVariable};
+            constructorFrame.IsAsync.ShouldBeTrue();
+            
+            method.Frames.Add(constructorFrame);
             method.Frames.Add(new MethodCall(typeof(AsyncUser), nameof(AsyncUser.DoStuff)));
             
             new AssemblyGenerator().Compile(assembly, null);
