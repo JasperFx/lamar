@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 #nullable enable
 
@@ -78,11 +80,15 @@ namespace LamarCompiler
         /// <exception cref="ExpectedTypeMissingException"></exception>
         public static void InitializeSynchronously(this ICodeFile file, GenerationRules rules, ICodeFileCollection parent, IServiceProvider? services)
         {
+            var logger = services?.GetService(typeof(ILogger<AssemblyGenerator>)) as ILogger ?? NullLogger.Instance;
             var @namespace = parent.ToNamespace(rules);
             
             if (rules.TypeLoadMode == TypeLoadMode.Dynamic)
             {
-                Console.WriteLine($"Generated code for {parent.ChildNamespace}.{file.FileName}");
+                if (logger.IsEnabled(LogLevel.Debug))
+                {
+                    logger.LogDebug("Generated code for {Namespace}.{FileName}", parent.ChildNamespace, file.FileName);
+                }
                 
                 var generatedAssembly = parent.StartAssembly(rules);
                 file.AssembleTypes(generatedAssembly);
@@ -96,9 +102,9 @@ namespace LamarCompiler
             }
             
             var found = file.AttachTypesSynchronously(rules, rules.ApplicationAssembly, services, @namespace);
-            if (found)
+            if (found && logger.IsEnabled(LogLevel.Debug))
             {
-                Console.WriteLine($"Types from code file {parent.ChildNamespace}.{file.FileName} were loaded from assembly {rules.ApplicationAssembly.GetName()}");
+                logger.LogDebug("Types from code file {Namespace}.{FileName} were loaded from assembly {Assembly}", parent.ChildNamespace, file.FileName, rules.ApplicationAssembly.GetName());
             }
             
             if (!found)
@@ -125,7 +131,10 @@ namespace LamarCompiler
                     file.WriteCodeFile(parent, rules, code);
                 }
                 
-                Console.WriteLine($"Generated and compiled code in memory for {parent.ChildNamespace}.{file.FileName}");
+                if (logger.IsEnabled(LogLevel.Debug))
+                {
+                    logger.LogDebug("Generated and compiled code in memory for {Namespace}.{FileName}", parent.ChildNamespace, file.FileName);
+                }
             }
             
 
