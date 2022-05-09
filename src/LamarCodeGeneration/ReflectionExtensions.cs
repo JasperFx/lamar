@@ -27,9 +27,10 @@ namespace LamarCodeGeneration
             {
                 return false;
             }
+            
+            if (method.ReturnType == typeof(ValueTask) || method.ReturnType.Closes(typeof(ValueTask<>))) return true;
 
             return method.ReturnType == typeof(Task) || method.ReturnType.Closes(typeof(Task<>));
-
         }
 
         public static bool CanBeOverridden(this MethodInfo method)

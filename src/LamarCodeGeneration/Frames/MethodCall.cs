@@ -122,9 +122,11 @@ namespace LamarCodeGeneration.Frames
 
         private Type correctedReturnType(Type type)
         {
-            if (type == typeof(Task) || type == typeof(void)) return null;
+            if (type == typeof(Task) || type == typeof(ValueTask) || type == typeof(void)) return null;
 
+            if (type.Closes(typeof(ValueTask<>))) return type.GetGenericArguments().First();
             if (type.CanBeCastTo<Task>()) return type.GetGenericArguments().First();
+            
 
             return type;
         }
@@ -319,7 +321,15 @@ namespace LamarCodeGeneration.Frames
 
             if (IsAsync && method.AsyncMode != AsyncMode.ReturnFromLastNode)
             {
-                code = $"await {code}.ConfigureAwait(false)";
+                // If returning ValueTask, no ConfigureAwait(false)
+                if (Method.ReturnType == typeof(ValueTask) || Method.ReturnType.Closes(typeof(ValueTask<>)))
+                {
+                    code = $"await {code}";
+                }
+                else // For Task or Task<T>
+                {
+                    code = $"await {code}.ConfigureAwait(false)";
+                }
             }
 
             return code;

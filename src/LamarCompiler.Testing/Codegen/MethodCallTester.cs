@@ -269,6 +269,34 @@ namespace LamarCompiler.Testing.Codegen
             
             writer.Code().Trim().ShouldStartWith("// Hey.");
         }
+
+        [Fact]
+        public void is_async_for_method_returning_ValueTask()
+        {
+            MethodCall.For<MethodCallTarget>(x => x.ValueTaskMethod())
+                .IsAsync.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void return_type_for_method_returning_value_task()
+        {
+            MethodCall.For<MethodCallTarget>(x => x.ValueTaskMethod())
+                .ReturnType.ShouldBeNull();
+        }
+
+        [Fact]
+        public void is_async_for_method_returning_ValueTask_of_T()
+        {
+            MethodCall.For<MethodCallTarget>(x => x.ValueTaskString())
+                .IsAsync.ShouldBeTrue();
+        }
+        
+        [Fact]
+        public void return_type_for_method_returning_ValueTask_of_T()
+        {
+            MethodCall.For<MethodCallTarget>(x => x.ValueTaskString())
+                .ReturnType.ShouldBe(typeof(string));
+        }
         
 
     }
@@ -307,6 +335,16 @@ namespace LamarCompiler.Testing.Codegen
         public string GetValue()
         {
             return "foo";
+        }
+
+        public ValueTask ValueTaskMethod()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        public ValueTask<string> ValueTaskString()
+        {
+            return ValueTask.FromResult("foo");
         }
 
         public static void GoStatic()

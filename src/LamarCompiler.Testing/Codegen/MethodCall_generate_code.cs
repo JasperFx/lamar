@@ -340,6 +340,22 @@ namespace LamarCompiler.Testing.Codegen
             code[0].ShouldBe("return await target.AddAsync(x, y).ConfigureAwait(false);");
 
         }
+
+        [Fact]
+        public void write_code_for_method_returning_ValueTask()
+        {
+            var code = WriteMethod(x => x.DoValueTask());
+            
+            code[0].ShouldBe("await target.DoValueTask();");
+        }
+        
+        [Fact]
+        public void write_code_for_method_returning_ValueTask_of_string()
+        {
+            var code = WriteMethod(x => x.ReturnStringFromValueTask());
+            
+            code[0].ShouldBe("var result_of_ReturnStringFromValueTask = await target.ReturnStringFromValueTask();");
+        }
     }
     
     public class Blue{}
@@ -366,6 +382,16 @@ namespace LamarCompiler.Testing.Codegen
         public DisposableThing GetDisposable()
         {
             return new DisposableThing();
+        }
+
+        public ValueTask DoValueTask()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        public ValueTask<string> ReturnStringFromValueTask()
+        {
+            return new ValueTask<string>("foo");
         }
 
         public AsyncDisposableThing GetAsyncDisposable()
