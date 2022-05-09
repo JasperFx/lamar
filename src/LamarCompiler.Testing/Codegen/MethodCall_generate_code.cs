@@ -350,11 +350,29 @@ namespace LamarCompiler.Testing.Codegen
         }
         
         [Fact]
+        public void write_code_for_method_returning_ValueTask_from_last_method()
+        {
+            theMethod.AsyncMode = AsyncMode.ReturnFromLastNode;
+            var code = WriteMethod(x => x.DoValueTask());
+            
+            code[0].ShouldBe("return target.DoValueTask().AsTask();");
+        }
+        
+        [Fact]
         public void write_code_for_method_returning_ValueTask_of_string()
         {
             var code = WriteMethod(x => x.ReturnStringFromValueTask());
             
             code[0].ShouldBe("var result_of_ReturnStringFromValueTask = await target.ReturnStringFromValueTask();");
+        }
+        
+        [Fact]
+        public void write_code_for_method_returning_ValueTask_of_string_when_returning_from_last_node()
+        {
+            theMethod.AsyncMode = AsyncMode.ReturnFromLastNode;
+            var code = WriteMethod(x => x.ReturnStringFromValueTask());
+            
+            code[0].ShouldBe("return target.ReturnStringFromValueTask().AsTask();");
         }
     }
     

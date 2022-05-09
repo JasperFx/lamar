@@ -311,6 +311,11 @@ namespace LamarCodeGeneration.Frames
             return invokeMethod;
         }
 
+        private bool returnsValueTask()
+        {
+            return Method.ReturnType == typeof(ValueTask) || Method.ReturnType.Closes(typeof(ValueTask<>));
+        }
+
         /// <summary>
         /// Code to invoke the method without any assignment to a variable
         /// </summary>
@@ -318,18 +323,22 @@ namespace LamarCodeGeneration.Frames
         public string InvocationCode(GeneratedMethod method)
         {
             var code = invocationCode();
+            if (!IsAsync) return code;
 
-            if (IsAsync && method.AsyncMode != AsyncMode.ReturnFromLastNode)
+            if (returnsValueTask())
             {
-                // If returning ValueTask, no ConfigureAwait(false)
-                if (Method.ReturnType == typeof(ValueTask) || Method.ReturnType.Closes(typeof(ValueTask<>)))
+                if (method.AsyncMode == AsyncMode.ReturnFromLastNode)
+                {
+                    code = $"{code}.{nameof(ValueTask.AsTask)}()";
+                }
+                else
                 {
                     code = $"await {code}";
                 }
-                else // For Task or Task<T>
-                {
-                    code = $"await {code}.ConfigureAwait(false)";
-                }
+            }
+            else if (method.AsyncMode != AsyncMode.ReturnFromLastNode)
+            {
+                code = $"await {code}.ConfigureAwait(false)";
             }
 
             return code;
