@@ -15,20 +15,21 @@ namespace LamarCodeGeneration.Util
         {
             var sorted = new List<T>();
             var visited = new HashSet<T>();
+            var visiting = new HashSet<T>();
 
             foreach (var item in source)
             {
-                Visit(item, visited, sorted, dependencies, throwOnCycle);
+                Visit(item, visited, visiting, sorted, dependencies, throwOnCycle);
             }
 
             return sorted;
         }
 
-        private static void Visit<T>(T item, ISet<T> visited, ICollection<T> sorted, Func<T, IEnumerable<T>> dependencies, bool throwOnCycle)
+        private static void Visit<T>(T item, ISet<T> visited, ISet<T> visiting, ICollection<T> sorted, Func<T, IEnumerable<T>> dependencies, bool throwOnCycle)
         {
             if (visited.Contains(item))
             {
-                if (throwOnCycle && !sorted.Contains(item))
+                if (throwOnCycle && visiting.Contains(item))
                 {
                     throw new Exception("Cyclic dependency found");
                 }
@@ -36,11 +37,14 @@ namespace LamarCodeGeneration.Util
             else
             {
                 visited.Add(item);
+                visiting.Add(item);
 
                 foreach (var dep in dependencies(item))
                 {
-                    Visit(dep, visited, sorted, dependencies, throwOnCycle);
+                    Visit(dep, visited, visiting, sorted, dependencies, throwOnCycle);
                 }
+
+                visiting.Remove(item);
 
                 sorted.Add(item);
             }
