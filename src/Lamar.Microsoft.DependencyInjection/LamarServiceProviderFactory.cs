@@ -8,6 +8,7 @@ namespace Lamar.Microsoft.DependencyInjection
         public ServiceRegistry CreateBuilder(IServiceCollection services)
         {
             var registry = new ServiceRegistry();
+            services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService)s.GetRequiredService<IContainer>());
             registry.AddRange(services);
 
             return registry;
