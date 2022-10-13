@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Lamar.Testing.Bugs
 {
-    public class Bug_tbd_decorator_singleton_nested_nestedContainer_should_not_be_disposed
+    public class Bug_357_decorator_singleton_nested_nestedContainer_should_not_be_disposed
     {
         public interface ISingleton
         {
