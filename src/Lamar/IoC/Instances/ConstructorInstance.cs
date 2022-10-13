@@ -187,7 +187,7 @@ namespace Lamar.IoC.Instances
                 new ErrorMessageResolver(this).Resolve(scope);
             }
             
-            var values = Arguments.Select(x => x.Instance.QuickResolve(scope)).ToArray();
+            var values = Arguments.Select(x => x.Instance.QuickResolve(holdingScope)).ToArray();
             var service = Activator.CreateInstance(ImplementationType, values);
 
             foreach (var setter in _setters)
