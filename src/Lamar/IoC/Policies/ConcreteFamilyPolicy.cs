@@ -14,7 +14,7 @@ namespace Lamar
 
             if (type.MemberType == MemberTypes.NestedType)
             {
-                return type.ReflectedType.IsPublic;
+                return IsReallyPublic(type.ReflectedType);
             }
 
             return false;
