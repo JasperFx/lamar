@@ -69,21 +69,12 @@ namespace Lamar.IoC.Instances
                 var assign = Expression.Assign(expr, call);
             
                 definition.Body.Add(assign);
-            
-            
+
                 if (Next == null)
                 {
                     definition.Body.Add(expr);
                 }
-                else
-                {
-                    Next.As<IResolverFrame>().WriteExpressions(definition);
-                }
             }
         }
-
-
     }
-
-
 }

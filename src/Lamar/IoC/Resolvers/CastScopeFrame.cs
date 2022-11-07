@@ -36,8 +36,6 @@ namespace Lamar.IoC.Resolvers
         {
             var variableExpr = definition.RegisterExpression(Variable);
             definition.Body.Add(Expression.Assign(variableExpr, Expression.Convert(definition.ExpressionFor(_scope), Variable.VariableType)));
-            
-            Next?.As<IResolverFrame>().WriteExpressions(definition);
         }
     }
 }

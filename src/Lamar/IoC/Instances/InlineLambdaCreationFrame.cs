@@ -65,8 +65,6 @@ namespace Lamar.IoC.Instances
             {
                 definition.TryRegisterDisposable(variableExpr);
             }
-
-            Next.As<IResolverFrame>().WriteExpressions(definition);
         }
     }
 }

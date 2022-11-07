@@ -22,14 +22,14 @@ namespace Lamar.IoC.Instances
             _scopeArgument = new Argument(typeof(Scope), "scope");
             var frame = instance.CreateBuildFrame();
 
-            _frames = new FramesCollection(null) {frame};
+            _frames = new FramesCollection(null) { frame };
         }
 
         IList<Setter> IGeneratedType.Setters { get; } = new List<Setter>();
         IList<InjectedField> IGeneratedType.AllInjectedFields { get; } = new List<InjectedField>();
         GenerationRules IGeneratedType.Rules => _rules;
         FramesCollection IGeneratedMethod.Frames => _frames;
-        public Argument[] Arguments => new Argument[] {_scopeArgument};
+        public Argument[] Arguments => new Argument[] { _scopeArgument };
         IList<Variable> IGeneratedMethod.DerivedVariables { get; } = new List<Variable>();
         IList<IVariableSource> IGeneratedMethod.Sources { get; } = new List<IVariableSource>();
 
@@ -43,19 +43,22 @@ namespace Lamar.IoC.Instances
                 Context = _scope
             };
             var scope = definition.RegisterExpression(_scopeArgument).As<ParameterExpression>();
-            definition.Arguments = new [] {scope};
-            
-            if (top is IResolverFrame frame)
+            definition.Arguments = new[] { scope };
+
+            if (top is not IResolverFrame)
             {
-                frame.WriteExpressions(definition);
-
-                return definition.Compile<Func<Scope, object>>();
+                throw new InvalidOperationException($"Frame type {top} does not implement {nameof(IResolverFrame)}");
             }
-            
-            throw new InvalidOperationException($"Frame type {top} does not implement {nameof(IResolverFrame)}");
 
+            var current = top;
+            do
+            {
+                var frame = current.As<IResolverFrame>();
+                frame.WriteExpressions(definition);
+                current = current.Next;
+            } while (current is not null);
 
+            return definition.Compile<Func<Scope, object>>();
         }
-    
-}
+    }
 }
