@@ -84,7 +84,7 @@ namespace LamarCodeGeneration.Model
                 .Each(x => frames.Insert(0, x));
 
             // Step 4, topological sort in dependency order
-            return frames.TopologicalSort(x => dependencies.Dependencies[x], true).ToArray();
+            return frames.TopologicalSort(x => dependencies.Dependencies[x].GetEnumerator(), true).ToArray();
         }
 
         internal void findInjectedFields(DependencyGatherer dependencies)

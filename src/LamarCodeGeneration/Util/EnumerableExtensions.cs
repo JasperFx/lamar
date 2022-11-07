@@ -11,47 +11,66 @@ namespace LamarCodeGeneration.Util
     /// </summary>
     internal static class EnumerableExtensions
     {
-        public static IEnumerable<T> TopologicalSort<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> dependencies, bool throwOnCycle = true)
+        public static IEnumerable<T> TopologicalSort<T>(this IEnumerable<T> source, Func<T, IEnumerator<T>> getDependencies, bool throwOnCycle = true)
         {
             var sorted = new List<T>();
             var visited = new HashSet<T>();
+
+            // These don't strictly need to be kept outside of the loop, but it saves us from having to reallocate them in every Visit call
             var visiting = new HashSet<T>();
+            var stack = new Stack<(T, IEnumerator<T>)>();
 
             foreach (var item in source)
             {
-                Visit(item, visited, visiting, sorted, dependencies, throwOnCycle);
+                Visit(item, visited, visiting, sorted, stack, getDependencies, throwOnCycle);
             }
 
             return sorted;
         }
 
-        private static void Visit<T>(T item, ISet<T> visited, ISet<T> visiting, ICollection<T> sorted, Func<T, IEnumerable<T>> dependencies, bool throwOnCycle)
+        private static void Visit<T>(T root, ISet<T> visited, ISet<T> visiting, ICollection<T> sorted, Stack<(T, IEnumerator<T>)> stack, Func<T, IEnumerator<T>> getDependencies, bool throwOnCycle)
         {
-            if (visited.Contains(item))
+            if (!visited.Add(root))
+                return;
+
+            stack.Push((root, getDependencies(root)));
+            visiting.Add(root);
+
+            while (stack.Count > 0)
             {
-                if (throwOnCycle && visiting.Contains(item))
+                var (parent, enumerator) = stack.Peek();
+                if (!enumerator.MoveNext())
                 {
-                    throw new Exception("Cyclic dependency found");
-                }
-            }
-            else
-            {
-                visited.Add(item);
-                visiting.Add(item);
-
-                foreach (var dep in dependencies(item))
-                {
-                    Visit(dep, visited, visiting, sorted, dependencies, throwOnCycle);
+                    visiting.Remove(parent);
+                    sorted.Add(parent);
+                    stack.Pop();
+                    continue;
                 }
 
-                visiting.Remove(item);
+                var child = enumerator.Current;
+                if (!visited.Add(child))
+                {
+                    if (throwOnCycle && visiting.Contains(child))
+                    {
+                        throw new Exception("Cyclic dependency found");
+                    }
 
-                sorted.Add(item);
+                    continue;
+                }
+
+                visiting.Add(child);
+                stack.Push((child, getDependencies(child)));
             }
+
+            visiting.Remove(root);
+
+            // These should be empty by the end of the function.
+            Debug.Assert(visiting.Count == 0);
+            Debug.Assert(stack.Count == 0);
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// Adds the value to the list if it does not already exist
         /// </summary>
