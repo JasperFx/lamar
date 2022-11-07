@@ -55,7 +55,10 @@ namespace Lamar.IoC.Frames
             var assign = Expression.Assign(expr, Expression.Convert(@call, Variable.VariableType));
             definition.Body.Add(assign);
 
-            Next.As<IResolverFrame>().WriteExpressions(definition);
+            if (Next is null)
+            {
+                throw new InvalidCastException($"{typeof(GetInstanceFrame).GetFullName()}.{nameof(Next)} must not be null.");
+            }
         }
     }
     #endregion

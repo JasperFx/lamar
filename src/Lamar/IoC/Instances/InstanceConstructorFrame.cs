@@ -85,10 +85,6 @@ namespace Lamar.IoC.Instances
                 {
                     definition.Body.Add(definition.ExpressionFor(Variable));
                 }
-                else
-                {
-                    Next.As<IResolverFrame>().WriteExpressions(definition);
-                }
             }
         }
     }

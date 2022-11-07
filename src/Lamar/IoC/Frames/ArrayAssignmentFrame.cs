@@ -67,10 +67,6 @@ namespace Lamar.IoC.Frames
             {
                 definition.Body.Add(expr);
             }
-            else
-            {
-                Next.As<IResolverFrame>().WriteExpressions(definition);
-            }
         }
     }
 }

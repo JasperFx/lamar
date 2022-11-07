@@ -48,10 +48,6 @@ namespace Lamar.IoC.Lazy
             {
                 definition.Body.Add(expr);
             }
-            else
-            {
-                Next.As<IResolverFrame>().WriteExpressions(definition);
-            }
         }
     }
 }
