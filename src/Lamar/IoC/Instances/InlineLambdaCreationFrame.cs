@@ -6,6 +6,7 @@ using LamarCodeGeneration;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {
@@ -60,20 +61,12 @@ namespace Lamar.IoC.Instances
             
             definition.Body.Add(Expression.Assign(variableExpr, cast));
             
-            if (    !Variable.VariableType.IsValueType)
+            if (!Variable.VariableType.IsValueType)
             {
                 definition.TryRegisterDisposable(variableExpr);
             }
-            
 
-            if (Next is IResolverFrame next)
-            {
-                next.WriteExpressions(definition);
-            }
-            else
-            {
-                throw new InvalidCastException($"{Next.GetType().FullNameInCode()} does not implement {nameof(IResolverFrame)}");
-            }
+            Next.As<IResolverFrame>().WriteExpressions(definition);
         }
     }
 }
