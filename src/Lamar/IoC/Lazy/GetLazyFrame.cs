@@ -7,6 +7,7 @@ using LamarCodeGeneration;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Frames;
 using LamarCodeGeneration.Model;
+using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Lazy
 {
@@ -48,13 +49,9 @@ namespace Lamar.IoC.Lazy
             {
                 definition.Body.Add(expr);
             }
-            else if (Next is IResolverFrame next)
-            {
-                next.WriteExpressions(definition);
-            }
             else
             {
-                throw new InvalidCastException($"{Next.GetType().FullNameInCode()} does not implement {nameof(IResolverFrame)}");
+                Next.As<IResolverFrame>().WriteExpressions(definition);
             }
         }
     }

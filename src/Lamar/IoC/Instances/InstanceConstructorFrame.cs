@@ -87,22 +87,9 @@ namespace Lamar.IoC.Instances
                 }
                 else
                 {
-                    if (Next is IResolverFrame next)
-                    {
-                        next.WriteExpressions(definition);
-                    }
-                    else
-                    {
-                        throw new InvalidCastException($"{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}");
-                    }
-                    
+                    Next.As<IResolverFrame>().WriteExpressions(definition);
                 }
-                
             }
-            
-            
-            
-            
         }
     }
 }
