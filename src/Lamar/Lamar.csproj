@@ -37,6 +37,6 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.0, 7.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.0, 8.0.0)" />
   </ItemGroup>
 </Project>
