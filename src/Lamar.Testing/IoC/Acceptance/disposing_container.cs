@@ -1,14 +1,12 @@
-﻿using Shouldly;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Baseline;
-using Lamar;
-using Lamar.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 
-namespace StructureMap.Testing.Pipeline
+namespace Lamar.Testing.IoC.Acceptance
 {
     
     public enum RegistrationType

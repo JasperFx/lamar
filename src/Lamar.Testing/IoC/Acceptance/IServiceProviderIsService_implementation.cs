@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using StructureMap.Testing.Acceptance;
 using StructureMap.Testing.Widget;
 using Xunit;
 

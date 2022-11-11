@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Baseline;
+using Lamar.Testing.IoC.Acceptance;
 using Shouldly;
-using StructureMap.Testing.Acceptance;
 using StructureMap.Testing.Widget;
 using Xunit;
 

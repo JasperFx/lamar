@@ -1,16 +1,13 @@
 ﻿using System;
-using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Baseline;
-using Lamar;
-using Lamar.Testing;
-using Lamar.Testing.IoC.Acceptance;
+using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace StructureMap.Testing.Acceptance
+namespace Lamar.Testing.IoC.Acceptance
 {
     public class BWidget : AWidget{}
 

@@ -1,12 +1,9 @@
 ﻿using Shouldly;
-using System;
-using System.Reflection;
-using Lamar;
 using StructureMap.Testing.Widget;
 using StructureMap.Testing.Widget3;
 using Xunit;
 
-namespace StructureMap.Testing.Acceptance
+namespace Lamar.Testing.IoC.Acceptance
 {
     #region sample_custom-ctor-scenario
     public abstract class BaseThing
