@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Baseline" Version="2.1.1" />
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
       <PackageReference Include="xunit" Version="2.4.0" />
@@ -18,14 +19,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
       <ProjectReference Include="..\StructureMap.Testing.Widget\StructureMap.Testing.Widget.csproj" />
-    </ItemGroup>
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-      <PackageReference Include="Baseline" Version="2.1.1" />
-    </ItemGroup>
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-      <PackageReference Include="Baseline" Version="2.1.1" />
     </ItemGroup>
 
     <ItemGroup>
