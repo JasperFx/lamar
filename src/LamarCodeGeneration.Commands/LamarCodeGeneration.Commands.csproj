@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
 
         <Description>Command line utilities for managing Lamar dynamically generated code</Description>
-        <Version>6.1.6</Version>
+        <Version>6.2.0</Version>
         <Authors>Jeremy D. Miller</Authors>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration.Commands</AssemblyName>

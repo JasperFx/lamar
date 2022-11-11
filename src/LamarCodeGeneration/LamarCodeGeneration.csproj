@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <Description>Code Generation Chicanery for .Net</Description>
-        <Version>6.1.6</Version>
+        <Version>6.2.0</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration</AssemblyName>
         <PackageId>LamarCodeGeneration</PackageId>
