@@ -3,7 +3,7 @@
     <Description>Lamar Adapter for HostBuilder Integration</Description>
     <Version>8.1.0</Version>
     <Authors>Jeremy D. Miller</Authors>
-    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
     <PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
@@ -32,5 +32,11 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="[6.0.0,8.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="[6.0.0,8.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="[6.0.0,8.0.0)" />
+  </ItemGroup> 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[7.0.0,8.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="[7.0.0,8.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="[7.0.0,8.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="[7.0.0,8.0.0)" />
   </ItemGroup>
 </Project>
