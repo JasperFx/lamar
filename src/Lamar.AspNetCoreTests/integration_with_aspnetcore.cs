@@ -144,8 +144,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
 
                 var writer = new StringWriter();
 
-                container.Bootstrapping.DisplayTimings().Write(writer);
-
                 _output.WriteLine(writer.ToString());
                 _output.WriteLine(container.WhatDoIHave());
             }

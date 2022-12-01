@@ -35,11 +35,6 @@ namespace Lamar
         {
         }
 
-        public Container(IServiceCollection services, PerfTimer timer) : base(services, timer)
-        {
-        }
-
-
         public INestedContainer GetNestedContainer()
         {
             assertNotDisposed();
@@ -148,46 +143,24 @@ namespace Lamar
             return new Container(registry);
         }
 
-        public static Task<Container> BuildAsync(Action<ServiceRegistry> configure, PerfTimer timer = null)
+        public static Task<Container> BuildAsync(Action<ServiceRegistry> configure)
         {
             var services = new ServiceRegistry();
             configure(services);
 
-            return BuildAsync(services, timer);
+            return BuildAsync(services);
         }
 
-        public static async Task<Container> BuildAsync(IServiceCollection services, PerfTimer timer = null)
+        public static async Task<Container> BuildAsync(IServiceCollection services)
         {
-            var timedExternally = true;
-            var timerMarker = "Bootstrapping Lamar Container";
-            if (timer == null)
-            {
-                timedExternally = false;
-                timer = new PerfTimer();
-                timer.Start(timerMarker);
-            }
-            else
-            {
-                timer.MarkStart(timerMarker);
-            }
-
-
             var container = new Container();
 
             var graph = await ServiceGraph.BuildAsync(services, container);
 
             container.Root = container;
             container.ServiceGraph = graph;
-
-            container.Bootstrapping = timer;
-
-
-            graph.Initialize(timer);
-
-            if (timedExternally)
-                timer.MarkFinished(timerMarker);
-            else
-                timer.Stop();
+            
+            graph.Initialize();
 
             return container;
         }
