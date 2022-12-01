@@ -11,11 +11,11 @@ using Lamar.Diagnostics;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using Lamar.Util;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
-using ImTools;
 
 
 namespace Lamar.IoC

@@ -1,7 +1,5 @@
 ﻿using System;
-using ImTools;
-using Lamar.IoC.Instances;
-using LamarCodeGeneration.Util;
+using Lamar.Util;
 
 namespace Lamar.IoC.Resolvers
 {

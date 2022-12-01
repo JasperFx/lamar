@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Lamar Adapter for HostBuilder Integration</Description>
-    <Version>9.0.0</Version>
+    <Version>9.0.1</Version>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <DebugType>portable</DebugType>
@@ -16,14 +16,15 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Lamar\Lamar.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[6.0.0,8.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="[6.0.0,8.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="[6.0.0,8.0.0)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="[6.0.0,8.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lamar\Lamar.csproj" />
   </ItemGroup>
 </Project>

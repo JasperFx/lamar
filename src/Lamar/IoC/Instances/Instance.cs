@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ImTools;
 using Lamar.IoC.Frames;
-using Lamar.IoC.Resolvers;
+using Lamar.Util;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
