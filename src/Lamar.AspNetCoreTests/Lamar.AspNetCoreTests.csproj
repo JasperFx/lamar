@@ -25,10 +25,7 @@
     
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Baseline" Version="3.2.2" />
-    <PackageReference Include=" Microsoft.Extensions.Diagnostics.HealthChecks" Version="5.0.0" />
-  </ItemGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
     <PackageReference Include="Alba" Version="6.0.0" />
     <PackageReference Include=" Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.0" />

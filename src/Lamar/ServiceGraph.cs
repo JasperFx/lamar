@@ -111,18 +111,10 @@ namespace Lamar
         public IFamilyPolicy[] FamilyPolicies { get; private set; }
 
 
-        public void Initialize(PerfTimer timer = null)
+        public void Initialize()
         {
-            timer = timer ?? new PerfTimer();
-
-            timer.Record("Organize Into Families", () =>
-            {
-                organizeIntoFamilies(_services);
-            });
-
-            timer.Record("Planning Instances", buildOutMissingResolvers);
-
-            
+            organizeIntoFamilies(_services);
+            buildOutMissingResolvers();
             rebuildReferencedAssemblyArray();
         }
 

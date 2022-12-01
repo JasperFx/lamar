@@ -21,12 +21,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Lamar.IoC
 {
     #region sample_Scope-Declarations
-    public class Scope : IServiceContext
-#if NET6_0_OR_GREATER
-            , IServiceProviderIsService
-#endif
-        
-    #endregion
+    public class Scope : IServiceContext, IServiceProviderIsService
+
+        #endregion
     {
         protected bool _hasDisposed;
 
@@ -35,49 +32,22 @@ namespace Lamar.IoC
             return new Scope(new ServiceRegistry());
         }
 
-        public PerfTimer Bootstrapping { get; protected set; }
-
-        public Scope(IServiceCollection services, PerfTimer timer = null)
+        public Scope(IServiceCollection services)
         {
-            if (timer == null)
-            {
-                Bootstrapping = new PerfTimer();
-
-                Bootstrapping.Start("Bootstrapping Container");
-            }
-            else
-            {
-                Bootstrapping = timer;
-                Bootstrapping.MarkStart("Lamar Scope Creation");
-            }
-
             Root = this;
 
-            Bootstrapping.MarkStart("Build ServiceGraph");
             ServiceGraph = new ServiceGraph(services, this);
-            Bootstrapping.MarkFinished("Build ServiceGraph");
 
-            ServiceGraph.Initialize(Bootstrapping);
-
-            if (timer == null)
-            {
-                Bootstrapping.Stop();
-            }
-            else
-            {
-                Bootstrapping.MarkFinished("Lamar Scope Creation");
-            }
+            ServiceGraph.Initialize();
         }
 
         protected Scope(){}
-        
-#if NET6_0_OR_GREATER
+
         public bool IsService(Type serviceType)
         {
             return ServiceGraph.ResolveFamily(serviceType).Default != null;
         }
-#endif
-        
+
         public Scope Root { get; protected set; }
 
         public Scope(ServiceGraph serviceGraph, Scope root)
