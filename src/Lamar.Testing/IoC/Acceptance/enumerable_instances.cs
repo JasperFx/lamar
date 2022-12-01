@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Baseline;
+using JasperFx.Reflection;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;

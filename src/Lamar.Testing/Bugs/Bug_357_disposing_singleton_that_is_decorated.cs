@@ -1,6 +1,4 @@
 using System;
-using Baseline;
-using Lamar.IoC;
 using Shouldly;
 using Xunit;
 
@@ -25,176 +23,176 @@ public class Bug_357_disposing_singleton_that_is_decorated
 
         var nested2 = container.GetNestedContainer();
         var thing2 = nested2.GetInstance<IThing>();
-        
+
         nested2.Dispose();
-        
+
         wrapped.WasDisposed.ShouldBeFalse();
         inner.WasDisposed.ShouldBeFalse();
-        
+
         nested1.Dispose();
-        
+
         wrapped.WasDisposed.ShouldBeFalse();
         inner.WasDisposed.ShouldBeFalse();
-        
+
         container.Dispose();
-        
+
         wrapped.WasDisposed.ShouldBeTrue();
         inner.WasDisposed.ShouldBeTrue();
     }
-
 }
 
 public interface IThing
 {
-    
 }
 
 public class SingleThing : IThing, IDisposable
 {
+    public bool WasDisposed { get; set; }
+
     public void Dispose()
     {
         WasDisposed = true;
     }
-
-    public bool WasDisposed { get; set; }
 }
 
 public class WrappedThing : IThing, IDisposable
 {
-    public IThing Inner { get; }
-
     public WrappedThing(IThing inner)
     {
         Inner = inner;
     }
-    
+
+    public IThing Inner { get; }
+
+    public bool WasDisposed { get; set; }
+
     public void Dispose()
     {
         WasDisposed = true;
     }
-
-    public bool WasDisposed { get; set; }
 }
 
-
-    public class Bug_tbd_decorator_singleton_nested_nestedContainer_should_not_be_disposed
+public class Bug_tbd_decorator_singleton_nested_nestedContainer_should_not_be_disposed
+{
+    [Fact]
+    public void Decorator_singleton_should_not_be_disposed()
     {
-        public interface ISingleton
-        {
-            bool Disposed { get; }
-        }
+        // Dependency chain: ScopedServiceA > ScopedServiceB > SingletonDecorator > Singleton
 
-        public class Singleton : ISingleton, IDisposable
+        var container = new Container(x =>
         {
-            public Guid Id { get; private set; } = Guid.NewGuid();
-            public bool Disposed { get; private set; }
+            x.For<IScopedServiceA>().Use<ScopedServiceA>().Scoped();
+            x.For<IScopedServiceB>().Use<ScopedServiceB>().Scoped();
 
-            public void Dispose()
+            x.ForSingletonOf<ISingleton>().Use<Singleton>();
+            x.For<ISingleton>().DecorateAllWith<SingletonDecorator>();
+        });
+
+        SingletonDecorator wrapped;
+        ISingleton nested;
+
+
+        IScopedServiceA serviceA;
+
+        //var singleton = container.GetInstance<ISingleton>(); // When uncommented, Singleton Dispose is not called
+
+        using (var nested1 = container.GetNestedContainer())
+        {
+            wrapped = container.GetInstance<ISingleton>().ShouldBeOfType<SingletonDecorator>();
+            nested = wrapped.Singleton;
+
+            //var singleton = nested1.GetInstance<ISingleton>(); // When uncommented, Singleton Dispose is not called
+
+            var container2 = nested1.GetInstance<IContainer>();
+            using (var nested2 = container2.GetNestedContainer())
             {
-                Disposed = true;
+                //var singleton = nested2.GetInstance<ISingleton>(); // When uncommented, Singleton Dispose is not called
+
+                serviceA = nested2
+                    .GetInstance<
+                        IScopedServiceA>(); // ScopedServiceA > ScopedServiceB > SingletonDecorator > Singleton, Singleton is Disposed when nested1 is Disposed.
+                //var serviceB = nested2.GetInstance<IScopedServiceB>(); // ScopedServiceB > SingletonDecorator > Singleton, Singleton Dispose is not called.
             }
-        }
 
-        public class SingletonDecorator : ISingleton, IDisposable
-        {
-            public bool Disposed { get; private set; }
-            public ISingleton Singleton;
-            public SingletonDecorator(ISingleton singleton)
-            {
-                Singleton = singleton;
-            }
-
-            public void Dispose()
-            {
-                Disposed = true;
-            }
-        }
-
-        public interface IScopedServiceB
-        {
-            ISingleton Singleton { get; }
-        }
-
-        public class ScopedServiceB : IScopedServiceB
-        {
-            public ISingleton Singleton { get; private set; }
-            public ScopedServiceB(ISingleton singleton)
-            {
-                Singleton = singleton;
-            }
-        }
-
-        public interface IScopedServiceA
-        {
-            IScopedServiceB ScopedServiceB { get; }
-        }
-
-        public class ScopedServiceA : IScopedServiceA
-        {
-            public IScopedServiceB ScopedServiceB { get; private set; }
-            public ScopedServiceA(IScopedServiceB scopedServiceB)
-            {
-                ScopedServiceB = scopedServiceB;
-            }
-        }
-
-        [Fact]
-        public void Decorator_singleton_should_not_be_disposed()
-        {
-            // Dependency chain: ScopedServiceA > ScopedServiceB > SingletonDecorator > Singleton
-
-            var container = new Container(x =>
-            {
-                x.For<IScopedServiceA>().Use<ScopedServiceA>().Scoped();
-                x.For<IScopedServiceB>().Use<ScopedServiceB>().Scoped();
-
-                x.ForSingletonOf<ISingleton>().Use<Singleton>();
-                x.For<ISingleton>().DecorateAllWith<SingletonDecorator>();
-            });
-
-            SingletonDecorator wrapped;
-            ISingleton nested;
-                
-
-
-            IScopedServiceA serviceA;
-
-            //var singleton = container.GetInstance<ISingleton>(); // When uncommented, Singleton Dispose is not called
-
-            using (var nested1 = container.GetNestedContainer())
-            {
-                wrapped = container.GetInstance<ISingleton>().ShouldBeOfType<SingletonDecorator>();
-                nested = wrapped.Singleton;
-                
-                //var singleton = nested1.GetInstance<ISingleton>(); // When uncommented, Singleton Dispose is not called
-
-                var container2 = nested1.GetInstance<IContainer>();
-                using (var nested2 = container2.GetNestedContainer())
-                {
-                    //var singleton = nested2.GetInstance<ISingleton>(); // When uncommented, Singleton Dispose is not called
-
-                    serviceA = nested2.GetInstance<IScopedServiceA>(); // ScopedServiceA > ScopedServiceB > SingletonDecorator > Singleton, Singleton is Disposed when nested1 is Disposed.
-                    //var serviceB = nested2.GetInstance<IScopedServiceB>(); // ScopedServiceB > SingletonDecorator > Singleton, Singleton Dispose is not called.
-                }
-
-                serviceA = nested1.GetInstance<IScopedServiceA>();
-                
-                wrapped.Disposed.ShouldBeFalse();
-                nested.Disposed.ShouldBeFalse();
-
-
-
-            } // *** Singleton Dispose() is called ***
+            serviceA = nested1.GetInstance<IScopedServiceA>();
 
             wrapped.Disposed.ShouldBeFalse();
             nested.Disposed.ShouldBeFalse();
-            
-            serviceA = container.GetInstance<IScopedServiceA>();
-            serviceA.ScopedServiceB.Singleton.Disposed.ShouldBeFalse(); // True, not expected
+        } // *** Singleton Dispose() is called ***
 
-            // Observations:
-            // 1) If I comment out the decorator registration "x.For<ISingleton>().DecorateAllWith<SingletonDecorator>();" - Singleton is not disposed.
-            // 2) If I resolve an instance of ISingleton at any line of code before resolving IScopedServiceA - Singleton is not disposed.
-            // 3) If I get an instance of IScopedServiceB instead of IScopedServiceA in nested2 - Singleton is not disposed.
-        }
+        wrapped.Disposed.ShouldBeFalse();
+        nested.Disposed.ShouldBeFalse();
+
+        serviceA = container.GetInstance<IScopedServiceA>();
+        serviceA.ScopedServiceB.Singleton.Disposed.ShouldBeFalse(); // True, not expected
+
+        // Observations:
+        // 1) If I comment out the decorator registration "x.For<ISingleton>().DecorateAllWith<SingletonDecorator>();" - Singleton is not disposed.
+        // 2) If I resolve an instance of ISingleton at any line of code before resolving IScopedServiceA - Singleton is not disposed.
+        // 3) If I get an instance of IScopedServiceB instead of IScopedServiceA in nested2 - Singleton is not disposed.
     }
+
+    public interface ISingleton
+    {
+        bool Disposed { get; }
+    }
+
+    public class Singleton : ISingleton, IDisposable
+    {
+        public Guid Id { get; } = Guid.NewGuid();
+
+        public void Dispose()
+        {
+            Disposed = true;
+        }
+
+        public bool Disposed { get; private set; }
+    }
+
+    public class SingletonDecorator : ISingleton, IDisposable
+    {
+        public ISingleton Singleton;
+
+        public SingletonDecorator(ISingleton singleton)
+        {
+            Singleton = singleton;
+        }
+
+        public void Dispose()
+        {
+            Disposed = true;
+        }
+
+        public bool Disposed { get; private set; }
+    }
+
+    public interface IScopedServiceB
+    {
+        ISingleton Singleton { get; }
+    }
+
+    public class ScopedServiceB : IScopedServiceB
+    {
+        public ScopedServiceB(ISingleton singleton)
+        {
+            Singleton = singleton;
+        }
+
+        public ISingleton Singleton { get; }
+    }
+
+    public interface IScopedServiceA
+    {
+        IScopedServiceB ScopedServiceB { get; }
+    }
+
+    public class ScopedServiceA : IScopedServiceA
+    {
+        public ScopedServiceA(IScopedServiceB scopedServiceB)
+        {
+            ScopedServiceB = scopedServiceB;
+        }
+
+        public IScopedServiceB ScopedServiceB { get; }
+    }
+}

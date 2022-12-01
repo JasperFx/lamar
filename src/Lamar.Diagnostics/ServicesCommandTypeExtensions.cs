@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Baseline;
+using JasperFx.Reflection;
 using LamarCodeGeneration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

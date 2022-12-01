@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using System.Reflection;
-using Baseline;
+using JasperFx.StringExtensions;
 using LamarCodeGeneration.Model;
 using LamarCompiler;
 #if NETSTANDARD2_0
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 #endif
 using Microsoft.Extensions.DependencyInjection;
 using Oakton;
+using Spectre.Console;
 
 [assembly:OaktonCommandAssembly]
 
@@ -32,7 +32,7 @@ namespace LamarCodeGeneration.Commands
             var collections = host.Services.GetServices<ICodeFileCollection>().ToArray();
             if (!collections.Any())
             {
-                ConsoleWriter.Write(ConsoleColor.Red, $"No registered {nameof(ICodeFileCollection)} services were detected, aborting.");
+                AnsiConsole.Write($"[red]No registered {nameof(ICodeFileCollection)} services were detected, aborting.[/]");
                 return false;
             }
 
@@ -51,7 +51,7 @@ namespace LamarCodeGeneration.Commands
                 case CodeAction.test:
                     Console.WriteLine("Trying to generate all code and compile, this might take a bit.");
                     builder.TryBuildAndCompileAll((a, s) => new AssemblyGenerator().Compile(a, s));
-                    ConsoleWriter.Write(ConsoleColor.Green, "Success!");
+                    AnsiConsole.Write("[green]Success![/]");
                     break;
                     
                 case CodeAction.delete:

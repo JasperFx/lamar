@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using Baseline;
+﻿using System.Linq;
+using JasperFx.Reflection;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -143,15 +142,16 @@ namespace Lamar.Testing.IoC.Acceptance
         {
             protected override void apply(IConfiguredInstance instance)
             {
-                instance.ImplementationType.GetConstructors()
+                var parameterInfos = instance.ImplementationType.GetConstructors()
                     .SelectMany(x => x.GetParameters())
-                    .Where(x => x.ParameterType == typeof(IDatabase))
-                    .Each(param =>
-                    {
-                        // Using ReferencedInstance here tells Lamar
-                        // to "use the IDatabase by this name"
-                        instance.Ctor<IDatabase>(param.Name).IsNamedInstance(param.Name);
-                    });
+                    .Where(x => x.ParameterType == typeof(IDatabase));
+
+                foreach (var param in parameterInfos)
+                {
+                    // Using ReferencedInstance here tells Lamar
+                    // to "use the IDatabase by this name"
+                    instance.Ctor<IDatabase>(param.Name).IsNamedInstance(param.Name);
+                }
             }
         }
 

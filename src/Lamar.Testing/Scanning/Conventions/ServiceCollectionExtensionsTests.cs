@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Baseline;
+using JasperFx.Reflection;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;

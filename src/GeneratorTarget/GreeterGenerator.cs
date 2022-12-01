@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Baseline;
-using Lamar.IoC.Instances;
+using JasperFx.StringExtensions;
 using LamarCodeGeneration;
-using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
 
 namespace GeneratorTarget
 {

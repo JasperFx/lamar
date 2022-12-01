@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Baseline;
+using JasperFx.StringExtensions;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Frames;
 using Microsoft.Extensions.DependencyInjection;

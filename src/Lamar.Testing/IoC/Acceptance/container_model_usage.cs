@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using Baseline;
-using Lamar.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.GenericWidgets;
@@ -217,13 +214,20 @@ namespace Lamar.Testing.IoC.Acceptance
             startable1.WasStarted.ShouldBeFalse();
 
             #region sample_calling-startable-start
-            var allStartables = container.Model.GetAllPossible<IStartable>();
-            allStartables.ToArray()
-                .Each(x => x.Start());
+            var allStartables = container.Model.GetAllPossible<IStartable>()
+                .ToArray();
+            foreach (var startable in allStartables)
+            {
+                startable.Start();
+            }
+
             #endregion
 
-            allStartables.Each(x => x.WasStarted.ShouldBeTrue());
-
+            foreach (var startable in allStartables)
+            {
+                startable.WasStarted.ShouldBeTrue();
+            }
+            
             startable1.WasStarted.ShouldBeTrue();
         }
 

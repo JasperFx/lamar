@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Baseline;
+using JasperFx.Reflection;
 using Lamar.IoC.Instances;
 using Shouldly;
 using StructureMap.Testing.Widget;
@@ -67,7 +67,11 @@ namespace Lamar.Testing.IoC
             });
             
             family.Instances["moneyWidget"].IsDefault.ShouldBeTrue();
-            family.Instances.Values.Where(x => x.Name != "moneyWidget").Each(x => x.IsDefault.ShouldBeFalse());
+
+            foreach (var instance in family.Instances.Values.Where(x => x.Name != "moneyWidget"))
+            {
+                instance.IsDefault.ShouldBeFalse();
+            }
         }
     }
 }

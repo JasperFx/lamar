@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Baseline;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -318,7 +316,10 @@ namespace Lamar.Testing.Examples
             {
                 if (_conditions.Any(x => x.Matches(@event)))
                 {
-                    _actions.Each(x => x.PerformWork(@event));
+                    foreach (var action in _actions)
+                    {
+                        action.PerformWork(@event);
+                    }
                 }
             }
         }

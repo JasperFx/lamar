@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Baseline;
+using JasperFx.StringExtensions;
 using Lamar.IoC.Diagnostics;
 using Oakton;
 

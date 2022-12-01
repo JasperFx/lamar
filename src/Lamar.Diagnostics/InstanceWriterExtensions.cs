@@ -1,9 +1,10 @@
 using System.Linq;
-using Baseline;
+using JasperFx.StringExtensions;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Enumerables;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
+using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
