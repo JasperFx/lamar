@@ -249,7 +249,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddSingleton(new MessageTracker());
             theServices.AddTransient(typeof(IService<>), typeof(Service<>));
 
-            theCode.ShouldNotContain(typeof(IServiceScopeFactory).Name);
+            theCode.ShouldNotContain(nameof(IServiceScopeFactory));
 
             theCode.ShouldContain("var genericServiceUsingMethod = new Lamar.Testing.IoC.Acceptance.GenericServiceUsingMethod<string>();");
 
@@ -266,7 +266,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, GreenWidget>();
             theServices.AddScoped<IWidget, BlueWidget>();
 
-            theCode.ShouldNotContain(typeof(IServiceScopeFactory).Name);
+            theCode.ShouldNotContain(nameof(IServiceScopeFactory));
 
             theCode.ShouldContain("var widgetArray = new StructureMap.Testing.Widget.IWidget[]{redWidget, greenWidget, blueWidget};");
             theCode.ShouldContain("var handlerWithArray = new Lamar.Testing.IoC.Acceptance.HandlerWithArray(widgetArray);");
@@ -293,7 +293,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, GreenWidget>();
             theServices.AddScoped<IWidget, BlueWidget>();
 
-            theCode.ShouldNotContain(typeof(IServiceScopeFactory).Name);
+            theCode.ShouldNotContain(nameof(IServiceScopeFactory));
 
             theCode.ShouldContain("var widgetList = new System.Collections.Generic.List<StructureMap.Testing.Widget.IWidget>{redWidget, greenWidget, blueWidget};");
         }
@@ -321,7 +321,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, GreenWidget>();
             theServices.AddScoped<IWidget, BlueWidget>();
 
-            theCode.ShouldNotContain(typeof(IServiceScopeFactory).Name);
+            theCode.ShouldNotContain(nameof(IServiceScopeFactory));
 
             theCode.ShouldContain("var widgetList = new System.Collections.Generic.List<StructureMap.Testing.Widget.IWidget>{redWidget, greenWidget, blueWidget};");
         }
@@ -346,7 +346,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, GreenWidget>();
             theServices.AddScoped<IWidget, BlueWidget>();
 
-            theCode.ShouldNotContain(typeof(IServiceScopeFactory).Name);
+            theCode.ShouldNotContain(nameof(IServiceScopeFactory));
 
             theCode.ShouldContain("var widgetList = new System.Collections.Generic.List<StructureMap.Testing.Widget.IWidget>{redWidget, greenWidget, blueWidget};");
         }
@@ -371,7 +371,7 @@ namespace Lamar.Testing.IoC.Acceptance
             theServices.AddScoped<IWidget, GreenWidget>();
             theServices.AddScoped<IWidget, BlueWidget>();
 
-            theCode.ShouldNotContain(typeof(IServiceScopeFactory).Name);
+            theCode.ShouldNotContain(nameof(IServiceScopeFactory));
 
             theCode.ShouldContain("var widgetList = new System.Collections.Generic.List<StructureMap.Testing.Widget.IWidget>{redWidget, greenWidget, blueWidget};");
         }

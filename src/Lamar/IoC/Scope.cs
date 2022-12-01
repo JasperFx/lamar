@@ -15,6 +15,8 @@ using LamarCodeGeneration;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
+using ImTools;
+
 
 namespace Lamar.IoC
 {

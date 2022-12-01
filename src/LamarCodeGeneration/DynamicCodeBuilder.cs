@@ -133,7 +133,7 @@ namespace LamarCodeGeneration
             {
                 foreach (var file in collection.BuildFiles())
                 {
-                    var @namespace = $"{collection.Rules.ApplicationNamespace}.{collection.ChildNamespace}";
+                    var @namespace = $"{collection.Rules.GeneratedNamespace}.{collection.ChildNamespace}";
                     await file.AttachTypes(collection.Rules, assembly ?? collection.Rules.ApplicationAssembly, Services, @namespace);
                 }
             }

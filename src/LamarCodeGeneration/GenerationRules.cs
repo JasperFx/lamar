@@ -34,7 +34,7 @@ namespace LamarCodeGeneration
     {
         public GenerationRules(string applicationNamespace) : this()
         {
-            ApplicationNamespace = applicationNamespace;
+            GeneratedNamespace = applicationNamespace;
         }
 
         public GenerationRules(string applicationNamespace, TypeLoadMode typeLoadMode) : this(applicationNamespace)

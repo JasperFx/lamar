@@ -1,4 +1,5 @@
 ﻿using System;
+using ImTools;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration.Util;
 

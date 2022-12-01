@@ -14,14 +14,14 @@ namespace LamarCodeGeneration
                 throw new InvalidOperationException($"Missing {nameof(ICodeFileCollection.ChildNamespace)} for {generator}");
             }
                 
-            var @namespace = $"{rules.ApplicationNamespace}.{generator.ChildNamespace}";
+            var @namespace = $"{rules.GeneratedNamespace}.{generator.ChildNamespace}";
             
             return new GeneratedAssembly(rules, @namespace);
         }
 
         public static string ToNamespace(this ICodeFileCollection codeFileCollection, GenerationRules rules)
         {
-            return $"{rules.ApplicationNamespace}.{codeFileCollection.ChildNamespace}";
+            return $"{rules.GeneratedNamespace}.{codeFileCollection.ChildNamespace}";
         }
 
         public static string ToExportDirectory(this ICodeFileCollection generator, string exportDirectory)

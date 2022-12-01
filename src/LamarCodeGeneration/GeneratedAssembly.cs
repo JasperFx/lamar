@@ -17,7 +17,7 @@ namespace LamarCodeGeneration
         public GeneratedAssembly(GenerationRules rules)
         {
             Rules = rules;
-            Namespace = rules.ApplicationNamespace;
+            Namespace = rules.GeneratedNamespace;
         }
 
         public GeneratedAssembly(GenerationRules rules, string ns)

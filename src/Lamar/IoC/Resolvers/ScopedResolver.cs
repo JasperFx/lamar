@@ -1,4 +1,5 @@
 ﻿using System;
+using ImTools;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.IoC.Resolvers

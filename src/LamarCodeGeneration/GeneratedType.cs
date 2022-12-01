@@ -31,7 +31,7 @@ namespace LamarCodeGeneration
         {
             Rules = rules;
             TypeName = typeName;
-            Namespace = rules.ApplicationNamespace;
+            Namespace = rules.GeneratedNamespace;
         }
 
         public GeneratedType(GeneratedAssembly parent, string typeName)
