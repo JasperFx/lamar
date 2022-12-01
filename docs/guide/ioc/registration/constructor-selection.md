@@ -2,7 +2,7 @@
 
 Lamar's constructor selection logic is compliant with the ASP.Net Core DI specifications and uses their definition of selecting the "greediest constructor." Definitely note that **this behavior is different than StructureMap's version of "greediest constructor" selection**.
 
-Constructor selection can be happily overridden by using one of the mechanisms shown below or using custom [instance policies](/guide/ioc/registration/policies;title=instance policies).
+Constructor selection can be happily overridden by using one of the mechanisms shown below or using custom [instance policies](/guide/ioc/registration/policies).
 
 ## Greediest Constructor
 
