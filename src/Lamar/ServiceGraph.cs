@@ -22,9 +22,7 @@ namespace Lamar
     {
         private readonly object _familyLock = new object();
         
-
-
-        private readonly Dictionary<Type, ServiceFamily> _families = new Dictionary<Type, ServiceFamily>();
+        private ImHashMap<Type, ServiceFamily> _families = ImHashMap<Type, ServiceFamily>.Empty;
         private ImHashMap<Type, Func<Scope, object>> _byType = ImHashMap<Type, Func<Scope, object>>.Empty;
 
 
@@ -191,8 +189,8 @@ namespace Lamar
                 var att = parameter.GetAttribute<NamedAttribute>();
                 if (att.TypeName.IsNotEmpty())
                 {
-                    var family = _families.Values.ToArray().FirstOrDefault(x => x.FullNameInCode == att.TypeName);
-                    return family.InstanceFor(att.Name);
+                    var family = _families.Enumerate().ToArray().FirstOrDefault(x => x.Value.FullNameInCode == att.TypeName);
+                    return family?.Value.InstanceFor(att.Name);
                 }
 
                 return FindInstance(parameter.ParameterType, att.Name);
@@ -203,14 +201,16 @@ namespace Lamar
 
         private void organizeIntoFamilies(IServiceCollection services)
         {
-            services
+            var serviceFamilies = services
                 .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
 
                 .GroupBy(x => x.ServiceType)
-                .Select(group => buildFamilyForInstanceGroup(services, @group))
-                .Each(family => _families.Add(family.ServiceType, family));
+                .Select(group => buildFamilyForInstanceGroup(services, group));
 
-
+            foreach (var family in serviceFamilies)
+            {
+                _families = _families.AddOrUpdate(family.ServiceType, family);
+            }
         }
 
         private ServiceFamily buildFamilyForInstanceGroup(IServiceCollection services, IGrouping<Type, ServiceDescriptor> @group)
@@ -260,14 +260,14 @@ namespace Lamar
 
         public IEnumerable<Instance> AllInstances()
         {
-            return _families.Values.ToArray().SelectMany(x => x.All).ToArray();
+            return _families.Enumerate().Select(x => x.Value).ToArray().SelectMany(x => x.All).ToArray();
         }
 
-        public IReadOnlyDictionary<Type, ServiceFamily> Families => _families;
+        public IReadOnlyDictionary<Type, ServiceFamily> Families => _families.ToDictionary();
 
         public bool HasFamily(Type serviceType)
         {
-            return _families.ContainsKey(serviceType);
+            return _families.Contains(serviceType);
         }
 
         public Instance FindInstance(Type serviceType, string name)
@@ -277,11 +277,17 @@ namespace Lamar
 
         public ServiceFamily ResolveFamily(Type serviceType)
         {
-            if (_families.ContainsKey(serviceType)) return _families[serviceType];
-
+            if (_families.TryFind(serviceType, out var family))
+            {
+                return family;
+            }
+            
             lock (_familyLock)
             {
-                if (_families.ContainsKey(serviceType)) return _families[serviceType];
+                if (_families.TryFind(serviceType, out family))
+                {
+                    return family;
+                }
 
                 return addMissingFamily(serviceType);
             }
@@ -291,7 +297,7 @@ namespace Lamar
         {
             var family = TryToCreateMissingFamily(serviceType);
 
-            _families.SmartAdd(serviceType, family);
+            _families = _families.AddOrUpdate(serviceType, family);
 
             if (!_inPlanning)
             {
@@ -320,9 +326,7 @@ namespace Lamar
                     return resolver;
                 }
 
-                var family = _families.ContainsKey(serviceType)
-                    ? _families[serviceType]
-                    : addMissingFamily(serviceType);
+                var family = ResolveFamily(serviceType);
 
                 var instance = family.Default;
                 if (instance == null)
@@ -499,26 +503,26 @@ namespace Lamar
 
                 Scanners = Scanners.Union(scanners).ToArray();
 
-                registry
+                var groups = registry
                     .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
-                    .GroupBy(x => x.ServiceType)
-                    .Each(group =>
+                    .GroupBy(x => x.ServiceType);
+
+                foreach (var group in groups)
+                {
+                    if (_families.TryFind(group.Key, out var family))
                     {
-                        if (_families.ContainsKey(group.Key))
+                        if (family.Append(@group, DecoratorPolicies) == AppendState.NewDefault)
                         {
-                            var family = _families[group.Key];
-                            if (family.Append(@group, DecoratorPolicies) == AppendState.NewDefault)
-                            {
-                                _byType = _byType.Remove(group.Key);
-                            }
-                        
+                            _byType = _byType.Remove(group.Key);
                         }
-                        else
-                        {
-                            var family = buildFamilyForInstanceGroup(services, @group);
-                            _families.Add(@group.Key, family);
-                        }
-                    });
+                    }
+                    else
+                    {
+                        family = buildFamilyForInstanceGroup(services, @group);
+                        _families = _families.AddOrUpdate(group.Key, family);
+                    }
+                }
+
 
                 resetInstancePlanning();
 
@@ -531,17 +535,17 @@ namespace Lamar
 
         internal void Inject(ObjectInstance instance)
         {
-            if (_families.ContainsKey(instance.ServiceType))
+            if (_families.TryFind(instance.ServiceType, out var family))
             {
-                if (_families[instance.ServiceType].Append(instance, DecoratorPolicies) == AppendState.NewDefault)
+                if (family.Append(instance, DecoratorPolicies) == AppendState.NewDefault)
                 {
                     _byType = _byType.Remove(instance.ServiceType);
                 }
             }
             else
             {
-                var family = new ServiceFamily(instance.ServiceType, DecoratorPolicies, instance);
-                _families.Add(instance.ServiceType, family);
+                family = new ServiceFamily(instance.ServiceType, DecoratorPolicies, instance);
+                _families = _families.AddOrUpdate(instance.ServiceType, family);
             }
         }
     }

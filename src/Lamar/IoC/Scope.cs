@@ -74,7 +74,7 @@ namespace Lamar.IoC
 #if NET6_0_OR_GREATER
         public bool IsService(Type serviceType)
         {
-            return ServiceGraph.HasFamily(serviceType);
+            return ServiceGraph.ResolveFamily(serviceType).Default != null;
         }
 #endif
         
