@@ -248,7 +248,7 @@ documentation/compilation/frames/injected-fields/
 
         private static void RunCurrentProject(string args)
         {
-            Run("dotnet", $"run  --framework net5.0 --no-build --no-restore -- {args}");
+            Run("dotnet", $"run  --framework net7.0 --no-build --no-restore -- {args}");
         }
         
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
