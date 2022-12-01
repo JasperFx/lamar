@@ -16,10 +16,11 @@
         <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
         <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
         <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+        <LangVersion>10.0</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'"/>
+      <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
       <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
       <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
       <PackageReference Include="System.ValueTuple" Version="4.5.0" />

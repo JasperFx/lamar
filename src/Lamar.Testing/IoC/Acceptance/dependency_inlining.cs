@@ -212,9 +212,7 @@ namespace Lamar.Testing.IoC.Acceptance
             includeType<SingletonArgMethod>();
             includeType<WidgetUser>();
 
-            theCode.ShouldContain("using (var serviceScope = _serviceScopeFactory.CreateScope())");
-            theCode.ShouldContain("var widgetUser = (Lamar.Testing.IoC.Acceptance.WidgetUser)serviceProvider.GetService(typeof(Lamar.Testing.IoC.Acceptance.WidgetUser));");
-            theCode.ShouldContain("var singletonArgMethod = (Lamar.Testing.IoC.Acceptance.SingletonArgMethod)serviceProvider.GetService(typeof(Lamar.Testing.IoC.Acceptance.SingletonArgMethod));");
+            theCode.ShouldContain("GetNestedContainer()");
         }
 
 /*

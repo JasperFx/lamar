@@ -32,8 +32,6 @@ namespace LamarCodeGeneration.Model
         {
             var compiled = compileFrames(_method.Frames);
 
-
-
             asyncMode = AsyncMode.AsyncTask;
 
             if (compiled.All(x => !x.IsAsync))
