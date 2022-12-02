@@ -1,11 +1,9 @@
-﻿namespace LamarCodeGeneration.Model
+﻿namespace LamarCodeGeneration.Model;
+
+public enum AsyncMode
 {
-    public enum AsyncMode
-    {
-        ReturnCompletedTask,
-        AsyncTask,
-        ReturnFromLastNode,
-        None
-        
-    }
+    ReturnCompletedTask,
+    AsyncTask,
+    ReturnFromLastNode,
+    None
 }

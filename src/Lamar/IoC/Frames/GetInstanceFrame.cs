@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Expressions;

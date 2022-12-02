@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using JasperFx.Core.Reflection;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Util;
 

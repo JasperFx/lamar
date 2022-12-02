@@ -1,4 +1,5 @@
 ﻿using System;
+using JasperFx.Core.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using LamarCodeGeneration.Util;
 

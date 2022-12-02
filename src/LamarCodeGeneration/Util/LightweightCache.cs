@@ -2,219 +2,201 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace LamarCodeGeneration.Util
+namespace LamarCodeGeneration.Util;
+
+internal class LightweightCache<TKey, TValue> : IEnumerable<TValue>
 {
-    internal class LightweightCache<TKey, TValue> : IEnumerable<TValue> 
+    private readonly IDictionary<TKey, TValue> _values;
+
+    private Func<TKey, TValue> _onMissing = delegate(TKey key)
     {
-        private readonly IDictionary<TKey, TValue> _values;
+        var message = $"Key '{key}' could not be found";
+        throw new KeyNotFoundException(message);
+    };
 
-        private Func<TValue, TKey> _getKey = delegate { throw new NotImplementedException(); };
+    public LightweightCache()
+        : this(new Dictionary<TKey, TValue>())
+    {
+    }
 
-        private Func<TKey, TValue> _onMissing = delegate (TKey key) {
-                                                                        var message = $"Key '{key}' could not be found";
-                                                                        throw new KeyNotFoundException(message);
-        };
+    public LightweightCache(Func<TKey, TValue> onMissing)
+        : this(new Dictionary<TKey, TValue>(), onMissing)
+    {
+    }
 
-        public LightweightCache()
-            : this(new Dictionary<TKey, TValue>())
+    public LightweightCache(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> onMissing)
+        : this(dictionary)
+    {
+        _onMissing = onMissing;
+    }
+
+    public LightweightCache(IDictionary<TKey, TValue> dictionary)
+    {
+        _values = dictionary;
+    }
+
+
+    public Func<TKey, TValue> OnMissing
+    {
+        set => _onMissing = value;
+    }
+
+    public Func<TValue, TKey> GetKey { get; set; } = delegate { throw new NotImplementedException(); };
+
+    public int Count => _values.Count;
+
+    public TValue First
+    {
+        get
         {
+            foreach (var pair in _values) return pair.Value;
+
+            return default;
         }
+    }
 
-        public LightweightCache(Func<TKey, TValue> onMissing)
-            : this(new Dictionary<TKey, TValue>(), onMissing)
+    public TValue this[TKey key]
+    {
+        get
         {
-        }
+            TValue value;
 
-        public LightweightCache(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> onMissing)
-            : this(dictionary)
-        {
-            _onMissing = onMissing;
-        }
-
-        public LightweightCache(IDictionary<TKey, TValue> dictionary)
-        {
-            _values = dictionary;
-        }
-
-
-        public Func<TKey, TValue> OnMissing
-        {
-            set { _onMissing = value; }
-        }
-
-        public Func<TValue, TKey> GetKey
-        {
-            get { return _getKey; }
-            set { _getKey = value; }
-        }
-
-        public int Count
-        {
-            get { return _values.Count; }
-        }
-
-        public TValue First
-        {
-            get
+            if (!_values.TryGetValue(key, out value))
             {
-                foreach (var pair in _values)
-                {
-                    return pair.Value;
-                }
+                value = _onMissing(key);
 
-                return default(TValue);
-            }
-        }
-
-        public TValue this[TKey key]
-        {
-            get
-            {
-                TValue value;
-
-                if (!_values.TryGetValue(key, out value))
-                {
-                    value = _onMissing(key);
-
-                    if (value != null)
-                    {
-                        _values[key] = value;
-                    }
-                }
-
-                return value;
-            }
-            set
-            {
-                if (_values.ContainsKey(key))
+                if (value != null)
                 {
                     _values[key] = value;
                 }
-                else
-                {
-                    _values.Add(key, value);
-                }
             }
-        }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<TValue>)this).GetEnumerator();
+            return value;
         }
-
-        public IEnumerator<TValue> GetEnumerator()
-        {
-            return _values.Values.GetEnumerator();
-        }
-
-        /// <summary>
-        ///     Guarantees that the Cache has the default value for a given key.
-        ///     If it does not already exist, it's created.
-        /// </summary>
-        /// <param name="key"></param>
-        public void FillDefault(TKey key)
-        {
-            Fill(key, _onMissing(key));
-        }
-
-        public void Fill(TKey key, TValue value)
+        set
         {
             if (_values.ContainsKey(key))
             {
-                return;
+                _values[key] = value;
             }
-
-            _values.Add(key, value);
-        }
-
-        public bool TryRetrieve(TKey key, out TValue value)
-        {
-            value = default(TValue);
-
-            if (_values.ContainsKey(key))
+            else
             {
-                value = _values[key];
-                return true;
+                _values.Add(key, value);
             }
+        }
+    }
 
-            return false;
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable<TValue>)this).GetEnumerator();
+    }
+
+    public IEnumerator<TValue> GetEnumerator()
+    {
+        return _values.Values.GetEnumerator();
+    }
+
+    /// <summary>
+    ///     Guarantees that the Cache has the default value for a given key.
+    ///     If it does not already exist, it's created.
+    /// </summary>
+    /// <param name="key"></param>
+    public void FillDefault(TKey key)
+    {
+        Fill(key, _onMissing(key));
+    }
+
+    public void Fill(TKey key, TValue value)
+    {
+        if (_values.ContainsKey(key))
+        {
+            return;
         }
 
-        public void Each(Action<TValue> action)
+        _values.Add(key, value);
+    }
+
+    public bool TryRetrieve(TKey key, out TValue value)
+    {
+        value = default;
+
+        if (_values.ContainsKey(key))
         {
-            foreach (var pair in _values)
+            value = _values[key];
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Each(Action<TValue> action)
+    {
+        foreach (var pair in _values) action(pair.Value);
+    }
+
+    public void Each(Action<TKey, TValue> action)
+    {
+        foreach (var pair in _values) action(pair.Key, pair.Value);
+    }
+
+    public bool Has(TKey key)
+    {
+        return _values.ContainsKey(key);
+    }
+
+    public bool Exists(Predicate<TValue> predicate)
+    {
+        var returnValue = false;
+
+        Each(delegate(TValue value) { returnValue |= predicate(value); });
+
+        return returnValue;
+    }
+
+    public TValue Find(Predicate<TValue> predicate)
+    {
+        foreach (var pair in _values)
+        {
+            if (predicate(pair.Value))
             {
-                action(pair.Value);
+                return pair.Value;
             }
         }
 
-        public void Each(Action<TKey, TValue> action)
+        return default;
+    }
+
+    public TValue[] GetAll()
+    {
+        var returnValue = new TValue[Count];
+        _values.Values.CopyTo(returnValue, 0);
+
+        return returnValue;
+    }
+
+    public void Remove(TKey key)
+    {
+        if (_values.ContainsKey(key))
         {
-            foreach (var pair in _values)
-            {
-                action(pair.Key, pair.Value);
-            }
+            _values.Remove(key);
         }
+    }
 
-        public bool Has(TKey key)
+    public void Clear()
+    {
+        _values.Clear();
+    }
+
+    public void WithValue(TKey key, Action<TValue> action)
+    {
+        if (_values.ContainsKey(key))
         {
-            return _values.ContainsKey(key);
+            action(this[key]);
         }
+    }
 
-        public bool Exists(Predicate<TValue> predicate)
-        {
-            var returnValue = false;
-
-            Each(delegate (TValue value) { returnValue |= predicate(value); });
-
-            return returnValue;
-        }
-
-        public TValue Find(Predicate<TValue> predicate)
-        {
-            foreach (var pair in _values)
-            {
-                if (predicate(pair.Value))
-                {
-                    return pair.Value;
-                }
-            }
-
-            return default(TValue);
-        }
-
-        public TValue[] GetAll()
-        {
-            var returnValue = new TValue[Count];
-            _values.Values.CopyTo(returnValue, 0);
-
-            return returnValue;
-        }
-
-        public void Remove(TKey key)
-        {
-            if (_values.ContainsKey(key))
-            {
-                _values.Remove(key);
-            }
-        }
-
-        public void Clear()
-        {
-            _values.Clear();
-        }
-
-        public void WithValue(TKey key, Action<TValue> action)
-        {
-            if (_values.ContainsKey(key))
-            {
-                action(this[key]);
-            }
-        }
-
-        public void ClearAll()
-        {
-            _values.Clear();
-        }
+    public void ClearAll()
+    {
+        _values.Clear();
     }
 }

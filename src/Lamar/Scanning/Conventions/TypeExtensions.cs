@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JasperFx.Core.Reflection;
 using LamarCodeGeneration.Util;
 
 namespace Lamar.Scanning.Conventions

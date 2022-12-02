@@ -1,47 +1,59 @@
 ﻿using System;
 using System.Reflection;
 
-namespace LamarCodeGeneration.Model
+namespace LamarCodeGeneration.Model;
+
+/// <summary>
+///     Variable that represents the input argument to a generated method
+/// </summary>
+public class Argument : Variable
 {
-    /// <summary>
-    /// Variable that represents the input argument to a generated method
-    /// </summary>
-    public class Argument : Variable
+    public Argument(Type variableType, string usage) : base(variableType, usage)
     {
-        public Argument(Type variableType, string usage) : base(variableType, usage)
+    }
+
+    public Argument(ParameterInfo parameter) : this(parameter.ParameterType, parameter.Name)
+    {
+    }
+
+    public string Declaration => $"{VariableType.FullNameInCode()} {Usage}";
+
+    public new static Argument For<T>(string argName = null)
+    {
+        return new Argument(typeof(T), argName ?? DefaultArgName(typeof(T)));
+    }
+
+    protected bool Equals(Argument other)
+    {
+        return VariableType == other.VariableType && string.Equals(Usage, other.Usage);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj))
         {
+            return false;
         }
 
-        public Argument(ParameterInfo parameter) : this(parameter.ParameterType, parameter.Name)
+        if (ReferenceEquals(this, obj))
         {
+            return true;
         }
 
-        public string Declaration => $"{VariableType.FullNameInCode()} {Usage}";
-
-        public new static Argument For<T>(string argName = null)
+        if (obj.GetType() != GetType())
         {
-            return new Argument(typeof(T), argName ?? DefaultArgName(typeof(T)));
+            return false;
         }
 
-        protected bool Equals(Argument other)
-        {
-            return VariableType == other.VariableType && string.Equals(Usage, other.Usage);
-        }
+        return Equals((Argument)obj);
+    }
 
-        public override bool Equals(object obj)
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Argument)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((VariableType != null ? VariableType.GetHashCode() : 0) * 397) ^ (Usage != null ? Usage.GetHashCode() : 0);
-            }
+            return ((VariableType != null ? VariableType.GetHashCode() : 0) * 397) ^
+                   (Usage != null ? Usage.GetHashCode() : 0);
         }
     }
 }

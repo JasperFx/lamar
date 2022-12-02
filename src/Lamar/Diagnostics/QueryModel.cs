@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JasperFx.Core.Reflection;
 using Lamar.IoC;
 using Lamar.Scanning.Conventions;
 using LamarCodeGeneration.Util;

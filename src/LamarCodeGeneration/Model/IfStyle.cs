@@ -1,44 +1,43 @@
-﻿using LamarCodeGeneration.Util;
+﻿using JasperFx.Core;
 
-namespace LamarCodeGeneration.Model
+namespace LamarCodeGeneration.Model;
+
+public class IfStyle
 {
-    public class IfStyle
+    public static readonly IfStyle If = new("if");
+    public static readonly IfStyle ElseIf = new("else if");
+    public static readonly IfStyle Else = new("else");
+    public static readonly IfStyle None = new("else", false);
+    private readonly bool _writes;
+
+    private IfStyle(string code, bool writes = true)
     {
-        private readonly bool _writes;
-        public static readonly IfStyle If = new IfStyle("if");
-        public static readonly IfStyle ElseIf = new IfStyle("else if");
-        public static readonly IfStyle Else = new IfStyle("else");
-        public static readonly IfStyle None = new IfStyle("else", false);
+        _writes = writes;
+        Code = code;
+    }
 
-        public string Code { get; }
+    public string Code { get; }
 
-        private IfStyle(string code, bool writes = true)
+    public void Open(ISourceWriter writer, string condition)
+    {
+        if (_writes)
         {
-            _writes = writes;
-            Code = code;
+            writer.Write(condition.IsEmpty()
+                ? $"BLOCK:{Code}"
+                : $"BLOCK:{Code} ({condition})");
         }
+    }
 
-        public void Open(ISourceWriter writer, string condition)
+    public void Close(ISourceWriter writer)
+    {
+        if (_writes)
         {
-            if (_writes)
-            {
-                writer.Write(condition.IsEmpty()
-                    ? $"BLOCK:{Code}"
-                    : $"BLOCK:{Code} ({condition})");
-            }
+            writer.FinishBlock();
         }
+    }
 
-        public void Close(ISourceWriter writer)
-        {
-            if (_writes)
-            {
-                writer.FinishBlock();
-            }
-        }
-
-        public override string ToString()
-        {
-            return Code;
-        }
+    public override string ToString()
+    {
+        return Code;
     }
 }

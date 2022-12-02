@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.Util;
 using LamarCodeGeneration;

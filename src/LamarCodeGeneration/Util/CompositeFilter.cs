@@ -1,25 +1,24 @@
-﻿namespace LamarCodeGeneration.Util
+﻿namespace LamarCodeGeneration.Util;
+
+internal class CompositeFilter<T>
 {
-    internal class CompositeFilter<T>
+    private readonly CompositePredicate<T> _excludes = new();
+    private readonly CompositePredicate<T> _includes = new();
+
+    internal CompositePredicate<T> Includes
     {
-        private readonly CompositePredicate<T> _excludes = new CompositePredicate<T>();
-        private readonly CompositePredicate<T> _includes = new CompositePredicate<T>();
+        get => _includes;
+        set { }
+    }
 
-        internal CompositePredicate<T> Includes
-        {
-            get { return _includes; }
-            set { }
-        }
+    internal CompositePredicate<T> Excludes
+    {
+        get => _excludes;
+        set { }
+    }
 
-        internal CompositePredicate<T> Excludes
-        {
-            get { return _excludes; }
-            set { }
-        }
-
-        internal bool Matches(T target)
-        {
-            return Includes.MatchesAny(target) && Excludes.DoesNotMatcheAny(target);
-        }
+    internal bool Matches(T target)
+    {
+        return Includes.MatchesAny(target) && Excludes.DoesNotMatcheAny(target);
     }
 }

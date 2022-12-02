@@ -2,36 +2,34 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace LamarCodeGeneration.Util
+namespace LamarCodeGeneration.Util;
+
+internal class ConstructorFinderVisitor<T> : ExpressionVisitor
 {
-    internal class ConstructorFinderVisitor<T> : ExpressionVisitorBase
+    private readonly Type _type;
+
+    public ConstructorFinderVisitor(Type type)
     {
-        private readonly Type _type;
-        private ConstructorInfo _constructor;
+        _type = type;
+    }
 
-        public ConstructorFinderVisitor(Type type)
+    public ConstructorInfo Constructor { get; private set; }
+
+    protected override Expression VisitNew(NewExpression node)
+    {
+        if (node.Type == _type)
         {
-            _type = type;
+            Constructor = node.Constructor;
         }
 
-        public ConstructorInfo Constructor => _constructor;
+        return base.VisitNew(node);
+    }
 
-        protected override NewExpression VisitNew(NewExpression nex)
-        {
-            if (nex.Type == _type)
-            {
-                _constructor = nex.Constructor;
-            }
+    public static ConstructorInfo Find(Expression<Func<T>> expression)
+    {
+        var finder = new ConstructorFinderVisitor<T>(typeof(T));
+        finder.Visit(expression);
 
-            return base.VisitNew(nex);
-        }
-
-        public static ConstructorInfo Find(Expression<Func<T>> expression)
-        {
-            var finder = new ConstructorFinderVisitor<T>(typeof(T));
-            finder.Visit(expression);
-
-            return finder.Constructor;
-        }
+        return finder.Constructor;
     }
 }

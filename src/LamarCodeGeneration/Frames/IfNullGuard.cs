@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using LamarCodeGeneration.Model;
@@ -7,11 +6,12 @@ namespace LamarCodeGeneration.Frames;
 
 public class IfNullGuard : Frame
 {
-    private readonly Variable _subject;
-    private readonly Frame[] _nullPath;
     private readonly Frame[] _existsPath;
+    private readonly Frame[] _nullPath;
+    private readonly Variable _subject;
 
-    public IfNullGuard(Variable subject, Frame[] nullPath, Frame[] existsPath) : base(nullPath.Any(x => x.IsAsync) || existsPath.Any(x => x.IsAsync))
+    public IfNullGuard(Variable subject, Frame[] nullPath, Frame[] existsPath) : base(nullPath.Any(x => x.IsAsync) ||
+        existsPath.Any(x => x.IsAsync))
     {
         _subject = subject;
         _nullPath = nullPath;
@@ -23,18 +23,12 @@ public class IfNullGuard : Frame
     {
         IfStyle.If.Open(writer, $"{_subject.Usage} == null");
 
-        foreach (var frame in _nullPath)
-        {
-            frame.GenerateCode(method, writer);
-        }
+        foreach (var frame in _nullPath) frame.GenerateCode(method, writer);
 
         IfStyle.If.Close(writer);
         IfStyle.Else.Open(writer, null);
 
-        foreach (var frame in _existsPath)
-        {
-            frame.GenerateCode(method, writer);
-        }
+        foreach (var frame in _existsPath) frame.GenerateCode(method, writer);
 
         IfStyle.Else.Close(writer);
 

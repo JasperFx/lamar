@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JasperFx.Core;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
