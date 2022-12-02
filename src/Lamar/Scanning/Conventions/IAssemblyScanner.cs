@@ -211,7 +211,10 @@ namespace Lamar.Scanning.Conventions
         /// <param name="includeExeFiles"></param>
         void AssembliesAndExecutablesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter = null);
 
+        [Obsolete("It is very strongly recommended to use the overload with an Assembly filter to improve performance")]
         void AssembliesAndExecutablesFromPath(string path);
+        
+        [Obsolete("It is very strongly recommended to use the overload with an Assembly filter to improve performance")]
         void AssembliesFromPath(string path);
 
         void AssembliesAndExecutablesFromPath(string path,

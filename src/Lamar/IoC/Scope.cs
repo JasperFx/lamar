@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using BaselineTypeDiscovery;
+using JasperFx.TypeDiscovery;
 using Lamar.Diagnostics;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;

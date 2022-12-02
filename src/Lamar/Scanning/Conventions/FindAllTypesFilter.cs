@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using BaselineTypeDiscovery;
+using JasperFx.TypeDiscovery;
 using Lamar.IoC.Instances;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;

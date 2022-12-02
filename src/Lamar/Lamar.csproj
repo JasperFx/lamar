@@ -18,8 +18,8 @@
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BaselineTypeDiscovery" Version="2.0.0" />
     <PackageReference Include="ImTools" Version="4.0.0" />
+    <PackageReference Include="JasperFx.TypeDiscovery" Version="0.9.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[6.0.0, 8.0.0)" />
   </ItemGroup>
   <ItemGroup>

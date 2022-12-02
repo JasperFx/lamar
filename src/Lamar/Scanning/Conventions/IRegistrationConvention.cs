@@ -1,4 +1,4 @@
-using BaselineTypeDiscovery;
+using JasperFx.TypeDiscovery;
 
 namespace Lamar.Scanning.Conventions
 {
