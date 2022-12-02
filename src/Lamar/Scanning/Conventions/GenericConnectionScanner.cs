@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BaselineTypeDiscovery;
+using JasperFx.TypeDiscovery;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;

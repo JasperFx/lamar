@@ -1,4 +1,4 @@
-using BaselineTypeDiscovery;
+using JasperFx.TypeDiscovery;
 using Microsoft.Extensions.DependencyInjection;
 using Oakton.Environment;
 
