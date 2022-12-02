@@ -11,6 +11,27 @@ namespace LamarCodeGeneration.Util
     /// </summary>
     internal static class EnumerableExtensions
     {
+        // TODO -- this needs to go, use the patched version from Lamar
+
+        /// <summary>
+        /// Find the index within the enumerable of the first item that matches the condition
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <param name="condition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static int GetFirstIndex<T>(this IEnumerable<T> enumerable, Func<T, bool> condition)
+        {
+            var index = -1;
+            foreach (var item in enumerable)
+            {
+                index++;
+                if (condition(item)) return index;
+            }
+
+            return -1;
+        }
+        
         public static IEnumerable<T> TopologicalSort<T>(this IEnumerable<T> source, Func<T, IEnumerator<T>> getDependencies, bool throwOnCycle = true)
         {
             var sorted = new List<T>();
