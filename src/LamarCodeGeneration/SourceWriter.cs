@@ -1,115 +1,118 @@
 using System;
 using System.IO;
-using LamarCodeGeneration.Util;
+using JasperFx.Core;
 
-namespace LamarCodeGeneration
+namespace LamarCodeGeneration;
+
+public class SourceWriter : ISourceWriter, IDisposable
 {
-    public class SourceWriter : ISourceWriter, IDisposable
+    private readonly StringWriter _writer = new();
+    private string _leadingSpaces = "";
+
+    private int _level;
+
+    public void Dispose()
     {
-        private readonly StringWriter _writer = new StringWriter();
-        private string _leadingSpaces = "";
+        _writer?.Dispose();
+    }
 
-        private int _level;
-
-        public int IndentionLevel
+    public int IndentionLevel
+    {
+        get => _level;
+        set
         {
-            get => _level;
-            set
-            {
-                _level = value;
-                _leadingSpaces = "".PadRight(_level*4);
-            }
+            _level = value;
+            _leadingSpaces = "".PadRight(_level * 4);
+        }
+    }
+
+    public void BlankLine()
+    {
+        _writer.WriteLine();
+    }
+
+    public void Write(string text = null)
+    {
+        if (text.IsEmpty())
+        {
+            BlankLine();
+            return;
         }
 
-        public void BlankLine()
+        text.ReadLines(line =>
         {
-            _writer.WriteLine();
-        }
+            line = line.Replace('`', '"');
 
-        public void Write(string text = null)
-        {
-            if (text.IsEmpty())
+            if (line.IsEmpty())
             {
                 BlankLine();
-                return;
             }
-
-            text.ReadLines(line =>
+            else if (line.StartsWith("BLOCK:"))
             {
-                line = line.Replace('`', '"');
-
-                if (line.IsEmpty())
-                {
-                    BlankLine();
-                }
-                else if (line.StartsWith("BLOCK:"))
-                {
-                    WriteLine(line.Substring(6));
-                    StartBlock();
-                }
-                else if (line.StartsWith("END"))
-                {
-                    FinishBlock(line.Substring(3));
-                }
-                else
-                {
-                    WriteLine(line);
-                }
-            });
-        }
-
-        public void WriteLine(string text)
-        {
-            _writer.WriteLine(_leadingSpaces + text);
-        }
-
-        private void StartBlock()
-        {
-            WriteLine("{");
-            IndentionLevel++;
-        }
-
-        public void FinishBlock(string extra = null)
-        {
-            if (IndentionLevel == 0)
-            {
-                throw new InvalidOperationException("Not currently in a code block");
+                WriteLine(line.Substring(6));
+                StartBlock();
             }
-
-            IndentionLevel--;
-
-            if (extra.IsEmpty())
-                WriteLine("}");
+            else if (line.StartsWith("END"))
+            {
+                FinishBlock(line.Substring(3));
+            }
             else
-                WriteLine("}" + extra);
+            {
+                WriteLine(line);
+            }
+        });
+    }
 
+    public void WriteLine(string text)
+    {
+        _writer.WriteLine(_leadingSpaces + text);
+    }
 
-            BlankLine();
+    public void FinishBlock(string extra = null)
+    {
+        if (IndentionLevel == 0)
+        {
+            throw new InvalidOperationException("Not currently in a code block");
         }
 
-        public string Code()
+        IndentionLevel--;
+
+        if (extra.IsEmpty())
         {
-            return _writer.ToString();
+            WriteLine("}");
+        }
+        else
+        {
+            WriteLine("}" + extra);
         }
 
-        internal class BlockMarker : IDisposable
+
+        BlankLine();
+    }
+
+    private void StartBlock()
+    {
+        WriteLine("{");
+        IndentionLevel++;
+    }
+
+    public string Code()
+    {
+        return _writer.ToString();
+    }
+
+    internal class BlockMarker : IDisposable
+    {
+        private readonly SourceWriter _parent;
+
+        public BlockMarker(SourceWriter parent)
         {
-            private readonly SourceWriter _parent;
-
-            public BlockMarker(SourceWriter parent)
-            {
-                _parent = parent;
-            }
-
-            public void Dispose()
-            {
-                _parent.FinishBlock();
-            }
+            _parent = parent;
         }
 
         public void Dispose()
         {
-            _writer?.Dispose();
+            _parent.FinishBlock();
         }
     }
 }

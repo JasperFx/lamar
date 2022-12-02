@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using JasperFx.Core.Reflection;
 using Lamar.IoC;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;

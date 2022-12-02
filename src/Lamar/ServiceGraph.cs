@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC;
 using Lamar.IoC.Enumerables;
 using Lamar.IoC.Instances;

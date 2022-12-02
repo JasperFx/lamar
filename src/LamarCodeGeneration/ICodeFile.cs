@@ -2,18 +2,17 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace LamarCodeGeneration
+namespace LamarCodeGeneration;
+
+public interface ICodeFile
 {
-    public interface ICodeFile
-    {
-        string FileName { get; }
+    string FileName { get; }
 
-        void AssembleTypes(GeneratedAssembly assembly);
-        
-        Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services,
-            string containingNamespace);
+    void AssembleTypes(GeneratedAssembly assembly);
 
-        bool AttachTypesSynchronously(GenerationRules rules, Assembly assembly, IServiceProvider services,
-            string containingNamespace);
-    }
+    Task<bool> AttachTypes(GenerationRules rules, Assembly assembly, IServiceProvider services,
+        string containingNamespace);
+
+    bool AttachTypesSynchronously(GenerationRules rules, Assembly assembly, IServiceProvider services,
+        string containingNamespace);
 }

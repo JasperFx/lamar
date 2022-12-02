@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using JasperFx.TypeDiscovery;
 using LamarCodeGeneration;
 using LamarCodeGeneration.Util;

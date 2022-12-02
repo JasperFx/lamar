@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
 using LamarCodeGeneration.Expressions;
 using LamarCodeGeneration.Frames;

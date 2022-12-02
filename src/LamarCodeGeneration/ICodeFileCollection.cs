@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 
-namespace LamarCodeGeneration
+namespace LamarCodeGeneration;
+
+public interface ICodeFileCollection
 {
-    public interface ICodeFileCollection
-    {
-        IReadOnlyList<ICodeFile> BuildFiles();
-        
-        /// <summary>
-        /// Appending 
-        /// </summary>
-        string ChildNamespace { get; }    
-        
-        GenerationRules Rules { get; }
-    }
+    /// <summary>
+    ///     Appending
+    /// </summary>
+    string ChildNamespace { get; }
+
+    GenerationRules Rules { get; }
+    IReadOnlyList<ICodeFile> BuildFiles();
 }

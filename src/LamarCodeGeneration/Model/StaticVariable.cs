@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace LamarCodeGeneration.Model
+namespace LamarCodeGeneration.Model;
+
+public class StaticVariable : Variable, IVariableSource
 {
-    public class StaticVariable : Variable, IVariableSource
+    public StaticVariable(Type variableType, string usage) : base(variableType, usage)
     {
-        public StaticVariable(Type variableType, string usage) : base(variableType, usage)
-        {
-        }
+    }
 
-        public bool Matches(Type type)
-        {
-            return type == VariableType;
-        }
+    public bool Matches(Type type)
+    {
+        return type == VariableType;
+    }
 
-        public Variable Create(Type type)
-        {
-            return this;
-        }
+    public Variable Create(Type type)
+    {
+        return this;
     }
 }

@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using JasperFx.TypeDiscovery;
 using Lamar.Diagnostics;
 using Lamar.IoC.Diagnostics;

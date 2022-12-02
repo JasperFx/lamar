@@ -1,9 +1,8 @@
-﻿namespace LamarCodeGeneration.Model
+﻿namespace LamarCodeGeneration.Model;
+
+public interface IServiceVariableSource : IVariableSource
 {
-    public interface IServiceVariableSource : IVariableSource
-    {
-        void ReplaceVariables();
-        void StartNewType();
-        void StartNewMethod();
-    }
+    void ReplaceVariables();
+    void StartNewType();
+    void StartNewMethod();
 }

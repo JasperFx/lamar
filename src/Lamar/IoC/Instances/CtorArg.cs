@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using JasperFx.Core;
 using Lamar.IoC.Frames;
 using LamarCodeGeneration.Model;
 using LamarCodeGeneration.Util;

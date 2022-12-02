@@ -1,7 +1,6 @@
-namespace LamarCodeGeneration.Expressions
+namespace LamarCodeGeneration.Expressions;
+
+public interface IResolverFrame
 {
-    public interface IResolverFrame
-    {
-        void WriteExpressions(LambdaDefinition definition);
-    }
+    void WriteExpressions(LambdaDefinition definition);
 }

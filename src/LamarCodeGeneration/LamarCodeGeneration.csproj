@@ -4,7 +4,7 @@
         <Description>Code Generation Chicanery for .Net</Description>
         <Version>6.3.0</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>LamarCodeGeneration</AssemblyName>
         <PackageId>LamarCodeGeneration</PackageId>
@@ -20,11 +20,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
-      <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-      <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
-      <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-      <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
+        <PackageReference Include="JasperFx.Core" Version="0.9.1" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+        <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+        <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
-
 </Project>
