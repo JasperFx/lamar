@@ -81,7 +81,6 @@ documentation/compilation/frames/injected-fields/
            
             Target("test", DependsOn("compile"),() =>
             {
-                RunTests("CodegenTests");
                 RunTests("Lamar.Testing");
                 RunTests("Lamar.AspNetCoreTests");
                 RunTests("Lamar.AspNetCoreTests.Integration");
@@ -97,16 +96,7 @@ documentation/compilation/frames/injected-fields/
                 RunCurrentProject("lamar-scanning");
                 RunCurrentProject("lamar-services");
                 RunCurrentProject("lamar-validate ConfigOnly");
-                
-                Directory.SetCurrentDirectory(Path.Combine(original, "src", "GeneratorTarget"));
-                RunCurrentProject("?");
-                RunCurrentProject("codegen");
-                RunCurrentProject("codegen preview");
-                RunCurrentProject("codegen write");
-                RunCurrentProject("write");
-                RunCurrentProject("codegen test");
-                RunCurrentProject("codegen delete");
-                
+
                 Directory.SetCurrentDirectory(original);
             });
             

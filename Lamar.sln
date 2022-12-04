@@ -27,27 +27,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Microsoft.DependencyI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AspNetCoreTests", "src\Lamar.AspNetCoreTests\Lamar.AspNetCoreTests.csproj", "{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasperFx.RuntimeCompiler", "src\JasperFx.RuntimeCompiler\JasperFx.RuntimeCompiler.csproj", "{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodegenTests", "src\CodegenTests\CodegenTests.csproj", "{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApp", "src\UserApp\UserApp.csproj", "{5692C841-BA5A-464B-87E5-B0B6E92803F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bug-124-Widgets", "Bug-124-Widgets", "{317DED50-F632-48EB-8E02-E1B6739B35E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Aspect.Logger", "src\Aspect.Logger\Widget.Aspect.Logger.csproj", "{A367AE1C-B39D-438B-BADD-3B7E368DDF97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasperFx.CodeGeneration", "src\JasperFx.CodeGeneration\JasperFx.CodeGeneration.csproj", "{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Diagnostics", "src\Lamar.Diagnostics\Lamar.Diagnostics.csproj", "{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithAspNetCore3", "src\LamarWithAspNetCore3\LamarWithAspNetCore3.csproj", "{A513986C-E435-495D-B056-8C7121D6F07B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarDiagnosticsWithNetCore3Demonstrator", "src\LamarDiagnosticsWithNetCore3Demonstrator\LamarDiagnosticsWithNetCore3Demonstrator.csproj", "{22B4777B-CF18-4D87-A8DB-684F59F7FC05}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasperFx.CodeGeneration.Commands", "src\JasperFx.CodeGeneration.Commands\JasperFx.CodeGeneration.Commands.csproj", "{7AE3CFA7-64E3-4B31-811D-794AE364AF5F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorTarget", "src\GeneratorTarget\GeneratorTarget.csproj", "{3938B85F-95BA-42F8-B686-DC650C3501A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.AspNetCoreTests.Integration", "src\Lamar.AspNetCoreTests.Integration\Lamar.AspNetCoreTests.Integration.csproj", "{4BA17CD6-53C4-4FFB-8739-A02972AA6A2B}"
 EndProject
@@ -115,14 +105,6 @@ Global
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFFC9632-2B12-4A67-AE59-B9C4698AF0CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFAA7DCF-95A6-4E28-A0C6-8B52E04140DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA52E6D6-B561-4D8B-B5BF-A0318CDDC55B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5692C841-BA5A-464B-87E5-B0B6E92803F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5692C841-BA5A-464B-87E5-B0B6E92803F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5692C841-BA5A-464B-87E5-B0B6E92803F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -131,10 +113,6 @@ Global
 		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2030BA2A-5D44-4BDA-9EF7-7EB0BC7A1C6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -147,14 +125,6 @@ Global
 		{22B4777B-CF18-4D87-A8DB-684F59F7FC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B4777B-CF18-4D87-A8DB-684F59F7FC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B4777B-CF18-4D87-A8DB-684F59F7FC05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7AE3CFA7-64E3-4B31-811D-794AE364AF5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7AE3CFA7-64E3-4B31-811D-794AE364AF5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7AE3CFA7-64E3-4B31-811D-794AE364AF5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7AE3CFA7-64E3-4B31-811D-794AE364AF5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3938B85F-95BA-42F8-B686-DC650C3501A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3938B85F-95BA-42F8-B686-DC650C3501A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3938B85F-95BA-42F8-B686-DC650C3501A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3938B85F-95BA-42F8-B686-DC650C3501A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4BA17CD6-53C4-4FFB-8739-A02972AA6A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BA17CD6-53C4-4FFB-8739-A02972AA6A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BA17CD6-53C4-4FFB-8739-A02972AA6A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU

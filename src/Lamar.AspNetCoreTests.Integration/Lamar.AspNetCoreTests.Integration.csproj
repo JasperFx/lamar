@@ -43,7 +43,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
-    <ProjectReference Include="..\JasperFx.RuntimeCompiler\JasperFx.RuntimeCompiler.csproj" />
   </ItemGroup>
 
 </Project>
