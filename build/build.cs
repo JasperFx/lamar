@@ -81,7 +81,7 @@ documentation/compilation/frames/injected-fields/
            
             Target("test", DependsOn("compile"),() =>
             {
-                RunTests("LamarCompiler.Testing");
+                RunTests("CodegenTests");
                 RunTests("Lamar.Testing");
                 RunTests("Lamar.AspNetCoreTests");
                 RunTests("Lamar.AspNetCoreTests.Integration");

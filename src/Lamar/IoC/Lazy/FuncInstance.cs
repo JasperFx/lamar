@@ -2,8 +2,8 @@
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Lazy

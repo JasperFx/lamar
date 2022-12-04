@@ -3,22 +3,21 @@
 
 using System;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
+namespace Lamar.Testing.IoC.Compliance.Fakes;
+
+public class FakeService : IFakeEveryService, IDisposable
 {
-    public class FakeService : IFakeEveryService, IDisposable
+    public bool Disposed { get; private set; }
+
+    public void Dispose()
     {
-        public PocoClass Value { get; set; }
-
-        public bool Disposed { get; private set; }
-
-        public void Dispose()
+        if (Disposed)
         {
-            if (Disposed)
-            {
-                throw new ObjectDisposedException(nameof(FakeService));
-            }
-
-            Disposed = true;
+            throw new ObjectDisposedException(nameof(FakeService));
         }
+
+        Disposed = true;
     }
+
+    public PocoClass Value { get; set; }
 }

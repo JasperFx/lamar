@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[6.0.0, 8.0.0)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LamarCodeGeneration\LamarCodeGeneration.csproj" />
+    <ProjectReference Include="..\JasperFx.CodeGeneration\JasperFx.CodeGeneration.csproj" />
   </ItemGroup>
   
 

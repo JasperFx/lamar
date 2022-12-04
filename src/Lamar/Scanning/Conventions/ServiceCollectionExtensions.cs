@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions

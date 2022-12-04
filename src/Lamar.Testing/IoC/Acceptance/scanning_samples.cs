@@ -4,147 +4,171 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
 
-namespace Lamar.Testing.IoC.Acceptance
+namespace Lamar.Testing.IoC.Acceptance;
+
+public class scanning_samples
 {
-    public class scanning_samples
+    [Fact]
+    public void default_scanning_in_action_with_overrides()
     {
-        #region sample_WithDefaultConventions
-        public interface ISpaceship { }
+        #region sample_WithDefaultConventionsOptions
 
-        public class Spaceship : ISpaceship { }
-
-        public interface IRocket { }
-
-        public class Rocket : IRocket { }
-
-        [Fact]
-        public void default_scanning_in_action()
+        var container = new Container(_ =>
         {
-            var container = new Container(_ =>
+            _.Scan(x =>
             {
-                _.Scan(x =>
-                {
-                    x.Assembly("Lamar.Testing");
-                    x.WithDefaultConventions();
-                });
+                x.Assembly("Lamar.Testing");
+
+                // This is the default, add all discovered registrations
+                // regardless of existing registrations
+                x.WithDefaultConventions(OverwriteBehavior.Always);
+
+                // Do not add any registrations if the *ServiceType*
+                // is already registered. This will prevent the scanning
+                // from overwriting existing default registrations
+                x.WithDefaultConventions(OverwriteBehavior.Never);
+
+                // Only add new ImplementationType registrations for 
+                // the ServiceType. This will prevent duplicate concrete
+                // types for the same ServiceType being registered by the
+                // type scanning
+                x.WithDefaultConventions(OverwriteBehavior.NewType);
             });
-
-            container.GetInstance<ISpaceship>().ShouldBeOfType<Spaceship>();
-            container.GetInstance<IRocket>().ShouldBeOfType<Rocket>();
-        }
-
-        #endregion
-        
-        [Fact]
-        public void default_scanning_in_action_with_overrides()
-        {
-            #region sample_WithDefaultConventionsOptions
-            var container = new Container(_ =>
-            {
-                _.Scan(x =>
-                {
-                    x.Assembly("Lamar.Testing");
-                    
-                    // This is the default, add all discovered registrations
-                    // regardless of existing registrations
-                    x.WithDefaultConventions(OverwriteBehavior.Always);
-                    
-                    // Do not add any registrations if the *ServiceType*
-                    // is already registered. This will prevent the scanning
-                    // from overwriting existing default registrations
-                    x.WithDefaultConventions(OverwriteBehavior.Never);
-                    
-                    // Only add new ImplementationType registrations for 
-                    // the ServiceType. This will prevent duplicate concrete
-                    // types for the same ServiceType being registered by the
-                    // type scanning
-                    x.WithDefaultConventions(OverwriteBehavior.NewType);
-                });
-            });
-            #endregion
-
-        }
-        
-        [Fact]
-        public void default_scanning_in_action_with_override_lifetime()
-        {
-            #region sample_WithDefaultConventionsLifetime
-            var container = new Container(_ =>
-            {
-                _.Scan(x =>
-                {
-                    x.Assembly("Lamar.Testing");
-                    
-                    // Use Scoped as the lifetime
-                    x.WithDefaultConventions(ServiceLifetime.Scoped);
-                    
-                    // Mix and match with override behavior
-                    x.WithDefaultConventions(OverwriteBehavior.Never, ServiceLifetime.Singleton);
-                });
-            });
-            #endregion
-
-        }
-
-        #region sample_register-all-types-implementing
-        public interface IFantasySeries { }
-
-        public class WheelOfTime : IFantasySeries { }
-
-        public class GameOfThrones : IFantasySeries { }
-
-        public class BlackCompany : IFantasySeries { }
-
-        [Fact]
-        public void register_all_types_of_an_interface()
-        {
-            var container = new Container(_ =>
-            {
-                _.Scan(x =>
-                {
-                    x.TheCallingAssembly();
-
-                    x.AddAllTypesOf<IFantasySeries>()
-                        .NameBy(type => type.Name.ToLower());
-
-                    // or
-
-                    x.AddAllTypesOf(typeof(IFantasySeries))
-                        .NameBy(type => type.Name.ToLower());
-                });
-            });
-
-            container.Model.For<IFantasySeries>()
-                .Instances.Select(x => x.ImplementationType)
-                .OrderBy(x => x.Name)
-                .ShouldHaveTheSameElementsAs(typeof(BlackCompany), typeof(GameOfThrones), typeof(WheelOfTime));
-
-            container.GetInstance<IFantasySeries>("blackcompany").ShouldBeOfType<BlackCompany>();
-        }
-
-        #endregion
-
-        #region sample_SingleImplementationsOfInterface
-        public interface ISong { }
-
-        public class TheOnlySong : ISong { }
-
-        [Fact]
-        public void only_implementation()
-        {
-            var container = new Container(_ =>
-            {
-                _.Scan(x =>
-                {
-                    x.TheCallingAssembly();
-                    x.SingleImplementationsOfInterface();
-                });
-            });
-
-            container.GetInstance<ISong>()
-                .ShouldBeOfType<TheOnlySong>();
-        }
+        });
 
         #endregion
     }
+
+    [Fact]
+    public void default_scanning_in_action_with_override_lifetime()
+    {
+        #region sample_WithDefaultConventionsLifetime
+
+        var container = new Container(_ =>
+        {
+            _.Scan(x =>
+            {
+                x.Assembly("Lamar.Testing");
+
+                // Use Scoped as the lifetime
+                x.WithDefaultConventions(ServiceLifetime.Scoped);
+
+                // Mix and match with override behavior
+                x.WithDefaultConventions(OverwriteBehavior.Never, ServiceLifetime.Singleton);
+            });
+        });
+
+        #endregion
+    }
+
+    #region sample_WithDefaultConventions
+
+    public interface ISpaceship
+    {
+    }
+
+    public class Spaceship : ISpaceship
+    {
+    }
+
+    public interface IRocket
+    {
+    }
+
+    public class Rocket : IRocket
+    {
+    }
+
+    [Fact]
+    public void default_scanning_in_action()
+    {
+        var container = new Container(_ =>
+        {
+            _.Scan(x =>
+            {
+                x.Assembly("Lamar.Testing");
+                x.WithDefaultConventions();
+            });
+        });
+
+        container.GetInstance<ISpaceship>().ShouldBeOfType<Spaceship>();
+        container.GetInstance<IRocket>().ShouldBeOfType<Rocket>();
+    }
+
+    #endregion
+
+    #region sample_register-all-types-implementing
+
+    public interface IFantasySeries
+    {
+    }
+
+    public class WheelOfTime : IFantasySeries
+    {
+    }
+
+    public class GameOfThrones : IFantasySeries
+    {
+    }
+
+    public class BlackCompany : IFantasySeries
+    {
+    }
+
+    [Fact]
+    public void register_all_types_of_an_interface()
+    {
+        var container = new Container(_ =>
+        {
+            _.Scan(x =>
+            {
+                x.TheCallingAssembly();
+
+                x.AddAllTypesOf<IFantasySeries>()
+                    .NameBy(type => type.Name.ToLower());
+
+                // or
+
+                x.AddAllTypesOf(typeof(IFantasySeries))
+                    .NameBy(type => type.Name.ToLower());
+            });
+        });
+
+        container.Model.For<IFantasySeries>()
+            .Instances.Select(x => x.ImplementationType)
+            .OrderBy(x => x.Name)
+            .ShouldHaveTheSameElementsAs(typeof(BlackCompany), typeof(GameOfThrones), typeof(WheelOfTime));
+
+        container.GetInstance<IFantasySeries>("blackcompany").ShouldBeOfType<BlackCompany>();
+    }
+
+    #endregion
+
+    #region sample_SingleImplementationsOfInterface
+
+    public interface ISong
+    {
+    }
+
+    public class TheOnlySong : ISong
+    {
+    }
+
+    [Fact]
+    public void only_implementation()
+    {
+        var container = new Container(_ =>
+        {
+            _.Scan(x =>
+            {
+                x.TheCallingAssembly();
+                x.SingleImplementationsOfInterface();
+            });
+        });
+
+        container.GetInstance<ISong>()
+            .ShouldBeOfType<TheOnlySong>();
+    }
+
+    #endregion
 }

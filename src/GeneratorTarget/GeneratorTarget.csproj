@@ -7,7 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
-      <ProjectReference Include="..\LamarCodeGeneration.Commands\LamarCodeGeneration.Commands.csproj" />
+      <ProjectReference Include="..\JasperFx.CodeGeneration.Commands\JasperFx.CodeGeneration.Commands.csproj" />
     </ItemGroup>
 
 </Project>

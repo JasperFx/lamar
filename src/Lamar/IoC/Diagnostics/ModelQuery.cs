@@ -5,7 +5,7 @@ using System.Reflection;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.Diagnostics;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Diagnostics
 {

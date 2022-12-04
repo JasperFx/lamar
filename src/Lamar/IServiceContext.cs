@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Lamar.Diagnostics;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration.Model;
 
 namespace Lamar
 {

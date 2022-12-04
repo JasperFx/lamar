@@ -1,72 +1,70 @@
 ﻿using System;
 
-namespace Lamar.Testing
+namespace Lamar.Testing;
+
+public class WorkItem
 {
-    public class WorkItem
+    public DateTime Started { get; set; }
+}
+
+public interface IClock
+{
+    DateTime Now();
+}
+
+public class Clock : IClock
+{
+    public DateTime Now()
     {
-        public DateTime Started { get; set; }
+        return DateTime.UtcNow;
+    }
+}
+
+public class DisposableClock : IClock, IDisposable
+{
+    public bool WasDisposed { get; set; }
+
+    public DateTime Now()
+    {
+        throw new NotImplementedException();
     }
 
-    public interface IClock
+    public void Dispose()
     {
-        DateTime Now();
+        WasDisposed = true;
+    }
+}
+
+public class MockedWorkItemProcessor
+{
+    private readonly IClock _clock;
+
+    public MockedWorkItemProcessor(IClock clock)
+    {
+        _clock = clock;
     }
 
-    public class Clock : IClock
+    public void CheckItem(WorkItem item)
     {
-        public DateTime Now()
+        if (_clock.Now().Subtract(item.Started).Days > 5)
         {
-            return DateTime.UtcNow;
+            // yell at the developer
         }
     }
+}
 
-    public class DisposableClock : IClock, IDisposable
+public class PushBasedWorkItemProcessor
+{
+    public void CheckItem(WorkItem item)
     {
-        public DateTime Now()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            WasDisposed = true;
-        }
-
-        public bool WasDisposed { get; set; }
+        CheckItem(item, DateTime.UtcNow);
     }
 
-    public class MockedWorkItemProcessor
+    private void CheckItem(WorkItem item, DateTime utcNow)
     {
-        private readonly IClock _clock;
-
-        public MockedWorkItemProcessor(IClock clock)
+        if (utcNow.Subtract(item.Started).Days > 5)
         {
-            _clock = clock;
-        }
-
-        public void CheckItem(WorkItem item)
-        {
-            if (_clock.Now().Subtract(item.Started).Days > 5)
-            {
-                // yell at the developer
-            }
-        }
-    }
-
-
-    public class PushBasedWorkItemProcessor
-    {
-        public void CheckItem(WorkItem item)
-        {
-            CheckItem(item, DateTime.UtcNow);
-        }
-
-        private void CheckItem(WorkItem item, DateTime utcNow)
-        {
-            if (utcNow.Subtract(item.Started).Days > 5)
-            {
-                // yell at the developer
-            }
+            // yell at the developer
         }
     }
 }

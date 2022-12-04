@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using JasperFx.Core.Reflection;
 using Lamar.IoC;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar

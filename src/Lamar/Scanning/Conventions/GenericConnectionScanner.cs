@@ -4,8 +4,8 @@ using System.Linq;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using JasperFx.TypeDiscovery;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions

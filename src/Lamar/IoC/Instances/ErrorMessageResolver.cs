@@ -2,8 +2,8 @@
 using System.Linq;
 using JasperFx.Core;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {

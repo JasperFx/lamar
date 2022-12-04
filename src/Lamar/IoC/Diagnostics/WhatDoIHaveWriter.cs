@@ -5,8 +5,8 @@ using System.Linq;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.Diagnostics;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Diagnostics
 {

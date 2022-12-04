@@ -3,10 +3,9 @@
 
 using System.Collections.Generic;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
+namespace Lamar.Testing.IoC.Compliance.Fakes;
+
+public class FakeDisposeCallback
 {
-    public class FakeDisposeCallback
-    {
-        public List<object> Disposed { get; } = new List<object>();
-    }
+    public List<object> Disposed { get; } = new();
 }

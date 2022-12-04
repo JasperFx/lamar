@@ -2,9 +2,9 @@
 using System.Linq.Expressions;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Expressions;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances

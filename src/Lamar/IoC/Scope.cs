@@ -14,9 +14,9 @@ using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.Util;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 

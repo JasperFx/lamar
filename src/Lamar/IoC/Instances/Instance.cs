@@ -6,10 +6,10 @@ using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.Util;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 
 namespace Lamar.IoC.Instances

@@ -3,25 +3,26 @@
 
 using System;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
-{
-    public class ClassWithOptionalArgsCtorWithStructs
-    {
-        public ClassWithOptionalArgsCtorWithStructs(
-            DateTime dateTime = new DateTime(),
-            DateTime dateTimeDefault = default(DateTime),
-            TimeSpan timeSpan = new TimeSpan(),
-            TimeSpan timeSpanDefault = default(TimeSpan),
-            DateTimeOffset dateTimeOffset = new DateTimeOffset(),
-            DateTimeOffset dateTimeOffsetDefault = default(DateTimeOffset),
-            Guid guid = new Guid(),
-            Guid guidDefault = default(Guid),
-            CustomStruct customStruct = new CustomStruct(),
-            CustomStruct customStructDefault = default(CustomStruct)
-        )
-        {
-        }
+namespace Lamar.Testing.IoC.Compliance.Fakes;
 
-        public struct CustomStruct { }
+public class ClassWithOptionalArgsCtorWithStructs
+{
+    public ClassWithOptionalArgsCtorWithStructs(
+        DateTime dateTime = new(),
+        DateTime dateTimeDefault = default,
+        TimeSpan timeSpan = new(),
+        TimeSpan timeSpanDefault = default,
+        DateTimeOffset dateTimeOffset = new(),
+        DateTimeOffset dateTimeOffsetDefault = default,
+        Guid guid = new(),
+        Guid guidDefault = default,
+        CustomStruct customStruct = new(),
+        CustomStruct customStructDefault = default
+    )
+    {
+    }
+
+    public struct CustomStruct
+    {
     }
 }

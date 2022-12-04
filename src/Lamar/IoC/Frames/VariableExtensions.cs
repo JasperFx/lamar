@@ -1,5 +1,5 @@
 ﻿using Lamar.IoC.Instances;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration.Model;
 
 namespace Lamar.IoC.Frames
 {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using JasperFx.Core;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Frames
 {

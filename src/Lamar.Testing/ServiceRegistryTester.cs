@@ -5,39 +5,37 @@ using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 
-namespace Lamar.Testing
+namespace Lamar.Testing;
+
+public class ServiceRegistryTester
 {
-    public class ServiceRegistryTester
+    [Fact]
+    public void for_use()
     {
-        [Fact]
-        public void for_use()
-        {
-            var registry = new ServiceRegistry();
-            registry.For<IWidget>().Use<AWidget>();
+        var registry = new ServiceRegistry();
+        registry.For<IWidget>().Use<AWidget>();
 
-            var descriptor = registry.Single();
-            
-            var instance = descriptor.ImplementationInstance.ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
-            instance.ImplementationType.ShouldBe(typeof(AWidget));
+        var descriptor = registry.Single();
 
-            descriptor.ServiceType.ShouldBe(typeof(IWidget));
+        var instance = descriptor.ImplementationInstance.ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
+        instance.ImplementationType.ShouldBe(typeof(AWidget));
 
-        }
+        descriptor.ServiceType.ShouldBe(typeof(IWidget));
+    }
 
-        [Fact]
-        public void forsingleton_use()
-        {
-            var registry = new ServiceRegistry();
-            registry.ForSingletonOf<IWidget>().Use<AWidget>();
+    [Fact]
+    public void forsingleton_use()
+    {
+        var registry = new ServiceRegistry();
+        registry.ForSingletonOf<IWidget>().Use<AWidget>();
 
-            var descriptor = registry.Single();
+        var descriptor = registry.Single();
 
-            var instance = descriptor.ImplementationInstance.ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
-            instance.ImplementationType.ShouldBe(typeof(AWidget));
-            instance.Lifetime.ShouldBe(ServiceLifetime.Singleton);
-                
-            
-            descriptor.ServiceType.ShouldBe(typeof(IWidget));
-        }
+        var instance = descriptor.ImplementationInstance.ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
+        instance.ImplementationType.ShouldBe(typeof(AWidget));
+        instance.Lifetime.ShouldBe(ServiceLifetime.Singleton);
+
+
+        descriptor.ServiceType.ShouldBe(typeof(IWidget));
     }
 }
