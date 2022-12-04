@@ -14,8 +14,8 @@ using Lamar.IoC.Resolvers;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
 using Lamar.Util;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar
@@ -351,7 +351,7 @@ namespace Lamar
 
         public Instance FindDefault(Type serviceType)
         {
-            if (serviceType.IsSimple()) return null;
+            if (serviceType.ShouldIgnore()) return null;
 
             return ResolveFamily(serviceType)?.Default;
         }
@@ -467,9 +467,7 @@ namespace Lamar
             
             _lookingFor.Add(serviceType);
             
-            // TODO -- will need to make this more formal somehow
-            if (serviceType.IsSimple() || serviceType.IsDateTime() || serviceType == typeof(TimeSpan) || serviceType.IsValueType || serviceType == typeof(DateTimeOffset)) return new ServiceFamily(serviceType, DecoratorPolicies);
-
+            if (serviceType.ShouldIgnore()) return new ServiceFamily(serviceType, DecoratorPolicies);
 
             var found = FamilyPolicies.FirstValue(x => x.Build(serviceType, this));
 

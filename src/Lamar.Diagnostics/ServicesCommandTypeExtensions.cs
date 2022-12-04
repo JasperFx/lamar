@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JasperFx.CodeGeneration;
 using JasperFx.Reflection;
-using LamarCodeGeneration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

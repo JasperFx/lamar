@@ -3,13 +3,12 @@
 
 using System;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
+namespace Lamar.Testing.IoC.Compliance.Fakes;
+
+public class ClassWithThrowingCtor
 {
-    public class ClassWithThrowingCtor
+    public ClassWithThrowingCtor(IFakeService service)
     {
-        public ClassWithThrowingCtor(IFakeService service)
-        {
-            throw new Exception(nameof(ClassWithThrowingCtor));
-        }
+        throw new Exception(nameof(ClassWithThrowingCtor));
     }
 }

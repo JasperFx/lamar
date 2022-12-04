@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using JasperFx.CodeGeneration;
 using Lamar.Microsoft.DependencyInjection;
-using LamarCodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Oakton;

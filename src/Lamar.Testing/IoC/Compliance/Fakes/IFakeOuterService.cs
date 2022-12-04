@@ -3,12 +3,11 @@
 
 using System.Collections.Generic;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
-{
-    public interface IFakeOuterService
-    {
-        IFakeService SingleService { get; }
+namespace Lamar.Testing.IoC.Compliance.Fakes;
 
-        IEnumerable<IFakeMultipleService> MultipleServices { get; }
-    }
+public interface IFakeOuterService
+{
+    IFakeService SingleService { get; }
+
+    IEnumerable<IFakeMultipleService> MultipleServices { get; }
 }

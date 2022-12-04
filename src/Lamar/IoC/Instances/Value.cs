@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration.Model;
 
 namespace Lamar.IoC.Instances
 {

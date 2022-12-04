@@ -4,7 +4,7 @@ using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar
 {

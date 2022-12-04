@@ -6,23 +6,22 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 using Xunit;
 
-namespace Lamar.Testing.Diagnostics
+namespace Lamar.Testing.Diagnostics;
+
+public class LamarServicesCommandTests
 {
-    public class LamarServicesCommandTests
+    [Theory]
+    [InlineData(typeof(LamarServicesCommandTests), "Lamar.Testing")]
+    [InlineData(typeof(MyThing), "Lamar.Testing")]
+    [InlineData(typeof(IEnumerable<MyThing>), "Lamar.Testing")]
+    [InlineData(typeof(IOptions<MyThing>), "Lamar.Testing")]
+    [InlineData(typeof(ILogger<MyThing>), "Lamar.Testing")]
+    public void assembly_from_type(Type type, string assemblyName)
     {
-        [Theory]
-        [InlineData(typeof(LamarServicesCommandTests), "Lamar.Testing")]
-        [InlineData(typeof(MyThing), "Lamar.Testing")]
-        [InlineData(typeof(IEnumerable<MyThing>), "Lamar.Testing")]
-        [InlineData(typeof(IOptions<MyThing>), "Lamar.Testing")]
-        [InlineData(typeof(ILogger<MyThing>), "Lamar.Testing")]
-        public void assembly_from_type(Type type, string assemblyName)
-        {
-            type.AssemblyForType().GetName().Name.ShouldBe(assemblyName);
-        }
-        
-        
+        type.AssemblyForType().GetName().Name.ShouldBe(assemblyName);
     }
-    
-    public class MyThing{}
+}
+
+public class MyThing
+{
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration;
+using JasperFx.CodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Activation
