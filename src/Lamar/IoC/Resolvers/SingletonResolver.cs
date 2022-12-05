@@ -1,4 +1,5 @@
 ﻿using System;
+using JasperFx.Core;
 using Lamar.Util;
 
 namespace Lamar.IoC.Resolvers

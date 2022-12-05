@@ -1,4 +1,5 @@
 ﻿using System;
+using JasperFx.Core;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
 using Lamar.Util;
