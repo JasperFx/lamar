@@ -1,5 +1,5 @@
 ﻿using System;
-using JasperFx.StringExtensions;
+using JasperFx.Core;
 using Lamar.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;

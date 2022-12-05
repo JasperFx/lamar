@@ -1,4 +1,4 @@
-﻿using JasperFx.Reflection;
+﻿using JasperFx.Core.Reflection;
 using Lamar.Testing.IoC.Acceptance;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;

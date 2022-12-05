@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using JasperFx.Reflection;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 using Shouldly;
 using StructureMap.Testing.Widget;

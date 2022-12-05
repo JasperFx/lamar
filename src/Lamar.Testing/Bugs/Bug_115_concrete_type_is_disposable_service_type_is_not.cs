@@ -1,5 +1,5 @@
 using System;
-using JasperFx.Reflection;
+using JasperFx.Core.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;

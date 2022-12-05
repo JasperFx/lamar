@@ -20,7 +20,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Lamar\Lamar.csproj" />
-        <PackageReference Include="Oakton" Version="5.0.0" />
+        <PackageReference Include="Oakton" Version="6.0.0-alpha-1" />
     </ItemGroup>
 
 </Project>

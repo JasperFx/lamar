@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using JasperFx.StringExtensions;
+using JasperFx.Core;
 using Lamar.IoC.Diagnostics;
 using Oakton;
 using Spectre.Console;

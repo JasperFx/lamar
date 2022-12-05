@@ -1,7 +1,7 @@
 using System.Linq;
 using JasperFx.CodeGeneration;
-using JasperFx.Reflection;
-using JasperFx.StringExtensions;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Enumerables;
 using Lamar.IoC.Instances;
