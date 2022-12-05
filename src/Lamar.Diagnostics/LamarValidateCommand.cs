@@ -1,4 +1,4 @@
-using JasperFx.Reflection;
+using JasperFx.Core.Reflection;
 using Oakton;
 using Spectre.Console;
 

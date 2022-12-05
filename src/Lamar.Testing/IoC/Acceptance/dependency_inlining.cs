@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
-using JasperFx.StringExtensions;
+using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.GenericWidgets;
 using StructureMap.Testing.Widget;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using JasperFx.StringExtensions;
+using JasperFx.Core;
 using Shouldly;
 
 namespace Lamar.Testing;
