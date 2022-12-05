@@ -82,7 +82,7 @@ namespace Lamar.IoC
         
         internal IEnumerable<IDisposable> AllDisposables => Disposables;
 
-        internal Util.ImHashMap<int, object> Services = Util.ImHashMap<int, object>.Empty;
+        internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
 
         public virtual void Dispose()
         {

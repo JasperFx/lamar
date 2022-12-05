@@ -8,6 +8,7 @@ using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using JasperFx.TypeDiscovery;
 using JasperFx.CodeGeneration.Util;
+using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 #pragma warning disable 1591

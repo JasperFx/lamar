@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Lamar Adapter for HostBuilder Integration</Description>
-    <Version>10.0.0-alpha-1</Version>
+    <Version>10.0.0-alpha-2</Version>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <DebugType>portable</DebugType>
