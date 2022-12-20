@@ -31,7 +31,7 @@ public class IServiceProviderIsService_implementation
             services.For(typeof(IGenericService1<>)).Use(typeof(GenericService1<>));
         });
 
-        container.IsService(typeof(ConcreteClass)).ShouldBeTrue();
+        container.IsService(typeof(ConcreteClass)).ShouldBeFalse();
         container.IsService(typeof(IEnumerable<IService>)).ShouldBeTrue();
         container.IsService(typeof(IGenericService1<IService>)).ShouldBeTrue();
         container.IsService(typeof(IGenericService1<ConcreteClass>)).ShouldBeTrue();

@@ -475,6 +475,24 @@ namespace Lamar
 
             return found;
         }
+        
+        internal ServiceFamily TryToCreateMissingFamilyWithNetCoreRules(Type serviceType)
+        {
+            if (_lookingFor.Contains(serviceType))
+            {
+                throw new InvalidOperationException($"Detected some kind of bi-directional dependency while trying to discover and plan a missing service registration. Examining types: {_lookingFor.Select(x => x.FullNameInCode()).Join(", ")}");
+            }
+            
+            _lookingFor.Add(serviceType);
+            
+            if (serviceType.ShouldIgnore()) return new ServiceFamily(serviceType, DecoratorPolicies);
+
+            var found = FamilyPolicies.Where(x => x is not ConcreteFamilyPolicy).FirstValue(x => x.Build(serviceType, this));
+
+            _lookingFor.Remove(serviceType);
+
+            return found;
+        }
 
         internal void ClearPlanning()
         {
@@ -525,20 +543,35 @@ namespace Lamar
 
         }
 
-        internal void Inject(ObjectInstance instance)
+        public bool CanBeServiceByNetCoreRules(Type serviceType)
         {
-            if (_families.TryFind(instance.ServiceType, out var family))
+            if (_families.TryFind(serviceType, out var family))
             {
-                if (family.Append(instance, DecoratorPolicies) == AppendState.NewDefault)
+                return family.Default != null;
+            }
+
+            lock (_familyLock)
+            {
+                if (_families.TryFind(serviceType, out family))
                 {
-                    _byType = _byType.Remove(instance.ServiceType);
+                    return family.Default != null;
+                }
+                
+                family = TryToCreateMissingFamilyWithNetCoreRules(serviceType);
+                _families = _families.AddOrUpdate(serviceType, family);
+
+                if (!_inPlanning)
+                {
+                    buildOutMissingResolvers();
+
+                    if (family != null)
+                    {
+                        rebuildReferencedAssemblyArray();
+                    }
                 }
             }
-            else
-            {
-                family = new ServiceFamily(instance.ServiceType, DecoratorPolicies, instance);
-                _families = _families.AddOrUpdate(instance.ServiceType, family);
-            }
+            
+            return family.Default != null;
         }
     }
 }

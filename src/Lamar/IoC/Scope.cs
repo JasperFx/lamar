@@ -47,7 +47,7 @@ namespace Lamar.IoC
 
         public bool IsService(Type serviceType)
         {
-            return ServiceGraph.ResolveFamily(serviceType).Default != null;
+            return ServiceGraph.CanBeServiceByNetCoreRules(serviceType);
         }
 
         public Scope Root { get; protected set; }
