@@ -1,6 +1,6 @@
 # Lamar (née BlueMilk)
 
-[![Join the chat at https://gitter.im/JasperFx/Lamar](https://badges.gitter.im/JasperFx/Lamar.svg)](https://gitter.im/JasperFx/Lamar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![Discord](https://img.shields.io/discord/1074998995086225460?color=blue&label=Chat%20on%20Discord)
 
 *Fast Inversion of Control Tool*
 
