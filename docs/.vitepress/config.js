@@ -3,8 +3,6 @@ module.exports = {
   lang: 'en-US',
   title: 'Lamar',
   description: '.NET Fast Inversion of Control and Dynamic code weaving tools',
-  // TODO: This should be removed when dead links are fixed
-  ignoreDeadLinks: true,
   head: [
   ],
   themeConfig: {
