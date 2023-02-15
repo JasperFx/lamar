@@ -2,7 +2,7 @@
 
 ::: tip
 If you need some kind of interception policy that doesn't fit into the admittedly simpler
-examples shown here, just ask for help in the [Lamar Gitter room](https://gitter.im/JasperFx/Lamar).
+examples shown here, just ask for help in the [Lamar Discord channel](https://discord.com/channels/1074998995086225460/1074999141433868319).
 :::
 
 Lamar v5 finally added the full complement of interceptors that users have grown to expect from .Net IoC containers. To differentiate between the three terms, Lamar

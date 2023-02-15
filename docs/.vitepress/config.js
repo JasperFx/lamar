@@ -16,7 +16,7 @@ module.exports = {
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'Release Notes', link: 'https://github.com/JasperFx/lamar/releases' },
-      { text: 'Gitter | Join Chat', link: 'https://gitter.im/JasperFx/lamar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge' }
+      { text: 'Discord | Join Chat', link: 'https://discord.com/channels/1074998995086225460/1074999141433868319' }
     ],
 
     algolia: {
