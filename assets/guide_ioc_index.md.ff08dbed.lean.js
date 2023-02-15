@@ -1,0 +1,1 @@
+import{_ as e,c as a,o as s,a as t}from"./app.5b13aa3a.js";const y=JSON.parse('{"title":"Lamar as IoC Container","description":"","frontmatter":{},"headers":[],"relativePath":"guide/ioc/index.md"}'),r={name:"guide/ioc/index.md"},n=t("",12),o=[n];function p(c,l,i,d,h,m){return s(),a("div",null,o)}const u=e(r,[["render",p]]);export{y as __pageData,u as default};
