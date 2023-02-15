@@ -1,8 +1,22 @@
 ---
-home: true
-heroImage: /lamar.jpg
-actionText: Get Started
-actionLink: /guide/
+layout: home
+sidebar: false
+
+title: Lamar
+titleTemplate: Fast Inversion of Control Tool and Successor to StructureMap 
+
+hero:
+  name: Lamar
+  text: Fast Inversion of Control Tool and Successor to StructureMap 
+  image:
+    src: /lamar.jpg
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /guide/
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/JasperFx/lamar
 
 features:
   - title: 🎍 Fast IoC Container
