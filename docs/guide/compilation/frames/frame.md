@@ -13,8 +13,6 @@ To build a custom frame, you first need to create a new class that subclasses `F
 The one thing you absolutely have to do when you create a new `Frame` class is to override the `GenerateCode()` method. Take this example
 from Lamar itself for a frame that just injects a comment into the generated code:
 
-<!-- snippet: sample_CommentFrame -->
-<a id='snippet-sample_commentframe'></a>
 ```cs
 public class CommentFrame : SyncFrame
 {
@@ -35,8 +33,6 @@ public class CommentFrame : SyncFrame
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCodeGeneration/Frames/Frame.cs#L16-L35' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_commentframe' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
 
 A couple things to note about the `GenerateCode()` method:
 

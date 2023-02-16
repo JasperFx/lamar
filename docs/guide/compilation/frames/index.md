@@ -19,21 +19,15 @@ The various types represent:
 
 Alright then, let's make this concrete. Let's say that we want to generate and use dynamic instances of this interface:
 
-<!-- snippet: sample_ISaySomething -->
-<a id='snippet-sample_isaysomething'></a>
 ```cs
 public interface ISaySomething
 {
     void Speak();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/Frames.cs#L67-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_isaysomething' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
 
 Moreover, I want a version of `ISaySomething` that will call the following method and write the current time to the console:
 
-<!-- snippet: sample_NowSpeaker -->
-<a id='snippet-sample_nowspeaker'></a>
 ```cs
 public static class NowSpeaker
 {
@@ -43,15 +37,11 @@ public static class NowSpeaker
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/Frames.cs#L57-L65' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nowspeaker' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
 
 Our dynamic class for ISaySomething will need to pass the current time to the now parameter of that method. To help out here, there's some built in helpers in Lamar specifically to write in the right code to get the current time to a variable of DateTime or DateTimeOffset that is named "now."
 
 To skip ahead a little bit, let's generate a new class and object with the following code:
 
-<!-- snippet: sample_write-new-method -->
-<a id='snippet-sample_write-new-method'></a>
 ```cs
 // Configures the code generation rules
 // and policies
@@ -79,8 +69,6 @@ method.Frames.Add(@call);
 // Compile the new code!
 assembly.CompileAll();
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCompiler.Testing/Samples/Frames.cs#L23-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_write-new-method' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
 
 After all that, if we interrogate the source code for the generated type above (type.SourceCode), we'd see this ugly generated code:
 
@@ -106,8 +94,6 @@ Some notes about the generated code:
 
 So now let's look at how Lamar was able to add the code to pass along DateTime.UtcNow. First off, let's look at the code that just writes out the date variable:
 
-<!-- snippet: sample_NowFetchFrame -->
-<a id='snippet-sample_nowfetchframe'></a>
 ```cs
 public class NowFetchFrame : SyncFrame
 {
@@ -127,22 +113,18 @@ public class NowFetchFrame : SyncFrame
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCodeGeneration/Model/NowTimeVariableSource.cs#L31-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nowfetchframe' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
 
 In the frame above, you'll see that the `GenerateCode()` method writes its code into the source, then immediately turns around and tells the next Frame - if there is one - to generated its code. As the last step to write out the new source code, Lamar:
 
 1. Goes through an effort to find any missing frames and variables
-1. Sorts them with a topological sort (what frames depend on what other frames or variables, what variables are used or created by what frames)
-1. Organizes the frames into a single linked list
-1. Calls `GenerateCode()` on the first frame
+2. Sorts them with a topological sort (what frames depend on what other frames or variables, what variables are used or created by what frames)
+3. Organizes the frames into a single linked list
+4. Calls `GenerateCode()` on the first frame
 
 In the generated method up above, the call to `NowSpeaker.Speak(now)` depends on the now variable which is in turn created by the `NowFetchFrame`, and that's enough information for Lamar to order things and generate the final code.
 
 Lastly, we had to use a custom `IVariableSource` to teach Lamar how to resolve the now variable. That code looks like this:
 
-<!-- snippet: sample_NowTimeVariableSource -->
-<a id='snippet-sample_nowtimevariablesource'></a>
 ```cs
 public class NowTimeVariableSource : IVariableSource
 {
@@ -167,8 +149,6 @@ public class NowTimeVariableSource : IVariableSource
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarCodeGeneration/Model/NowTimeVariableSource.cs#L6-L29' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nowtimevariablesource' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
 
 Out of the box, the Lamar + [Jasper](https://jasperfx.github.io) combination uses variable sources for:
 

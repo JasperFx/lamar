@@ -293,3 +293,4 @@ doc-target
 
 # vitepress docs
 docs/.vitepress/dist
+docs/.vitepress/cache
