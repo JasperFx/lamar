@@ -26,6 +26,10 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
                     // And the rest of your application's
                     // DI registrations.
                     services.IncludeRegistry<TestClassRegistry>();
+
+                    // This one was problematic with oddball type names,
+                    // so it's in our testing
+                    services.AddHttpClient();
                 })
 
                 // Call this method to start your application
@@ -72,7 +76,14 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
             For<IGateway>().Use<DefaultGateway>()
                 .Setter<string>("Name").Is("Blue")
                 .Setter<string>("Color").Is("Green");
+
+            For(typeof(Weird<>.Thing)).Use(typeof(Weird<>.Thing));
         }
+    }
+
+    public class Weird<T>
+    {
+        public class Thing {}
     }
 
 }

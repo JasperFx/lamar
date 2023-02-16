@@ -22,7 +22,7 @@ namespace Lamar.Diagnostics
                 
             container.AssertConfigurationIsValid(input.Mode);
                 
-            AnsiConsole.Write("[green]Lamar registrations are all good![/]");
+            AnsiConsole.MarkupLine("[green]Lamar registrations are all good![/]");
 
             return true;
         }

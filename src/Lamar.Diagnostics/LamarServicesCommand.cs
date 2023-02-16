@@ -116,7 +116,7 @@ namespace Lamar.Diagnostics
 
             foreach (var configuration in ns)
             {
-                var node = top.AddNode(configuration.ServiceType.CleanFullName());
+                var node = top.AddNode(configuration.ServiceType.CleanFullName().EscapeMarkup());
                 WriteInstances(node, configuration, input, displayMode, container);
             }
 
