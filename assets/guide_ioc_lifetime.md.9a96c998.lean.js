@@ -1,0 +1,1 @@
+import{_ as s,c as e,o as n,a}from"./app.8aee9f9c.js";const A=JSON.parse('{"title":"Service Lifetimes","description":"","frontmatter":{},"headers":[],"relativePath":"guide/ioc/lifetime.md"}'),l={name:"guide/ioc/lifetime.md"},o=a("",9),t=[o];function p(c,r,i,F,y,D){return n(),e("div",null,t)}const C=s(l,[["render",p]]);export{A as __pageData,C as default};
