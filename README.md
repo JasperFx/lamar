@@ -1,6 +1,6 @@
 # Lamar (née BlueMilk)
 
-[![Discord](https://img.shields.io/discord/1074998995086225460?color=blue&label=Chat%20on%20Discord)](https://discord.com/channels/1074998995086225460/1074999141433868319)
+[![Discord](https://img.shields.io/discord/1074998995086225460?color=blue&label=Chat%20on%20Discord)](https://discord.gg/WMxrvegf8H)
 
 *Fast Inversion of Control Tool*
 

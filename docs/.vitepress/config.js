@@ -16,7 +16,7 @@ module.exports = {
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'Release Notes', link: 'https://github.com/JasperFx/lamar/releases' },
-      { text: 'Discord | Join Chat', link: 'https://discord.com/channels/1074998995086225460/1074999141433868319' }
+      { text: 'Discord | Join Chat', link: 'https://discord.gg/WMxrvegf8H' }
     ],
 
     algolia: {
@@ -25,27 +25,42 @@ module.exports = {
       indexName: 'lamar_index'
     },
 
-    sidebar: [
-      {
-        text: 'Getting Started',
-        link: '/guide/'
-      },
-      {
-        text: 'Inversion of Control',
-        link: '/guide/ioc/',
-        children: getIOCSideBar()
-      },
-      {
-        text: 'Compilation',
-        link: '/guide/compilation/',
-        children: getCompilationSideBar()
-      },
+    sidebar: {
+      '/': 
+      [
+        {
+          text: 'Getting Started',
+          collapsible: true,
+          items: [
+            {
+              text: 'What is Lamar',
+              link: '/guide/'
+            },]
+        },
+        {
+          text: 'Inversion of Control',
+          collapsible: true,
+          collapsed: true,
+          items: getIOCSideBar()
+        },
+        {
+          text: 'Compilation',
+          collapsible: true,
+          collapsed: true,
+          items: getCompilationSideBar()
+        },
     ]
+  }
+    
   }
 }
 
 function getIOCSideBar() {
   return [
+    {
+      text: 'Lamar as IoC Container',
+      link: '/guide/ioc/'
+    },
     {
       text: 'Software Design Concepts',
       link: '/guide/ioc/concepts'
