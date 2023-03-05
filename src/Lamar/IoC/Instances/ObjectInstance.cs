@@ -22,6 +22,8 @@ namespace Lamar.IoC.Instances
         }
 
         public object Service { get; }
+        
+        
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
         {

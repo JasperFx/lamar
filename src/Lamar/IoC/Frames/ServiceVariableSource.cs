@@ -62,14 +62,13 @@ namespace Lamar.IoC.Frames
 
         public void ReplaceVariables(IMethodVariables method)
         {
-            // TODO -- MORE HERE!!!!
             if (_usesNestedContainerDirectly || _standins.Any(x => x.Instance.RequiresServiceProvider(method)))
             {
-                useServiceProvider();
+                useServiceProvider(method);
             }
             else
             {
-                useInlineConstruction();
+                useInlineConstruction(method);
             }
         }
 
@@ -85,10 +84,10 @@ namespace Lamar.IoC.Frames
             _standins.Clear();
         }
 
-        private void useInlineConstruction()
+        private void useInlineConstruction(IMethodVariables method)
         {
             // THIS NEEDS TO BE SCOPED PER METHOD!!!
-            var variables = new ResolverVariables(_fields);
+            var variables = new ResolverVariables(method, _fields);
             foreach (var standin in _standins)
             {
                 var variable = variables.Resolve(standin.Instance, BuildMode.Inline);
@@ -104,7 +103,7 @@ namespace Lamar.IoC.Frames
             variables.MakeNamesUnique();
         }
 
-        private void useServiceProvider()
+        private void useServiceProvider(IMethodVariables method)
         {
             foreach (var standin in _standins)
             {
