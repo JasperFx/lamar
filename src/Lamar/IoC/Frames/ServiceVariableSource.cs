@@ -60,10 +60,10 @@ namespace Lamar.IoC.Frames
             return standin;
         }
 
-        // TODO -- later, do we use other variables?
-        public void ReplaceVariables()
+        public void ReplaceVariables(IMethodVariables method)
         {
-            if (_usesNestedContainerDirectly || _standins.Any(x => x.Instance.RequiresServiceProvider))
+            // TODO -- MORE HERE!!!!
+            if (_usesNestedContainerDirectly || _standins.Any(x => x.Instance.RequiresServiceProvider(method)))
             {
                 useServiceProvider();
             }

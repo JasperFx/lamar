@@ -22,7 +22,7 @@ public class LambdaInstanceTests
     public void requires_service_provider()
     {
         LambdaInstance.For(s => new Clock())
-            .RequiresServiceProvider.ShouldBeTrue();
+            .RequiresServiceProvider(null).ShouldBeTrue();
     }
 
 

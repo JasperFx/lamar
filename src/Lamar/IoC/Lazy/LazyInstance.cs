@@ -22,7 +22,7 @@ namespace Lamar.IoC.Lazy
         }
         
 
-        public override bool RequiresServiceProvider { get; } = true;
+        public override bool RequiresServiceProvider(IMethodVariables method) => true;
 
         public override object Resolve(Scope scope)
         {
