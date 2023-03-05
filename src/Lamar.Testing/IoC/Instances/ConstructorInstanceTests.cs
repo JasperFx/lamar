@@ -7,6 +7,7 @@ using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -179,7 +180,7 @@ public class ConstructorInstanceTests
 
         instance.CreatePlan(theGraph);
 
-        instance.RequiresServiceProvider.ShouldBeFalse();
+        instance.RequiresServiceProvider(Substitute.For<IMethodVariables>()).ShouldBeFalse();
     }
 
     [Fact]
@@ -196,7 +197,7 @@ public class ConstructorInstanceTests
 
         instance.CreatePlan(theGraph);
 
-        instance.RequiresServiceProvider.ShouldBeTrue();
+        instance.RequiresServiceProvider(Substitute.For<IMethodVariables>()).ShouldBeTrue();
     }
 
 

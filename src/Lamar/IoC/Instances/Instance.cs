@@ -125,7 +125,7 @@ namespace Lamar.IoC.Instances
 
         public int Hash { get; set; }
 
-        public virtual bool RequiresServiceProvider => Dependencies.Any(x => x.RequiresServiceProvider || x.ImplementationType == typeof(IContainer) || x.ImplementationType == typeof(IServiceProvider));
+        public virtual bool RequiresServiceProvider(IMethodVariables method) => Dependencies.Any(x => x.RequiresServiceProvider(method) || x.ImplementationType == typeof(IContainer) || x.ImplementationType == typeof(IServiceProvider));
 
         public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
 
