@@ -4,13 +4,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
+using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
+using Lamar.IoC.Frames;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.GenericWidgets;
 using StructureMap.Testing.Widget;
 using Xunit;
 
 namespace Lamar.Testing.IoC.Acceptance;
+
+public static class SessionFactory
+{
+    public static ISession Create()
+    {
+        return new Session();
+    }
+}
+
+public class SessionVariableSource : IVariableSource
+{
+    public bool Matches(Type type)
+    {
+        return type == typeof(ISession);
+    }
+
+    public Variable Create(Type type)
+    {
+        var @call = new MethodCall(typeof(SessionFactory), nameof(SessionFactory.Create));
+        return @call.ReturnVariable;
+    }
+}
 
 public class dependency_inlining
 {
@@ -25,6 +49,7 @@ public class dependency_inlining
         theAssembly = new GeneratedAssembly(new GenerationRules("Lamar.Generated"));
         theType = theAssembly.AddType("GeneratedClass", typeof(Message1Handler));
         theMethod = theType.MethodFor("Handle");
+        theMethod.Sources.Add(new SessionVariableSource());
     }
 
     private string theCode
@@ -48,6 +73,16 @@ public class dependency_inlining
             .Select(method => new MethodCall(typeof(T), method));
 
         theMethod.Frames.AddRange(methods);
+    }
+
+    [Fact]
+    public void use_external_variable_source()
+    {
+        theServices.ForConcreteType<MessageTracker>().Configure.Singleton();
+        theServices.For<ISession>().Use(c => SessionFactory.Create());
+        includeType<UsingCustomSourceHandler>();
+        
+        theCode.ShouldContain("SessionFactory.Create()");
     }
 
 
@@ -511,6 +546,23 @@ public class DisposedMessageTracker : MessageTracker, IDisposable
 {
     public void Dispose()
     {
+    }
+}
+
+public class UsingCustomSourceHandler
+{
+    private readonly ISession _session;
+    private readonly MessageTracker _tracker;
+
+    public UsingCustomSourceHandler(ISession session, MessageTracker tracker)
+    {
+        _session = session;
+        _tracker = tracker;
+    }
+
+    public void Handle(Message1 message)
+    {
+        
     }
 }
 
