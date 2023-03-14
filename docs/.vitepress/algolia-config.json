@@ -5,7 +5,7 @@
   ],
   "selectors": {
     "lvl0": {
-      "selector": ".sidebar > .sidebar-links > .sidebar-link .sidebar-link-item.active",
+      "selector": ".VPLink.link.VPNavBarMenuLink.active",
       "global": true
     },
     "lvl1": ".content h1",
@@ -14,14 +14,15 @@
     "lvl4": ".content h4",
     "lvl5": ".content h5",
     "text": ".content p, .content li",
-    "language": {
+    "lang": {
       "selector": "/html/@lang",
       "type": "xpath",
-      "global": true,
-      "default_value": "en-US"
+      "global": true
     }
   },
+  "strip_chars": " .,;:#",
+  "sielectors_exclude": ["sup"],
   "custom_settings": {
-    "attributesForFaceting": ["language"]
+    "attributesForFaceting": ["lang", "tags"]
   }
 }

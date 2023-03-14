@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -38,7 +38,7 @@ namespace Lamar.IoC.Instances
             return _inner.QuickResolve(scope);
         }
 
-        public override bool RequiresServiceProvider => _inner.RequiresServiceProvider;
+        public override bool RequiresServiceProvider(IMethodVariables method) => _inner.RequiresServiceProvider(method);
         
         public override Variable CreateInlineVariable(ResolverVariables variables)
         {

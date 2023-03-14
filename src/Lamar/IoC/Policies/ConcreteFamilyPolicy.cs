@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar
 {
@@ -14,7 +15,7 @@ namespace Lamar
 
             if (type.MemberType == MemberTypes.NestedType)
             {
-                return type.ReflectedType.IsPublic;
+                return IsReallyPublic(type.ReflectedType);
             }
 
             return false;

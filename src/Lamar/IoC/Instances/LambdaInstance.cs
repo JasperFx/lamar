@@ -1,8 +1,8 @@
 ﻿using System;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -39,7 +39,7 @@ namespace Lamar.IoC.Instances
 
         // This is important. If the lambda instance is a singleton, it's injected as a singleton
         // to an object constructor and does not need the ServiceProvider
-        public override bool RequiresServiceProvider => Lifetime != ServiceLifetime.Singleton;
+        public override bool RequiresServiceProvider(IMethodVariables method) => Lifetime != ServiceLifetime.Singleton;
         public string Description { get; set; }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)

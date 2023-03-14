@@ -1,133 +1,118 @@
 ﻿using System;
-using System.Diagnostics;
-using Lamar.IoC;
 using Xunit;
 
-namespace Lamar.Testing.IoC.Acceptance
+namespace Lamar.Testing.IoC.Acceptance;
+
+public class do_not_blow_up_with_bi_directional_dependencies
 {
-    public class do_not_blow_up_with_bi_directional_dependencies
+    [Fact]
+    public void do_not_blow_up_with_a_stack_overflow_problem()
     {
-        [Fact]
-        public void do_not_blow_up_with_a_stack_overflow_problem()
-        {
-
-            
-            var ex =
-                Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
+        var ex =
+            Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
+            {
+                var container = new Container(x =>
                 {
-                    var container = new Container(x =>
-                    {
-                        x.For<IBiView>().Use<BiView>();
-                        x.For<IBiPresenter>().Use<BiPresenter>();
+                    x.For<IBiView>().Use<BiView>();
+                    x.For<IBiPresenter>().Use<BiPresenter>();
 
-                        x.For<IBiGrandparent>().Use<BiGrandparent>();
-                        x.For<IBiHolder>().Use<BiHolder>();
-                        x.For<IBiLeaf>().Use<BiLeaf>();
-                    });
+                    x.For<IBiGrandparent>().Use<BiGrandparent>();
+                    x.For<IBiHolder>().Use<BiHolder>();
+                    x.For<IBiLeaf>().Use<BiLeaf>();
+                });
+            });
+
+        ex.Message.ShouldContain("Bi-directional dependencies detected");
+    }
+
+    [Fact]
+    public void do_not_blow_up_with_a_stack_overflow_problem_2()
+    {
+        var ex =
+            Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
+            {
+                var container = new Container(x =>
+                {
+                    x.For<IBiView>().Use<BiView>();
+                    x.For<IBiPresenter>().Use<BiPresenter>();
+
+                    x.For<IBiGrandparent>().Use<BiGrandparent>();
+                    x.For<IBiHolder>().Use<BiHolder>();
+                    x.For<IBiLeaf>().Use<BiLeaf>();
                 });
 
-            ex.Message.ShouldContain("Bi-directional dependencies detected");
-        }
+                container.GetInstance<IBiHolder>();
+            });
 
-        [Fact]
-        public void do_not_blow_up_with_a_stack_overflow_problem_2()
-        {
-
-            
-            var ex =
-                Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
-                {
-                    var container = new Container(x =>
-                    {
-                        x.For<IBiView>().Use<BiView>();
-                        x.For<IBiPresenter>().Use<BiPresenter>();
-
-                        x.For<IBiGrandparent>().Use<BiGrandparent>();
-                        x.For<IBiHolder>().Use<BiHolder>();
-                        x.For<IBiLeaf>().Use<BiLeaf>();
-                    });
-                    
-                    container.GetInstance<IBiHolder>();
-                });
-
-            ex.Message.ShouldContain("Bi-directional dependencies detected");
-        }
+        ex.Message.ShouldContain("Bi-directional dependencies detected");
     }
+}
 
-    public interface IBiHolder
+public interface IBiHolder
+{
+}
+
+public interface IBiGrandparent
+{
+}
+
+public interface IBiLeaf
+{
+}
+
+#region sample_using-LamarIgnore
+
+// This attribute causes the type scanning to ignore this type
+[LamarIgnore]
+public class BiHolder : IBiHolder
+{
+    public BiHolder(IBiGrandparent grandparent)
     {
     }
+}
 
-    public interface IBiGrandparent
+#endregion
+
+[LamarIgnore]
+public class BiGrandparent : IBiGrandparent
+{
+    public BiGrandparent(IBiLeaf leaf)
     {
     }
+}
 
-    public interface IBiLeaf
+public class BiLeaf : IBiLeaf
+{
+    public BiLeaf(IBiHolder holder)
     {
     }
+}
 
-    #region sample_using-LamarIgnore
-    // This attribute causes the type scanning to ignore this type
-    [LamarIgnore]
-    public class BiHolder : IBiHolder
-    {
-        public BiHolder(IBiGrandparent grandparent)
-        {
-        }
-    }
-    #endregion
+public interface IBiView
+{
+}
 
-    [LamarIgnore]
-    public class BiGrandparent : IBiGrandparent
+public interface IBiPresenter
+{
+}
+
+[LamarIgnore]
+public class BiView : IBiView
+{
+    public BiView(IBiPresenter presenter)
     {
-        public BiGrandparent(IBiLeaf leaf)
-        {
-        }
+        Presenter = presenter;
     }
 
-    public class BiLeaf : IBiLeaf
+    public IBiPresenter Presenter { get; }
+}
+
+public class BiPresenter : IBiPresenter
+{
+    public BiPresenter(IBiView view)
     {
-        public BiLeaf(IBiHolder holder)
-        {
-        }
+        View = view;
     }
 
-    public interface IBiView
-    {
-    }
-
-    public interface IBiPresenter
-    {
-    }
-
-    [LamarIgnore]
-    public class BiView : IBiView
-    {
-        private readonly IBiPresenter _presenter;
-
-        public BiView(IBiPresenter presenter)
-        {
-            _presenter = presenter;
-        }
-
-        public IBiPresenter Presenter
-        {
-            get { return _presenter; }
-        }
-    }
-
-    public class BiPresenter : IBiPresenter
-    {
-        private readonly IBiView _view;
-
-        public BiPresenter(IBiView view)
-        {
-            _view = view;
-        }
-
-        public IBiView View
-        {
-            get { return _view; }
-        }
-    }
+    public IBiView View { get; }
 }

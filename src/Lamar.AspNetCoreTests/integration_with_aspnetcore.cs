@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using App.Metrics.AspNetCore;
 using Baseline;
 using IdentityServer4.Models;
+using JasperFx.CodeGeneration;
 using Lamar.IoC.Instances;
 using Lamar.Microsoft.DependencyInjection;
-using LamarCodeGeneration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -143,8 +143,6 @@ namespace Lamar.Testing.AspNetCoreIntegration
                 stopwatch.Stop();
 
                 var writer = new StringWriter();
-
-                container.Bootstrapping.DisplayTimings().Write(writer);
 
                 _output.WriteLine(writer.ToString());
                 _output.WriteLine(container.WhatDoIHave());

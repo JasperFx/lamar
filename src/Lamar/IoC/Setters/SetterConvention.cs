@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
-using LamarCodeGeneration.Util;
+using JasperFx.Core.Reflection;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Setters
 {

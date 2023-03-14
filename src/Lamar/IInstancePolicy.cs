@@ -1,6 +1,7 @@
 ﻿using System;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar
 {

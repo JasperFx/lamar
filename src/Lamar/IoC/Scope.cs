@@ -6,25 +6,26 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using BaselineTypeDiscovery;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
+using JasperFx.TypeDiscovery;
 using Lamar.Diagnostics;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
-using LamarCodeGeneration.Util;
+using Lamar.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Lamar.IoC
 {
     #region sample_Scope-Declarations
-    public class Scope : IServiceContext
-#if NET6_0_OR_GREATER
-            , IServiceProviderIsService
-#endif
-        
-    #endregion
+    public class Scope : IServiceContext, IServiceProviderIsService
+
+        #endregion
     {
         protected bool _hasDisposed;
 
@@ -33,49 +34,22 @@ namespace Lamar.IoC
             return new Scope(new ServiceRegistry());
         }
 
-        public PerfTimer Bootstrapping { get; protected set; }
-
-        public Scope(IServiceCollection services, PerfTimer timer = null)
+        public Scope(IServiceCollection services)
         {
-            if (timer == null)
-            {
-                Bootstrapping = new PerfTimer();
-
-                Bootstrapping.Start("Bootstrapping Container");
-            }
-            else
-            {
-                Bootstrapping = timer;
-                Bootstrapping.MarkStart("Lamar Scope Creation");
-            }
-
             Root = this;
 
-            Bootstrapping.MarkStart("Build ServiceGraph");
             ServiceGraph = new ServiceGraph(services, this);
-            Bootstrapping.MarkFinished("Build ServiceGraph");
 
-            ServiceGraph.Initialize(Bootstrapping);
-
-            if (timer == null)
-            {
-                Bootstrapping.Stop();
-            }
-            else
-            {
-                Bootstrapping.MarkFinished("Lamar Scope Creation");
-            }
+            ServiceGraph.Initialize();
         }
 
         protected Scope(){}
-        
-#if NET6_0_OR_GREATER
+
         public bool IsService(Type serviceType)
         {
-            return ServiceGraph.HasFamily(serviceType);
+            return ServiceGraph.CanBeServiceByNetCoreRules(serviceType);
         }
-#endif
-        
+
         public Scope Root { get; protected set; }
 
         public Scope(ServiceGraph serviceGraph, Scope root)

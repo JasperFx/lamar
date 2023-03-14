@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Activation;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Setters;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
-using LamarCodeGeneration.Util;
+using Lamar.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Frames;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -496,8 +499,7 @@ namespace Lamar.IoC.Instances
 
             foreach (var parameter in constructor.GetParameters())
             {
-                // TODO -- this will change with inline dependencies
-                if (parameter.ParameterType.IsSimple())
+                if (parameter.ParameterType.ShouldIgnore())
                 {
                     declaration +=
                         $"{Environment.NewLine}* {parameter.ParameterType.NameInCode()} {parameter.Name} is a 'simple' type that cannot be auto-filled";

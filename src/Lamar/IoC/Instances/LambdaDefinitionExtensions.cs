@@ -3,8 +3,9 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using LamarCodeGeneration.Expressions;
-using LamarCodeGeneration.Util;
+using JasperFx.Core.Reflection;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {

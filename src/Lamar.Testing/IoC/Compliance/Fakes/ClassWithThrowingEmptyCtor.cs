@@ -3,13 +3,12 @@
 
 using System;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
+namespace Lamar.Testing.IoC.Compliance.Fakes;
+
+public class ClassWithThrowingEmptyCtor
 {
-    public class ClassWithThrowingEmptyCtor
+    public ClassWithThrowingEmptyCtor()
     {
-        public ClassWithThrowingEmptyCtor()
-        {
-            throw new Exception(nameof(ClassWithThrowingEmptyCtor));
-        }
+        throw new Exception(nameof(ClassWithThrowingEmptyCtor));
     }
 }

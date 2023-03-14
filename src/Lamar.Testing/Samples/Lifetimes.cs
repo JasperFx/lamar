@@ -2,34 +2,35 @@
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap.Testing.Widget;
 
-namespace Lamar.Testing.Samples
+namespace Lamar.Testing.Samples;
+
+#region sample_LifetimeRegistry
+
+public class LifetimeRegistry : ServiceRegistry
 {
-    #region sample_LifetimeRegistry
-    public class LifetimeRegistry : ServiceRegistry
+    public LifetimeRegistry()
     {
-        public LifetimeRegistry()
-        {
-            // Lifetimes the ASP.Net Core way
-            // The registration methods are all extension
-            // methods, so hence, "this."
-            this.AddTransient<IWidget, AWidget>();
+        // Lifetimes the ASP.Net Core way
+        // The registration methods are all extension
+        // methods, so hence, "this."
+        this.AddTransient<IWidget, AWidget>();
 
-            this.AddSingleton<IClock, Clock>();
+        this.AddSingleton<IClock, Clock>();
 
-            this.AddScoped<IUnitOfWork, UnitOfWork>();
-            
-            // Lifetimes the old StructureMap way
-            // Transient is the default
-            For<IWidget>().Use<AWidget>();
+        this.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            For<IClock>().Use<Clock>().Singleton();
-            
-            // or
+        // Lifetimes the old StructureMap way
+        // Transient is the default
+        For<IWidget>().Use<AWidget>();
 
-            ForSingletonOf<IClock>().Use<Clock>();
+        For<IClock>().Use<Clock>().Singleton();
 
-            For<IUnitOfWork>().Use<UnitOfWork>().Scoped();
-        }
+        // or
+
+        ForSingletonOf<IClock>().Use<Clock>();
+
+        For<IUnitOfWork>().Use<UnitOfWork>().Scoped();
     }
-    #endregion
 }
+
+#endregion

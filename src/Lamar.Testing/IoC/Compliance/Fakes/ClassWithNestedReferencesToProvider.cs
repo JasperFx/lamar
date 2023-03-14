@@ -3,32 +3,31 @@
 
 using System;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
+namespace Lamar.Testing.IoC.Compliance.Fakes;
+
+public class ClassWithNestedReferencesToProvider : IDisposable
 {
-    public class ClassWithNestedReferencesToProvider : IDisposable
+    private readonly ClassWithNestedReferencesToProvider _nested;
+    private readonly IServiceProvider _serviceProvider;
+
+    public ClassWithNestedReferencesToProvider(IServiceProvider serviceProvider)
     {
-        private IServiceProvider _serviceProvider;
-        private ClassWithNestedReferencesToProvider _nested;
+        _serviceProvider = serviceProvider;
+        _nested = new ClassWithNestedReferencesToProvider(_serviceProvider, 0);
+    }
 
-        public ClassWithNestedReferencesToProvider(IServiceProvider serviceProvider)
+    private ClassWithNestedReferencesToProvider(IServiceProvider serviceProvider, int level)
+    {
+        _serviceProvider = serviceProvider;
+        if (level > 1)
         {
-            _serviceProvider = serviceProvider;
-            _nested = new ClassWithNestedReferencesToProvider(_serviceProvider, 0);
+            _nested = new ClassWithNestedReferencesToProvider(_serviceProvider, level + 1);
         }
+    }
 
-        private ClassWithNestedReferencesToProvider(IServiceProvider serviceProvider, int level)
-        {
-            _serviceProvider = serviceProvider;
-            if (level > 1)
-            {
-                _nested = new ClassWithNestedReferencesToProvider(_serviceProvider, level + 1);
-            }
-        }
-
-        public void Dispose()
-        {
-            _nested?.Dispose();
-            (_serviceProvider as IDisposable)?.Dispose();
-        }
+    public void Dispose()
+    {
+        _nested?.Dispose();
+        (_serviceProvider as IDisposable)?.Dispose();
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
-using BaselineTypeDiscovery;
-using LamarCodeGeneration.Util;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
+using JasperFx.TypeDiscovery;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions

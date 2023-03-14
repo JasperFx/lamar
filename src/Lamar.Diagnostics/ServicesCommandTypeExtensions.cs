@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Baseline;
-using LamarCodeGeneration;
+using JasperFx.CodeGeneration;
+using JasperFx.Core.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Spectre.Console;
 
 namespace Lamar.Diagnostics
 {
@@ -103,32 +104,32 @@ namespace Lamar.Diagnostics
                     var parts = type.FullNameInCode().Split('`');
                     var argCount = int.Parse(parts[1]) - 1;
 
-                    return $"{parts[0]}<{"".PadLeft(argCount, ',')}>";
+                    return $"{parts[0]}<{"".PadLeft(argCount, ',')}>".EscapeMarkup();
                 }
 
                 if (type.IsEnumerable(out var elementType))
                 {
-                    return $"IEnumerable<{elementType.FullNameInCode()}>";
+                    return $"IEnumerable<{elementType.FullNameInCode()}>".EscapeMarkup();
                 }
 
                 if (type.IsOption(out var optionType))
                 {
-                    return $"IOptions<{optionType.FullNameInCode()}>";
+                    return $"IOptions<{optionType.FullNameInCode()}>".EscapeMarkup();
                 }
 
                 return type.IsLogger(out var loggedType) 
-                    ? $"ILogger<{loggedType.FullNameInCode()}>" 
-                    : type.FullNameInCode();
+                    ? $"ILogger<{loggedType.FullNameInCode()}>".EscapeMarkup() 
+                    : type.FullNameInCode().EscapeMarkup();
             }
             catch (Exception)
             {
-                return type?.FullName;
+                return type?.FullName.EscapeMarkup();
             }
         }
         
         public static string BoldText(this object data)
         {
-            return $"[bold]{data}[/]";
+            return $"[bold]{data.ToString().EscapeMarkup()}[/]";
         }
 
         private static readonly IList<Type> _ignoredBaseTypes = new List<Type>

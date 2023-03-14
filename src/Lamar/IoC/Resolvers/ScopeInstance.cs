@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Expressions;
-using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Frames;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Resolvers
@@ -68,8 +68,6 @@ namespace Lamar.IoC.Resolvers
         {
             var variableExpr = definition.RegisterExpression(Variable);
             definition.Body.Add(Expression.Assign(variableExpr, Expression.Convert(definition.ExpressionFor(_scope), Variable.VariableType)));
-            
-            Next?.As<IResolverFrame>().WriteExpressions(definition);
         }
     }
     

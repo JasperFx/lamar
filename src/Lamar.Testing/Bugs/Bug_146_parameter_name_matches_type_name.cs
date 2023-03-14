@@ -1,48 +1,51 @@
 using Shouldly;
 using Xunit;
 
-namespace Lamar.Testing.Bugs
+namespace Lamar.Testing.Bugs;
+
+public class Bug_146_parameter_name_matches_type_name
 {
-    public class Bug_146_parameter_name_matches_type_name
+    [Fact]
+    public void UseCorrectTypes()
     {
-        public interface IWidget
+        var container = new Container(_ =>
         {
-            void DoStuff();
+            _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
+            _.For<IWidget>().Use<Widget>();
+        });
+
+        var instance = container.GetInstance<IWidget>();
+
+        instance.ShouldBeOfType<WidgetDecorator>();
+
+        var widgetDecorator = (WidgetDecorator)instance;
+
+        widgetDecorator.Widget.ShouldBeOfType<Widget>();
+    }
+
+    public interface IWidget
+    {
+        void DoStuff();
+    }
+
+    public class WidgetDecorator : IWidget
+    {
+        public WidgetDecorator(IWidget widget)
+        {
+            Widget = widget;
         }
-        
-        public class WidgetDecorator : IWidget
-        {
-            public IWidget Widget { get; }
 
-            public WidgetDecorator(IWidget widget)
-            {
-                Widget = widget;
-            }
-        
-            public void DoStuff() { }
+        public IWidget Widget { get; }
+
+        public void DoStuff()
+        {
         }
-        
-        public class Widget : IWidget
+    }
+
+    public class Widget : IWidget
+    {
+        public void DoStuff()
         {
-            public void DoStuff() { }
-        }
-        
-        [Fact]
-        public void UseCorrectTypes()
-        {
-            Container container = new Container(_ =>
-            {
-                _.For<IWidget>().DecorateAllWith<WidgetDecorator>();
-                _.For<IWidget>().Use<Widget>();
-            });
-
-            IWidget instance = container.GetInstance<IWidget>();
-
-            instance.ShouldBeOfType<WidgetDecorator>();
-            
-            WidgetDecorator widgetDecorator = (WidgetDecorator)instance;
-
-            widgetDecorator.Widget.ShouldBeOfType<Widget>();
         }
     }
 }

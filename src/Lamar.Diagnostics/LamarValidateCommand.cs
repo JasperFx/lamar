@@ -1,5 +1,4 @@
-using System;
-using LamarCodeGeneration.Util;
+using JasperFx.Core.Reflection;
 using Oakton;
 using Spectre.Console;
 
@@ -18,14 +17,12 @@ namespace Lamar.Diagnostics
         {
             AnsiConsole.Write(new FigletText("Lamar"){Color = Color.Blue});
 
-            using (var host = input.BuildHost())
-            {
-                var container = host.Services.As<IContainer>();
+            using var host = input.BuildHost();
+            var container = host.Services.As<IContainer>();
                 
-                container.AssertConfigurationIsValid(input.Mode);
+            container.AssertConfigurationIsValid(input.Mode);
                 
-                ConsoleWriter.Write(ConsoleColor.Green, "Lamar registrations are all good!");
-            }
+            AnsiConsole.MarkupLine("[green]Lamar registrations are all good![/]");
 
             return true;
         }

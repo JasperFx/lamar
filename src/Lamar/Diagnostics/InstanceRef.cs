@@ -1,7 +1,8 @@
 ﻿using System;
+using JasperFx.Core;
 using Lamar.IoC;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration.Util;
+using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Diagnostics

@@ -5,7 +5,7 @@ using Lamar.IoC.Activation;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Setters;
 using Lamar.Scanning.Conventions;
-using LamarCodeGeneration;
+using JasperFx.CodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar

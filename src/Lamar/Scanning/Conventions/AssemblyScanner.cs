@@ -4,8 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using BaselineTypeDiscovery;
-using LamarCodeGeneration.Util;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
+using JasperFx.TypeDiscovery;
+using JasperFx.CodeGeneration.Util;
+using Lamar.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 #pragma warning disable 1591
@@ -217,8 +220,7 @@ namespace Lamar.Scanning.Conventions
 
         public void AssembliesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter)
         {
-            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter,
-                txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); });
+            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter);
 
             foreach (var assembly in assemblies) Assembly(assembly);
         }
@@ -231,8 +233,7 @@ namespace Lamar.Scanning.Conventions
         /// <param name="includeExeFiles"></param>
         public void AssembliesAndExecutablesFromApplicationBaseDirectory(Func<Assembly, bool> assemblyFilter = null)
         {
-            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter,
-                txt => { Console.WriteLine("Lamar could not load assembly from file " + txt); }, true);
+            var assemblies = AssemblyFinder.FindAssemblies(assemblyFilter, true);
 
             foreach (var assembly in assemblies) Assembly(assembly);
         }

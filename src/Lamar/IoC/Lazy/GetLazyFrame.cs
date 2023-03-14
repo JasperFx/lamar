@@ -3,10 +3,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Expressions;
-using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Frames;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Lazy
 {
@@ -47,14 +48,6 @@ namespace Lamar.IoC.Lazy
             if (Next == null)
             {
                 definition.Body.Add(expr);
-            }
-            else if (Next is IResolverFrame next)
-            {
-                next.WriteExpressions(definition);
-            }
-            else
-            {
-                throw new InvalidCastException($"{Next.GetType().FullNameInCode()} does not implement {nameof(IResolverFrame)}");
             }
         }
     }

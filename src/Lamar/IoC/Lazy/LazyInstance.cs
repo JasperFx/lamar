@@ -2,8 +2,8 @@
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Lazy
@@ -22,7 +22,7 @@ namespace Lamar.IoC.Lazy
         }
         
 
-        public override bool RequiresServiceProvider { get; } = true;
+        public override bool RequiresServiceProvider(IMethodVariables method) => true;
 
         public override object Resolve(Scope scope)
         {

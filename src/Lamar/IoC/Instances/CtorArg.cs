@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
+using JasperFx.Core;
 using Lamar.IoC.Frames;
-using LamarCodeGeneration.Model;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {

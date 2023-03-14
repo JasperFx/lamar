@@ -1,6 +1,5 @@
-﻿namespace Lamar.Testing.Bugs.MultiThreadingProblem
+﻿namespace Lamar.Testing.Bugs.MultiThreadingProblem;
+
+public class SimpleAdapterThree : ISimpleAdapter
 {
-    public class SimpleAdapterThree : ISimpleAdapter
-    {
-    }
 }

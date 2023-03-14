@@ -1,77 +1,67 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
 
-namespace Lamar.Testing.IoC.Acceptance
+namespace Lamar.Testing.IoC.Acceptance;
+
+public class attribute_usage
 {
-    public class attribute_usage
+    [Fact]
+    public void use_the_singleton_att()
     {
-        [Fact]
-        public void use_the_singleton_att()
-        {
-            var container = Container.For(_ =>
-            {
-                _.For<IWidget>().Use<SingleWidget>();
-                
-            });
-            
-            container.Model.For<IWidget>().Default.Lifetime
-                .ShouldBe(ServiceLifetime.Singleton);
-        }
-        
-        [Fact]
-        public void use_the_scoped_att()
-        {
-            var container = Container.For(_ =>
-            {
-                _.For<IWidget>().Use<ScopedWidget>();
-                
-            });
-            
-            container.Model.For<IWidget>().Default.Lifetime
-                .ShouldBe(ServiceLifetime.Scoped);
-        }
-        
-        [Fact]
-        public void instance_name()
-        {
-            var container = Container.For(_ =>
-            {
-                _.For<IWidget>().Use<OrangeWidget>();
-                
-            });
-            
-            container.Model.For<IWidget>().Default.Name.ShouldBe("Orange");
-        }
+        var container = Container.For(_ => { _.For<IWidget>().Use<SingleWidget>(); });
 
-        [InstanceName("Orange")]
-        public class OrangeWidget : IWidget
-        {
-            public void DoSomething()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        
-        #region sample_[Singleton]-usage
-        [Singleton]
-        public class SingleWidget : IWidget
-        {
-            public void DoSomething()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        #endregion
+        container.Model.For<IWidget>().Default.Lifetime
+            .ShouldBe(ServiceLifetime.Singleton);
+    }
 
-        [Scoped]
-        public class ScopedWidget : IWidget
+    [Fact]
+    public void use_the_scoped_att()
+    {
+        var container = Container.For(_ => { _.For<IWidget>().Use<ScopedWidget>(); });
+
+        container.Model.For<IWidget>().Default.Lifetime
+            .ShouldBe(ServiceLifetime.Scoped);
+    }
+
+    [Fact]
+    public void instance_name()
+    {
+        var container = Container.For(_ => { _.For<IWidget>().Use<OrangeWidget>(); });
+
+        container.Model.For<IWidget>().Default.Name.ShouldBe("Orange");
+    }
+
+    [InstanceName("Orange")]
+    public class OrangeWidget : IWidget
+    {
+        public void DoSomething()
         {
-            public void DoSomething()
-            {
-                throw new System.NotImplementedException();
-            }
+            throw new NotImplementedException();
+        }
+    }
+
+    #region sample_[Singleton]-usage
+
+    [Singleton]
+    public class SingleWidget : IWidget
+    {
+        public void DoSomething()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    #endregion
+
+    [Scoped]
+    public class ScopedWidget : IWidget
+    {
+        public void DoSomething()
+        {
+            throw new NotImplementedException();
         }
     }
 }

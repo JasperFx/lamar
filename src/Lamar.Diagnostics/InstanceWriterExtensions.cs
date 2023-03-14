@@ -1,10 +1,10 @@
 using System.Linq;
-using System.Text;
-using Baseline;
+using JasperFx.CodeGeneration;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Enumerables;
 using Lamar.IoC.Instances;
-using LamarCodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -109,7 +109,7 @@ namespace Lamar.Diagnostics
         {
             prefix ??= $"[blue]{instance.Lifetime}:[/] ";
 
-            var description = $"{prefix}{instance.ToDescription().Replace("[", "[[").Replace("]", "]]")}";
+            var description = $"{prefix}{instance.ToDescription().Replace("[", "[[").Replace("]", "]]").EscapeMarkup()}";
             if (input.VerboseFlag && !instance.IsInlineDependency())
             {
                 description += $" named '{instance.Name}'";
@@ -151,7 +151,7 @@ namespace Lamar.Diagnostics
             {
                 if (instance.ImplementationType.Closes(typeof(OptionsManager<>)))
                 {
-                    return $"IOptions<{optionType.FullNameInCode()}>";
+                    return $"IOptions<{optionType.FullNameInCode()}>".EscapeMarkup();
                 }
             }
             
@@ -159,7 +159,7 @@ namespace Lamar.Diagnostics
             {
                 if (instance.ImplementationType.Closes(typeof(Logger<>)))
                 {
-                    return $"ILogger<{loggedType.FullNameInCode()}>";
+                    return $"ILogger<{loggedType.FullNameInCode()}>".EscapeMarkup();
                 }
             }
 

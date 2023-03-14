@@ -3,20 +3,19 @@
 
 using System.Collections.Generic;
 
-namespace Lamar.Testing.IoC.Compliance.Fakes
-{
-    public class FakeDisposableCallbackOuterService : FakeDisposableCallbackService, IFakeOuterService
-    {
-        public FakeDisposableCallbackOuterService(
-            IFakeService singleService,
-            IEnumerable<IFakeMultipleService> multipleServices,
-            FakeDisposeCallback callback) : base(callback)
-        {
-            SingleService = singleService;
-            MultipleServices = multipleServices;
-        }
+namespace Lamar.Testing.IoC.Compliance.Fakes;
 
-        public IFakeService SingleService { get; }
-        public IEnumerable<IFakeMultipleService> MultipleServices { get; }
+public class FakeDisposableCallbackOuterService : FakeDisposableCallbackService, IFakeOuterService
+{
+    public FakeDisposableCallbackOuterService(
+        IFakeService singleService,
+        IEnumerable<IFakeMultipleService> multipleServices,
+        FakeDisposeCallback callback) : base(callback)
+    {
+        SingleService = singleService;
+        MultipleServices = multipleServices;
     }
+
+    public IFakeService SingleService { get; }
+    public IEnumerable<IFakeMultipleService> MultipleServices { get; }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 using Lamar.Scanning.Conventions;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Expressions;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Frames
 {

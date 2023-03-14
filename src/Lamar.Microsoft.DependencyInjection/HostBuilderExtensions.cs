@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LamarCodeGeneration.Util;
+using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

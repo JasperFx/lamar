@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
-using LamarCodeGeneration.Expressions;
-using LamarCodeGeneration.Frames;
-using LamarCodeGeneration.Model;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Frames;
+using JasperFx.CodeGeneration.Model;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Instances
 {
@@ -85,24 +87,7 @@ namespace Lamar.IoC.Instances
                 {
                     definition.Body.Add(definition.ExpressionFor(Variable));
                 }
-                else
-                {
-                    if (Next is IResolverFrame next)
-                    {
-                        next.WriteExpressions(definition);
-                    }
-                    else
-                    {
-                        throw new InvalidCastException($"{Next.GetType().GetFullName()} does not implement {nameof(IResolverFrame)}");
-                    }
-                    
-                }
-                
             }
-            
-            
-            
-            
         }
     }
 }

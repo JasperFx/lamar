@@ -2,13 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Baseline;
-using Lamar.IoC;
+using JasperFx.Core;
 using Lamar.IoC.Diagnostics;
-using Lamar.IoC.Instances;
-using LamarCodeGeneration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Oakton;
 using Spectre.Console;
 
@@ -121,7 +116,7 @@ namespace Lamar.Diagnostics
 
             foreach (var configuration in ns)
             {
-                var node = top.AddNode(configuration.ServiceType.CleanFullName());
+                var node = top.AddNode(configuration.ServiceType.CleanFullName().EscapeMarkup());
                 WriteInstances(node, configuration, input, displayMode, container);
             }
 

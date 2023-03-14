@@ -1,7 +1,6 @@
 using System;
-using System.Threading.Tasks;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Frames;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Frames;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;

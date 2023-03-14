@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
-using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using Lamar.Util;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 
 namespace Lamar.IoC.Instances
@@ -123,7 +125,26 @@ namespace Lamar.IoC.Instances
 
         public int Hash { get; set; }
 
-        public virtual bool RequiresServiceProvider => Dependencies.Any(x => x.RequiresServiceProvider);
+        public virtual bool RequiresServiceProvider(IMethodVariables method)
+        {
+            if (Lifetime == ServiceLifetime.Singleton) return false;
+            
+            foreach (var dependency in Dependencies)
+            {
+                // Always no if a singleton
+                if (dependency.Lifetime == ServiceLifetime.Singleton) continue;
+
+                if (dependency.ServiceType == typeof(IContainer) ||
+                    dependency.ServiceType == typeof(IServiceProvider)) return true;
+
+                // This is for variables that might be created outside of the container
+                if (method.TryFindVariable(dependency.ServiceType, VariableSource.NotServices) != null) continue;
+
+                if (dependency.RequiresServiceProvider(method)) return true;
+            }
+
+            return false;
+        }
 
         public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
 

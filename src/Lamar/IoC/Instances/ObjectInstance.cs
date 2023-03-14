@@ -1,8 +1,8 @@
 ﻿using System;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -22,6 +22,8 @@ namespace Lamar.IoC.Instances
         }
 
         public object Service { get; }
+        
+        
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
         {

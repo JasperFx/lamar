@@ -1,120 +1,101 @@
-﻿using System;
-using Shouldly;
+﻿using Shouldly;
 using Xunit;
 
-namespace Lamar.Testing.IoC.Acceptance
+namespace Lamar.Testing.IoC.Acceptance;
+
+public class referencing_the_container_in_constructors
 {
-    public class referencing_the_container_in_constructors
+    [Fact]
+    public void get_context_in_singleton()
     {
-        [Fact]
-        public void get_context_in_singleton()
-        {
-            var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Singleton(); });
-            
-            container.GetInstance<ContextUsingThing>()
-                .Services.ShouldBeSameAs(container);
-        }
-        
-        [Fact]
-        public void get_context_in_transient_from_parent()
-        {
-            var container = Container.For(_ =>
-            {
-                _.ForConcreteType<ContextUsingThing>().Configure.Transient();
-            });
-            
-            container.GetInstance<ContextUsingThing>()
-                .Services.ShouldBeSameAs(container);
-        }
-        
-        [Fact]
-        public void get_context_in_scoped_from_parent()
-        {
-            var container = Container.For(_ =>
-            {
-                _.ForConcreteType<ContextUsingThing>().Configure.Scoped();
-            });
-            
-            container.GetInstance<ContextUsingThing>()
-                .Services.ShouldBeSameAs(container);
-        }
-        
-        [Fact]
-        public void get_context_in_singleton_from_nested()
-        {
-            var container = Container.For(_ =>
-            {
-                _.ForConcreteType<ContextUsingThing>().Configure.Singleton();
-            });
-            var nested = container.GetNestedContainer();
-            
-            nested.GetInstance<ContextUsingThing>()
-                .Services.ShouldBeSameAs(container);
-        }
-        
-        [Fact]
-        public void get_context_in_transient_from_nested()
-        {
-            var container = Container.For(_ =>
-            {
-                _.ForConcreteType<ContextUsingThing>().Configure.Transient();
-            });
-            var nested = container.GetNestedContainer();
-            
-            nested.GetInstance<ContextUsingThing>()
-                .Services.ShouldBeSameAs(nested);
-        }
-        
-        [Fact]
-        public void get_context_in_scoped_from_nested()
-        {
-            var container = Container.For(_ =>
-            {
-                _.ForConcreteType<ContextUsingThing>().Configure.Scoped();
-            });
-            var nested = container.GetNestedContainer();
-            
-            nested.GetInstance<ContextUsingThing>()
-                .Services.ShouldBeSameAs(nested);
-        }
+        var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Singleton(); });
 
-        [Fact]
-        public void try_to_inject_container()
-        {
-            var container = Container.Empty();
-
-            // Retrieving the IContainer always gets the root container
-            container.GetInstance<IContainer>().ShouldBeSameAs(container);
-            container.GetInstance<ContainerUsingThing>()
-                .Container.ShouldBeSameAs(container);
-
-            var nested = container.GetNestedContainer();
-            nested.GetInstance<IContainer>().ShouldBeSameAs(nested);
-            
-            nested.GetInstance<ContainerUsingThing>()
-                .Container.ShouldBeSameAs(nested);
-        }
-        
-
+        container.GetInstance<ContextUsingThing>()
+            .Services.ShouldBeSameAs(container);
     }
 
-    public class ContextUsingThing
+    [Fact]
+    public void get_context_in_transient_from_parent()
     {
-        public IServiceContext Services { get; }
+        var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Transient(); });
 
-        public ContextUsingThing(IServiceContext services)
-        {
-            Services = services;
-        }
+        container.GetInstance<ContextUsingThing>()
+            .Services.ShouldBeSameAs(container);
     }
 
-    public class ContainerUsingThing
+    [Fact]
+    public void get_context_in_scoped_from_parent()
     {
-        public IContainer Container { get; }
+        var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Scoped(); });
 
-        public ContainerUsingThing(IContainer container)
-        {
-            Container = container;
-        }
+        container.GetInstance<ContextUsingThing>()
+            .Services.ShouldBeSameAs(container);
     }
+
+    [Fact]
+    public void get_context_in_singleton_from_nested()
+    {
+        var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Singleton(); });
+        var nested = container.GetNestedContainer();
+
+        nested.GetInstance<ContextUsingThing>()
+            .Services.ShouldBeSameAs(container);
+    }
+
+    [Fact]
+    public void get_context_in_transient_from_nested()
+    {
+        var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Transient(); });
+        var nested = container.GetNestedContainer();
+
+        nested.GetInstance<ContextUsingThing>()
+            .Services.ShouldBeSameAs(nested);
+    }
+
+    [Fact]
+    public void get_context_in_scoped_from_nested()
+    {
+        var container = Container.For(_ => { _.ForConcreteType<ContextUsingThing>().Configure.Scoped(); });
+        var nested = container.GetNestedContainer();
+
+        nested.GetInstance<ContextUsingThing>()
+            .Services.ShouldBeSameAs(nested);
+    }
+
+    [Fact]
+    public void try_to_inject_container()
+    {
+        var container = Container.Empty();
+
+        // Retrieving the IContainer always gets the root container
+        container.GetInstance<IContainer>().ShouldBeSameAs(container);
+        container.GetInstance<ContainerUsingThing>()
+            .Container.ShouldBeSameAs(container);
+
+        var nested = container.GetNestedContainer();
+        nested.GetInstance<IContainer>().ShouldBeSameAs(nested);
+
+        nested.GetInstance<ContainerUsingThing>()
+            .Container.ShouldBeSameAs(nested);
+    }
+}
+
+public class ContextUsingThing
+{
+    public ContextUsingThing(IServiceContext services)
+    {
+        Services = services;
+    }
+
+    public IServiceContext Services { get; }
+}
+
+public class ContainerUsingThing
+{
+    public ContainerUsingThing(IContainer container)
+    {
+        Container = container;
+    }
+
+    public IContainer Container { get; }
 }

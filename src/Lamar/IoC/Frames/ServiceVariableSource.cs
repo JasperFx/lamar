@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LamarCodeGeneration.Model;
+using JasperFx.Core;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
-using LamarCodeGeneration.Util;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.IoC.Frames
 {
@@ -13,6 +14,8 @@ namespace Lamar.IoC.Frames
         private readonly IList<ServiceStandinVariable> _standins = new List<ServiceStandinVariable>();
 
         private readonly IList<InjectedServiceField> _fields = new List<InjectedServiceField>();
+        private bool _usesNestedContainerDirectly;
+        private Variable _nested = new NestedContainerCreation().Nested;
 
         public ServiceVariableSource(ServiceGraph services)
         {
@@ -26,6 +29,18 @@ namespace Lamar.IoC.Frames
 
         public Variable Create(Type type)
         {
+            if (type == typeof(IContainer))
+            {
+                _usesNestedContainerDirectly = true;
+                return _nested;
+            }
+
+            if (type == typeof(IServiceProvider))
+            {
+                _usesNestedContainerDirectly = true;
+                return new CastVariable(_nested, typeof(IServiceProvider));
+            }
+            
             var instance = _services.FindDefault(type);
             if (instance.Lifetime == ServiceLifetime.Singleton)
             {
@@ -35,30 +50,25 @@ namespace Lamar.IoC.Frames
                     field = new InjectedServiceField(instance);
                     _fields.Add(field);
                 }
-                
-
 
                 return field;
             }
-
-
+            
             var standin =  new ServiceStandinVariable(instance);
             _standins.Add(standin);
-
-
+            
             return standin;
         }
 
-        // TODO -- later, do we use other variables?
-        public void ReplaceVariables()
+        public void ReplaceVariables(IMethodVariables method)
         {
-            if (_standins.Any(x => x.Instance.RequiresServiceProvider))
+            if (_usesNestedContainerDirectly || _standins.Any(x => x.Instance.RequiresServiceProvider(method)))
             {
-                useServiceProvider();
+                useServiceProvider(method);
             }
             else
             {
-                useInlineConstruction();
+                useInlineConstruction(method);
             }
         }
 
@@ -70,13 +80,14 @@ namespace Lamar.IoC.Frames
 
         public void StartNewMethod()
         {
+            _nested = new NestedContainerCreation().Nested;
             _standins.Clear();
         }
 
-        private void useInlineConstruction()
+        private void useInlineConstruction(IMethodVariables method)
         {
             // THIS NEEDS TO BE SCOPED PER METHOD!!!
-            var variables = new ResolverVariables(_fields);
+            var variables = new ResolverVariables(method, _fields);
             foreach (var standin in _standins)
             {
                 var variable = variables.Resolve(standin.Instance, BuildMode.Inline);
@@ -92,15 +103,11 @@ namespace Lamar.IoC.Frames
             variables.MakeNamesUnique();
         }
 
-        private void useServiceProvider()
+        private void useServiceProvider(IMethodVariables method)
         {
-            var factory = new InjectedField(typeof(IServiceScopeFactory));
-            var createScope = new ServiceScopeFactoryCreation(factory);
-            var provider = createScope.Provider;
-
             foreach (var standin in _standins)
             {
-                var variable = new GetServiceFrame(provider, standin.VariableType).Variable;
+                var variable = new GetInstanceFromNestedContainerFrame(_nested, standin.VariableType).Variable;
                 standin.UseInner(variable);
             }
         }

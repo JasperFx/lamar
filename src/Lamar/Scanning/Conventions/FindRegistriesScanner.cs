@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using BaselineTypeDiscovery;
-using LamarCodeGeneration.Util;
+using JasperFx.Core;
+using JasperFx.Core.Reflection;
+using JasperFx.TypeDiscovery;
+using JasperFx.CodeGeneration.Util;
 
 namespace Lamar.Scanning.Conventions
 {

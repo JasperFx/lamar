@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Resolvers;
-using LamarCodeGeneration.Model;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Expressions;
+using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances
@@ -26,7 +29,20 @@ namespace Lamar.IoC.Instances
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
         {
-            return new NullVariable(ServiceType);
+            return new DefaultVariable(ServiceType);
+        }
+    }
+
+    public class DefaultVariable : Variable
+    {
+        public DefaultVariable(Type variableType) : base(variableType, $"default({variableType.FullNameInCode()})")
+        {
+            
+        }
+
+        public override Expression ToVariableExpression(LambdaDefinition definition)
+        {
+            return Expression.Default(VariableType);
         }
     }
 

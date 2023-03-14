@@ -3,37 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Lamar.Testing.Bugs
+namespace Lamar.Testing.Bugs;
+
+public class Bug_35_bi_directional_detection
 {
-    public class Bug_35_bi_directional_detection
+    [Fact]
+    public void detect_and_no_stack_overflow()
     {
-        public interface If { }
-
-        [LamarIgnore]
-        public class N : If
+        Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
         {
-            public N(IEnumerable<If> n)
+            var container = new Container(x =>
             {
-            }
-        }
-        
-        [Fact]
-        public void detect_and_no_stack_overflow()
-        {
+                x.For<N>().Use(ctx => new N(Enumerable.Empty<If>()));
 
-
-            Exception<InvalidOperationException>.ShouldBeThrownBy(() =>
-            {
-                var container = new Container(x =>
-                {
-                    x.For<N>().Use(ctx => new N(Enumerable.Empty<If>()));
-
-                    x.For<If>().Use<N>();
-                });
-                var instance = container.GetInstance<If>();
+                x.For<If>().Use<N>();
             });
-            
-            
+            var instance = container.GetInstance<If>();
+        });
+    }
+
+    public interface If
+    {
+    }
+
+    [LamarIgnore]
+    public class N : If
+    {
+        public N(IEnumerable<If> n)
+        {
         }
     }
 }
