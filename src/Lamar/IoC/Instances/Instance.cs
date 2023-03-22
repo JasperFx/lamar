@@ -127,7 +127,19 @@ namespace Lamar.IoC.Instances
 
         public virtual string WhyRequireServiceProvider(IMethodVariables method)
         {
-            return "";
+            var text = "";
+            foreach (var dependency in Dependencies)
+            {
+                if (dependency.RequiresServiceProvider(method))
+                {
+                    text += Environment.NewLine;
+                    text += "Dependency: " + dependency.ToString() + Environment.NewLine;
+                    text += dependency.WhyRequireServiceProvider(method);
+                    text += Environment.NewLine;
+                }
+            }
+
+            return text;
         }
 
         public virtual bool RequiresServiceProvider(IMethodVariables method)
