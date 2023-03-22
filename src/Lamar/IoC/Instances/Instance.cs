@@ -146,7 +146,7 @@ namespace Lamar.IoC.Instances
         {
             if (Lifetime == ServiceLifetime.Singleton) return false;
             
-            foreach (var dependency in Dependencies)
+            foreach (var dependency in ImmediateDependencies)
             {
                 // Always no if a singleton
                 if (dependency.Lifetime == ServiceLifetime.Singleton) continue;
@@ -218,12 +218,14 @@ namespace Lamar.IoC.Instances
                 
                 var dependencies = createPlan(services) ?? Enumerable.Empty<Instance>();
 
-                if (dependencies.Any(x => x.Dependencies.Contains(this)))
+                ImmediateDependencies = dependencies.ToArray();
+
+                if (ImmediateDependencies.Any(x => x.Dependencies.Contains(this)))
                 {
                     throw new InvalidOperationException("Bi-directional dependencies detected to " + ToString());
                 }
 
-                Dependencies = dependencies.Concat(dependencies.SelectMany(x => x.Dependencies)).Distinct().ToArray();
+                Dependencies = ImmediateDependencies.Concat(ImmediateDependencies.SelectMany(x => x.Dependencies)).Distinct().ToArray();
             }
 
             services.ClearPlanning();
@@ -231,6 +233,8 @@ namespace Lamar.IoC.Instances
             PlanningSucceeded = ErrorMessages.Count == 0;
             HasPlanned = true;
         }
+
+        public Instance[] ImmediateDependencies { get; private set; }
 
         public virtual void Reset()
         {
