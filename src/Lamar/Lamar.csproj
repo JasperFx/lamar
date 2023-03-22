@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-    <Version>11.0.0</Version>
+    <Version>11.1.0</Version>
     <Authors>Jeremy D. Miller</Authors>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <DebugType>portable</DebugType>
@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="JasperFx.TypeDiscovery" Version="1.0.0" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[6.0.0, 8.0.0)" />
-    <PackageReference Include="JasperFx.CodeGeneration" Version="2.0.0" />
+    <PackageReference Include="JasperFx.CodeGeneration" Version="2.2.1" />
     <PackageReference Include="JasperFx.Core" Version="1.2.0" />
   </ItemGroup>
   

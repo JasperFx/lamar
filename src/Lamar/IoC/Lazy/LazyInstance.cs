@@ -23,6 +23,10 @@ namespace Lamar.IoC.Lazy
         
 
         public override bool RequiresServiceProvider(IMethodVariables method) => true;
+        public override string WhyRequireServiceProvider(IMethodVariables method)
+        {
+            return "Lazy<T> uses Lamar scopes directly";
+        }
 
         public override object Resolve(Scope scope)
         {

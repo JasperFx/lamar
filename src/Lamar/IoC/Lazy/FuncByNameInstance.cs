@@ -1,7 +1,6 @@
 ﻿using System;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using Lamar.IoC.Resolvers;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +21,11 @@ namespace Lamar.IoC.Lazy
         
 
         public override bool RequiresServiceProvider(IMethodVariables method) => true;
+
+        public override string WhyRequireServiceProvider(IMethodVariables method)
+        {
+            return "Func<string, T> uses Lamar scopes directly";
+        }
 
         public override Func<Scope, object> ToResolver(Scope topScope)
         {

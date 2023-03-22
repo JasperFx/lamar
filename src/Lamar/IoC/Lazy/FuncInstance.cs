@@ -21,7 +21,11 @@ namespace Lamar.IoC.Lazy
             return new GetFuncFrame(this, typeof(T)).Variable;
         }
         
-
+        public override string WhyRequireServiceProvider(IMethodVariables method)
+        {
+            return "Func<T> uses Lamar scopes directly";
+        }
+        
         public override bool RequiresServiceProvider(IMethodVariables method) => true;
 
         public override Func<Scope, object> ToResolver(Scope topScope)

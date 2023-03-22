@@ -125,6 +125,11 @@ namespace Lamar.IoC.Instances
 
         public int Hash { get; set; }
 
+        public virtual string WhyRequireServiceProvider(IMethodVariables method)
+        {
+            return "";
+        }
+
         public virtual bool RequiresServiceProvider(IMethodVariables method)
         {
             if (Lifetime == ServiceLifetime.Singleton) return false;

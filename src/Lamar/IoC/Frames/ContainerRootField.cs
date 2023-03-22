@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
@@ -29,27 +28,4 @@ namespace Lamar.IoC.Frames
             Next?.GenerateCode(method, writer);
         }
     }
-
-    public class GetInstanceFromNestedContainerFrame : SyncFrame
-    {
-        private readonly Variable _nested;
-
-        public GetInstanceFromNestedContainerFrame(Variable nested, Type serviceType)
-        {
-            _nested = nested;
-            uses.Add(_nested);
-            
-            Variable = new Variable(serviceType, this);
-        }
-        
-        public Variable Variable { get; }
-
-        public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
-        {
-            writer.Write($"var {Variable.Usage} = {_nested.Usage}.{nameof(IContainer.GetInstance)}<{Variable.VariableType.FullNameInCode()}>();");
-            Next?.GenerateCode(method, writer);
-        }
-    }
-    
-    
 }

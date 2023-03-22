@@ -10,6 +10,10 @@ namespace Lamar.IoC.Frames
 {
     public class ServiceVariableSource : IServiceVariableSource
     {
+        public const string UsingNestedContainerDirectly = @"Using the nested container service location approach
+because at least one dependency is directl using the Lamar container
+or IServiceProvider";
+
         private readonly ServiceGraph _services;
         private readonly IList<ServiceStandinVariable> _standins = new List<ServiceStandinVariable>();
 
@@ -105,9 +109,33 @@ namespace Lamar.IoC.Frames
 
         private void useServiceProvider(IMethodVariables method)
         {
+            bool written = false;
             foreach (var standin in _standins)
             {
-                var variable = new GetInstanceFromNestedContainerFrame(_nested, standin.VariableType).Variable;
+                var frame = new GetInstanceFromNestedContainerFrame(_nested, standin.VariableType);
+                var variable = frame.Variable;
+                
+                // Write description of why this had to use the nested container
+                if (standin.Instance.RequiresServiceProvider(method))
+                {
+                    var comment = standin.Instance.WhyRequireServiceProvider(method);
+                    
+                    if (_usesNestedContainerDirectly && !written)
+                    {
+                        comment += Environment.NewLine;
+                        comment += UsingNestedContainerDirectly;
+
+                        written = true;
+                    }
+                    
+                    frame.MultiLineComment(comment);
+                }
+                else if (_usesNestedContainerDirectly && !written)
+                {
+                    frame.MultiLineComment(UsingNestedContainerDirectly);
+                    written = true;
+                }
+                
                 standin.UseInner(variable);
             }
         }

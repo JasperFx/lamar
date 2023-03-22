@@ -40,6 +40,11 @@ namespace Lamar.IoC.Instances
 
         public override bool RequiresServiceProvider(IMethodVariables method) => _inner.RequiresServiceProvider(method);
         
+        public override string WhyRequireServiceProvider(IMethodVariables method)
+        {
+            return _inner.WhyRequireServiceProvider(method);
+        }
+        
         public override Variable CreateInlineVariable(ResolverVariables variables)
         {
             return _inner.CreateInlineVariable(variables);

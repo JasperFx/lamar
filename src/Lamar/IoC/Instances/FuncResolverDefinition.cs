@@ -29,10 +29,12 @@ namespace Lamar.IoC.Instances
         IList<Setter> IGeneratedType.Setters { get; } = new List<Setter>();
         IList<InjectedField> IGeneratedType.AllInjectedFields { get; } = new List<InjectedField>();
         GenerationRules IGeneratedType.Rules => _rules;
+        public string TypeName => "FuncResolverDefinition";
         FramesCollection IGeneratedMethod.Frames => _frames;
         public Argument[] Arguments => new Argument[] { _scopeArgument };
         IList<Variable> IGeneratedMethod.DerivedVariables { get; } = new List<Variable>();
         IList<IVariableSource> IGeneratedMethod.Sources { get; } = new List<IVariableSource>();
+        public string MethodName => "Resolve";
 
         public Func<Scope, object> BuildResolver()
         {

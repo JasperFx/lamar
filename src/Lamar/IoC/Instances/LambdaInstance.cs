@@ -40,6 +40,13 @@ namespace Lamar.IoC.Instances
         // This is important. If the lambda instance is a singleton, it's injected as a singleton
         // to an object constructor and does not need the ServiceProvider
         public override bool RequiresServiceProvider(IMethodVariables method) => Lifetime != ServiceLifetime.Singleton;
+
+        public override string WhyRequireServiceProvider(IMethodVariables method)
+        {
+            return $"The scoping is {Lifetime}, so a Lambda registration requires" + Environment.NewLine +
+                   "the usage of a nested container for resolution for correct scoping." + Environment.NewLine + "A formal factory provider may be an alternative";
+        }
+
         public string Description { get; set; }
 
         public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
