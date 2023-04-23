@@ -109,7 +109,7 @@ namespace Lamar.Diagnostics
         {
             prefix ??= $"[blue]{instance.Lifetime}:[/] ";
 
-            var description = $"{prefix}{instance.ToDescription().Replace("[", "[[").Replace("]", "]]").EscapeMarkup()}";
+            var description = $"{prefix}{instance.ToDescription().EscapeMarkup().Replace("[", "[[").Replace("]", "]]")}";
             if (input.VerboseFlag && !instance.IsInlineDependency())
             {
                 description += $" named '{instance.Name}'";

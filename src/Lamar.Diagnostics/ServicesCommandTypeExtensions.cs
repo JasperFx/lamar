@@ -129,7 +129,7 @@ namespace Lamar.Diagnostics
         
         public static string BoldText(this object data)
         {
-            return $"[bold]{data.ToString().EscapeMarkup()}[/]";
+            return $"[bold]{data}[/]";
         }
 
         private static readonly IList<Type> _ignoredBaseTypes = new List<Type>
