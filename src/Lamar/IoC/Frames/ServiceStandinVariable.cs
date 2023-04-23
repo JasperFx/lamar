@@ -20,6 +20,11 @@ namespace Lamar.IoC.Frames
             Dependencies.Add(variable);
         }
 
+        public override void OverrideName(string variableName)
+        {
+            _inner.OverrideName(variableName);
+        }
+
         public override string Usage
         {
             get => _inner?.Usage;
