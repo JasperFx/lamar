@@ -138,6 +138,16 @@ or IServiceProvider";
                 
                 standin.UseInner(variable);
             }
+
+            var duplicates = _standins.GroupBy(x => x.Usage).Where(x => x.Count() > 1);
+            foreach (var duplicate in duplicates)
+            {
+                var usage = 0;
+                foreach (var standinVariable in duplicate)
+                {
+                    standinVariable.OverrideName(standinVariable.Usage + (++usage));
+                }
+            }
         }
     }
 }
