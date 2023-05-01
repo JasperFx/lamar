@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,a as e}from"./app.8b741b6d.js";const A=JSON.parse('{"title":"Registration","description":"","frontmatter":{},"headers":[],"relativePath":"guide/ioc/registration/index.md"}'),o={name:"guide/ioc/registration/index.md"},l=e("",33),p=[l];function t(c,r,i,F,y,C){return n(),a("div",null,p)}const d=s(o,[["render",t]]);export{A as __pageData,d as default};

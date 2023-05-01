@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as a,a as e}from"./app.8b741b6d.js";const u=JSON.parse('{"title":"Auto Wiring","description":"","frontmatter":{},"headers":[],"relativePath":"guide/ioc/auto-wiring.md"}'),p={name:"guide/ioc/auto-wiring.md"},o=e("",14),l=[o];function t(r,c,i,F,y,D){return a(),n("div",null,l)}const A=s(p,[["render",t]]);export{u as __pageData,A as default};

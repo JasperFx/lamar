@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,a as e}from"./app.8b741b6d.js";const u=JSON.parse('{"title":"Building Objects with Lambdas","description":"","frontmatter":{},"headers":[],"relativePath":"guide/ioc/lambdas.md"}'),o={name:"guide/ioc/lambdas.md"},l=e("",13),t=[l];function p(c,r,i,y,F,d){return n(),a("div",null,t)}const C=s(o,[["render",p]]);export{u as __pageData,C as default};

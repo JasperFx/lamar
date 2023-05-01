@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as n,a as e}from"./app.8b741b6d.js";const d=JSON.parse('{"title":"Bootstrapping a Container","description":"","frontmatter":{},"headers":[],"relativePath":"guide/ioc/bootstrapping.md"}'),o={name:"guide/ioc/bootstrapping.md"},t=e("",10),p=[t];function l(r,c,i,y,F,C){return n(),a("div",null,p)}const A=s(o,[["render",l]]);export{d as __pageData,A as default};
