@@ -1,10 +1,9 @@
 using System.IO;
 
-namespace Lamar.IoC.Diagnostics
+namespace Lamar.IoC.Diagnostics;
+
+internal interface Line
 {
-    internal interface Line
-    {
-        void OverwriteCounts(CharacterWidth[] widths);
-        void Write(TextWriter writer, CharacterWidth[] widths);
-    }
+    void OverwriteCounts(CharacterWidth[] widths);
+    void Write(TextWriter writer, CharacterWidth[] widths);
 }

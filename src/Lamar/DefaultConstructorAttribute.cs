@@ -2,37 +2,36 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Lamar
+namespace Lamar;
+
+/// <summary>
+///     Used to override the constructor of a class to be used by StructureMap to create
+///     a Pluggable object
+/// </summary>
+[AttributeUsage(AttributeTargets.Constructor)]
+public class DefaultConstructorAttribute : Attribute
 {
     /// <summary>
-    /// Used to override the constructor of a class to be used by StructureMap to create
-    /// a Pluggable object
+    ///     Examines a System.Type object and determines the ConstructorInfo to use in creating
+    ///     instances of the Type
     /// </summary>
-    [AttributeUsage(AttributeTargets.Constructor)]
-    public class DefaultConstructorAttribute : Attribute
+    /// <param name="exportedType"></param>
+    /// <returns></returns>
+    public static ConstructorInfo GetConstructor(Type exportedType)
     {
-        /// <summary>
-        /// Examines a System.Type object and determines the ConstructorInfo to use in creating
-        /// instances of the Type
-        /// </summary>
-        /// <param name="exportedType"></param>
-        /// <returns></returns>
-        public static ConstructorInfo GetConstructor(Type exportedType)
+        ConstructorInfo returnValue = null;
+
+        foreach (var constructor in exportedType.GetConstructors())
         {
-            ConstructorInfo returnValue = null;
+            var atts = constructor.GetCustomAttributes(typeof(DefaultConstructorAttribute), true);
 
-            foreach (var constructor in exportedType.GetConstructors())
+            if (atts.Any())
             {
-                var atts = constructor.GetCustomAttributes(typeof (DefaultConstructorAttribute), true);
-
-                if (atts.Any())
-                {
-                    returnValue = constructor;
-                    break;
-                }
+                returnValue = constructor;
+                break;
             }
-
-            return returnValue;
         }
+
+        return returnValue;
     }
 }

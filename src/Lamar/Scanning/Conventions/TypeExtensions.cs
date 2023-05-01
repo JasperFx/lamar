@@ -3,56 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using JasperFx.Core.Reflection;
-using JasperFx.CodeGeneration.Util;
 
-namespace Lamar.Scanning.Conventions
+namespace Lamar.Scanning.Conventions;
+
+internal static class TypeExtensions
 {
-    internal static class TypeExtensions
+    public static bool CanBeCreated(this Type type)
     {
-        public static bool CanBeCreated(this Type type)
+        return type.IsConcrete() && type.GetConstructors().Any();
+    }
+
+
+    public static Type FindFirstInterfaceThatCloses(this Type implementationType, Type templateType)
+    {
+        return implementationType.FindInterfacesThatClose(templateType).FirstOrDefault();
+    }
+
+    public static IEnumerable<Type> FindInterfacesThatClose(this Type pluggedType, Type templateType)
+    {
+        return rawFindInterfacesThatCloses(pluggedType, templateType).Distinct();
+    }
+
+    private static IEnumerable<Type> rawFindInterfacesThatCloses(Type TPluggedType, Type templateType)
+    {
+        if (!TPluggedType.IsConcrete())
         {
-            return type.IsConcrete() && type.GetConstructors().Any();
+            yield break;
         }
 
-
-        public static Type FindFirstInterfaceThatCloses(this Type implementationType, Type templateType)
+        if (templateType.GetTypeInfo().IsInterface)
         {
-            return implementationType.FindInterfacesThatClose(templateType).FirstOrDefault();
+            foreach (
+                var interfaceType in
+                TPluggedType.GetInterfaces()
+                    .Where(type =>
+                        type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == templateType))
+                yield return interfaceType;
+        }
+        else if (TPluggedType.GetTypeInfo().BaseType.GetTypeInfo().IsGenericType &&
+                 TPluggedType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == templateType)
+        {
+            yield return TPluggedType.GetTypeInfo().BaseType;
         }
 
-        public static IEnumerable<Type> FindInterfacesThatClose(this Type pluggedType, Type templateType)
+        if (TPluggedType.GetTypeInfo().BaseType == typeof(object))
         {
-            return rawFindInterfacesThatCloses(pluggedType, templateType).Distinct();
+            yield break;
         }
 
-        private static IEnumerable<Type> rawFindInterfacesThatCloses(Type TPluggedType, Type templateType)
-        {
-            if (!TPluggedType.IsConcrete()) yield break;
+        foreach (var interfaceType in rawFindInterfacesThatCloses(TPluggedType.GetTypeInfo().BaseType, templateType)
+                ) yield return interfaceType;
+    }
 
-            if (templateType.GetTypeInfo().IsInterface)
-                foreach (
-                    var interfaceType in
-                    TPluggedType.GetInterfaces()
-                        .Where(type =>
-                            type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == templateType))
-                    yield return interfaceType;
-            else if (TPluggedType.GetTypeInfo().BaseType.GetTypeInfo().IsGenericType &&
-                     TPluggedType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == templateType)
-                yield return TPluggedType.GetTypeInfo().BaseType;
+    public static bool CouldCloseTo(this Type openConcretion, Type closedInterface)
+    {
+        var openInterface = closedInterface.GetGenericTypeDefinition();
+        var arguments = closedInterface.GetGenericArguments();
 
-            if (TPluggedType.GetTypeInfo().BaseType == typeof(object)) yield break;
-
-            foreach (var interfaceType in rawFindInterfacesThatCloses(TPluggedType.GetTypeInfo().BaseType, templateType)
-            ) yield return interfaceType;
-        }
-
-        public static bool CouldCloseTo(this Type openConcretion, Type closedInterface)
-        {
-            var openInterface = closedInterface.GetGenericTypeDefinition();
-            var arguments = closedInterface.GetGenericArguments();
-
-            var concreteArguments = openConcretion.GetGenericArguments();
-            return arguments.Length == concreteArguments.Length && openConcretion.CanBeCastTo(openInterface);
-        }
+        var concreteArguments = openConcretion.GetGenericArguments();
+        return arguments.Length == concreteArguments.Length && openConcretion.CanBeCastTo(openInterface);
     }
 }

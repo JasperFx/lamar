@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Lamar
+namespace Lamar;
+
+/// <summary>
+///     Marks a Property in a concrete class as filled by setter injection
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class SetterPropertyAttribute : Attribute
 {
-    /// <summary>
-    /// Marks a Property in a concrete class as filled by setter injection 
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class SetterPropertyAttribute : Attribute
-    {
-    }
 }

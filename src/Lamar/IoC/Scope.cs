@@ -6,430 +6,471 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using JasperFx.CodeGeneration;
+using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
-using JasperFx.TypeDiscovery;
+using JasperFx.Core.TypeScanning;
 using Lamar.Diagnostics;
 using Lamar.IoC.Diagnostics;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
-using Lamar.Util;
-using JasperFx.CodeGeneration;
-using JasperFx.CodeGeneration.Model;
-using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
+namespace Lamar.IoC;
 
-namespace Lamar.IoC
+#region sample_Scope-Declarations
+
+public class Scope : IServiceContext, IServiceProviderIsService
+
+    #endregion
+
 {
-    #region sample_Scope-Declarations
-    public class Scope : IServiceContext, IServiceProviderIsService
+    protected bool _hasDisposed;
 
-        #endregion
+    // don't build this if you don't need it
+    private Dictionary<Type, object> _injected;
+
+    internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
+
+    public Scope(IServiceCollection services)
     {
-        protected bool _hasDisposed;
+        Root = this;
 
-        public static Scope Empty()
+        ServiceGraph = new ServiceGraph(services, this);
+
+        ServiceGraph.Initialize();
+    }
+
+    protected Scope()
+    {
+    }
+
+    public Scope(ServiceGraph serviceGraph, Scope root)
+    {
+        ServiceGraph = serviceGraph;
+        Root = root ?? throw new ArgumentNullException(nameof(root));
+    }
+
+    public Scope Root { get; protected set; }
+
+
+    public DisposalLock DisposalLock { get; set; } = DisposalLock.Unlocked;
+
+    internal ServiceGraph ServiceGraph { get; set; }
+
+
+    public ConcurrentBag<IDisposable> Disposables { get; } = new();
+
+    internal IEnumerable<IDisposable> AllDisposables => Disposables;
+
+    public IServiceProvider ServiceProvider => this;
+
+
+    public IModel Model => new QueryModel(this);
+
+    public virtual void Dispose()
+    {
+        if (DisposalLock == DisposalLock.ThrowOnDispose)
         {
-            return new Scope(new ServiceRegistry());
+            throw new InvalidOperationException(
+                "This Container has DisposalLock = DisposalLock.ThrowOnDispose and cannot be disposed until the lock is cleared");
         }
 
-        public Scope(IServiceCollection services)
+        if (_hasDisposed)
         {
-            Root = this;
-
-            ServiceGraph = new ServiceGraph(services, this);
-
-            ServiceGraph.Initialize();
+            return;
         }
 
-        protected Scope(){}
+        _hasDisposed = true;
 
-        public bool IsService(Type serviceType)
+        var distinctDisposables = Disposables.Distinct().ToArray();
+        // clear disposables bag to prevent memory leak. current implementation of ConcurrentBag is using thread local storage and in some cases
+        // e.g. an object from Disposables collection is referencing this Scope instance the whole graph can stay in memory after it was disposed
+        while (Disposables.TryTake(out _))
         {
-            return ServiceGraph.CanBeServiceByNetCoreRules(serviceType);
         }
 
-        public Scope Root { get; protected set; }
-
-        public Scope(ServiceGraph serviceGraph, Scope root)
+        if (DisposalLock == DisposalLock.Ignore)
         {
-            ServiceGraph = serviceGraph;
-            Root = root ?? throw new ArgumentNullException(nameof(root));
+            return;
         }
 
-        /// <summary>
-        /// Asserts that this container is not disposed yet.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">If the container is disposed.</exception>
-        protected void assertNotDisposed()
-        {
-            if (!_hasDisposed) return;
+        foreach (var disposable in distinctDisposables) disposable.SafeDispose();
+    }
 
-            throw new ObjectDisposedException("This Container has been disposed");
+    public virtual async ValueTask DisposeAsync()
+    {
+        if (DisposalLock == DisposalLock.ThrowOnDispose)
+        {
+            throw new InvalidOperationException(
+                "This Container has DisposalLock = DisposalLock.ThrowOnDispose and cannot be disposed until the lock is cleared");
         }
 
-
-        public DisposalLock DisposalLock { get; set; } = DisposalLock.Unlocked;
-
-
-        public IModel Model => new QueryModel(this);
-
-        internal ServiceGraph ServiceGraph { get; set;}
-
-
-        public ConcurrentBag<IDisposable> Disposables { get; } = new ConcurrentBag<IDisposable>();
-        
-        internal IEnumerable<IDisposable> AllDisposables => Disposables;
-
-        internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
-
-        public virtual void Dispose()
+        if (_hasDisposed)
         {
-            if (DisposalLock == DisposalLock.ThrowOnDispose) throw new InvalidOperationException("This Container has DisposalLock = DisposalLock.ThrowOnDispose and cannot be disposed until the lock is cleared");
+            return;
+        }
 
-            if (_hasDisposed) return;
-            _hasDisposed = true;
+        _hasDisposed = true;
 
-            var distinctDisposables = Disposables.Distinct().ToArray();
-            // clear disposables bag to prevent memory leak. current implementation of ConcurrentBag is using thread local storage and in some cases
-            // e.g. an object from Disposables collection is referencing this Scope instance the whole graph can stay in memory after it was disposed
-            while (Disposables.TryTake(out _)) { }
+        var distinctDisposables = Disposables.Distinct().ToArray();
+        // clear disposables bag to prevent memory leak. current implementation of ConcurrentBag is using thread local storage and in some cases
+        // e.g. an object from Disposables collection is referencing this Scope instance the whole graph can stay in memory after it was disposed
+        while (Disposables.TryTake(out _))
+        {
+        }
 
-            if (DisposalLock == DisposalLock.Ignore) return;
+        if (DisposalLock == DisposalLock.Ignore)
+        {
+            return;
+        }
 
-            foreach (var disposable in distinctDisposables)
+        foreach (var disposable in distinctDisposables)
+        {
+            if (disposable is IAsyncDisposable asyncDisposable)
+            {
+                try
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
+                catch (Exception)
+                {
+                    // Yup, don't let that go out
+                }
+            }
+            else
             {
                 disposable.SafeDispose();
             }
         }
-        
-        public virtual async ValueTask DisposeAsync()
+    }
+
+    public object GetService(Type serviceType)
+    {
+        return TryGetInstance(serviceType);
+    }
+
+    public T GetInstance<T>()
+    {
+        return (T)GetInstance(typeof(T));
+    }
+
+    public T GetInstance<T>(string name)
+    {
+        return (T)GetInstance(typeof(T), name);
+    }
+
+    public object GetInstance(Type serviceType)
+    {
+        assertNotDisposed();
+        var resolver = ServiceGraph.FindResolver(serviceType);
+
+        if (resolver == null)
         {
-            if (DisposalLock == DisposalLock.ThrowOnDispose) throw new InvalidOperationException("This Container has DisposalLock = DisposalLock.ThrowOnDispose and cannot be disposed until the lock is cleared");
-
-            if (_hasDisposed) return;
-            _hasDisposed = true;
-
-            var distinctDisposables = Disposables.Distinct().ToArray();
-            // clear disposables bag to prevent memory leak. current implementation of ConcurrentBag is using thread local storage and in some cases
-            // e.g. an object from Disposables collection is referencing this Scope instance the whole graph can stay in memory after it was disposed
-            while (Disposables.TryTake(out _)) { }
-
-            if (DisposalLock == DisposalLock.Ignore) return;
-
-            foreach (var disposable in distinctDisposables)
+            if (ServiceGraph.Families.TryGetValue(serviceType, out var family))
             {
-                if (disposable is IAsyncDisposable asyncDisposable)
+                if (family.CannotBeResolvedMessage.IsNotEmpty())
                 {
-                    try
-                    {
-                        await asyncDisposable.DisposeAsync();
-                    }
-                    catch (Exception)
-                    {
-                        // Yup, don't let that go out
-                    }
-                }
-                else
-                {
-                    disposable.SafeDispose();
+                    throw new LamarMissingRegistrationException(family);
                 }
             }
+
+            throw new LamarMissingRegistrationException(serviceType);
         }
 
-        public IServiceProvider ServiceProvider => this;
+        return resolver(this);
+    }
 
-        public object GetService(Type serviceType)
+    public object GetInstance(Type serviceType, string name)
+    {
+        assertNotDisposed();
+
+        var instance = ServiceGraph.FindInstance(serviceType, name);
+        if (instance == null)
         {
-            return TryGetInstance(serviceType);
+            throw new LamarMissingRegistrationException(serviceType, name);
         }
 
-        public T GetInstance<T>()
+        return instance.Resolve(this);
+    }
+
+    public T TryGetInstance<T>()
+    {
+        return (T)(TryGetInstance(typeof(T)) ?? default(T));
+    }
+
+    public T TryGetInstance<T>(string name)
+    {
+        return (T)(TryGetInstance(typeof(T), name) ?? default(T));
+    }
+
+    public object TryGetInstance(Type serviceType)
+    {
+        assertNotDisposed();
+        return ServiceGraph.FindResolver(serviceType)?.Invoke(this);
+    }
+
+    public object TryGetInstance(Type serviceType, string name)
+    {
+        assertNotDisposed();
+        var instance = ServiceGraph.FindInstance(serviceType, name);
+        return instance?.Resolve(this);
+    }
+
+    public T QuickBuild<T>()
+    {
+        return (T)QuickBuild(typeof(T));
+    }
+
+    public object QuickBuild(Type objectType)
+    {
+        assertNotDisposed();
+
+        if (!objectType.IsConcrete())
         {
-            return (T) GetInstance(typeof(T));
+            throw new InvalidOperationException("Type must be concrete");
         }
 
-        public T GetInstance<T>(string name)
+        var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
+        var ctor = constructorInstance.DetermineConstructor(ServiceGraph, out var message);
+        var setters = constructorInstance.FindSetters(ServiceGraph);
+
+        if (ctor == null)
         {
-            return (T) GetInstance(typeof(T), name);
+            throw new InvalidOperationException(message);
         }
 
-        public object GetInstance(Type serviceType)
+        var dependencies = ctor.GetParameters().Select(x =>
         {
-            assertNotDisposed();
-            var resolver = ServiceGraph.FindResolver(serviceType);
+            var instance = ServiceGraph.FindInstance(x);
 
-            if (resolver == null)
-            {
-                if (ServiceGraph.Families.TryGetValue(serviceType, out var family))
-                {
-                    if (family.CannotBeResolvedMessage.IsNotEmpty())
-                    {
-                        throw new LamarMissingRegistrationException(family);
-                    }
-                }
-                
-                throw new LamarMissingRegistrationException(serviceType);
-            }
-
-            return resolver(this);
-        }
-
-        public object GetInstance(Type serviceType, string name)
-        {
-            assertNotDisposed();
-
-            var instance = ServiceGraph.FindInstance(serviceType, name);
             if (instance == null)
             {
-                throw new LamarMissingRegistrationException(serviceType, name);
+                throw new InvalidOperationException(
+                    $"Cannot QuickBuild type {objectType.GetFullName()} because Lamar cannot determine how to build required dependency {x.ParameterType.FullNameInCode()}");
             }
 
-            return instance.Resolve(this);
-        }
-
-        public T TryGetInstance<T>()
-        {
-            return (T)(TryGetInstance(typeof(T)) ?? default(T));
-        }
-
-        public T TryGetInstance<T>(string name)
-        {
-            return (T)(TryGetInstance(typeof(T), name) ?? default(T));
-        }
-
-        public object TryGetInstance(Type serviceType)
-        {
-            assertNotDisposed();
-            return ServiceGraph.FindResolver(serviceType)?.Invoke(this);
-        }
-
-        public object TryGetInstance(Type serviceType, string name)
-        {
-            assertNotDisposed();
-            var instance = ServiceGraph.FindInstance(serviceType, name);
-            return instance?.Resolve(this);
-        }
-
-        public T QuickBuild<T>()
-        {
-            return (T) QuickBuild(typeof(T));
-
-        }
-
-        public object QuickBuild(Type objectType)
-        {
-            assertNotDisposed();
-
-            if (!objectType.IsConcrete()) throw new InvalidOperationException("Type must be concrete");
-
-            var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
-            var ctor = constructorInstance.DetermineConstructor(ServiceGraph, out var message);
-            var setters = constructorInstance.FindSetters(ServiceGraph);
-
-            if (ctor == null) throw new InvalidOperationException(message);
-
-            var dependencies = ctor.GetParameters().Select(x =>
+            try
             {
-                var instance = ServiceGraph.FindInstance(x);
-
-                if (instance == null) throw new InvalidOperationException($"Cannot QuickBuild type {objectType.GetFullName()} because Lamar cannot determine how to build required dependency {x.ParameterType.FullNameInCode()}");
-
-                try
-                {
-                    return instance.QuickResolve(this);
-                }
-                catch (Exception)
-                {
-                    // #sadtrombone, do it the heavy way instead
-                    return instance.Resolve(this);
-                }
-            }).ToArray();
-
-            var service = ctor.Invoke(dependencies);
-            foreach (var setter in setters)
-            {
-                setter.ApplyQuickBuildProperties(service, this);
+                return instance.QuickResolve(this);
             }
-            
-            return service;
-        }
-
-        public IReadOnlyList<T> QuickBuildAll<T>()
-        {
-            assertNotDisposed();
-            return ServiceGraph.FindAll(typeof(T)).Select(x => x.QuickResolve(this)).OfType<T>().ToList();
-        }
-
-        public void BuildUp(object target)
-        {
-            var objectType = target.GetType();
-            var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
-            var setters = constructorInstance.FindSetters(ServiceGraph);
-
-            foreach (var setter in setters)
+            catch (Exception)
             {
-                setter.ApplyQuickBuildProperties(target, this);
+                // #sadtrombone, do it the heavy way instead
+                return instance.Resolve(this);
             }
+        }).ToArray();
+
+        var service = ctor.Invoke(dependencies);
+        foreach (var setter in setters) setter.ApplyQuickBuildProperties(service, this);
+
+        return service;
+    }
+
+    public IReadOnlyList<T> QuickBuildAll<T>()
+    {
+        assertNotDisposed();
+        return ServiceGraph.FindAll(typeof(T)).Select(x => x.QuickResolve(this)).OfType<T>().ToList();
+    }
+
+    public IReadOnlyList<T> GetAllInstances<T>()
+    {
+        assertNotDisposed();
+        return ServiceGraph.FindAll(typeof(T)).Select(x => x.Resolve(this)).OfType<T>().ToList();
+    }
+
+    public IEnumerable GetAllInstances(Type serviceType)
+    {
+        assertNotDisposed();
+        return ServiceGraph.FindAll(serviceType).Select(x => x.Resolve(this)).ToArray();
+    }
+
+
+    public string WhatDoIHave(Type serviceType = null, Assembly assembly = null, string @namespace = null,
+        string typeName = null)
+    {
+        assertNotDisposed();
+
+        var writer = new WhatDoIHaveWriter(Model);
+        return writer.GetText(new ModelQuery
+        {
+            Assembly = assembly,
+            Namespace = @namespace,
+            ServiceType = serviceType,
+            TypeName = typeName
+        });
+    }
+
+    public string HowDoIBuild(Type serviceType = null, Assembly assembly = null, string @namespace = null,
+        string typeName = null)
+    {
+        assertNotDisposed();
+
+        var writer = new WhatDoIHaveWriter(Model);
+        return writer.GetText(new ModelQuery
+        {
+            Assembly = assembly,
+            Namespace = @namespace,
+            ServiceType = serviceType,
+            TypeName = typeName
+        }, display: WhatDoIHaveDisplay.BuildPlan);
+    }
+
+    /// <summary>
+    ///     Returns a textual report of all the assembly scanners used to build up this Container
+    /// </summary>
+    /// <returns></returns>
+    public string WhatDidIScan()
+    {
+        assertNotDisposed();
+
+        var scanners = Model.Scanners;
+
+        if (!scanners.Any())
+        {
+            return "No type scanning in this Container";
         }
 
-        public IReadOnlyList<T> GetAllInstances<T>()
+        using (var writer = new StringWriter())
         {
-            assertNotDisposed();
-            return ServiceGraph.FindAll(typeof(T)).Select(x => x.Resolve(this)).OfType<T>().ToList();
-        }
+            writer.WriteLine("All Scanners");
+            writer.WriteLine("================================================================");
 
-        public IEnumerable GetAllInstances(Type serviceType)
-        {
-            assertNotDisposed();
-            return ServiceGraph.FindAll(serviceType).Select(x => x.Resolve(this)).ToArray();
-        }
-
-
-        public string WhatDoIHave(Type serviceType = null, Assembly assembly = null, string @namespace = null,
-            string typeName = null)
-        {
-            assertNotDisposed();
-
-            var writer = new WhatDoIHaveWriter(Model);
-            return writer.GetText(new ModelQuery
+            scanners.Each(scanner =>
             {
-                Assembly = assembly,
-                Namespace = @namespace,
-                ServiceType = serviceType,
-                TypeName = typeName
+                scanner.Describe(writer);
+
+                writer.WriteLine();
+                writer.WriteLine();
             });
-        }
 
-        public string HowDoIBuild(Type serviceType = null, Assembly assembly = null, string @namespace = null,
-            string typeName = null)
-        {
-            assertNotDisposed();
-
-            var writer = new WhatDoIHaveWriter(Model);
-            return writer.GetText(new ModelQuery
+            var failed = TypeRepository.FailedAssemblies();
+            if (failed.Any())
             {
-                Assembly = assembly,
-                Namespace = @namespace,
-                ServiceType = serviceType,
-                TypeName = typeName
-            }, display: WhatDoIHaveDisplay.BuildPlan);
-        }
-
-        /// <summary>
-        /// Returns a textual report of all the assembly scanners used to build up this Container
-        /// </summary>
-        /// <returns></returns>
-        public string WhatDidIScan()
-        {
-            assertNotDisposed();
-
-            var scanners = Model.Scanners;
-
-            if (!scanners.Any()) return "No type scanning in this Container";
-
-            using (var writer = new StringWriter())
-            {
-                writer.WriteLine("All Scanners");
-                writer.WriteLine("================================================================");
-
-                scanners.Each(scanner =>
-                {
-                    scanner.Describe(writer);
-
-                    writer.WriteLine();
-                    writer.WriteLine();
-                });
-
-                var failed = TypeRepository.FailedAssemblies();
-                if (failed.Any())
-                {
-                    writer.WriteLine();
-                    writer.WriteLine("Assemblies that failed in the call to Assembly.GetExportedTypes()");
-                    failed.Each(assem => { writer.WriteLine("* " + assem.Record.Name); });
-                }
-                else
-                {
-                    writer.WriteLine("No problems were encountered in exporting types from Assemblies");
-                }
-
-                return writer.ToString();
+                writer.WriteLine();
+                writer.WriteLine("Assemblies that failed in the call to Assembly.GetExportedTypes()");
+                failed.Each(assem => { writer.WriteLine("* " + assem.Record.Name); });
             }
-        }
-
-        public IServiceVariableSource CreateServiceVariableSource()
-        {
-            return new ServiceVariableSource(ServiceGraph);
-        }
-
-        public string GenerateCodeWithInlineServices(GeneratedAssembly assembly)
-        {
-            return assembly.GenerateCode(new ServiceVariableSource(ServiceGraph));
-        }
-
-        // don't build this if you don't need it
-        private Dictionary<Type, object> _injected;
-
-        public virtual void Inject( Type serviceType, object @object, bool replace )
-        {
-            if ( !serviceType.IsAssignableFrom( @object.GetType() ) )
-                throw new InvalidOperationException( $"{serviceType} is not assignable from {@object.GetType()}" );
-
-            if ( _injected == null )
-            {
-                _injected = new Dictionary<Type, object>();
-            }
-
-            if ( replace ) 
-            {
-                _injected[serviceType] = @object;
-            }
-
             else
             {
-                _injected.Add( serviceType, @object );
+                writer.WriteLine("No problems were encountered in exporting types from Assemblies");
             }
+
+            return writer.ToString();
+        }
+    }
+
+    public IServiceVariableSource CreateServiceVariableSource()
+    {
+        return new ServiceVariableSource(ServiceGraph);
+    }
+
+    public bool IsService(Type serviceType)
+    {
+        return ServiceGraph.CanBeServiceByNetCoreRules(serviceType);
+    }
+
+    public static Scope Empty()
+    {
+        return new Scope(new ServiceRegistry());
+    }
+
+    /// <summary>
+    ///     Asserts that this container is not disposed yet.
+    /// </summary>
+    /// <exception cref="ObjectDisposedException">If the container is disposed.</exception>
+    protected void assertNotDisposed()
+    {
+        if (!_hasDisposed)
+        {
+            return;
         }
 
-        public void Inject<T>( T @object ) => Inject( typeof(T), @object, false );
-        public void Inject<T>( T @object, bool replace = false ) => Inject( typeof(T), @object, replace );
-        
-        public T GetInjected<T>()
+        throw new ObjectDisposedException("This Container has been disposed");
+    }
+
+    public void BuildUp(object target)
+    {
+        var objectType = target.GetType();
+        var constructorInstance = new ConstructorInstance(objectType, objectType, ServiceLifetime.Transient);
+        var setters = constructorInstance.FindSetters(ServiceGraph);
+
+        foreach (var setter in setters) setter.ApplyQuickBuildProperties(target, this);
+    }
+
+    public string GenerateCodeWithInlineServices(GeneratedAssembly assembly)
+    {
+        return assembly.GenerateCode(new ServiceVariableSource(ServiceGraph));
+    }
+
+    public virtual void Inject(Type serviceType, object @object, bool replace)
+    {
+        if (!serviceType.IsAssignableFrom(@object.GetType()))
         {
-            return (T) (_injected?.ContainsKey(typeof(T)) ?? false ? _injected[typeof(T)] : null);
+            throw new InvalidOperationException($"{serviceType} is not assignable from {@object.GetType()}");
         }
 
-        /// <summary>
-        /// Some bookkeeping here. Tracks this to the scope's disposable tracking *if* it is disposable
-        /// </summary>
-        /// <param name="object"></param>
-        public void TryAddDisposable(object @object)
+        if (_injected == null)
         {
-            switch (@object)
-            {
-                case IDisposable disposable:
-                    Disposables.Add(disposable);
-                    break;
-                case IAsyncDisposable a:
-                    Disposables.Add(new AsyncDisposableWrapper(a));
-                    break;
-            }
+            _injected = new Dictionary<Type, object>();
         }
 
-        public Func<string, T> FactoryByNameFor<T>()
+        if (replace)
         {
-            return GetInstance<T>;
+            _injected[serviceType] = @object;
         }
 
-        public Func<T> FactoryFor<T>()
+        else
         {
-            return GetInstance<T>;
+            _injected.Add(serviceType, @object);
         }
+    }
 
-        public Lazy<T> LazyFor<T>()
+    public void Inject<T>(T @object)
+    {
+        Inject(typeof(T), @object, false);
+    }
+
+    public void Inject<T>(T @object, bool replace = false)
+    {
+        Inject(typeof(T), @object, replace);
+    }
+
+    public T GetInjected<T>()
+    {
+        return (T)(_injected?.ContainsKey(typeof(T)) ?? false ? _injected[typeof(T)] : null);
+    }
+
+    /// <summary>
+    ///     Some bookkeeping here. Tracks this to the scope's disposable tracking *if* it is disposable
+    /// </summary>
+    /// <param name="object"></param>
+    public void TryAddDisposable(object @object)
+    {
+        switch (@object)
         {
-            return new Lazy<T>(GetInstance<T>);
+            case IDisposable disposable:
+                Disposables.Add(disposable);
+                break;
+            case IAsyncDisposable a:
+                Disposables.Add(new AsyncDisposableWrapper(a));
+                break;
         }
+    }
+
+    public Func<string, T> FactoryByNameFor<T>()
+    {
+        return GetInstance<T>;
+    }
+
+    public Func<T> FactoryFor<T>()
+    {
+        return GetInstance<T>;
+    }
+
+    public Lazy<T> LazyFor<T>()
+    {
+        return new Lazy<T>(GetInstance<T>);
     }
 }

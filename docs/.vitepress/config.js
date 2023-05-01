@@ -42,13 +42,7 @@ module.exports = {
           collapsible: true,
           collapsed: true,
           items: getIOCSideBar()
-        },
-        {
-          text: 'Compilation',
-          collapsible: true,
-          collapsed: true,
-          items: getCompilationSideBar()
-        },
+        }
     ]
   }
     
@@ -230,37 +224,3 @@ function getIOCSideBar() {
   ]
 }
 
-function getCompilationSideBar() {
-  return [
-    {
-      text: 'Compiling code with AssemblyGenerator',
-      link: '/guide/compilation/assembly-generator'
-    },
-    {
-      text: 'Generating code with ISourceWriter',
-      link: '/guide/compilation/source-writer'
-    },
-    {
-      text: 'The "Frame" Model',
-      link: '/guide/compilation/frames/',
-      children: [
-        {
-          text: 'Working with Variables',
-          link: '/guide/compilation/frames/variables'
-        },
-        {
-          text: 'Building custom Frames',
-          link: '/guide/compilation/frames/frame'
-        },
-        {
-          text: 'Extension methods for Names in code',
-          link: '/guide/compilation/frames/extension-methods'
-        },
-        {
-          text: 'Injected Fields',
-          link: '/guide/compilation/frames/injected-fields'
-        },
-      ]
-    }
-  ]
-}

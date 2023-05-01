@@ -1,46 +1,44 @@
 ﻿using System;
 using System.Reflection;
+using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
 using Lamar.IoC.Frames;
-using JasperFx.CodeGeneration.Model;
-using JasperFx.CodeGeneration.Util;
 
-namespace Lamar.IoC.Instances
+namespace Lamar.IoC.Instances;
+
+public class CtorArg
 {
-    public class CtorArg
+    public CtorArg(ParameterInfo parameter, Instance instance)
     {
-        public ParameterInfo Parameter { get; }
-        public Instance Instance { get; }
-
-        public CtorArg(ParameterInfo parameter, Instance instance)
+        try
         {
-            try
+            Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
+            Instance = instance ?? throw new ArgumentNullException(nameof(instance));
+
+            if (instance.IsInlineDependency() || (instance is LambdaInstance && instance.ServiceType.IsGenericType))
             {
-                Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
-                Instance = instance ?? throw new ArgumentNullException(nameof(instance));
-            
-                if (instance.IsInlineDependency() || instance is LambdaInstance && instance.ServiceType.IsGenericType)
-                {
-                    instance.Name = Parameter.Name;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException(
-                    $"Cannot create a Constructor Argument for {parameter.Name} of {instance}", e);
+                instance.Name = Parameter.Name;
             }
         }
-
-        public Variable Resolve(ResolverVariables variables, BuildMode mode)
+        catch (Exception e)
         {
-            var variable = variables.Resolve(Instance, mode);
-            
-            if (Parameter.Name.EqualsIgnoreCase(variable.Usage))
-            {
-                variable.OverrideName("inline_" + variable.Usage);
-            }
-
-            return variable;
+            throw new InvalidOperationException(
+                $"Cannot create a Constructor Argument for {parameter.Name} of {instance}", e);
         }
+    }
+
+    public ParameterInfo Parameter { get; }
+    public Instance Instance { get; }
+
+    public Variable Resolve(ResolverVariables variables, BuildMode mode)
+    {
+        var variable = variables.Resolve(Instance, mode);
+
+        if (Parameter.Name.EqualsIgnoreCase(variable.Usage))
+        {
+            variable.OverrideName("inline_" + variable.Usage);
+        }
+
+        return variable;
     }
 }

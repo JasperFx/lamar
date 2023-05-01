@@ -1,42 +1,44 @@
 ﻿using System;
-using Lamar.IoC.Instances;
 using JasperFx.CodeGeneration.Model;
+using Lamar.IoC.Instances;
 
-namespace Lamar.IoC.Frames
+namespace Lamar.IoC.Frames;
+
+public class ServiceStandinVariable : Variable
 {
-    public class ServiceStandinVariable : Variable
+    private Variable _inner;
+
+    public ServiceStandinVariable(Instance instance) : base(instance.ServiceType)
     {
-        private Variable _inner;
-        public Instance Instance { get; }
+        Instance = instance;
+    }
 
-        public ServiceStandinVariable(Instance instance) : base(instance.ServiceType)
-        {
-            Instance = instance;
-        }
+    public Instance Instance { get; }
 
-        public void UseInner(Variable variable)
+    public override string Usage
+    {
+        get => _inner?.Usage;
+        protected set
         {
-            _inner = variable ?? throw new ArgumentNullException(nameof(variable));
-            Dependencies.Add(variable);
-        }
-
-        public override void OverrideName(string variableName)
-        {
-            _inner.OverrideName(variableName);
-        }
-
-        public override string Usage
-        {
-            get => _inner?.Usage;
-            protected set {
             {
                 base.Usage = value;
-            }}
+            }
         }
+    }
 
-        public override int GetHashCode()
-        {
-            return _inner == null ? Instance.GetHashCode() : _inner.GetHashCode();
-        }
+    public void UseInner(Variable variable)
+    {
+        _inner = variable ?? throw new ArgumentNullException(nameof(variable));
+        Dependencies.Add(variable);
+    }
+
+    public override void OverrideName(string variableName)
+    {
+        _inner.OverrideName(variableName);
+    }
+
+    public override int GetHashCode()
+    {
+        return _inner == null ? Instance.GetHashCode() : _inner.GetHashCode();
     }
 }

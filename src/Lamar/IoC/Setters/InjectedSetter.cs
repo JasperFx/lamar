@@ -1,52 +1,48 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Lamar.IoC.Frames;
-using Lamar.IoC.Instances;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
+using Lamar.IoC.Frames;
+using Lamar.IoC.Instances;
 
-namespace Lamar.IoC.Setters
+namespace Lamar.IoC.Setters;
+
+internal class InjectedSetter
 {
-
-    internal class InjectedSetter
+    public InjectedSetter(PropertyInfo property, Instance instance)
     {
-        public PropertyInfo Property { get; }
-        public Instance Instance { get; }
+        Property = property;
+        Instance = instance;
+    }
 
-        public InjectedSetter(PropertyInfo property, Instance instance)
+    public PropertyInfo Property { get; }
+    public Instance Instance { get; }
+
+
+    public void ApplyQuickBuildProperties(object service, Scope scope)
+    {
+        var value = Instance.QuickResolve(scope);
+        Property.SetValue(service, value);
+    }
+
+    public SetterArg Resolve(ResolverVariables variables, BuildMode mode)
+    {
+        Variable variable;
+        if (Instance.IsInlineDependency())
         {
-            Property = property;
-            Instance = instance;
-        }
+            variable = Instance.CreateInlineVariable(variables);
 
-
-        public void ApplyQuickBuildProperties(object service, Scope scope)
-        {
-            var value = Instance.QuickResolve(scope);
-            Property.SetValue(service, value);
-        }
-
-        public SetterArg Resolve(ResolverVariables variables, BuildMode mode)
-        {
-            Variable variable;
-            if (Instance.IsInlineDependency())
+            // HOKEY. Might need some smarter way of doing this. Helps to disambiguate
+            // between ctor args of nested decorators
+            if (!(variable is Setter))
             {
-                variable = Instance.CreateInlineVariable(variables);
-
-                // HOKEY. Might need some smarter way of doing this. Helps to disambiguate
-                // between ctor args of nested decorators
-                if (!(variable is Setter))
-                {
-                    variable.OverrideName(variable.Usage + "_inline_" + ++variables.VariableSequence);
-                }
+                variable.OverrideName(variable.Usage + "_inline_" + ++variables.VariableSequence);
             }
-            else
-            {
-                variable = variables.Resolve(Instance, mode);
-            }
-                
-            return new SetterArg(Property, variable);
         }
+        else
+        {
+            variable = variables.Resolve(Instance, mode);
+        }
+
+        return new SetterArg(Property, variable);
     }
 }

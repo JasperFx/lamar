@@ -1,12 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Lamar.IoC
+namespace Lamar.IoC;
+
+internal static class StringExtensions
 {
-    internal static class StringExtensions
+    public static string Sanitize(this string value)
     {
-        public static string Sanitize(this string value)
-        {
-            return Regex.Replace(value, @"[\#\<\>\,\.\]\[\`\+\-]", "_").Replace(" ", "");
-        }
+        return Regex.Replace(value, @"[\#\<\>\,\.\]\[\`\+\-]", "_").Replace(" ", "");
     }
 }

@@ -1,70 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using Lamar.IoC.Frames;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Expressions;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using JasperFx.CodeGeneration.Util;
+using JasperFx.Core.Reflection;
+using Lamar.IoC.Frames;
 
-namespace Lamar.IoC.Instances
+namespace Lamar.IoC.Instances;
+
+public class InlineLambdaCreationFrame<TContainer> : SyncFrame, IResolverFrame
 {
-    public class InlineLambdaCreationFrame<TContainer> : SyncFrame, IResolverFrame
+    private readonly Setter _setter;
+
+    private Variable _scope;
+
+
+    public InlineLambdaCreationFrame(Setter setter, Instance instance)
     {
-        
-        private Variable _scope;
-        private readonly Setter _setter;
-        
+        Variable = new ServiceVariable(instance, this);
+        _setter = setter;
+    }
 
-        public InlineLambdaCreationFrame(Setter setter, Instance instance)
+    public ServiceVariable Variable { get; }
+
+    public void WriteExpressions(LambdaDefinition definition)
+    {
+        var scope = definition.Scope();
+        var variableExpr = Expression.Variable(Variable.VariableType, Variable.Usage);
+        definition.RegisterExpression(Variable, variableExpr);
+
+        var invokeMethod = _setter.InitialValue.GetType().GetMethod("Invoke");
+        var invoke = Expression.Call(Expression.Constant(_setter.InitialValue), invokeMethod, scope);
+
+        Expression cast = invoke;
+        if (!variableExpr.Type.IsAssignableFrom(invoke.Type))
         {
-            Variable = new ServiceVariable(instance, this);
-            _setter = setter;
-        }
-        
-        public ServiceVariable Variable { get; }
-
-        public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
-        {
-            writer.Write($"var {Variable.Usage} = ({Variable.VariableType.FullNameInCode()}){_setter.Usage}(({typeof(TContainer).FullNameInCode()}){_scope.Usage});");
-
-            if(!Variable.VariableType.IsPrimitive && !Variable.VariableType.IsEnum && Variable.VariableType != typeof(string))
-            {
-                writer.WriteLine($"{_scope.Usage}.{nameof(Scope.TryAddDisposable)}({Variable.Usage});");
-            }
-
-            Next?.GenerateCode(method, writer);
+            cast = Expression.Convert(invoke, variableExpr.Type);
         }
 
-        public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
+        definition.Body.Add(Expression.Assign(variableExpr, cast));
+
+        if (!Variable.VariableType.IsValueType)
         {
-            yield return _setter;
-            _scope = chain.FindVariable(typeof(Scope));
-            yield return _scope;
+            definition.TryRegisterDisposable(variableExpr);
+        }
+    }
+
+    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
+    {
+        writer.Write(
+            $"var {Variable.Usage} = ({Variable.VariableType.FullNameInCode()}){_setter.Usage}(({typeof(TContainer).FullNameInCode()}){_scope.Usage});");
+
+        if (!Variable.VariableType.IsPrimitive && !Variable.VariableType.IsEnum &&
+            Variable.VariableType != typeof(string))
+        {
+            writer.WriteLine($"{_scope.Usage}.{nameof(Scope.TryAddDisposable)}({Variable.Usage});");
         }
 
-        public void WriteExpressions(LambdaDefinition definition)
-        {
-            var scope = definition.Scope();
-            var variableExpr = Expression.Variable(Variable.VariableType, Variable.Usage);
-            definition.RegisterExpression(Variable, variableExpr);
+        Next?.GenerateCode(method, writer);
+    }
 
-            var invokeMethod = _setter.InitialValue.GetType().GetMethod("Invoke");
-            var invoke = Expression.Call(Expression.Constant(_setter.InitialValue), invokeMethod, scope);
-
-            Expression cast = invoke;
-            if (!variableExpr.Type.IsAssignableFrom(invoke.Type))
-            {
-                cast = Expression.Convert(invoke, variableExpr.Type);
-            }
-            
-            definition.Body.Add(Expression.Assign(variableExpr, cast));
-            
-            if (!Variable.VariableType.IsValueType)
-            {
-                definition.TryRegisterDisposable(variableExpr);
-            }
-        }
+    public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
+    {
+        yield return _setter;
+        _scope = chain.FindVariable(typeof(Scope));
+        yield return _scope;
     }
 }

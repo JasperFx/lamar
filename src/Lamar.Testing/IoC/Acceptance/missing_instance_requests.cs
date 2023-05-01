@@ -1,4 +1,5 @@
 ﻿using JasperFx.CodeGeneration;
+using JasperFx.Core.Reflection;
 using Lamar.IoC;
 using Shouldly;
 using StructureMap.Testing.Widget;

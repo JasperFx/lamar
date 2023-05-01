@@ -1,24 +1,25 @@
-﻿using System;
-using Lamar.IoC.Instances;
-using JasperFx.CodeGeneration.Frames;
+﻿using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
+using Lamar.IoC.Instances;
 
-namespace Lamar.IoC.Frames
+namespace Lamar.IoC.Frames;
+
+public enum ServiceDeclaration
 {
-    public enum ServiceDeclaration
+    ImplementationType,
+    ServiceType
+}
+
+public class ServiceVariable : Variable, IServiceVariable
+{
+    public ServiceVariable(Instance instance, Frame creator,
+        ServiceDeclaration declaration = ServiceDeclaration.ImplementationType)
+        : base(
+            declaration == ServiceDeclaration.ImplementationType ? instance.ImplementationType : instance.ServiceType,
+            instance.Name.Sanitize(), creator)
     {
-        ImplementationType,
-        ServiceType
+        Instance = instance;
     }
-    
-    public class ServiceVariable : Variable, IServiceVariable
-    {
-        public ServiceVariable(Instance instance, Frame creator, ServiceDeclaration declaration = ServiceDeclaration.ImplementationType) 
-            : base(declaration == ServiceDeclaration.ImplementationType ? instance.ImplementationType : instance.ServiceType, instance.Name.Sanitize(), creator)
-        {
-            Instance = instance;
-        }
-        
-        public Instance Instance { get; }
-    }
+
+    public Instance Instance { get; }
 }

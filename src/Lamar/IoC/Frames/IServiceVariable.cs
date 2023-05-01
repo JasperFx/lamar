@@ -1,9 +1,8 @@
 ﻿using Lamar.IoC.Instances;
 
-namespace Lamar.IoC.Frames
+namespace Lamar.IoC.Frames;
+
+public interface IServiceVariable
 {
-    public interface IServiceVariable
-    {
-        Instance Instance { get; }
-    }
+    Instance Instance { get; }
 }

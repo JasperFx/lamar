@@ -1,14 +1,12 @@
 ﻿using System;
 
-namespace Lamar.IoC.Resolvers
+namespace Lamar.IoC.Resolvers;
+
+public interface IResolver
 {
-    public interface IResolver
-    {
-        object Resolve(Scope scope);
-        Type ServiceType { get; }
-        
-        string Name { get; set; }
-        int Hash { get; set; }
-        
-    }
+    Type ServiceType { get; }
+
+    string Name { get; set; }
+    int Hash { get; set; }
+    object Resolve(Scope scope);
 }

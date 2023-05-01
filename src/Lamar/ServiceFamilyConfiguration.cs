@@ -4,22 +4,25 @@ using System.Linq;
 using Lamar.Diagnostics;
 using Lamar.IoC;
 
-namespace Lamar
+namespace Lamar;
+
+internal class ServiceFamilyConfiguration : IServiceFamilyConfiguration
 {
-    internal class ServiceFamilyConfiguration : IServiceFamilyConfiguration
+    private readonly ServiceFamily _family;
+    private readonly Scope _scope;
+
+    public ServiceFamilyConfiguration(ServiceFamily family, Scope scope)
     {
-        private readonly ServiceFamily _family;
-        private readonly Scope _scope;
+        _family = family;
+        _scope = scope;
+    }
 
-        public ServiceFamilyConfiguration(ServiceFamily family, Scope scope)
-        {
-            _family = family;
-            _scope = scope;
-        }
+    public Type ServiceType => _family.ServiceType;
+    public InstanceRef Default => _family.Default == null ? null : new InstanceRef(_family.Default, _scope);
+    public IEnumerable<InstanceRef> Instances => _family.All.Select(x => new InstanceRef(x, _scope));
 
-        public Type ServiceType => _family.ServiceType;
-        public InstanceRef Default => _family.Default == null ? null : new InstanceRef(_family.Default, _scope);
-        public IEnumerable<InstanceRef> Instances => _family.All.Select(x => new InstanceRef(x, _scope));
-        public bool HasImplementations() => _family.All.Any();
+    public bool HasImplementations()
+    {
+        return _family.All.Any();
     }
 }

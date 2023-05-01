@@ -1,44 +1,44 @@
 using System;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
-using JasperFx.CodeGeneration.Util;
 
-namespace Lamar.IoC.Activation
+namespace Lamar.IoC.Activation;
+
+internal class ActivationPolicy<T> : IDecoratorPolicy
 {
-    internal class ActivationPolicy<T> : IDecoratorPolicy
+    private readonly Action<IServiceContext, T> _action;
+
+    public ActivationPolicy(Action<IServiceContext, T> action)
     {
-        private readonly Action<IServiceContext,T> _action;
+        _action = action;
+    }
 
-        public ActivationPolicy(Action<IServiceContext, T> action)
+    public bool TryWrap(Instance inner, out Instance wrapped)
+    {
+        if (TestInstance(inner))
         {
-            _action = action;
+            wrapped = typeof(ActivatingInstance<,>).CloseAndBuildAs<Instance>(_action, inner, typeof(T),
+                inner.ServiceType);
+
+            return true;
         }
 
-        public virtual bool TestInstance(Instance inner)
+        wrapped = null;
+        return false;
+    }
+
+    public virtual bool TestInstance(Instance inner)
+    {
+        if (inner.ServiceType == typeof(T))
         {
-            if (inner.ServiceType == typeof(T))
-            {
-                return true;
-            }
-
-            if (inner.ImplementationType == null) return false;
-
-            return inner.ImplementationType.CanBeCastTo<T>();
+            return true;
         }
 
-        public bool TryWrap(Instance inner, out Instance wrapped)
+        if (inner.ImplementationType == null)
         {
-            if (TestInstance(inner))
-            {
-                wrapped = typeof(ActivatingInstance<,>).CloseAndBuildAs<Instance>(_action, inner, typeof(T),
-                    inner.ServiceType);
-
-                return true;
-            }
-
-            wrapped = null;
             return false;
         }
 
+        return inner.ImplementationType.CanBeCastTo<T>();
     }
 }

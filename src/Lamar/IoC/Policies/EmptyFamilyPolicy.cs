@@ -1,15 +1,16 @@
 ﻿using System;
-using Lamar.IoC.Instances;
 
-namespace Lamar
+namespace Lamar;
+
+internal class EmptyFamilyPolicy : IFamilyPolicy
 {
-    internal class EmptyFamilyPolicy : IFamilyPolicy
+    public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
     {
-        public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
+        if (!type.IsGenericTypeDefinition)
         {
-            if (!type.IsGenericTypeDefinition) return new ServiceFamily(type, new IDecoratorPolicy[0], new Instance[0]);
-
-            return null;
+            return new ServiceFamily(type, new IDecoratorPolicy[0]);
         }
+
+        return null;
     }
 }

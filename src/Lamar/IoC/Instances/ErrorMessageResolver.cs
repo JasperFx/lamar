@@ -1,37 +1,36 @@
 ﻿using System;
 using System.Linq;
 using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Resolvers;
-using JasperFx.CodeGeneration;
-using JasperFx.CodeGeneration.Util;
 
-namespace Lamar.IoC.Instances
+namespace Lamar.IoC.Instances;
+
+public class ErrorMessageResolver : IResolver
 {
-    public class ErrorMessageResolver : IResolver
+    private readonly string _message;
+
+    public ErrorMessageResolver(Instance instance)
     {
-        private readonly string _message;
+        ServiceType = instance.ServiceType;
+        Name = instance.Name;
+        Hash = instance.GetHashCode();
 
-        public ErrorMessageResolver(Instance instance)
+        var dependencyProblems = instance.Dependencies.SelectMany(dep =>
         {
-            ServiceType = instance.ServiceType;
-            Name = instance.Name;
-            Hash = instance.GetHashCode();
+            return dep.ErrorMessages.Select(x => $"Dependency {dep}: {x}");
+        });
 
-            var dependencyProblems = instance.Dependencies.SelectMany(dep =>
-                {
-                    return dep.ErrorMessages.Select(x => $"Dependency {dep}: {x}");
-                });
-            
-            _message = instance.ErrorMessages.Concat(dependencyProblems).Join(Environment.NewLine);
-        }
-
-        public object Resolve(Scope scope)
-        {
-            throw new LamarException($"Cannot build registered instance {Name} of '{ServiceType.FullNameInCode()}':{Environment.NewLine}{_message}");
-        }
-
-        public Type ServiceType { get; }
-        public string Name { get; set; }
-        public int Hash { get; set; }
+        _message = instance.ErrorMessages.Concat(dependencyProblems).Join(Environment.NewLine);
     }
+
+    public object Resolve(Scope scope)
+    {
+        throw new LamarException(
+            $"Cannot build registered instance {Name} of '{ServiceType.FullNameInCode()}':{Environment.NewLine}{_message}");
+    }
+
+    public Type ServiceType { get; }
+    public string Name { get; set; }
+    public int Hash { get; set; }
 }

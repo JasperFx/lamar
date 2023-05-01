@@ -1,24 +1,22 @@
 ﻿using System;
 
-namespace Lamar.IoC
+namespace Lamar.IoC;
+
+public class ContainerValidationException : Exception
 {
-    public class ContainerValidationException : Exception
+    public ContainerValidationException(string message, string whatDoIHave, string whatDidIScan) : base(message)
     {
-        /// <summary>
-        /// A textual report of the container configuration at the point the exception was thrown
-        /// </summary>
-        public string WhatDoIHave { get; }
-        
-        /// <summary>
-        /// A textual report of the container type scanning at the point the exception was thrown
-        /// </summary>
-        public string WhatDidIScan { get; }
-
-        public ContainerValidationException(string message, string whatDoIHave, string whatDidIScan) : base(message)
-        {
-            WhatDoIHave = whatDoIHave;
-            WhatDidIScan = whatDidIScan;
-        }
-
+        WhatDoIHave = whatDoIHave;
+        WhatDidIScan = whatDidIScan;
     }
+
+    /// <summary>
+    ///     A textual report of the container configuration at the point the exception was thrown
+    /// </summary>
+    public string WhatDoIHave { get; }
+
+    /// <summary>
+    ///     A textual report of the container type scanning at the point the exception was thrown
+    /// </summary>
+    public string WhatDidIScan { get; }
 }

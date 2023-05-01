@@ -1,74 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lamar.IoC.Frames;
-using Lamar.IoC.Resolvers;
-using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Model;
+using JasperFx.Core.Reflection;
+using Lamar.IoC.Frames;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.IoC.Instances
+namespace Lamar.IoC.Instances;
+
+public class ReferencedInstance : Instance
 {
-    public class ReferencedInstance : Instance
+    private readonly string _instanceKey;
+    private Instance _inner;
+
+    public ReferencedInstance(Type serviceType, string instanceKey) : base(serviceType, serviceType,
+        ServiceLifetime.Transient)
     {
-        private readonly string _instanceKey;
-        private Instance _inner;
+        _instanceKey = instanceKey;
+    }
 
-        public ReferencedInstance(Type serviceType, string instanceKey) : base(serviceType, serviceType, ServiceLifetime.Transient)
+    public override Func<Scope, object> ToResolver(Scope topScope)
+    {
+        return _inner.ToResolver(topScope);
+    }
+
+    public override object Resolve(Scope scope)
+    {
+        return _inner.Resolve(scope);
+    }
+
+    public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
+    {
+        return _inner.CreateVariable(mode, variables, isRoot);
+    }
+
+    public override object QuickResolve(Scope scope)
+    {
+        return _inner.QuickResolve(scope);
+    }
+
+    public override bool RequiresServiceProvider(IMethodVariables method)
+    {
+        return _inner.RequiresServiceProvider(method);
+    }
+
+    public override string WhyRequireServiceProvider(IMethodVariables method)
+    {
+        return _inner.WhyRequireServiceProvider(method);
+    }
+
+    public override Variable CreateInlineVariable(ResolverVariables variables)
+    {
+        return _inner.CreateInlineVariable(variables);
+    }
+
+    protected override IEnumerable<Instance> createPlan(ServiceGraph services)
+    {
+        _inner = services.FindInstance(ServiceType, _instanceKey);
+        if (_inner == null)
         {
-            _instanceKey = instanceKey;
+            throw new InvalidOperationException(
+                $"Referenced instance of {ServiceType.FullNameInCode()} named '{_instanceKey}' does not exist");
         }
 
-        public override Func<Scope, object> ToResolver(Scope topScope)
-        {
-            return _inner.ToResolver(topScope);
-        }
+        _inner.Parent = Parent;
+        Lifetime = _inner.Lifetime;
 
-        public override object Resolve(Scope scope)
-        {
-            return _inner.Resolve(scope);
-        }
+        yield return _inner;
+    }
 
-        public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
-        {
-            return _inner.CreateVariable(mode, variables, isRoot);
-        }
+    internal override string GetBuildPlan(Scope rootScope)
+    {
+        return _inner.GetBuildPlan(rootScope);
+    }
 
-        public override object QuickResolve(Scope scope)
-        {
-            return _inner.QuickResolve(scope);
-        }
-
-        public override bool RequiresServiceProvider(IMethodVariables method) => _inner.RequiresServiceProvider(method);
-        
-        public override string WhyRequireServiceProvider(IMethodVariables method)
-        {
-            return _inner.WhyRequireServiceProvider(method);
-        }
-        
-        public override Variable CreateInlineVariable(ResolverVariables variables)
-        {
-            return _inner.CreateInlineVariable(variables);
-        }
-
-        protected override IEnumerable<Instance> createPlan(ServiceGraph services)
-        {
-            _inner = services.FindInstance(ServiceType, _instanceKey);
-            if (_inner == null) throw new InvalidOperationException($"Referenced instance of {ServiceType.FullNameInCode()} named '{_instanceKey}' does not exist");
-            
-            _inner.Parent = Parent;
-            Lifetime = _inner.Lifetime;
-
-            yield return _inner;
-        }
-
-        internal override string GetBuildPlan(Scope rootScope)
-        {
-            return _inner.GetBuildPlan(rootScope);
-        }
-
-        public override Instance CloseType(Type serviceType, Type[] templateTypes)
-        {
-            return _inner.CloseType(serviceType, templateTypes);
-        }
+    public override Instance CloseType(Type serviceType, Type[] templateTypes)
+    {
+        return _inner.CloseType(serviceType, templateTypes);
     }
 }

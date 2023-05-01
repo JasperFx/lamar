@@ -1,36 +1,30 @@
-namespace Lamar.IoC.Diagnostics
+namespace Lamar.IoC.Diagnostics;
+
+internal class CharacterWidth
 {
-    internal class CharacterWidth
+    internal int Width { get; private set; }
+
+    internal static CharacterWidth[] For(int count)
     {
-        private int _width;
-
-        internal int Width
+        var widths = new CharacterWidth[count];
+        for (var i = 0; i < widths.Length; i++)
         {
-            get { return _width; }
+            widths[i] = new CharacterWidth();
         }
 
-        internal static CharacterWidth[] For(int count)
-        {
-            var widths = new CharacterWidth[count];
-            for (var i = 0; i < widths.Length; i++)
-            {
-                widths[i] = new CharacterWidth();
-            }
+        return widths;
+    }
 
-            return widths;
-        }
-
-        internal void SetWidth(int width)
+    internal void SetWidth(int width)
+    {
+        if (width > Width)
         {
-            if (width > _width)
-            {
-                _width = width;
-            }
+            Width = width;
         }
+    }
 
-        internal void Add(int add)
-        {
-            _width += add;
-        }
+    internal void Add(int add)
+    {
+        Width += add;
     }
 }

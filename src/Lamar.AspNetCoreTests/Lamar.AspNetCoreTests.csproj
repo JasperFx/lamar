@@ -10,6 +10,7 @@
 
     <PackageReference Include="IdentityServer4" Version="4.1.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+    <PackageReference Include="JasperFx.Core" Version="1.4.0" />
 
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.7" />
@@ -26,11 +27,11 @@
 
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-    <PackageReference Include="Alba" Version="6.0.0" />
+    <PackageReference Include="Alba" Version="7.4.0" />
     <PackageReference Include=" Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
-    <PackageReference Include="Alba" Version="6.0.0" />
+    <PackageReference Include="Alba" Version="7.4.0" />
     <PackageReference Include=" Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.0" />
   </ItemGroup>
 

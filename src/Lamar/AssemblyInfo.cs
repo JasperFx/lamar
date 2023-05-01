@@ -3,4 +3,4 @@ using Lamar;
 
 [assembly: InternalsVisibleTo("Lamar.Testing")]
 [assembly: InternalsVisibleTo("Lamar.Diagnostics")]
-[assembly:IgnoreAssembly]
+[assembly: IgnoreAssembly]

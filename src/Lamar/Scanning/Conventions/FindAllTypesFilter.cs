@@ -2,66 +2,68 @@ using System;
 using System.Linq;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
-using JasperFx.TypeDiscovery;
+using JasperFx.Core.TypeScanning;
 using Lamar.IoC.Instances;
-using JasperFx.CodeGeneration;
-using JasperFx.CodeGeneration.Util;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.Scanning.Conventions
+namespace Lamar.Scanning.Conventions;
+
+public class FindAllTypesFilter : IRegistrationConvention
 {
-    public class FindAllTypesFilter : IRegistrationConvention
+    private readonly ServiceLifetime _lifetime;
+    private readonly Type _serviceType;
+    private Func<Type, string> _namePolicy = type => type.NameInCode();
+
+    public FindAllTypesFilter(Type serviceType, ServiceLifetime lifetime = ServiceLifetime.Transient)
     {
-        private readonly Type _serviceType;
-        private Func<Type, string> _namePolicy = type => type.NameInCode();
-        private readonly ServiceLifetime _lifetime;
+        _serviceType = serviceType;
+        _lifetime = lifetime;
+    }
 
-        public FindAllTypesFilter(Type serviceType, ServiceLifetime lifetime = ServiceLifetime.Transient)
+    void IRegistrationConvention.ScanTypes(TypeSet types, ServiceRegistry services)
+    {
+        if (_serviceType.IsOpenGeneric())
         {
-            _serviceType = serviceType;
-            _lifetime = lifetime;
+            var scanner = new GenericConnectionScanner(_serviceType, _lifetime);
+            scanner.ScanTypes(types, services);
         }
-
-        void IRegistrationConvention.ScanTypes(TypeSet types, ServiceRegistry services)
+        else
         {
-            if (_serviceType.IsOpenGeneric())
+            types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(Matches).Each(type =>
             {
-                var scanner = new GenericConnectionScanner(_serviceType, _lifetime);
-                scanner.ScanTypes(types, services);
-            }
-            else
-            {
-                types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(Matches).Each(type =>
+                var serviceType = determineLeastSpecificButValidType(_serviceType, type);
+                var instance = services.AddType(serviceType, type, _lifetime);
+                if (instance != null)
                 {
-                    var serviceType = determineLeastSpecificButValidType(_serviceType, type);
-                    var instance = services.AddType(serviceType, type, _lifetime);
-                    if (instance != null) instance.Name = _namePolicy(type);
-                });
-            }
+                    instance.Name = _namePolicy(type);
+                }
+            });
         }
+    }
 
-        private bool Matches(Type type)
+    private bool Matches(Type type)
+    {
+        return Instance.CanBeCastTo(type, _serviceType) && type.GetConstructors().Any() && type.CanBeCreated();
+    }
+
+    private static Type determineLeastSpecificButValidType(Type pluginType, Type type)
+    {
+        if (pluginType.IsGenericTypeDefinition && !type.IsOpenGeneric())
         {
-            return Instance.CanBeCastTo(type, _serviceType) && type.GetConstructors().Any() && type.CanBeCreated();
+            return type.FindFirstInterfaceThatCloses(pluginType);
         }
 
-        private static Type determineLeastSpecificButValidType(Type pluginType, Type type)
-        {
-            if (pluginType.IsGenericTypeDefinition && !type.IsOpenGeneric())
-                return type.FindFirstInterfaceThatCloses(pluginType);
+        return pluginType;
+    }
 
-            return pluginType;
-        }
+    public override string ToString()
+    {
+        return "Find and register all types implementing " + _serviceType.FullName;
+    }
 
-        public override string ToString()
-        {
-            return "Find and register all types implementing " + _serviceType.FullName;
-        }
-
-        public FindAllTypesFilter NameBy(Func<Type, string> namePolicy)
-        {
-            _namePolicy = namePolicy;
-            return this;
-        }
+    public FindAllTypesFilter NameBy(Func<Type, string> namePolicy)
+    {
+        _namePolicy = namePolicy;
+        return this;
     }
 }

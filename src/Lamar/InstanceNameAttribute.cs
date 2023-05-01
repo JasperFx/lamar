@@ -1,23 +1,22 @@
 ﻿using Lamar.IoC.Instances;
 
-namespace Lamar
+namespace Lamar;
+
+/// <summary>
+///     Configures the Lamar instance name for resolving
+///     services by name
+/// </summary>
+public class InstanceNameAttribute : LamarAttribute
 {
-    /// <summary>
-    /// Configures the Lamar instance name for resolving
-    /// services by name
-    /// </summary>
-    public class InstanceNameAttribute : LamarAttribute
+    private readonly string _name;
+
+    public InstanceNameAttribute(string name)
     {
-        private readonly string _name;
+        _name = name;
+    }
 
-        public InstanceNameAttribute(string name)
-        {
-            _name = name;
-        }
-
-        public override void Alter(Instance instance)
-        {
-            instance.Name = _name;
-        }
+    public override void Alter(Instance instance)
+    {
+        instance.Name = _name;
     }
 }

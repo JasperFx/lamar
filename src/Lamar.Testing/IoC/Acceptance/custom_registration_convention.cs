@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using JasperFx.TypeDiscovery;
+using JasperFx.Core.TypeScanning;
 using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;

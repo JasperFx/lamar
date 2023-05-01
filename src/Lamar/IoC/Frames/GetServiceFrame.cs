@@ -2,27 +2,28 @@
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
+using JasperFx.Core.Reflection;
 
-namespace Lamar.IoC.Frames
+namespace Lamar.IoC.Frames;
+
+public class GetServiceFrame : SyncFrame
 {
-    public class GetServiceFrame : SyncFrame
+    private readonly Variable _provider;
+
+    public GetServiceFrame(Variable provider, Type serviceType)
     {
-        private readonly Variable _provider;
+        _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        uses.Add(provider);
 
-        public GetServiceFrame(Variable provider, Type serviceType)
-        {
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            uses.Add(provider);
+        Variable = new Variable(serviceType, this);
+    }
 
-            Variable = new Variable(serviceType, this);
-        }
+    public Variable Variable { get; }
 
-        public Variable Variable { get; }
-
-        public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
-        {
-            writer.Write($"var {Variable.Usage} = ({Variable.VariableType.FullNameInCode()}){_provider.Usage}.{nameof(IServiceProvider.GetService)}(typeof({Variable.VariableType.FullNameInCode()}));");
-            Next?.GenerateCode(method, writer);
-        }
+    public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
+    {
+        writer.Write(
+            $"var {Variable.Usage} = ({Variable.VariableType.FullNameInCode()}){_provider.Usage}.{nameof(IServiceProvider.GetService)}(typeof({Variable.VariableType.FullNameInCode()}));");
+        Next?.GenerateCode(method, writer);
     }
 }

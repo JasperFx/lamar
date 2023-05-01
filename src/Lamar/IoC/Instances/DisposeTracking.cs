@@ -1,9 +1,8 @@
-﻿namespace Lamar.IoC.Instances
+﻿namespace Lamar.IoC.Instances;
+
+public enum DisposeTracking
 {
-    public enum DisposeTracking
-    {
-        WithUsing,
-        RegisterWithScope,
-        None
-    }
+    WithUsing,
+    RegisterWithScope,
+    None
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using JasperFx.TypeDiscovery;
+using JasperFx.Core.TypeScanning;
 using Lamar.Scanning.Conventions;
 using Shouldly;
 using StructureMap.Testing.Widget;

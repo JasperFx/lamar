@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lamar.IoC;
 
-namespace Lamar
+namespace Lamar;
+
+public interface IActivationInterceptor<T>
 {
-    public interface IActivationInterceptor<T>
-    {
-        T Intercept(Type serviceType, T instance, IServiceContext scope);
-    }
+    T Intercept(Type serviceType, T instance, IServiceContext scope);
 }

@@ -2,38 +2,39 @@
 using System.Linq;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
-using JasperFx.TypeDiscovery;
-using JasperFx.CodeGeneration.Util;
+using JasperFx.Core.TypeScanning;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.Scanning.Conventions
+namespace Lamar.Scanning.Conventions;
+
+internal class ImplementationMap : IRegistrationConvention
 {
-    internal class ImplementationMap : IRegistrationConvention
+    private readonly ServiceLifetime _lifetime;
+
+    public ImplementationMap(ServiceLifetime lifetime = ServiceLifetime.Transient)
     {
-        private readonly ServiceLifetime _lifetime;
+        _lifetime = lifetime;
+    }
 
-        public ImplementationMap(ServiceLifetime lifetime = ServiceLifetime.Transient)
+    public void ScanTypes(TypeSet types, ServiceRegistry services)
+    {
+        var interfaces = types.FindTypes(TypeClassification.Interfaces | TypeClassification.Closed)
+            .Where(x => x != typeof(IDisposable));
+        var concretes = types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed)
+            .Where(x => x.GetConstructors().Any()).ToArray();
+
+        interfaces.Each(@interface =>
         {
-            _lifetime = lifetime;
-        }
-
-        public void ScanTypes(TypeSet types, ServiceRegistry services)
-        {
-            var interfaces = types.FindTypes(TypeClassification.Interfaces | TypeClassification.Closed)
-                .Where(x => x != typeof(IDisposable));
-            var concretes = types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed)
-                .Where(x => x.GetConstructors().Any()).ToArray();
-
-            interfaces.Each(@interface =>
+            var implementors = concretes.Where(x => x.CanBeCastTo(@interface)).ToArray();
+            if (implementors.Count() == 1)
             {
-                var implementors = concretes.Where(x => x.CanBeCastTo(@interface)).ToArray();
-                if (implementors.Count() == 1) services.Add(new ServiceDescriptor(@interface, implementors.Single(), _lifetime));
-            });
-        }
+                services.Add(new ServiceDescriptor(@interface, implementors.Single(), _lifetime));
+            }
+        });
+    }
 
-        public override string ToString()
-        {
-            return "Register any single implementation of any interface against that interface";
-        }
+    public override string ToString()
+    {
+        return "Register any single implementation of any interface against that interface";
     }
 }

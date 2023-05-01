@@ -2,79 +2,79 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Lamar.IoC.Frames;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Expressions;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using JasperFx.CodeGeneration.Util;
+using JasperFx.Core.Reflection;
+using Lamar.IoC.Frames;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.IoC.Instances
+namespace Lamar.IoC.Instances;
+
+public class InjectedInstance<T> : Instance
 {
-    public class InjectedInstance<T> : Instance
+    public InjectedInstance() : base(typeof(T), typeof(T), ServiceLifetime.Scoped)
     {
-        public InjectedInstance() : base(typeof(T), typeof(T), ServiceLifetime.Scoped)
+        Name = "Injected_" + DefaultArgName();
+    }
+
+    public override Func<Scope, object> ToResolver(Scope topScope)
+    {
+        return s => s.GetInjected<T>();
+    }
+
+    public override object Resolve(Scope scope)
+    {
+        return scope.GetInjected<T>();
+    }
+
+    public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
+    {
+        return new GetInjectedServiceFrame(this).Variable;
+    }
+
+    public class GetInjectedServiceFrame : SyncFrame, IResolverFrame
+    {
+        private static readonly MethodInfo _openMethod = typeof(Scope).GetMethod(nameof(Scope.GetInjected));
+
+        private Variable _scope;
+
+        public GetInjectedServiceFrame(InjectedInstance<T> parent)
         {
-            Name = "Injected_" + DefaultArgName();
+            Variable = new ServiceVariable(parent, this);
         }
 
-        public override Func<Scope, object> ToResolver(Scope topScope)
+        public Variable Variable { get; }
+
+        public void WriteExpressions(LambdaDefinition definition)
         {
-            return s => s.GetInjected<T>();
+            var scope = definition.Scope();
+            var closedMethod = _openMethod.MakeGenericMethod(Variable.VariableType);
+            var expr = definition.ExpressionFor(Variable);
+
+            var call = Expression.Call(scope, closedMethod);
+            var assign = Expression.Assign(expr, call);
+
+            definition.Body.Add(assign);
+
+            if (Next == null)
+            {
+                definition.Body.Add(expr);
+            }
         }
 
-        public override object Resolve(Scope scope)
+        public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
         {
-            return scope.GetInjected<T>();
+            writer.Write(
+                $"var {Variable.Usage} = {_scope.Usage}.{nameof(Scope.GetInjected)}<{typeof(T).FullNameInCode()}>();");
+            Next?.GenerateCode(method, writer);
         }
 
-        public override Variable CreateVariable(BuildMode mode, ResolverVariables variables, bool isRoot)
+        public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
         {
-            return new GetInjectedServiceFrame(this).Variable;
-        }
-        
-        public class GetInjectedServiceFrame : SyncFrame, IResolverFrame
-        {
-            private static readonly MethodInfo _openMethod = typeof(Scope).GetMethod(nameof(Scope.GetInjected));
-            
-            private Variable _scope;
-
-            public GetInjectedServiceFrame(InjectedInstance<T> parent)
-            {
-                Variable = new ServiceVariable(parent, this);
-            }
-            
-            public Variable Variable { get; }
-
-            public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
-            {
-                writer.Write($"var {Variable.Usage} = {_scope.Usage}.{nameof(Scope.GetInjected)}<{typeof(T).FullNameInCode()}>();");
-                Next?.GenerateCode(method, writer);
-            }
-
-            public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
-            {
-                _scope = chain.FindVariable(typeof(Scope));
-                yield return _scope;
-            }
-
-            public void WriteExpressions(LambdaDefinition definition)
-            {
-                var scope = definition.Scope();
-                var closedMethod = _openMethod.MakeGenericMethod(Variable.VariableType);
-                var expr = definition.ExpressionFor(Variable);
-
-                var call = Expression.Call(scope, closedMethod);
-                var assign = Expression.Assign(expr, call);
-            
-                definition.Body.Add(assign);
-
-                if (Next == null)
-                {
-                    definition.Body.Add(expr);
-                }
-            }
+            _scope = chain.FindVariable(typeof(Scope));
+            yield return _scope;
         }
     }
 }

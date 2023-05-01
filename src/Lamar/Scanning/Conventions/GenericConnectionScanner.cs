@@ -3,77 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
-using JasperFx.TypeDiscovery;
-using JasperFx.CodeGeneration;
-using JasperFx.CodeGeneration.Util;
+using JasperFx.Core.TypeScanning;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lamar.Scanning.Conventions
+namespace Lamar.Scanning.Conventions;
+
+internal class GenericConnectionScanner : IRegistrationConvention
 {
-    internal class GenericConnectionScanner : IRegistrationConvention
+    private readonly IList<Type> _concretions = new List<Type>();
+    private readonly IList<Type> _interfaces = new List<Type>();
+    private readonly ServiceLifetime _lifetime;
+    private readonly Type _openType;
+
+    public GenericConnectionScanner(Type openType, ServiceLifetime lifetime = ServiceLifetime.Transient)
     {
-        private readonly IList<Type> _concretions = new List<Type>();
-        private readonly IList<Type> _interfaces = new List<Type>();
-        private readonly Type _openType;
-        private readonly ServiceLifetime _lifetime;
+        _openType = openType;
+        _lifetime = lifetime;
 
-        public GenericConnectionScanner(Type openType, ServiceLifetime lifetime = ServiceLifetime.Transient)
+        if (!_openType.IsOpenGeneric())
         {
-            _openType = openType;
-            _lifetime = lifetime;
-
-            if (!_openType.IsOpenGeneric())
-                throw new InvalidOperationException(
-                    "This scanning convention can only be used with open generic types");
+            throw new InvalidOperationException(
+                "This scanning convention can only be used with open generic types");
         }
+    }
 
-        public void ScanTypes(
-            TypeSet types, ServiceRegistry services)
+    public void ScanTypes(
+        TypeSet types, ServiceRegistry services)
+    {
+        foreach (var type in types.AllTypes())
         {
-            foreach (var type in types.AllTypes())
+            var interfaceTypes = type.FindInterfacesThatClose(_openType).ToArray();
+            if (!interfaceTypes.Any())
             {
-                var interfaceTypes = type.FindInterfacesThatClose(_openType).ToArray();
-                if (!interfaceTypes.Any()) continue;
-
-                if (type.IsConcrete()) _concretions.Add(type);
-
-                foreach (var interfaceType in interfaceTypes) _interfaces.Fill(interfaceType);
+                continue;
             }
 
-
-            foreach (var @interface in _interfaces)
+            if (type.IsConcrete())
             {
-                var exactMatches = _concretions.Where(x => x.CanBeCastTo(@interface)).ToArray();
-                foreach (var type in exactMatches) services.Add(new ServiceDescriptor(@interface, type, _lifetime));
-
-                if (!@interface.IsOpenGeneric()) addConcretionsThatCouldBeClosed(@interface, services);
+                _concretions.Add(type);
             }
 
-            var concretions = services.ConnectedConcretions();
-            foreach (var type in _concretions) concretions.Fill(type);
+            foreach (var interfaceType in interfaceTypes) _interfaces.Fill(interfaceType);
         }
 
-        public override string ToString()
+
+        foreach (var @interface in _interfaces)
         {
-            return "Connect all implementations of open generic type " + _openType.FullNameInCode();
+            var exactMatches = _concretions.Where(x => x.CanBeCastTo(@interface)).ToArray();
+            foreach (var type in exactMatches) services.Add(new ServiceDescriptor(@interface, type, _lifetime));
+
+            if (!@interface.IsOpenGeneric())
+            {
+                addConcretionsThatCouldBeClosed(@interface, services);
+            }
         }
 
-        private void addConcretionsThatCouldBeClosed(Type @interface, IServiceCollection services)
-        {
-            _concretions.Where(x => x.IsOpenGeneric())
-                .Where(x => x.CouldCloseTo(@interface))
-                .Each(type =>
+        var concretions = services.ConnectedConcretions();
+        foreach (var type in _concretions) concretions.Fill(type);
+    }
+
+    public override string ToString()
+    {
+        return "Connect all implementations of open generic type " + _openType.FullNameInCode();
+    }
+
+    private void addConcretionsThatCouldBeClosed(Type @interface, IServiceCollection services)
+    {
+        _concretions.Where(x => x.IsOpenGeneric())
+            .Where(x => x.CouldCloseTo(@interface))
+            .Each(type =>
+            {
+                try
                 {
-                    try
-                    {
-                        services.Add(new ServiceDescriptor(@interface, type.MakeGenericType(@interface.GetGenericArguments()), _lifetime));
-                    }
-                    catch (Exception)
-                    {
-                        // Because I'm too lazy to fight with the bleeping type constraints to "know"
-                        // if it's possible to make the generic type and this is just easier.
-                    }
-                });
-        }
+                    services.Add(new ServiceDescriptor(@interface,
+                        type.MakeGenericType(@interface.GetGenericArguments()), _lifetime));
+                }
+                catch (Exception)
+                {
+                    // Because I'm too lazy to fight with the bleeping type constraints to "know"
+                    // if it's possible to make the generic type and this is just easier.
+                }
+            });
     }
 }
