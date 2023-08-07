@@ -54,8 +54,12 @@ public class CastRootScopeFrame : SyncFrame, IResolverFrame
     public void WriteExpressions(LambdaDefinition definition)
     {
         var variableExpr = definition.RegisterExpression(Variable);
-        definition.Body.Add(Expression.Assign(variableExpr,
-            Expression.Convert(definition.ExpressionFor(_scope), Variable.VariableType)));
+
+        var root = Expression.Property(definition.ExpressionFor(_scope), nameof(Scope.Root));
+        var convert = Expression.Convert(root, Variable.VariableType);
+        var assign = Expression.Assign(variableExpr, convert);
+
+        definition.Body.Add(assign);
     }
 
     public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
