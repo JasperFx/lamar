@@ -38,6 +38,9 @@ public class Container : Scope, IContainer, INestedContainer, IServiceScopeFacto
     public INestedContainer GetNestedContainer()
     {
         assertNotDisposed();
+
+        if (Root is Container root) return new Container(root.ServiceGraph, root);
+
         return new Container(ServiceGraph, this);
     }
 
