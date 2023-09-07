@@ -2,6 +2,7 @@
 using System.Reflection;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
+using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
 
 namespace Lamar.IoC.Instances;
@@ -23,7 +24,7 @@ public class CtorArg
         catch (Exception e)
         {
             throw new InvalidOperationException(
-                $"Cannot create a Constructor Argument for {parameter.Name} of {instance}", e);
+                $"Cannot create a Constructor Argument for {parameter?.Name ?? "anonymous"} of type {parameter.ParameterType.FullNameInCode()} of {instance}. If this is a primitive type like strings or numbers, Lamar will not do any automatic resolution by type", e);
         }
     }
 
