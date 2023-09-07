@@ -34,7 +34,7 @@ public class CtorArg
     {
         var variable = variables.Resolve(Instance, mode);
 
-        if (Parameter.Name.EqualsIgnoreCase(variable.Usage))
+        if (Parameter.Name.IsNotEmpty() && Parameter.Name.EqualsIgnoreCase(variable.Usage))
         {
             variable.OverrideName("inline_" + variable.Usage);
         }
