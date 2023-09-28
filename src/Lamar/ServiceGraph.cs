@@ -296,7 +296,8 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     public IEnumerable<Instance> AllInstances()
     {
-        return _families.Enumerate().Select(x => x.Value).ToArray().SelectMany(x => x.All).ToArray();
+        var serviceFamilies = _families.Enumerate().Select(x => x.Value).Where(x => x != null).ToArray();
+        return serviceFamilies.SelectMany(x => x.All).ToArray();
     }
 
     public bool HasFamily(Type serviceType)

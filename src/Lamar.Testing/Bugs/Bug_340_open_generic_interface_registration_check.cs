@@ -12,7 +12,7 @@ public class Bug_340_open_generic_interface_registration_check
     class ServiceA : IGenericService<ClassA> {}
     
     [Fact]
-    public void Test_it()
+    public void do_not_blow_up()
     {
         var container = new Container(x =>
         {
@@ -24,7 +24,9 @@ public class Bug_340_open_generic_interface_registration_check
         container.GetInstance<IGenericService<ClassA>>()
             .ShouldNotBeNull();
         
+        // This should return false. There's no registration for the 
+        // open type, only a specific closed type
         container.Model.HasRegistrationFor(typeof(IGenericService<>))
-            .ShouldBeTrue();
+            .ShouldBeFalse();
     }
 }
