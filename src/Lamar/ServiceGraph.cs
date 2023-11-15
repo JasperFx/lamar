@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -483,12 +484,26 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
             return new ServiceFamily(serviceType, DecoratorPolicies);
         }
 
+        Type serviceTypeToLookFor = getServiceTypeThatTakesCollectionsIntoAccount(serviceType);
+
         var found = FamilyPolicies.Where(x => x is not ConcreteFamilyPolicy)
-            .FirstValue(x => x.Build(serviceType, this));
+            .FirstValue(x => x.Build(serviceTypeToLookFor, this));
 
         _lookingFor.Remove(serviceType);
 
         return found;
+    }
+
+    private Type getServiceTypeThatTakesCollectionsIntoAccount(Type serviceType)
+    {
+        if (!typeof(IEnumerable).IsAssignableFrom(serviceType) || serviceType.GetGenericArguments().Length != 1) 
+            return serviceType;
+
+        Type type = serviceType.GetGenericArguments().Single();
+
+        bool isTypeRegistered = _services.Any(descriptor => descriptor.ServiceType == type);
+
+        return isTypeRegistered ? serviceType : type;
     }
 
     internal void ClearPlanning()
