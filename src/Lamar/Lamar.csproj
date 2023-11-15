@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-        <Version>12.0.2</Version>
+        <Version>12.1.0</Version>
         <Authors>Jeremy D. Miller</Authors>
         <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>Lamar</AssemblyName>
         <PackageId>Lamar</PackageId>
-        <PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/JasperFx/JasperFx.Core/main/jasperfx-logo.jpg?raw=true</PackageIconUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>http://jasperfx.github.io/lamar</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE</PackageLicenseUrl>
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
         <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
         <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
