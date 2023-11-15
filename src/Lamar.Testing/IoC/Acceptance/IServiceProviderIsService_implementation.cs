@@ -37,6 +37,27 @@ public class IServiceProviderIsService_implementation
         container.IsService(typeof(IGenericService1<ConcreteClass>)).ShouldBeTrue();
     }
 
+    [Fact]
+    public void fix_for_391_dont_resolve_collections_with_not_registered_type()
+    {
+        var containerWithNoRegistrations = Container.Empty();
+
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<ConcreteClass>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(IReadOnlyCollection<ConcreteClass>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(IList<ConcreteClass>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(List<ConcreteClass>)).ShouldBeFalse();
+
+        var containerWithRegistrations = Container.For(services =>
+                                                      {
+                                                          services.ForConcreteType<ConcreteClass>();
+                                                      });
+
+        containerWithRegistrations.IsService(typeof(IEnumerable<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(IReadOnlyCollection<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(IList<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(List<ConcreteClass>)).ShouldBeTrue();
+    }
+
     public interface IService
     {
     }
