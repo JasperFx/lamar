@@ -68,8 +68,7 @@ namespace Lamar.Diagnostics
             {
                 AnsiConsole.MarkupLine("[bold]Key:[/] ");
 
-                var rule = new Rule($"[blue]Assembly Name (Assembly Version)[/]")
-                    {Alignment = Justify.Left};
+                var rule = new Rule($"[blue]Assembly Name (Assembly Version)[/]") {Justification = Justify.Left};
                 AnsiConsole.Write(rule);
 
 
@@ -96,8 +95,7 @@ namespace Lamar.Diagnostics
             IGrouping<Assembly, IServiceFamilyConfiguration> @group, WhatDoIHaveDisplay displayMode,
             IContainer container)
         {
-            var rule = new Rule($"[blue]{@group.Key.GetName().Name} ({@group.Key.GetName().Version})[/]")
-                {Alignment = Justify.Left};
+            var rule = new Rule($"[blue]{@group.Key.GetName().Name} ({@group.Key.GetName().Version})[/]"){ Justification = Justify.Left};
             AnsiConsole.Write(rule);
 
             var namespaces = @group.GroupBy(x => x.ServiceType.ResolveServiceType().Namespace);

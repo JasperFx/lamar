@@ -1,30 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Description>Lamar Adapter for HostBuilder Integration</Description>
-    <Version>12.0.2</Version>
-    <Authors>Jeremy D. Miller</Authors>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-    <DebugType>portable</DebugType>
-    <AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
-    <PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
-    <PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
-    <PackageProjectUrl>https://jasperfx.github.io/lamar</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE</PackageLicenseUrl>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Description>Lamar Adapter for HostBuilder Integration</Description>
+		<Version>12.0.2</Version>
+		<Authors>Jeremy D. Miller</Authors>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<DebugType>portable</DebugType>
+		<AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
+		<PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
+		<PackageIconUrl>https://avatars2.githubusercontent.com/u/10048186?v=3&amp;s=200</PackageIconUrl>
+		<PackageProjectUrl>https://jasperfx.github.io/lamar</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/JasperFX/lamar/blob/master/LICENSE</PackageLicenseUrl>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[6.0.0,8.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="[6.0.0,8.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[6.0.0,8.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[6.0.0,8.0.0)" />
-  </ItemGroup>
+	<ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Lamar\Lamar.csproj" />
-  </ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[8.0.0,9.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="[8.0.0,9.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="[8.0.0,9.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="[8.0.0,9.0.0)" />
+	</ItemGroup>
+
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0' ">
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[6.0.0,8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="[6.0.0,8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="[6.0.0,8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="[6.0.0,8.0.0)" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Lamar\Lamar.csproj" />
+	</ItemGroup>
 </Project>

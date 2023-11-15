@@ -3,7 +3,7 @@
         <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
         <Version>12.0.2</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>Lamar</AssemblyName>
         <PackageId>Lamar</PackageId>
@@ -17,16 +17,22 @@
         <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
         <LangVersion>10.0</LangVersion>
     </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[6.0.0, 8.0.0)"/>
-        <PackageReference Include="JasperFx.CodeGeneration" Version="3.0.0"/>
-        <PackageReference Include="JasperFx.Core" Version="1.4.0"/>
-    </ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[8.0.0, 9.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[8.0.0, 9.0.0)" />
+	</ItemGroup>
 
 
-    <ItemGroup>
-        <PackageReference Include="System.Runtime.Loader" Version="4.3.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.0, 8.0.0)"/>
-    </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0' ">
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="[6.0.0, 8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.0, 8.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="JasperFx.CodeGeneration" Version="3.4.0" />
+		<PackageReference Include="JasperFx.Core" Version="1.5.1" />
+		<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+	</ItemGroup>
 
 </Project>
