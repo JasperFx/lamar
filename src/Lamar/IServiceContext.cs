@@ -4,10 +4,16 @@ using System.Collections.Generic;
 using System.Reflection;
 using JasperFx.CodeGeneration.Model;
 using Lamar.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar;
 
 public interface IServiceContext : IServiceProvider, IDisposable, IAsyncDisposable
+
+#if NET8_0_OR_GREATER
+,IKeyedServiceProvider
+#endif
+
 {
     /// <summary>
     ///     Provides queryable access to the configured serviceType's and Instances of this Container.

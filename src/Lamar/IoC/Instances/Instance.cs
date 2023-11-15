@@ -106,9 +106,45 @@ public abstract class Instance
 
     public static Instance For(ServiceDescriptor service)
     {
-        if (service.ImplementationInstance is Instance instance)
+#if NET8_0_OR_GREATER
+        if (service.IsKeyedService)
         {
+            var name = service.ServiceKey?.ToString();
+            Instance instance = null;
+            if (service.KeyedImplementationInstance != null)
+            {
+                instance = new ObjectInstance(service.ServiceType, service.KeyedImplementationInstance);
+            }
+            else if (service.KeyedImplementationFactory != null)
+            {
+                Func<IServiceProvider, object> factory = s =>
+                {
+                    if (service.KeyedImplementationFactory != null)
+                    {
+                        return service.KeyedImplementationFactory(s, name);
+                    }
+
+                    return null;
+                };
+                
+                instance = new LambdaInstance(service.ServiceType, factory, service.Lifetime);
+            }
+            else
+            {
+                instance = new ConstructorInstance(service.ServiceType, service.KeyedImplementationType, service.Lifetime);
+            }
+
+            if (name.IsNotEmpty()) instance.Name = name;
+            
             return instance;
+
+
+        }
+#endif
+        
+        if (service.ImplementationInstance is Instance i)
+        {
+            return i;
         }
 
         if (service.ImplementationInstance != null)

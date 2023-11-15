@@ -52,3 +52,10 @@ public void get_a_named_instance()
 ```
 <sup><a href='https://github.com/JasperFx/lamar/blob/master/src/StructureMap.Testing/Examples/Resolving/SimpleScenarios.cs#L26-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getinstance-by-name-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+
+## .NET Core Keyed Services
+
+While Lamar (and StructureMap before that) has supported the idea of named service registrations in production applications since 2004 (!),
+.NET finally discovered this usage in .NET 8. Lamar 12.1.0 introduces native support for [keyed services](https://weblogs.asp.net/ricardoperes/net-8-dependency-injection-changes-keyed-services) according to the new .NET standard as shown below:
+
+snippet: sample_adding_keyed_services
