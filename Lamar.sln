@@ -55,6 +55,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithMinimalApiOnNet6",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalApiTests", "src\MinimalApiTests\MinimalApiTests.csproj", "{23D34C12-A3A0-4399-94A3-08616AE7C934}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D6AA9FAA-7E79-48E1-A538-1FE3402991B0}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\workflows\publish_lamar.yml = .github\workflows\publish_lamar.yml
+		.github\workflows\docs.yml = .github\workflows\docs.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
