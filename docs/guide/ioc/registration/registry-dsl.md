@@ -61,7 +61,7 @@ for a certain service type wins. So no more special meaning to Use() vs. Add().
 :::
 
 **There is no difference in behavior between *Use* and *Add* in Lamar**. The two methods are synonyms and
-mostly remain in Lamar to provide and easier migration path from [StructureMap](https://structuremap.github.io). The
+mostly remain in Lamar to provide and easier migration path from [StructureMap](https://structuremap.github.io).
 
 ## Registrations with For().Use()/Add()
 
