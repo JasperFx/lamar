@@ -8,12 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar;
 
-public interface IServiceContext : IServiceProvider, IDisposable, IAsyncDisposable
-
-#if NET8_0_OR_GREATER
-,IKeyedServiceProvider
-#endif
-
+public interface IServiceContext : IServiceProvider, IDisposable, IAsyncDisposable, IKeyedServiceProvider
 {
     /// <summary>
     ///     Provides queryable access to the configured serviceType's and Instances of this Container.

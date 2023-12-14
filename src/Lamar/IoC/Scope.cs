@@ -473,8 +473,7 @@ public class Scope : IServiceContext, IServiceProviderIsService
     {
         return new Lazy<T>(GetInstance<T>);
     }
-
-#if NET8_0_OR_GREATER
+    
     public object GetKeyedService(Type serviceType, object serviceKey)
     {
         return TryGetInstance(serviceType, serviceKey.ToString());
@@ -484,5 +483,4 @@ public class Scope : IServiceContext, IServiceProviderIsService
     {
         return GetInstance(serviceType, serviceKey.ToString());
     }
-#endif
 }

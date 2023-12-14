@@ -106,7 +106,6 @@ public abstract class Instance
 
     public static Instance For(ServiceDescriptor service)
     {
-#if NET8_0_OR_GREATER
         if (service.IsKeyedService)
         {
             var name = service.ServiceKey?.ToString();
@@ -140,7 +139,7 @@ public abstract class Instance
 
 
         }
-#endif
+
         
         if (service.ImplementationInstance is Instance i)
         {

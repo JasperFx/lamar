@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Lamar.Testing.IoC.Acceptance;
 
-#if NET8_0_OR_GREATER
+
 public class IKeyedServiceProvider_compliance
 {
     #region sample_adding_keyed_services
@@ -46,4 +46,3 @@ public class IKeyedServiceProvider_compliance
 
     #endregion
 }
-#endif
