@@ -29,14 +29,12 @@ public class Repository
     // Adding the SetterProperty to a setter directs
     // Lamar to use this property when
     // constructing a Repository instance
-    [SetterProperty]
-    public IDataProvider Provider { get; set; }
+    [SetterProperty] public IDataProvider Provider { get; set; }
 
-    [SetterProperty]
-    public bool ShouldCache { get; set; }
+    [SetterProperty] public bool ShouldCache { get; set; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L21-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_setter-injection-with-setterproperty' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L17-L29' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_setter-injection-with-setterproperty' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Without the `[SetterProperty]` attributes decorating the setters, Lamar would ignore the `Provider` and `ShouldCache` properties when it builds up a `Repository` object. With the attributes, Lamar will try to build and attach values for the two properties as part of object construction.
@@ -93,11 +91,10 @@ public class RuleWithSettersRegistry : ServiceRegistry
 
             // or if you need to specify the property name
             .Setter<IAction>("Action").Is<Action2>();
-
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L212-L240' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-setters' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L238-L266' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-setters' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 See also: [Inline Dependencies](/guide/ioc/registration/inline-dependencies)
@@ -142,7 +139,7 @@ public void specify_setter_policy_and_construct_an_object()
     target.Gateway.ShouldBeOfType<DefaultGateway>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/setter_injection.cs#L277-L311' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-setter-policy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/setter_injection.cs#L318-L353' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-setter-policy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 All calls to `Registry.Policies.SetAllProperties()` are additive, meaning you can use as many criteria as possible for setter injection.

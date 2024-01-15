@@ -8,29 +8,33 @@
 public interface IConfiguredInstance
 {
     /// <summary>
-    /// The constructor function that this registration is going to use to
-    /// construct the object
+    ///     The constructor function that this registration is going to use to
+    ///     construct the object
     /// </summary>
     ConstructorInfo Constructor { get; set; }
-    
+
     /// <summary>
-    /// The service type that you can request. This would normally be an interface or other
-    /// abstraction
+    ///     The service type that you can request. This would normally be an interface or other
+    ///     abstraction
     /// </summary>
     Type ServiceType { get; }
-    
+
     /// <summary>
-    /// The actual, concrete type
+    ///     The actual, concrete type
     /// </summary>
     Type ImplementationType { get; }
-    
-    
+
     ServiceLifetime Lifetime { get; set; }
-    
+
     /// <summary>
-    /// The instance name for requesting this object by name
+    ///     The instance name for requesting this object by name
     /// </summary>
     string Name { get; set; }
+
+    /// <summary>
+    ///     Directly add or interrogate the inline dependencies for this instance
+    /// </summary>
+    IReadOnlyList<Instance> InlineDependencies { get; }
 
     /// <summary>
     ///     Inline definition of a constructor dependency.  Select the constructor argument by type and constructor name.
@@ -40,20 +44,15 @@ public interface IConfiguredInstance
     /// <param name="constructorArg"></param>
     /// <returns></returns>
     DependencyExpression<T> Ctor<T>(string constructorArg = null);
-    
-    /// <summary>
-    /// Directly add or interrogate the inline dependencies for this instance
-    /// </summary>
-    IReadOnlyList<Instance> InlineDependencies { get; }
 
     /// <summary>
-    /// Adds an inline dependency
+    ///     Adds an inline dependency
     /// </summary>
     /// <param name="instance"></param>
     void AddInline(Instance instance);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Instances/IConfiguredInstance.cs#L8-L56' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iconfiguredinstance' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Instances/IConfiguredInstance.cs#L8-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iconfiguredinstance' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## Changing the Instance Lifecycle

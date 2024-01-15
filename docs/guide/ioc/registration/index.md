@@ -23,15 +23,15 @@ public interface IFoo
 
 public class Foo : IFoo
 {
-    public IBar Bar { get; private set; }
-
     public Foo(IBar bar)
     {
         Bar = bar;
     }
+
+    public IBar Bar { get; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Models.cs#L3-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_foobar-model' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Models.cs#L3-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_foobar-model' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 A simple configuration of a Lamar Container might then be:
@@ -76,7 +76,7 @@ public class FooBarRegistry : ServiceRegistry
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Registries.cs#L3-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_foobar-registry' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Registries.cs#L3-L14' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_foobar-registry' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 When you set up a `Container` , you need to simply direct the `Container` to use the configuration in that `ServiceRegistry` class.

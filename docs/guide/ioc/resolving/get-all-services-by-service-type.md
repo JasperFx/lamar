@@ -22,7 +22,7 @@ public void get_all_instances()
         x.For<IWidget>().Add<BWidget>().Named("B");
         x.For<IWidget>().Add<CWidget>().Named("C");
     });
-    
+
     container.QuickBuildAll<IWidget>()
         .Select(x => x.GetType())
         .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
@@ -39,7 +39,7 @@ public void get_all_instances()
         .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(BWidget), typeof(CWidget));
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/get_all_instances.cs#L87-L114' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_get-all-instances' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/get_all_instances.cs#L69-L97' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_get-all-instances' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_get-all-instances-1'></a>
 ```cs
 [Fact]

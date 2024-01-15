@@ -8,29 +8,28 @@ That being said, there are plenty of times when simple attribute usage is effect
 <a id='snippet-sample_lamarattribute'></a>
 ```cs
 /// <summary>
-/// Base class for custom configuration attributes
+///     Base class for custom configuration attributes
 /// </summary>
 public abstract class LamarAttribute : Attribute
 {
     /// <summary>
-    /// Make configuration alterations to a single IConfiguredInstance object
+    ///     Make configuration alterations to a single IConfiguredInstance object
     /// </summary>
-    /// <param name="instance"></param>    
+    /// <param name="instance"></param>
     public virtual void Alter(IConfiguredInstance instance)
     {
     }
 
     /// <summary>
-    /// Make configuration changes to the most generic form of Instance
+    ///     Make configuration changes to the most generic form of Instance
     /// </summary>
     /// <param name="instance"></param>
     public virtual void Alter(Instance instance)
     {
-        
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/LamarAttribute.cs#L6-L29' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lamarattribute' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/LamarAttribute.cs#L6-L30' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lamarattribute' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 There's a couple thing to note, here about this new attribute:
@@ -46,7 +45,7 @@ Take the new `[Singleton]` attribute shown below:
 <a id='snippet-sample_singletonattribute'></a>
 ```cs
 /// <summary>
-/// Makes Lamar treat a Type as a singleton in the lifecycle scoping
+///     Makes Lamar treat a Type as a singleton in the lifecycle scoping
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 public class SingletonAttribute : LamarAttribute
@@ -58,7 +57,7 @@ public class SingletonAttribute : LamarAttribute
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/SingletonAttribute.cs#L7-L20' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_singletonattribute' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/SingletonAttribute.cs#L7-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_singletonattribute' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This new attribute can be used on either the service type (typically an interface) or on a concrete type to make an individual type registration be a singleton. You can see the usage on some types below:
@@ -71,11 +70,11 @@ public class SingleWidget : IWidget
 {
     public void DoSomething()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/attribute_usage.cs#L57-L66' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_[singleton]-usage' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/attribute_usage.cs#L46-L57' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_[singleton]-usage' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_[singleton]-usage-1'></a>
 ```cs
 [Singleton] // ALL Instance's of ITeamCache will be singletons by default

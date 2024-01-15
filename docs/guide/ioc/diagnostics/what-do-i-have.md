@@ -10,7 +10,7 @@ var report = container.WhatDoIHave();
 
 Console.WriteLine(report);
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L22-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-simple' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L21-L28' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-simple' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_whatdoihave-simple-1'></a>
 ```cs
 var container = new Container();
@@ -42,7 +42,7 @@ var container = new Container(x =>
     x.For<IEngine>().UseIfNone<VTwelve>();
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L33-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_what_do_i_have_container' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L34-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_what_do_i_have_container' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_what_do_i_have_container-1'></a>
 ```cs
 var container = new Container(x =>
@@ -72,7 +72,7 @@ If you were to run the code below against this `Container`:
 ```cs
 Console.WriteLine(container.WhatDoIHave());
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L51-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave_everything' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L54-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave_everything' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_whatdoihave_everything-1'></a>
 ```cs
 Debug.WriteLine(container.WhatDoIHave());
@@ -107,7 +107,7 @@ var byNamespace = container.WhatDoIHave(@namespace: "StructureMap.Testing.Widget
 // against the Service Type name
 var byType = container.WhatDoIHave(typeName: "Widget");
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L108-L124' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDoIHave_smoke_tests.cs#L114-L132' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdoihave-filtering' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_whatdoihave-filtering-1'></a>
 ```cs
 var container = new Container();

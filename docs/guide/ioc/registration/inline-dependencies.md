@@ -45,7 +45,7 @@ public void inline_usage_of_primitive_constructor_argument()
         .Color.ShouldBe("Red");
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L19-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-value' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L17-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-value' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## Event Condition Action Rules
@@ -76,7 +76,7 @@ public interface IEventRule
     void ProcessEvent(SomeEvent @event);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L36-L56' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-rule-classes' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L177-L198' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-rule-classes' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Now, let's move on to seeing how we could use inline dependency configuration to register new rules.
@@ -90,8 +90,8 @@ First off, let's say that we have a `SimpleRule` that takes a single condition a
 ```cs
 public class SimpleRule : IEventRule
 {
-    private readonly ICondition _condition;
     private readonly IAction _action;
+    private readonly ICondition _condition;
 
     public SimpleRule(ICondition condition, IAction action)
     {
@@ -108,7 +108,7 @@ public class SimpleRule : IEventRule
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L58-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-simplerule' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L35-L57' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-simplerule' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Now, since `SimpleRule` has only a single dependency on both `IAction` and `ICondition`, we can create new rules by registering new Instance's of `SimpleRule` with different combinations of its dependencies:
@@ -136,7 +136,6 @@ public class InlineCtorArgs : ServiceRegistry
         // Pass in your own Instance object
         For<IEventRule>().Use<SimpleRule>()
             .Ctor<IAction>().Is(new MySpecialActionInstance());
-
     }
 
     public class BigCondition : ICondition
@@ -174,7 +173,7 @@ public class InlineCtorArgs : ServiceRegistry
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L113-L173' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-simple-ctor-injection' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L91-L150' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-simple-ctor-injection' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The inline dependency configuration using the `Ctor<>().Is()` syntax supports all the common Lamar configuration options: define by type, by lambdas, by value, or if you really want to risk severe eye strain, you can use your own Instance objects and define the configuration of your dependency's dependencies.
@@ -188,9 +187,9 @@ If for some reason you need to specify an inline constructor argument dependency
 ```cs
 public class DualConditionRule : IEventRule
 {
+    private readonly IAction _action;
     private readonly ICondition _first;
     private readonly ICondition _second;
-    private readonly IAction _action;
 
     public DualConditionRule(ICondition first, ICondition second, IAction action)
     {
@@ -220,7 +219,7 @@ public class DualConditionRuleRegistry : ServiceRegistry
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L175-L210' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-ctor-by-name' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L200-L236' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-ctor-by-name' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## Setter Dependencies
@@ -253,11 +252,10 @@ public class RuleWithSettersRegistry : ServiceRegistry
 
             // or if you need to specify the property name
             .Setter<IAction>("Action").Is<Action2>();
-
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L212-L240' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-setters' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L238-L266' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-setters' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ::: tip INFO
@@ -308,21 +306,17 @@ public class Action1<TEvent> : IAction<TEvent>
 
 public class EventRule<TEvent> : IEventRule<TEvent>
 {
-    private readonly string _name;
-    private readonly ICondition<TEvent> _condition;
     private readonly IAction<TEvent> _action;
+    private readonly ICondition<TEvent> _condition;
 
     public EventRule(string name, ICondition<TEvent> condition, IAction<TEvent> action)
     {
-        _name = name;
+        Name = name;
         _condition = condition;
         _action = action;
     }
 
-    public string Name
-    {
-        get { return _name; }
-    }
+    public string Name { get; }
 
     public void ProcessEvent(TEvent @event)
     {
@@ -333,7 +327,7 @@ public class EventRule<TEvent> : IEventRule<TEvent>
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L242-L301' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-open-types' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L268-L324' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-open-types' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 It's frequently useful to explicitly configure all the elements for an enumerable argument (arrays, IEnumerable, or IList).
@@ -344,8 +338,8 @@ Lamar provides this syntax to do just that:
 ```cs
 public class BigRule : IEventRule
 {
-    private readonly IEnumerable<ICondition> _conditions;
     private readonly IEnumerable<IAction> _actions;
+    private readonly IEnumerable<ICondition> _conditions;
 
     public BigRule(IEnumerable<ICondition> conditions, IEnumerable<IAction> actions)
     {
@@ -357,10 +351,10 @@ public class BigRule : IEventRule
     {
         if (_conditions.Any(x => x.Matches(@event)))
         {
-            _actions.Each(x => x.PerformWork(@event));
+            foreach (var action in _actions) action.PerformWork(@event);
         }
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L305-L327' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-enumerables' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/inline_dependencies.cs#L153-L175' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inline-dependencies-enumerables' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

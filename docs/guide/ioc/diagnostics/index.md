@@ -20,6 +20,10 @@ static Task<int> Main(string[] args)
             // And the rest of your application's
             // DI registrations.
             services.IncludeRegistry<TestClassRegistry>();
+
+            // This one was problematic with oddball type names,
+            // so it's in our testing
+            services.AddHttpClient();
         })
 
         // Call this method to start your application
@@ -28,7 +32,7 @@ static Task<int> Main(string[] args)
         .RunOaktonCommands(args);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L15-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L15-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Once the `Lamar.Diagnostics` NuGet is installed to your application and you've opted into Oakton to handle command line options, typing this command at the root of your project will show all the installed commands:

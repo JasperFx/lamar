@@ -27,21 +27,21 @@ public void using_nested_containers()
     var rootService = container.GetInstance<IService>();
 
     var nested = container.GetNestedContainer();
-    
+
     // Singleton scoped objects are the same
     nested.GetInstance<IWidget>()
         .ShouldBeSameAs(rootWidget);
-    
+
     // Scoped objects are specific to the container
     var nestedService = nested.GetInstance<IService>();
     nestedService
         .ShouldNotBeSameAs(rootService);
-    
+
     nested.GetInstance<IService>()
         .ShouldBeSameAs(nestedService);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/NestedContainer.cs#L11-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-nested-container' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/NestedContainer.cs#L11-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-nested-container' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 You probably won't directly interact with nested containers, but do note that they are used behind the scenes at runtime of basically every

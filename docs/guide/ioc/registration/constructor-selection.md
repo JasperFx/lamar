@@ -60,8 +60,6 @@ You can see this behavior shown below:
 ```cs
 public class DbContext
 {
-    public string ConnectionString { get; set; }
-
     public DbContext(string connectionString)
     {
         ConnectionString = connectionString;
@@ -70,6 +68,8 @@ public class DbContext
     public DbContext() : this("default value")
     {
     }
+
+    public string ConnectionString { get; set; }
 }
 
 [Fact]
@@ -93,7 +93,7 @@ public void should_use_greediest_ctor_that_has_all_of_simple_dependencies()
         .ConnectionString.ShouldBe("not the default");
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/constructor_selection.cs#L127-L163' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_skip-ctor-with-missing-simples' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/constructor_selection.cs#L123-L160' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_skip-ctor-with-missing-simples' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_skip-ctor-with-missing-simples-1'></a>
 ```cs
 public class DbContext
@@ -149,12 +149,12 @@ public class Thingie
         CorrectCtorWasUsed = true;
     }
 
-    public bool CorrectCtorWasUsed { get; set; }
-
     public Thingie(IWidget widget, IService service)
     {
         Assert.True(false, "I should not have been called");
     }
+
+    public bool CorrectCtorWasUsed { get; set; }
 }
 
 [Fact]
@@ -177,7 +177,7 @@ public void override_the_constructor_selection()
         .ShouldBeTrue();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/constructor_selection.cs#L89-L125' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_explicit-ctor-selection' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/constructor_selection.cs#L84-L121' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_explicit-ctor-selection' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_explicit-ctor-selection-1'></a>
 ```cs
 public class Thingie
@@ -236,12 +236,12 @@ public class AttributedThing
         CorrectCtorWasUsed = true;
     }
 
-    public bool CorrectCtorWasUsed { get; set; }
-
     public AttributedThing(IWidget widget, IService service)
     {
         Assert.True(false, "I should not have been called");
     }
+
+    public bool CorrectCtorWasUsed { get; set; }
 }
 
 [Fact]
@@ -254,7 +254,7 @@ public void select_constructor_by_attribute()
         .ShouldBeTrue();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/constructor_selection.cs#L57-L87' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-default-ctor-attribute' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/constructor_selection.cs#L51-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-default-ctor-attribute' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-default-ctor-attribute-1'></a>
 ```cs
 public class AttributedThing

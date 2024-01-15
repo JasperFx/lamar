@@ -15,12 +15,12 @@ plans for existing registrations to accommodate changes here.
 public void add_all_new_services()
 {
     var container = new Container(_ => { _.AddTransient<IWidget, RedWidget>(); });
-    
+
     container.Configure(_ => _.AddTransient<IService, WhateverService>());
 
     container.GetInstance<IService>()
         .ShouldBeOfType<WhateverService>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/configure_container.cs#L14-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_add_all_new_services' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/configure_container.cs#L12-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_add_all_new_services' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

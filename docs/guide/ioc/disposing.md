@@ -22,7 +22,7 @@ implement both `IDisposable` and `IAsyncDisposable`. It is **not** necessary to 
 // Asynchronously disposing the container
 await container.DisposeAsync();
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/disposing_container.cs#L472-L476' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_calling_async_disposable' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/disposing_container.cs#L409-L414' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_calling_async_disposable' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The following table explains what method is called on a tracked object when the creating
@@ -93,8 +93,6 @@ public void nested_container_disposal()
         // A transient scoped service
         _.For<IColor>().Use<Green>();
 
-        
-        
         // An AlwaysUnique scoped service
         _.AddTransient<Purple>();
 
@@ -134,7 +132,7 @@ public void nested_container_disposal()
     singleton.WasDisposed.ShouldBeFalse();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/nested_container.cs#L100-L153' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nested-disposal' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/nested_container.cs#L59-L112' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_nested-disposal' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_nested-disposal-1'></a>
 ```cs
 [Fact]

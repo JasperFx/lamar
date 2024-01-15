@@ -28,13 +28,13 @@ public class LifetimeRegistry : ServiceRegistry
         this.AddSingleton<IClock, Clock>();
 
         this.AddScoped<IUnitOfWork, UnitOfWork>();
-        
+
         // Lifetimes the old StructureMap way
         // Transient is the default
         For<IWidget>().Use<AWidget>();
 
         For<IClock>().Use<Clock>().Singleton();
-        
+
         // or
 
         ForSingletonOf<IClock>().Use<Clock>();
@@ -43,5 +43,5 @@ public class LifetimeRegistry : ServiceRegistry
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Lifetimes.cs#L7-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lifetimeregistry' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/Lifetimes.cs#L7-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lifetimeregistry' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

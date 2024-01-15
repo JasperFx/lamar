@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-        <Version>13.0.1</Version>
+        <Version>13.0.2</Version>
         <Authors>Jeremy D. Miller</Authors>
         <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <DebugType>portable</DebugType>

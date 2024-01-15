@@ -50,7 +50,7 @@ var container = new Container(_ =>
 
 Console.WriteLine(container.WhatDidIScan());
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDidIScan_smoke_tests.cs#L21-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdidiscan' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDidIScan_smoke_tests.cs#L16-L43' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdidiscan' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_whatdidiscan-1'></a>
 ```cs
 var container = new Container(_ =>
@@ -118,7 +118,7 @@ Conventions
 
 */
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDidIScan_smoke_tests.cs#L90-L121' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdidiscan-result' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/WhatDidIScan_smoke_tests.cs#L87-L120' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_whatdidiscan-result' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_whatdidiscan-result-1'></a>
 ```cs
 /*

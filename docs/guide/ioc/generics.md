@@ -26,7 +26,7 @@ public interface ILogVisualizer
     string ToHtml(object log);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L144-L153' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ilogvisualizer' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L154-L165' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ilogvisualizer' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_ilogvisualizer-1'></a>
 ```cs
 public interface ILogVisualizer
@@ -56,7 +56,7 @@ var created = new IssueCreated();
 // I can get the html representation:
 var html = visualizer.ToHtml(created);
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L32-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-visualizer-knowning-the-type' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L30-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-visualizer-knowning-the-type' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-visualizer-knowning-the-type-1'></a>
 ```cs
 // Just setting up a Container and ILogVisualizer
@@ -66,7 +66,7 @@ var visualizer = container.GetInstance<ILogVisualizer>();
 var items = logs.Select(visualizer.ToHtml);
 var html = string.Join("<hr />", items);
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L58-L65' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-visualizer-knowning-the-type-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L60-L69' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-visualizer-knowning-the-type-1' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-visualizer-knowning-the-type-2'></a>
 ```cs
 // Just setting up a Container and ILogVisualizer
@@ -105,7 +105,7 @@ var logs = new object[]
     new IssueResolved()
 };
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L48-L56' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-visualizer-not-knowing-the-type' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L48-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-visualizer-not-knowing-the-type' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-visualizer-not-knowing-the-type-1'></a>
 ```cs
 var logs = new object[]
@@ -132,7 +132,7 @@ public interface IVisualizer<TLog>
     string ToHtml(TLog log);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L137-L142' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ivisualizer_t' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L145-L152' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ivisualizer_t' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Inside of the concrete implementation of `ILogVisualizer` we need to be able to pull out and use the correct `IVisualizer<T>` strategy for a log type. We of course
@@ -150,7 +150,7 @@ public class DefaultVisualizer<TLog> : IVisualizer<TLog>
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L155-L163' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_defaultvisualizer' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L167-L177' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_defaultvisualizer' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_defaultvisualizer-1'></a>
 ```cs
 public class DefaultVisualizer<TLog> : IVisualizer<TLog>
@@ -178,10 +178,7 @@ Let's say to begin with all we want to do is to always use the `DefaultVisualize
 [Fact]
 public void register_open_generic_type()
 {
-    var container = new Container(_ =>
-    {
-        _.For(typeof(IVisualizer<>)).Use(typeof(DefaultVisualizer<>));
-    });
+    var container = new Container(_ => { _.For(typeof(IVisualizer<>)).Use(typeof(DefaultVisualizer<>)); });
 
     container.GetInstance<IVisualizer<IssueCreated>>()
         .ShouldBeOfType<DefaultVisualizer<IssueCreated>>();
@@ -190,7 +187,7 @@ public void register_open_generic_type()
         .ShouldBeOfType<DefaultVisualizer<IssueResolved>>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L10-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_register_open_generic_type' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L9-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_register_open_generic_type' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_register_open_generic_type-1'></a>
 ```cs
 [Fact]
@@ -275,7 +272,7 @@ public void generic_defaults()
         .ShouldBeOfType<DefaultVisualizer<TaskAssigned>>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L68-L91' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_generic-defaults-with-fallback' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L72-L96' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_generic-defaults-with-fallback' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_generic-defaults-with-fallback-1'></a>
 ```cs
 [Fact]
@@ -332,7 +329,7 @@ public class IssueResolvedVisualizer : IVisualizer<IssueResolved>
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L176-L192' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_specific-visualizers' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L203-L221' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_specific-visualizers' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_specific-visualizers-1'></a>
 ```cs
 public class IssueCreatedVisualizer : IVisualizer<IssueCreated>
@@ -382,11 +379,10 @@ public class VisualizationRegistry : ServiceRegistry
             x.TheCallingAssembly();
             x.ConnectImplementationsToTypesClosing(typeof(IVisualizer<>));
         });
-
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L114-L135' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_visualizationregistry' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L121-L143' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_visualizationregistry' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_visualizationregistry-1'></a>
 ```cs
 public class VisualizationRegistry : Registry
@@ -458,7 +454,7 @@ public void visualization_registry()
         .ShouldBeOfType<DefaultVisualizer<TaskAssigned>>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L93-L112' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_visualization-registry-in-action' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/generic_types.cs#L98-L118' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_visualization-registry-in-action' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_visualization-registry-in-action-1'></a>
 ```cs
 [Fact]

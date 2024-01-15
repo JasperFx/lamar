@@ -37,10 +37,7 @@ public void sample_usage_of_overrides()
         .CreateHostBuilder(Array.Empty<string>())
 
         // This is our chance to make service overrides
-        .OverrideServices(s =>
-        {
-            s.For<IServer>().Use<FakeServer>();
-        });
+        .OverrideServices(s => { s.For<IServer>().Use<FakeServer>(); });
 
     using var host = builder.Build();
 
@@ -48,7 +45,7 @@ public void sample_usage_of_overrides()
         .ShouldBeOfType<FakeServer>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/integration_with_aspnetcore.cs#L214-L234' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_usage_of_overrides' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.AspNetCoreTests/integration_with_aspnetcore.cs#L179-L196' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_usage_of_overrides' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 In the code above, the lambda passed into the `OverrideServices()` method is executed in

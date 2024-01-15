@@ -29,25 +29,19 @@ public class WidgetLazyUser
         _widget = widget;
     }
 
-    public IWidget Widget
-    {
-        get { return _widget.Value; }
-    }
+    public IWidget Widget => _widget.Value;
 }
 
 [Fact]
 public void lazy_resolution_in_action()
 {
-    var container = new Container(_ =>
-    {
-        _.For<IWidget>().Use<AWidget>();
-    });
+    var container = new Container(_ => { _.For<IWidget>().Use<AWidget>(); });
 
     container.GetInstance<WidgetLazyUser>()
         .Widget.ShouldBeOfType<AWidget>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L48-L76' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lazy-in-usage' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L180-L203' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_lazy-in-usage' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_lazy-in-usage-1'></a>
 ```cs
 public class WidgetLazyUser
@@ -90,10 +84,7 @@ Likewise, you can also declare a dependency on `Func<T>` with very similar mecha
 [Fact]
 public void build_a_func_that_returns_a_singleton()
 {
-    var container = new Container(x =>
-    {
-        x.ForSingletonOf<IWidget>().Use<AWidget>();
-    });
+    var container = new Container(x => { x.ForSingletonOf<IWidget>().Use<AWidget>(); });
 
     var func = container.GetInstance<Func<IWidget>>();
     var w1 = func();
@@ -107,7 +98,7 @@ public void build_a_func_that_returns_a_singleton()
     w2.ShouldBeSameAs(w3);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L112-L133' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-func-t' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L67-L86' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-func-t' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-func-t-1'></a>
 ```cs
 [Fact]
@@ -159,7 +150,7 @@ public void build_a_func_by_string()
     func("red").ShouldBeOfType<RedWidget>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L155-L172' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-func-string-t' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L88-L106' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-func-string-t' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-func-string-t-1'></a>
 ```cs
 [Fact]
@@ -199,20 +190,17 @@ public class Thing1
         _thing2 = thing2;
     }
 
-    public Thing2 Thing2
-    {
-        get { return _thing2.Value; }
-    }
+    public Thing2 Thing2 => _thing2.Value;
 }
 
 public class Thing2
 {
-    public Thing1 Thing1 { get; set; }
-
     public Thing2(Thing1 thing1)
     {
         Thing1 = thing1;
     }
+
+    public Thing1 Thing1 { get; set; }
 }
 
 [Fact]
@@ -223,7 +211,7 @@ public void use_lazy_as_workaround_for_bi_directional_dependency()
         _.AddSingleton<Thing1>();
         _.AddSingleton<Thing2>();
     });
-    
+
     var thing1 = container.GetInstance<Thing1>();
     var thing2 = container.GetInstance<Thing2>();
 
@@ -231,7 +219,7 @@ public void use_lazy_as_workaround_for_bi_directional_dependency()
     thing2.Thing1.ShouldBeSameAs(thing1);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L207-L250' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lazy-as-workaround-for-bidirectional-dependency' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/lazy_and_func_resolution.cs#L205-L245' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lazy-as-workaround-for-bidirectional-dependency' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_using-lazy-as-workaround-for-bidirectional-dependency-1'></a>
 ```cs
 [Singleton]

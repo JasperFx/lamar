@@ -18,7 +18,7 @@ public ShippingScreenPresenter(IContainer container)
     _repository = container.GetInstance<IRepository>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L202-L215' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_shippingscreenpresenter-anti-pattern' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L201-L216' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_shippingscreenpresenter-anti-pattern' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Instead of binding `ShippingScreenPresenter` so tightly to Lamar and having to explicitly fetch its dependencies, let's switch
@@ -37,7 +37,7 @@ public ShippingScreenPresenter(IShippingService service, IRepository repository)
     _repository = repository;
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L191-L200' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_shippingscreenpresenter-with-ctor-injection' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L188-L199' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_shippingscreenpresenter-with-ctor-injection' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 As long as a Lamar `Container` knows how to resolve the `IRepository` and
@@ -69,5 +69,5 @@ public void ShowBuildPlan()
     _output.WriteLine(buildPlan);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L237-L255' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_shippingscreenpresenter-build-plan' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L237-L257' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_shippingscreenpresenter-build-plan' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

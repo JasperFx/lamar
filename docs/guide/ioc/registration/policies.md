@@ -26,7 +26,7 @@ public interface IFamilyPolicy : ILamarPolicy
     ServiceFamily Build(Type type, ServiceGraph serviceGraph);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IFamilyPolicy.cs#L11-L21' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifamilypolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IFamilyPolicy.cs#L11-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifamilypolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Internally, if you make a request to `IContainer.GetInstance(type)` for a type that the active `Container` does not recognize, StructureMap will next try to apply all the registered `IFamilyPolicy` policies to create a `ServiceFamily` object for that service type that models the registrations for that service type, including the default, additional named instances, interceptors or decorators, and lifecycle rules.
@@ -50,11 +50,11 @@ internal class EnumerablePolicy : IFamilyPolicy
         if (type.IsEnumerable())
         {
             var elementType = type.GetGenericArguments().First();
-            
+
             var instanceType = typeof(ListInstance<>).MakeGenericType(elementType);
             var ctor = instanceType.GetConstructors().Single();
-            var instance = ctor.Invoke(new object[]{type}).As<Instance>();
-            
+            var instance = ctor.Invoke(new object[] { type }).As<Instance>();
+
             return new ServiceFamily(type, new IDecoratorPolicy[0], instance);
         }
 
@@ -62,7 +62,7 @@ internal class EnumerablePolicy : IFamilyPolicy
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Enumerables/EnumerablePolicy.cs#L9-L35' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_enumerablepolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Enumerables/EnumerablePolicy.cs#L8-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_enumerablepolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The result of `EnumerablePolicy` in action is shown by the acceptance test below:
@@ -111,7 +111,7 @@ public class Color
     public string Name { get; set; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/using_family_policies.cs#L148-L153' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_color' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/using_family_policies.cs#L130-L137' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_color' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 And you build a policy that auto-resolves registrations for the `Color` service if none previously exist:
@@ -123,19 +123,20 @@ public class ColorPolicy : IFamilyPolicy
 {
     public ServiceFamily Build(Type type, ServiceGraph serviceGraph)
     {
-        if (type != typeof(Color)) return null;
-        
-        return new ServiceFamily(type, serviceGraph.DecoratorPolicies, 
-            ObjectInstance.For(new Color{Name = "Red"}).Named("Red"),
-            ObjectInstance.For(new Color{Name = "Blue"}).Named("Blue"),
-            ObjectInstance.For(new Color{Name = "Green"}).Named("Green")
-            
-            
-            );
+        if (type != typeof(Color))
+        {
+            return null;
+        }
+
+        return new ServiceFamily(type, serviceGraph.DecoratorPolicies,
+            ObjectInstance.For(new Color { Name = "Red" }).Named("Red"),
+            ObjectInstance.For(new Color { Name = "Blue" }).Named("Blue"),
+            ObjectInstance.For(new Color { Name = "Green" }).Named("Green")
+        );
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/using_family_policies.cs#L167-L183' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_colorpolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/using_family_policies.cs#L149-L168' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_colorpolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 You can register the new `ColorPolicy` shown above like this:
@@ -143,12 +144,9 @@ You can register the new `ColorPolicy` shown above like this:
 <!-- snippet: sample_register-ColorPolicy -->
 <a id='snippet-sample_register-colorpolicy'></a>
 ```cs
-var container = Container.For(_ =>
-{
-    _.Policies.OnMissingFamily<ColorPolicy>();
-});
+var container = Container.For(_ => { _.Policies.OnMissingFamily<ColorPolicy>(); });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/using_family_policies.cs#L132-L137' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_register-colorpolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/using_family_policies.cs#L115-L119' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_register-colorpolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Internally, Lamar uses this `IFamilyPolicy` feature for its [generic type support](/guide/ioc/generics), the [enumerable type support described as above](/guide/ioc/working-with-enumerable-types), and the [auto registration of concrete types](/guide/ioc/resolving/requesting-a-concrete-type).
@@ -161,21 +159,20 @@ Lamar allows you to create conventional build policies with a mechanism for alte
 <a id='snippet-sample_iinstancepolicy'></a>
 ```cs
 /// <summary>
-/// Custom policy on Instance construction that is evaluated
-/// as part of creating a "build plan"
+///     Custom policy on Instance construction that is evaluated
+///     as part of creating a "build plan"
 /// </summary>
-
 public interface IInstancePolicy : ILamarPolicy
 {
     /// <summary>
-    /// Apply any conventional changes to the configuration
-    /// of a single Instance
+    ///     Apply any conventional changes to the configuration
+    ///     of a single Instance
     /// </summary>
     /// <param name="instance"></param>
     void Apply(Instance instance);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IInstancePolicy.cs#L7-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iinstancepolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IInstancePolicy.cs#L6-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iinstancepolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 These policies are registered as part of the [ServiceRegistry DSL](/guide/ioc/registration/registry-dsl) with the `Policies.Add()` method:
@@ -190,7 +187,7 @@ var container = new Container(_ =>
     _.Policies.Add(new MyCustomPolicy());
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L245-L252' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_policies.add' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L94-L103' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_policies.add' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_policies.add-1'></a>
 ```cs
 var container = new Container(_ =>
@@ -211,7 +208,7 @@ The `Instance` objects will give you access to the types being created, the conf
 <a id='snippet-sample_configuredinstancepolicy'></a>
 ```cs
 /// <summary>
-/// Base class for using policies against IConfiguredInstance registrations
+///     Base class for using policies against IConfiguredInstance registrations
 /// </summary>
 public abstract class ConfiguredInstancePolicy : IInstancePolicy
 {
@@ -226,7 +223,7 @@ public abstract class ConfiguredInstancePolicy : IInstancePolicy
     protected abstract void apply(IConfiguredInstance instance);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IInstancePolicy.cs#L24-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_configuredinstancepolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IInstancePolicy.cs#L24-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_configuredinstancepolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 For more information, see:
@@ -244,25 +241,25 @@ So let me say upfront that I don't like this approach, but other folks have aske
 ```cs
 public class DatabaseUser
 {
-    public string ConnectionString { get; set; }
-
     public DatabaseUser(string connectionString)
     {
         ConnectionString = connectionString;
     }
+
+    public string ConnectionString { get; set; }
 }
 
 public class ConnectedThing
 {
-    public string ConnectionString { get; set; }
-
     public ConnectedThing(string connectionString)
     {
         ConnectionString = connectionString;
     }
+
+    public string ConnectionString { get; set; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L14-L35' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_database-users' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L201-L223' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_database-users' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_database-users-1'></a>
 ```cs
 public class DatabaseUser
@@ -301,7 +298,7 @@ public class ConnectionStringPolicy : ConfiguredInstancePolicy
             .GetConstructors()
             .SelectMany(x => x.GetParameters())
             .FirstOrDefault(x => x.Name == "connectionString");
-        
+
         if (parameter != null)
         {
             var connectionString = findConnectionStringFromConfiguration();
@@ -317,7 +314,7 @@ public class ConnectionStringPolicy : ConfiguredInstancePolicy
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L37-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_connectionstringpolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L115-L141' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_connectionstringpolicy' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_connectionstringpolicy-1'></a>
 ```cs
 public class ConnectionStringPolicy : ConfiguredInstancePolicy
@@ -351,10 +348,7 @@ Now, let's use that policy against the types that need "connectionString" and se
 [Fact]
 public void use_the_connection_string_policy()
 {
-    var container = new Container(_ =>
-    {
-        _.Policies.Add<ConnectionStringPolicy>();
-    });
+    var container = new Container(_ => { _.Policies.Add<ConnectionStringPolicy>(); });
 
     container.GetInstance<DatabaseUser>()
         .ConnectionString.ShouldBe("the connection string");
@@ -363,7 +357,7 @@ public void use_the_connection_string_policy()
         .ConnectionString.ShouldBe("the connection string");
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L64-L80' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_use_the_connection_string_policy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L13-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_use_the_connection_string_policy' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_use_the_connection_string_policy-1'></a>
 ```cs
 [Fact]
@@ -396,16 +390,18 @@ To make this concrete, let's say that our data access is all behind an interface
 <!-- snippet: sample_IDatabase -->
 <a id='snippet-sample_idatabase'></a>
 ```cs
-public interface IDatabase { }
+public interface IDatabase
+{
+}
 
 public class Database : IDatabase
 {
-    public string ConnectionString { get; set; }
-
     public Database(string connectionString)
     {
         ConnectionString = connectionString;
     }
+
+    public string ConnectionString { get; set; }
 
     public override string ToString()
     {
@@ -413,7 +409,7 @@ public class Database : IDatabase
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L82-L100' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_idatabase' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L225-L246' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_idatabase' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_idatabase-1'></a>
 ```cs
 public interface IDatabase { }
@@ -447,19 +443,18 @@ public class InjectDatabaseByName : ConfiguredInstancePolicy
 {
     protected override void apply(IConfiguredInstance instance)
     {
-        instance.ImplementationType.GetConstructors()
+        var parameterInfos = instance.ImplementationType.GetConstructors()
             .SelectMany(x => x.GetParameters())
-            .Where(x => x.ParameterType == typeof(IDatabase))
-            .Each(param =>
-            {
-                // Using ReferencedInstance here tells Lamar
-                // to "use the IDatabase by this name"
-                instance.Ctor<IDatabase>(param.Name).IsNamedInstance(param.Name);
-            });
+            .Where(x => x.ParameterType == typeof(IDatabase));
+
+        foreach (var param in parameterInfos)
+            // Using ReferencedInstance here tells Lamar
+            // to "use the IDatabase by this name"
+            instance.Ctor<IDatabase>(param.Name).IsNamedInstance(param.Name);
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L141-L158' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_injectdatabasebyname' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L143-L160' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_injectdatabasebyname' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_injectdatabasebyname-1'></a>
 ```cs
 public class InjectDatabaseByName : ConfiguredInstancePolicy
@@ -498,7 +493,7 @@ var container = new Container(_ =>
     _.Policies.Add<InjectDatabaseByName>();
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L163-L174' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_choose_database_container_setup' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L32-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_choose_database_container_setup' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_choose_database_container_setup-1'></a>
 ```cs
 var container = new Container(_ =>
@@ -552,12 +547,12 @@ public class DoubleDatabaseUser
     // Watch out for potential conflicts between setters
     // and ctor params. The easiest thing is to just make
     // setters private
-    public IDatabase Green { get; private set; }
+    public IDatabase Green { get; }
 
-    public IDatabase Red { get; private set; }
+    public IDatabase Red { get; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L102-L139' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_database-users-2' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L248-L286' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_database-users-2' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_database-users-2-1'></a>
 ```cs
 public class BigService
@@ -618,7 +613,7 @@ var user = container.GetInstance<DoubleDatabaseUser>();
 user.Green.As<Database>().ConnectionString.ShouldBe("*green*");
 user.Red.As<Database>().ConnectionString.ShouldBe("*red*");
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L176-L190' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inject-database-by-name-in-usage' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L47-L63' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inject-database-by-name-in-usage' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_inject-database-by-name-in-usage-1'></a>
 ```cs
 // ImportantService should get the "red" database
@@ -666,7 +661,7 @@ public class CacheIsSingleton : IInstancePolicy
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L197-L209' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_cacheissingleton' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L170-L183' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_cacheissingleton' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_cacheissingleton-1'></a>
 ```cs
 public class CacheIsSingleton : IInstancePolicy
@@ -708,10 +703,10 @@ public void set_cache_to_singleton()
     // Now that the policy has executed, we
     // can verify that WidgetCache is a SingletonThing
     container.Model.For<IWidgets>().Default
-            .Lifetime.ShouldBe(ServiceLifetime.Singleton);
+        .Lifetime.ShouldBe(ServiceLifetime.Singleton);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L211-L233' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_set_cache_to_singleton' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_policies.cs#L66-L89' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_set_cache_to_singleton' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_set_cache_to_singleton-1'></a>
 ```cs
 [Fact]

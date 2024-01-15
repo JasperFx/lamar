@@ -28,7 +28,7 @@ var container = new Container(x =>
 
 Console.WriteLine(container.HowDoIBuild());
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/HowDoIBuild_smoke_tests.cs#L30-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-howdoibuild' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Diagnostics/HowDoIBuild_smoke_tests.cs#L30-L50' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-howdoibuild' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
   This method also provides the same kind of filtering as the [WhatDoIHave](/guide/ioc/diagnostics/what-do-i-have) operation.
@@ -52,7 +52,6 @@ container = new Container(x =>
     x.AddSingleton<Rule>(new ColorRule("red"));
 
     x.AddScoped<IThing, Thing>();
-    
 
     x.For<IEngine>().Use<PushrodEngine>();
 
@@ -61,7 +60,7 @@ container = new Container(x =>
     x.For<Startable3>().Use<Startable3>();
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L24-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-for-build-plan' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L23-L46' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-for-build-plan' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 And you have a concrete type like this one:
@@ -71,19 +70,19 @@ And you have a concrete type like this one:
 ```cs
 public class UsesStuff
 {
-    public IWidget Widget { get; }
-    public IThing Thing { get; }
-    public IEngine Engine { get; }
-
     public UsesStuff(IWidget widget, IThing thing, IEngine engine)
     {
         Widget = widget;
         Thing = thing;
         Engine = engine;
     }
+
+    public IWidget Widget { get; }
+    public IThing Thing { get; }
+    public IEngine Engine { get; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L48-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_usesstuff' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L231-L247' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_usesstuff' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 To see what the generated code is to resolve that `UsesStuff` type, we can use the [container diagnostic model](/guide/ioc/diagnostics/using-the-container-model) to access that code for us with this syntax:
@@ -93,7 +92,7 @@ To see what the generated code is to resolve that `UsesStuff` type, we can use t
 ```cs
 var plan = container.Model.For<UsesStuff>().Default.DescribeBuildPlan();
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L67-L69' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-build-plan' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/container_model_usage.cs#L52-L56' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_getting-build-plan' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Which outputs this lovely looking code below:

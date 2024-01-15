@@ -33,14 +33,14 @@ var container = new Container(x =>
 {
     // Using StructureMap style registrations
     x.For<IClock>().Use<Clock>();
-    
+
     // Using ASP.Net Core DI style registrations
     x.AddTransient<IClock, Clock>();
-    
+
     // and lots more services in all likelihood
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/GettingStarted.cs#L11-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_start-a-container' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/GettingStarted.cs#L11-L24' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_start-a-container' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Now, to resolve services from your container:
@@ -65,7 +65,7 @@ var clock2 = provider.GetRequiredService<IClock>();
 // Try to resolve a service if it's registered
 var service2 = provider.GetService<IService>();
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/GettingStarted.cs#L24-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_resolving-services-quickstart' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Samples/GettingStarted.cs#L26-L45' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_resolving-services-quickstart' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Definitely note that the old StructureMap style of service resolution is semantically different than ASP.Net Core's DI resolution methods. That's been the cause of much user aggravation over the years.
@@ -159,20 +159,26 @@ builder.Host.UseLamar((context, registry) =>
 {
     // register services using Lamar
     registry.For<ITest>().Use<MyTest>();
+    
+    // Add your own Lamar ServiceRegistry collections
+    // of registrations
     registry.IncludeRegistry<MyRegistry>();
 
-    // add the controllers
+    // discover MVC controllers -- this was problematic
+    // inside of the UseLamar() method, but is "fixed" in
+    // Lamar V8
     registry.AddControllers();
 });
 
 var app = builder.Build();
 app.MapControllers();
 
+// Add Minimal API routes
 app.MapGet("/", (ITest service) => service.SayHello());
 
 app.Run();
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarWithMinimalApiOnNet6/Program.cs#L8-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using_lamar_with_minimal_api' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarWithMinimalApiOnNet6/Program.cs#L8-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using_lamar_with_minimal_api' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ::: tip

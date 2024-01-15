@@ -15,7 +15,7 @@ public class ExecutionContext
     public Guid Id { get; set; } = Guid.NewGuid();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L191-L198' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_executioncontext' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L178-L187' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_executioncontext' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 We might well have a service in our code that is resolved from a Lamar container that depends on that `ExecutionContext` interface:
@@ -25,15 +25,15 @@ We might well have a service in our code that is resolved from a Lamar container
 ```cs
 public class ContextUsingService
 {
-    public ExecutionContext Context { get; }
-
     public ContextUsingService(ExecutionContext context)
     {
         Context = context;
     }
+
+    public ExecutionContext Context { get; }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L179-L189' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_contextusingservice' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L164-L176' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_contextusingservice' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The first thing we have to do is make a registration in Lamar **upfront** that lets the container know that `ExecutionContext` is going to be injected
@@ -42,12 +42,9 @@ at runtime:
 <!-- snippet: sample_container-with-injectable -->
 <a id='snippet-sample_container-with-injectable'></a>
 ```cs
-var container = new Container(_ =>
-{
-    _.Injectable<ExecutionContext>();
-});
+var container = new Container(_ => { _.Injectable<ExecutionContext>(); });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L155-L160' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-with-injectable' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L119-L123' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_container-with-injectable' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 At runtime, we can inject `ExecutionContext` like this:
@@ -60,7 +57,7 @@ var context = new ExecutionContext();
 var nested = container.GetNestedContainer();
 nested.Inject(context);
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L162-L167' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_injecting-context-to-nested' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L125-L132' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_injecting-context-to-nested' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Finally, when we resolve a service that depends on `ExecutionContext` from the nested container
@@ -72,5 +69,5 @@ we built above, we can see that it has a reference to our context object:
 var service = nested.GetInstance<ContextUsingService>();
 service.Context.ShouldBeSameAs(context);
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L170-L173' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_resolving-using-context' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/inject_to_scope.cs#L135-L140' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_resolving-using-context' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

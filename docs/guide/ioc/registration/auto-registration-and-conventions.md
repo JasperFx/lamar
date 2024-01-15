@@ -36,7 +36,7 @@ public class BasicScanning : ServiceRegistry
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L135-L158' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_basicscanning' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/Examples/SetterExamples.cs#L131-L156' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_basicscanning' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Please note (because I've been asked this several times over the years) that each call to `ServiceRegistry.Scan()` is an entirely atomic operation that has no impact on previous or subsequent calls.
@@ -210,7 +210,7 @@ public class BiHolder : IBiHolder
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/do_not_blow_up_with_bi_directional_dependencies.cs#L69-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamarignore' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/do_not_blow_up_with_bi_directional_dependencies.cs#L63-L74' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamarignore' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## Custom Registration Conventions
@@ -230,7 +230,7 @@ public interface IRegistrationConvention
     void ScanTypes(TypeSet types, ServiceRegistry services);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/Scanning/Conventions/IRegistrationConvention.cs#L5-L14' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iregistrationconvention' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/Scanning/Conventions/IRegistrationConvention.cs#L5-L15' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_iregistrationconvention' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Let's say that you'd like a custom convention that just registers a concrete type against all the interfaces
@@ -261,19 +261,17 @@ public class AllInterfacesConvention : IRegistrationConvention
     public void ScanTypes(TypeSet types, ServiceRegistry services)
     {
         // Only work on concrete types
-        foreach (var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed).Where(x => x.Name == "BusyGuy"))
+        foreach (var type in types.FindTypes(TypeClassification.Concretes | TypeClassification.Closed)
+                     .Where(x => x.Name == "BusyGuy"))
         {
             // Register against all the interfaces implemented
             // by this concrete class
 
-            foreach (var @interface in type.GetInterfaces())
-            {
-                services.AddTransient(@interface, type);
-            }
-            
-        };
-    }
+            foreach (var @interface in type.GetInterfaces()) services.AddTransient(@interface, type);
+        }
 
+        ;
+    }
 }
 
 [Fact]
@@ -299,7 +297,7 @@ public void use_custom_registration_convention()
     container.GetInstance<IBaz>().ShouldBeOfType<BusyGuy>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_registration_convention.cs#L14-L76' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_custom-registration-convention' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/custom_registration_convention.cs#L12-L72' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_custom-registration-convention' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_custom-registration-convention-1'></a>
 ```cs
 public interface IFoo
@@ -369,13 +367,21 @@ the I[Something]/[Something] naming convention as shown in this sample:
 <!-- snippet: sample_WithDefaultConventions -->
 <a id='snippet-sample_withdefaultconventions'></a>
 ```cs
-public interface ISpaceship { }
+public interface ISpaceship
+{
+}
 
-public class Spaceship : ISpaceship { }
+public class Spaceship : ISpaceship
+{
+}
 
-public interface IRocket { }
+public interface IRocket
+{
+}
 
-public class Rocket : IRocket { }
+public class Rocket : IRocket
+{
+}
 
 [Fact]
 public void default_scanning_in_action()
@@ -393,7 +399,7 @@ public void default_scanning_in_action()
     container.GetInstance<IRocket>().ShouldBeOfType<Rocket>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L11-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventions' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L64-L98' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventions' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_withdefaultconventions-1'></a>
 ```cs
 public interface ISpaceship { }
@@ -433,16 +439,16 @@ var container = new Container(_ =>
     _.Scan(x =>
     {
         x.Assembly("Lamar.Testing");
-        
+
         // This is the default, add all discovered registrations
         // regardless of existing registrations
         x.WithDefaultConventions(OverwriteBehavior.Always);
-        
+
         // Do not add any registrations if the *ServiceType*
         // is already registered. This will prevent the scanning
         // from overwriting existing default registrations
         x.WithDefaultConventions(OverwriteBehavior.Never);
-        
+
         // Only add new ImplementationType registrations for 
         // the ServiceType. This will prevent duplicate concrete
         // types for the same ServiceType being registered by the
@@ -451,7 +457,7 @@ var container = new Container(_ =>
     });
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L41-L64' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventionsoptions' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L14-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventionsoptions' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ::: tip INFO
@@ -468,16 +474,16 @@ var container = new Container(_ =>
     _.Scan(x =>
     {
         x.Assembly("Lamar.Testing");
-        
+
         // Use Scoped as the lifetime
         x.WithDefaultConventions(ServiceLifetime.Scoped);
-        
+
         // Mix and match with override behavior
         x.WithDefaultConventions(OverwriteBehavior.Never, ServiceLifetime.Singleton);
     });
 });
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L71-L85' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventionslifetime' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L45-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_withdefaultconventionslifetime' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Otherwise, the default registration will be `Lifetime.Transient`.
@@ -489,9 +495,13 @@ To tell Lamar to automatically register any interface that only has one concrete
 <!-- snippet: sample_SingleImplementationsOfInterface -->
 <a id='snippet-sample_singleimplementationsofinterface'></a>
 ```cs
-public interface ISong { }
+public interface ISong
+{
+}
 
-public class TheOnlySong : ISong { }
+public class TheOnlySong : ISong
+{
+}
 
 [Fact]
 public void only_implementation()
@@ -509,7 +519,7 @@ public void only_implementation()
         .ShouldBeOfType<TheOnlySong>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L127-L148' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_singleimplementationsofinterface' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L147-L173' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_singleimplementationsofinterface' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_singleimplementationsofinterface-1'></a>
 ```cs
 public interface ISong { }
@@ -542,13 +552,21 @@ To add all concrete types that can be cast to a named service type, use this syn
 <!-- snippet: sample_register-all-types-implementing -->
 <a id='snippet-sample_register-all-types-implementing'></a>
 ```cs
-public interface IFantasySeries { }
+public interface IFantasySeries
+{
+}
 
-public class WheelOfTime : IFantasySeries { }
+public class WheelOfTime : IFantasySeries
+{
+}
 
-public class GameOfThrones : IFantasySeries { }
+public class GameOfThrones : IFantasySeries
+{
+}
 
-public class BlackCompany : IFantasySeries { }
+public class BlackCompany : IFantasySeries
+{
+}
 
 [Fact]
 public void register_all_types_of_an_interface()
@@ -577,7 +595,7 @@ public void register_all_types_of_an_interface()
     container.GetInstance<IFantasySeries>("blackcompany").ShouldBeOfType<BlackCompany>();
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L89-L125' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_register-all-types-implementing' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/scanning_samples.cs#L100-L145' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_register-all-types-implementing' title='Start of snippet'>anchor</a></sup>
 <a id='snippet-sample_register-all-types-implementing-1'></a>
 ```cs
 public interface IFantasySeries { }

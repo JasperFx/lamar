@@ -235,7 +235,7 @@ public void when_singleton_both_interfaces_give_same_instance()
     instanceA.ShouldBeTheSameAs(instanceB);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/one_instance_across_multiple_interfaces.cs#L7-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inverse-registration' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/one_instance_across_multiple_interfaces.cs#L7-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_inverse-registration' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 The same thing works for scoped registrations; using `.Scoped()` in place of `.Singleton()` in the above sample would result in the same instance being returned when resolving any one of the registered interfaces for the duration of the scope.
