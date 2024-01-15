@@ -85,7 +85,7 @@ public abstract class Instance
             argName += "_of_" + ServiceType.GetGenericArguments().Select(t => t.NameInCode().Sanitize()).Join("_");
         }
 
-        return IsOnlyOneOfServiceType ? argName : argName + HashCode(ServiceType, Name).ToString().Replace("-", "_");
+        return IsOnlyOneOfServiceType ? argName : argName + Math.Abs(HashCode(ServiceType, Name)).ToString().Replace("-", "_");
     }
 
     internal IEnumerable<Assembly> ReferencedAssemblies()
