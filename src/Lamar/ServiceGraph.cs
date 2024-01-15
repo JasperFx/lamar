@@ -513,7 +513,14 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     public bool CouldResolve(Type type)
     {
-        return FindDefault(type) != null;
+        try
+        {
+            return FindDefault(type) != null;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
 
