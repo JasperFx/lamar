@@ -6,6 +6,7 @@ using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Shouldly;
@@ -275,6 +276,51 @@ public class ConstructorInstanceTests
         ConstructorInstance.For<NotDisposableGuy>(ServiceLifetime.Scoped)
             .CreateVariable(BuildMode.Dependency, new ResolverVariables(), false).Creator
             .ShouldBeOfType<GetInstanceFrame>();
+    }
+
+    [Fact]
+    public void do_not_consider_guid_as_something_it_can_resolve()
+    {
+        var instance = new ConstructorInstance(typeof(GuyWithGuidConstructor), typeof(GuyWithGuidConstructor), ServiceLifetime.Singleton);
+        var theServices = new ServiceRegistry();
+        theServices.AddSingleton<IWidget, AWidget>();
+        theServices.AddTransient<Rule, BlueRule>();
+
+        var theGraph = new ServiceGraph(theServices, Scope.Empty());
+        theGraph.Initialize();
+        var ctor = instance.DetermineConstructor(theGraph, out var message);
+        ctor.ShouldNotBeNull();
+        ctor.GetParameters().Any(x => x.ParameterType == typeof(Guid)).ShouldBeFalse();
+    }
+
+    public class GuyWithGuidConstructor
+    {
+        public GuyWithGuidConstructor(IWidget widget)
+        {
+            
+        }
+        
+        public GuyWithGuidConstructor(IWidget widget, Guid id)
+        {
+            
+        }
+        
+        public GuyWithGuidConstructor(IWidget widget, Guid id, Guid other)
+        {
+            
+        }
+        
+        public GuyWithGuidConstructor(Guid id, Guid other)
+        {
+            
+        }
+    }
+
+    public class GuyWithOnlyGuids
+    {
+        public GuyWithOnlyGuids(Guid id, Guid other)
+        {
+        }
     }
 
     public class GuyWithMultipleConstructors

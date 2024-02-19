@@ -16,6 +16,8 @@ internal static class TypeExtensions
             return true;
         }
 
+        if (type == typeof(Guid)) return true;
+
         if (type.IsEnum)
         {
             return true;
