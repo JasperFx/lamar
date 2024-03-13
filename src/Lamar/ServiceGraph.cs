@@ -268,7 +268,9 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     private ServiceFamily buildClosedGenericType(Type serviceType, IServiceCollection services)
     {
-        var closed = services.Where(x => x.ServiceType == serviceType && !x.ImplementationType.IsOpenGeneric())
+        var closed = services.Where(x => x.ServiceType == serviceType && (x.IsKeyedService
+                ? !x.KeyedImplementationType.IsOpenGeneric()
+                : !x.ImplementationType.IsOpenGeneric()))
             .Select(Instance.For);
 
         var templated = services
