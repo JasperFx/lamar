@@ -1,3 +1,8 @@
+# Lamar is going to be discontinued in the near future. It's Microsoft's world, and we're all just living in it
+
+It's time to start a discussion about what if anything we could do on the way out the door to help folks eventually move off of Lamar
+and onto probably just the built in DI container
+
 # Lamar (née BlueMilk)
 
 [![Discord](https://img.shields.io/discord/1074998995086225460?color=blue&label=Chat%20on%20Discord)](https://discord.gg/WMxrvegf8H)
