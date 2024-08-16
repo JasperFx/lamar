@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,8 +23,31 @@ namespace Lamar.Microsoft.DependencyInjection
         {
             return builder.ConfigureServices(x => x.OverrideServices(overrides));
         }
-        
 
+#if NET8_0_OR_GREATER
+        /// <summary>
+        /// Use Lamar as the DI/IoC container for this application
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="configure"></param>
+        /// <returns></returns>
+        public static HostApplicationBuilder UseLamar(this HostApplicationBuilder builder,
+            Action<ServiceRegistry> configure = null)
+        {
+            builder.Services.AddSingleton(c =>
+                c.GetRequiredService<IContainer>().CreateServiceVariableSource());
+            
+            // This enables the usage of implicit services in Minimal APIs
+            builder.Services.AddSingleton(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+            
+            builder.ConfigureContainer<ServiceRegistry>(new LamarServiceProviderFactory(), x =>
+            {
+                configure?.Invoke(x);
+            });
+
+            return builder;
+        }
+#endif
 
         /// <summary>
         /// Shortcut to replace the built in DI container with Lamar using service registrations
@@ -45,6 +69,9 @@ namespace Lamar.Microsoft.DependencyInjection
                 
                     services.Clear();
                     services.AddRange(registry);
+
+                    services.AddSingleton(c =>
+                        c.GetRequiredService<IContainer>().CreateServiceVariableSource());
 
 #if NET6_0_OR_GREATER
                     // This enables the usage of implicit services in Minimal APIs
@@ -68,7 +95,7 @@ namespace Lamar.Microsoft.DependencyInjection
         
         
 
-
+        
 
         /// <summary>
         /// Overrides the internal DI container with Lamar, optionally using a Lamar ServiceRegistry
@@ -86,6 +113,9 @@ namespace Lamar.Microsoft.DependencyInjection
                 ));
             services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
             services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
+            
+            services.AddSingleton<IServiceVariableSource>(c =>
+                c.GetRequiredService<IContainer>().CreateServiceVariableSource());
 
 #if NET6_0_OR_GREATER
             services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());

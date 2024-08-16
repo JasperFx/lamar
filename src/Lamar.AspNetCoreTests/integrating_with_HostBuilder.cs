@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
+using Lamar.IoC.Frames;
 using Lamar.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,6 +45,12 @@ namespace Lamar.AspNetCoreTests
             using (var host = builder.Start())
             {
                 var container = host.Services.ShouldBeOfType<Container>();
+                
+                container.GetInstance<IServiceProviderIsService>()
+                    .ShouldBeSameAs(container);
+
+                container.GetInstance<IServiceVariableSource>()
+                    .ShouldBeOfType<ServiceVariableSource>();
             }
         }
 
