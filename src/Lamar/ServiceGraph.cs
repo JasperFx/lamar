@@ -622,6 +622,6 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
             }
         }
 
-        return family.Default != null;
+        return  family.InstanceFor(name) != null;
     }
 }
