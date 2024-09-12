@@ -39,7 +39,8 @@ namespace Lamar.Microsoft.DependencyInjection
             
             // This enables the usage of implicit services in Minimal APIs
             builder.Services.AddSingleton(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
-            
+            builder.Services.AddSingleton(s => (IServiceProviderIsKeyedService) s.GetRequiredService<IContainer>());
+
             builder.ConfigureContainer<ServiceRegistry>(new LamarServiceProviderFactory(), x =>
             {
                 configure?.Invoke(x);
@@ -76,8 +77,9 @@ namespace Lamar.Microsoft.DependencyInjection
 #if NET6_0_OR_GREATER
                     // This enables the usage of implicit services in Minimal APIs
                     services.AddSingleton(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+                    services.AddSingleton(s => (IServiceProviderIsKeyedService) s.GetRequiredService<IContainer>());
 #endif
-                    
+
                 });
         }
         
@@ -119,6 +121,7 @@ namespace Lamar.Microsoft.DependencyInjection
 
 #if NET6_0_OR_GREATER
             services.AddSingleton<IServiceProviderIsService>(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
+            services.AddSingleton<IServiceProviderIsKeyedService>(s => (IServiceProviderIsKeyedService)s.GetRequiredService<IContainer>());
 #endif
 
             registry ??= new ServiceRegistry();
