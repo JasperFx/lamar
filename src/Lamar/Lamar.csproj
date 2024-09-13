@@ -21,7 +21,6 @@
 	<ItemGroup>
 		<PackageReference Include="JasperFx.CodeGeneration" Version="3.4.0" />
 		<PackageReference Include="JasperFx.Core" Version="1.5.1" />
-		<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
 	</ItemGroup>
