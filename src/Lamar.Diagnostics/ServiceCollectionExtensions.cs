@@ -1,6 +1,6 @@
 using JasperFx.Core.TypeScanning;
+using JasperFx.Environment;
 using Microsoft.Extensions.DependencyInjection;
-using Oakton.Environment;
 
 namespace Lamar.Diagnostics
 {

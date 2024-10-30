@@ -1,12 +1,12 @@
 using System;
+using JasperFx.CommandLine;
 using JasperFx.Core.Reflection;
-using Oakton;
 using Spectre.Console;
 
 namespace Lamar.Diagnostics
 {
     [Description("Runs Lamar's type scanning diagnostics", Name = "lamar-scanning")]
-    public class LamarScanningCommand : OaktonCommand<NetCoreInput>
+    public class LamarScanningCommand : JasperFxCommand<NetCoreInput>
     {
         public override bool Execute(NetCoreInput input)
         {

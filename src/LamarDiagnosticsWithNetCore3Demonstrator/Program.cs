@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
+using JasperFx;
 using Lamar;
 using Lamar.Diagnostics;
 using Lamar.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Oakton;
 using StructureMap.Testing.Widget;
 using StructureMap.Testing.Widget3;
 
@@ -35,7 +35,7 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
                 // Call this method to start your application
                 // with Oakton handling the command line parsing
                 // and delegation
-                .RunOaktonCommands(args);
+                .RunJasperFxCommands(args);
         }
         #endregion
     }

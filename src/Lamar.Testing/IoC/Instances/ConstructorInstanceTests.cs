@@ -6,7 +6,6 @@ using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
 using Lamar.IoC.Resolvers;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Shouldly;

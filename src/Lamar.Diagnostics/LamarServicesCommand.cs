@@ -2,15 +2,15 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using JasperFx.CommandLine;
 using JasperFx.Core;
 using Lamar.IoC.Diagnostics;
-using Oakton;
 using Spectre.Console;
 
 namespace Lamar.Diagnostics
 {
     [Description("List all the registered Lamar services", Name = "lamar-services")]
-    public class LamarServicesCommand : OaktonCommand<LamarServicesInput>
+    public class LamarServicesCommand : JasperFxCommand<LamarServicesInput>
     {
         public override bool Execute(LamarServicesInput input)
         {
