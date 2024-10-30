@@ -1,7 +1,7 @@
 
 using JasperFx.CommandLine;
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     public class ValidateInput : NetCoreInput
     {

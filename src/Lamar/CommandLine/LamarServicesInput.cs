@@ -7,7 +7,7 @@ using Lamar.IoC.Diagnostics;
 
 [assembly:JasperFxAssembly]
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     
     public class LamarServicesInput : NetCoreInput

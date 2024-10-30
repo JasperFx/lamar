@@ -7,7 +7,7 @@ using JasperFx.Core;
 using Lamar.IoC.Diagnostics;
 using Spectre.Console;
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     [Description("List all the registered Lamar services", Name = "lamar-services")]
     public class LamarServicesCommand : JasperFxCommand<LamarServicesInput>

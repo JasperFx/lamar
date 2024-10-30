@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using JasperFx.CommandLine;
 using Lamar;
 
 [assembly: InternalsVisibleTo("Lamar.Testing")]

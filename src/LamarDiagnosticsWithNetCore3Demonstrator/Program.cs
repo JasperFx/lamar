@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using JasperFx;
 using Lamar;
+using Lamar.CommandLine;
 using Lamar.Diagnostics;
 using Lamar.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;

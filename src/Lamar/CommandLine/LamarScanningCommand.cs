@@ -3,7 +3,7 @@ using JasperFx.CommandLine;
 using JasperFx.Core.Reflection;
 using Spectre.Console;
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     [Description("Runs Lamar's type scanning diagnostics", Name = "lamar-scanning")]
     public class LamarScanningCommand : JasperFxCommand<NetCoreInput>
