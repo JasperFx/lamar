@@ -498,7 +498,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     private Type getServiceTypeThatTakesCollectionsIntoAccount(Type serviceType)
     {
-        if (!typeof(IEnumerable).IsAssignableFrom(serviceType) || serviceType.GetGenericArguments().Length != 1) 
+        if (!typeof(IEnumerable).IsAssignableFrom(serviceType) || serviceType.GetGenericArguments().Length != 1 || serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) 
             return serviceType;
 
         Type type = serviceType.GetGenericArguments().Single();
@@ -507,7 +507,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
         return isTypeRegistered ? serviceType : type;
     }
-
+    
     internal void ClearPlanning()
     {
         _chain.Clear();
