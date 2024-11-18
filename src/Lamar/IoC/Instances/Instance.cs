@@ -106,10 +106,12 @@ public abstract class Instance
 
     public static Instance For(ServiceDescriptor service)
     {
+        #if NET8_0_OR_GREATER
         if (service.IsKeyedService)
         {
             var name = service.ServiceKey?.ToString();
             Instance instance = null;
+           
             if (service.KeyedImplementationInstance != null)
             {
                 instance = new ObjectInstance(service.ServiceType, service.KeyedImplementationInstance);
@@ -136,9 +138,8 @@ public abstract class Instance
             if (name.IsNotEmpty()) instance.Name = name;
             
             return instance;
-
-
         }
+        #endif
 
         
         if (service.ImplementationInstance is Instance i)

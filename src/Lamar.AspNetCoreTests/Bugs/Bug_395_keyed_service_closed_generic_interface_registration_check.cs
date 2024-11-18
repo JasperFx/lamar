@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Lamar.AspNetCoreTests.Bugs;
 
+#if NET8_0_OR_GREATER
 public class Bug_395_keyed_service_closed_generic_interface_registration_check
 {
     class ClassA {}
@@ -46,3 +47,4 @@ public class Bug_395_keyed_service_closed_generic_interface_registration_check
         }
     }
 }
+#endif
