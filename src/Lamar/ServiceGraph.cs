@@ -268,9 +268,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     private ServiceFamily buildClosedGenericType(Type serviceType, IServiceCollection services)
     {
-        var closed = services.Where(x => x.ServiceType == serviceType && (x.IsKeyedService
-                ? !x.KeyedImplementationType.IsOpenGeneric()
-                : !x.ImplementationType.IsOpenGeneric()))
+        var closed = services.Where(x => x.ServiceType == serviceType && isKeyedServiceSupported(x))
             .Select(Instance.For);
 
         var templated = services
@@ -295,6 +293,17 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
         var instances = templated.Concat(closed).ToArray();
 
         return new ServiceFamily(serviceType, DecoratorPolicies, instances);
+    }
+
+    private static bool isKeyedServiceSupported(ServiceDescriptor serviceDescriptor)
+    {
+        #if NET8_0_OR_GREATER
+         return serviceDescriptor.IsKeyedService
+                    ? !serviceDescriptor.KeyedImplementationType.IsOpenGeneric()
+                    : !serviceDescriptor.ImplementationType.IsOpenGeneric();
+        #endif
+
+        return !serviceDescriptor.ImplementationType.IsOpenGeneric();
     }
 
     public IEnumerable<Instance> AllInstances()
