@@ -21,7 +21,7 @@ namespace Lamar.IoC;
 
 #region sample_Scope-Declarations
 
-public class Scope : IServiceContext, IServiceProviderIsService
+public class Scope : IServiceContext, IServiceProviderIsService, IServiceProviderIsKeyedService
 
     #endregion
 
@@ -369,6 +369,11 @@ public class Scope : IServiceContext, IServiceProviderIsService
     public bool IsService(Type serviceType)
     {
         return ServiceGraph.CanBeServiceByNetCoreRules(serviceType);
+    }
+
+    public bool IsKeyedService(Type serviceType, object serviceKey)
+    {
+        return ServiceGraph.CanBeServiceByNetCoreRules(serviceType, serviceKey.ToString());
     }
 
     public static Scope Empty()
