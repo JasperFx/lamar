@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 
@@ -35,7 +36,7 @@ internal class MaybeIntercepted : IDecoratorPolicy
     }
 }
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class DecoratorPolicy<TService, TDecorator> : DecoratorPolicy where TDecorator : TService
 {
     public DecoratorPolicy() : base(typeof(TService), typeof(TDecorator))
@@ -43,7 +44,7 @@ public class DecoratorPolicy<TService, TDecorator> : DecoratorPolicy where TDeco
     }
 }
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class DecoratorPolicy : IDecoratorPolicy
 {
     private readonly Type _decoratorType;

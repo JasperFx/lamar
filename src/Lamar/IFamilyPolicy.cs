@@ -1,4 +1,5 @@
 ﻿using System;
+using JasperFx.Core;
 
 namespace Lamar;
 
@@ -6,7 +7,7 @@ namespace Lamar;
 ///     Allows Lamar to fill in missing registrations by unknown service types
 ///     at runtime
 /// </summary>
-[LamarIgnore]
+[JasperFxIgnore]
 
 #region sample_IFamilyPolicy
 

@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using JasperFx.CodeGeneration;
 using JasperFx.Core.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Spectre.Console;
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     public static class ServicesCommandTypeExtensions
     {

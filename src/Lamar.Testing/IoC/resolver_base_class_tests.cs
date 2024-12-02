@@ -1,4 +1,5 @@
-﻿using Lamar.IoC;
+﻿using JasperFx.Core;
+using Lamar.IoC;
 using Lamar.IoC.Resolvers;
 using Shouldly;
 using Xunit;
@@ -105,7 +106,7 @@ public class DisposableScopedClock : ScopedResolver<IClock>
     }
 }
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class Singleton1 : SingletonResolver<IClock>
 {
     public Singleton1(Scope topLevelScope) : base(topLevelScope)
@@ -118,7 +119,7 @@ public class Singleton1 : SingletonResolver<IClock>
     }
 }
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class DisposableSingleton : SingletonResolver<IClock>
 {
     public DisposableSingleton(Scope topLevelScope) : base(topLevelScope)

@@ -6,15 +6,14 @@ using System.Reflection;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using JasperFx.Core.TypeScanning;
+using Lamar;
 using Microsoft.Extensions.DependencyInjection;
 
 #pragma warning disable 1591
 
-[assembly: IgnoreAssembly]
-
 namespace Lamar.Scanning.Conventions;
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class AssemblyScanner : IAssemblyScanner
 {
     private readonly List<Assembly> _assemblies = new();
@@ -26,7 +25,7 @@ public class AssemblyScanner : IAssemblyScanner
     {
         _parent = parent;
 
-        Exclude(type => type.HasAttribute<LamarIgnoreAttribute>());
+        Exclude(type => type.HasAttribute<JasperFxIgnoreAttribute>());
     }
 
     public List<IRegistrationConvention> Conventions { get; } = new();

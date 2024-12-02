@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Scanning.Conventions;
 
-[LamarIgnore]
+[JasperFxIgnore]
 internal class ConnectedConcretions : List<Type>
 {
 }
