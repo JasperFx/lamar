@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using JasperFx.Core;
 using Shouldly;
 using StructureMap.Testing.Widget;
 using StructureMap.Testing.Widget5;
@@ -385,7 +386,7 @@ public class type_scanning
     {
     }
 
-    [LamarIgnore]
+    [JasperFxIgnore]
     public class Crossover : ICar
     {
     }

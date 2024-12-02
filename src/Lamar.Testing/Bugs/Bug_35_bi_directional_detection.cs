@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JasperFx.Core;
 using Xunit;
 
 namespace Lamar.Testing.Bugs;
@@ -26,7 +27,7 @@ public class Bug_35_bi_directional_detection
     {
     }
 
-    [LamarIgnore]
+    [JasperFxIgnore]
     public class N : If
     {
         public N(IEnumerable<If> n)

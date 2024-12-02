@@ -244,7 +244,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
     private void organizeIntoFamilies(IServiceCollection services)
     {
         var serviceFamilies = services
-            .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
+            .Where(x => !x.ServiceType.HasAttribute<JasperFxIgnoreAttribute>())
             .GroupBy(x => x.ServiceType)
             .Select(group => buildFamilyForInstanceGroup(services, group));
 
@@ -544,7 +544,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
             Scanners = Scanners.Union(scanners).ToArray();
 
             var groups = registry
-                .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
+                .Where(x => !x.ServiceType.HasAttribute<JasperFxIgnoreAttribute>())
                 .GroupBy(x => x.ServiceType);
 
             foreach (var group in groups)

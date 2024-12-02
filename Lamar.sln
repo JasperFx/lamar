@@ -33,8 +33,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bug-124-Widgets", "Bug-124-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Widget.Aspect.Logger", "src\Aspect.Logger\Widget.Aspect.Logger.csproj", "{A367AE1C-B39D-438B-BADD-3B7E368DDF97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lamar.Diagnostics", "src\Lamar.Diagnostics\Lamar.Diagnostics.csproj", "{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarWithAspNetCore3", "src\LamarWithAspNetCore3\LamarWithAspNetCore3.csproj", "{A513986C-E435-495D-B056-8C7121D6F07B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LamarDiagnosticsWithNetCore3Demonstrator", "src\LamarDiagnosticsWithNetCore3Demonstrator\LamarDiagnosticsWithNetCore3Demonstrator.csproj", "{22B4777B-CF18-4D87-A8DB-684F59F7FC05}"
@@ -61,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		.github\workflows\publish_lamar.yml = .github\workflows\publish_lamar.yml
 		.github\workflows\docs.yml = .github\workflows\docs.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasperFx", "..\jasperfx\src\JasperFx\JasperFx.csproj", "{7BE69786-596D-48E8-9F2F-720B2999DDFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -120,10 +120,6 @@ Global
 		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A367AE1C-B39D-438B-BADD-3B7E368DDF97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5861C3EC-44F0-4FB3-8B69-3B349E4FDE22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A513986C-E435-495D-B056-8C7121D6F07B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A513986C-E435-495D-B056-8C7121D6F07B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A513986C-E435-495D-B056-8C7121D6F07B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -164,6 +160,10 @@ Global
 		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE69786-596D-48E8-9F2F-720B2999DDFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE69786-596D-48E8-9F2F-720B2999DDFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE69786-596D-48E8-9F2F-720B2999DDFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE69786-596D-48E8-9F2F-720B2999DDFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
