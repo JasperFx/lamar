@@ -16,7 +16,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Aspect.Logger\Widget.Aspect.Logger.csproj" />
-        <ProjectReference Include="..\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
         <ProjectReference Include="..\Lamar\Lamar.csproj" />
         <ProjectReference Include="..\StructureMap.Testing.GenericWidgets\StructureMap.Testing.GenericWidgets.csproj" />
         <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />

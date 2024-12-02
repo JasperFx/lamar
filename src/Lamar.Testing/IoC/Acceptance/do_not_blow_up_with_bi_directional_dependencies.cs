@@ -1,4 +1,5 @@
 ﻿using System;
+using JasperFx.Core;
 using Xunit;
 
 namespace Lamar.Testing.IoC.Acceptance;
@@ -63,7 +64,7 @@ public interface IBiLeaf
 #region sample_using-LamarIgnore
 
 // This attribute causes the type scanning to ignore this type
-[LamarIgnore]
+[JasperFxIgnore]
 public class BiHolder : IBiHolder
 {
     public BiHolder(IBiGrandparent grandparent)
@@ -73,7 +74,7 @@ public class BiHolder : IBiHolder
 
 #endregion
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class BiGrandparent : IBiGrandparent
 {
     public BiGrandparent(IBiLeaf leaf)
@@ -96,7 +97,7 @@ public interface IBiPresenter
 {
 }
 
-[LamarIgnore]
+[JasperFxIgnore]
 public class BiView : IBiView
 {
     public BiView(IBiPresenter presenter)

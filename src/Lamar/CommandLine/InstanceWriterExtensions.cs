@@ -1,5 +1,4 @@
 using System.Linq;
-using JasperFx.CodeGeneration;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Diagnostics;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Spectre.Console;
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     public static class InstanceWriterExtensions
     {

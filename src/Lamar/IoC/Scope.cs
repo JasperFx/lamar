@@ -248,7 +248,7 @@ public class Scope : IServiceContext, IServiceProviderIsService
             if (instance == null)
             {
                 throw new InvalidOperationException(
-                    $"Cannot QuickBuild type {objectType.GetFullName()} because Lamar cannot determine how to build required dependency {x.ParameterType.FullNameInCode()}");
+                    $"Cannot QuickBuild type {objectType.FullNameInCode()} because Lamar cannot determine how to build required dependency {x.ParameterType.FullNameInCode()}");
             }
 
             try

@@ -1,11 +1,11 @@
+using JasperFx.CommandLine;
 using JasperFx.Core.Reflection;
-using Oakton;
 using Spectre.Console;
 
-namespace Lamar.Diagnostics
+namespace Lamar.CommandLine
 {
     [Description("Runs all the Lamar container validations", Name = "lamar-validate")]
-    public class LamarValidateCommand : OaktonCommand<ValidateInput>
+    public class LamarValidateCommand : JasperFxCommand<ValidateInput>
     {
         public LamarValidateCommand()
         {
