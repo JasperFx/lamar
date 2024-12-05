@@ -31,7 +31,7 @@ public class Scope : IServiceContext, IServiceProviderIsService
     // don't build this if you don't need it
     private Dictionary<Type, object> _injected;
 
-    internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
+    internal ImHashMap<InstanceIdentifier, object> Services = ImHashMap<InstanceIdentifier, object>.Empty;
 
     public Scope(IServiceCollection services)
     {

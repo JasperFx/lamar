@@ -37,7 +37,7 @@ public abstract class Instance
     public Type ServiceType { get; }
     public Type ImplementationType { get; }
 
-    public int Hash { get; set; }
+    public InstanceIdentifier Hash { get; set; }
 
     public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
 
@@ -47,7 +47,7 @@ public abstract class Instance
         set
         {
             _name = value;
-            Hash = GetHashCode();
+            Hash = new InstanceIdentifier(_name, ServiceType);
         }
     }
 
