@@ -39,8 +39,8 @@ namespace Lamar.Microsoft.DependencyInjection
         /// Use Lamar as the DI/IoC container for this application
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="configure"></param>
         /// <param name="instanceMapBehavior"></param>
+        /// <param name="configure"></param>
         /// <returns></returns>
         public static HostApplicationBuilder UseLamar(this HostApplicationBuilder builder,
             InstanceMapBehavior instanceMapBehavior, Action<ServiceRegistry> configure = null)
@@ -75,8 +75,8 @@ namespace Lamar.Microsoft.DependencyInjection
         /// dependent upon the application's environment and configuration.
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="configure"></param>
         /// <param name="instanceMapBehavior"></param>
+        /// <param name="configure"></param>
         /// <returns></returns>
         public static IHostBuilder UseLamar(this IHostBuilder builder, InstanceMapBehavior instanceMapBehavior,
             Action<HostBuilderContext, ServiceRegistry> configure = null)
@@ -119,8 +119,8 @@ namespace Lamar.Microsoft.DependencyInjection
         /// dependent upon the application's environment and configuration.
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="registry"></param>
         /// <param name="instanceMapBehavior"></param>
+        /// <param name="configure"></param>
         /// <returns></returns>
         public static IHostBuilder UseLamar(this IHostBuilder builder, InstanceMapBehavior instanceMapBehavior, Action<ServiceRegistry> configure)
         {
@@ -142,8 +142,8 @@ namespace Lamar.Microsoft.DependencyInjection
         /// for additional service registrations
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="registry"></param>
         /// <param name="instanceMapBehavior"></param>
+        /// <param name="registry"></param>
         /// <returns></returns>
         public static IServiceCollection AddLamar(this IServiceCollection services, InstanceMapBehavior instanceMapBehavior, ServiceRegistry registry = null)
         {
