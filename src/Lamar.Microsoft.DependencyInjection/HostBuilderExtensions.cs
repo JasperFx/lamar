@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
+using Lamar.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,17 @@ namespace Lamar.Microsoft.DependencyInjection
         /// <param name="configure"></param>
         /// <returns></returns>
         public static HostApplicationBuilder UseLamar(this HostApplicationBuilder builder,
-            Action<ServiceRegistry> configure = null)
+            Action<ServiceRegistry> configure = null) => builder.UseLamar(InstanceMapBehavior.Default, configure);
+
+        /// <summary>
+        /// Use Lamar as the DI/IoC container for this application
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="instanceMapBehavior"></param>
+        /// <param name="configure"></param>
+        /// <returns></returns>
+        public static HostApplicationBuilder UseLamar(this HostApplicationBuilder builder,
+            InstanceMapBehavior instanceMapBehavior, Action<ServiceRegistry> configure = null)
         {
             builder.Services.AddSingleton(c =>
                 c.GetRequiredService<IContainer>().CreateServiceVariableSource());
@@ -40,7 +51,7 @@ namespace Lamar.Microsoft.DependencyInjection
             // This enables the usage of implicit services in Minimal APIs
             builder.Services.AddSingleton(s => (IServiceProviderIsService) s.GetRequiredService<IContainer>());
             
-            builder.ConfigureContainer<ServiceRegistry>(new LamarServiceProviderFactory(), x =>
+            builder.ConfigureContainer<ServiceRegistry>(new LamarServiceProviderFactory(instanceMapBehavior), x =>
             {
                 configure?.Invoke(x);
             });
@@ -54,13 +65,25 @@ namespace Lamar.Microsoft.DependencyInjection
         /// dependent upon the application's environment and configuration.
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="registry"></param>
+        /// <param name="configure"></param>
         /// <returns></returns>
-        public static IHostBuilder UseLamar(this IHostBuilder builder, Action<HostBuilderContext, ServiceRegistry> configure = null)
+        public static IHostBuilder UseLamar(this IHostBuilder builder, Action<HostBuilderContext, ServiceRegistry> configure = null) =>
+            builder.UseLamar(InstanceMapBehavior.Default, configure);
+
+        /// <summary>
+        /// Shortcut to replace the built in DI container with Lamar using service registrations
+        /// dependent upon the application's environment and configuration.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="instanceMapBehavior"></param>
+        /// <param name="configure"></param>
+        /// <returns></returns>
+        public static IHostBuilder UseLamar(this IHostBuilder builder, InstanceMapBehavior instanceMapBehavior,
+            Action<HostBuilderContext, ServiceRegistry> configure = null)
         {
             return builder
-                .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory())
-                .UseServiceProviderFactory<IServiceCollection>(new LamarServiceProviderFactory())
+                .UseServiceProviderFactory<ServiceRegistry>(new LamarServiceProviderFactory(instanceMapBehavior))
+                .UseServiceProviderFactory<IServiceCollection>(new LamarServiceProviderFactory(instanceMapBehavior))
                 .ConfigureServices((context, services) =>
                 {
                     var registry = new ServiceRegistry(services);
@@ -80,7 +103,7 @@ namespace Lamar.Microsoft.DependencyInjection
                     
                 });
         }
-        
+
         /// <summary>
         /// Shortcut to replace the built in DI container with Lamar using service registrations
         /// dependent upon the application's environment and configuration.
@@ -88,14 +111,21 @@ namespace Lamar.Microsoft.DependencyInjection
         /// <param name="builder"></param>
         /// <param name="registry"></param>
         /// <returns></returns>
-        public static IHostBuilder UseLamar(this IHostBuilder builder, Action<ServiceRegistry> configure)
-        {
-            return builder.UseLamar((c, s) => configure.Invoke(s));
-        }
-        
-        
+        public static IHostBuilder UseLamar(this IHostBuilder builder, Action<ServiceRegistry> configure) =>
+            builder.UseLamar(InstanceMapBehavior.Default, configure);
 
-        
+        /// <summary>
+        /// Shortcut to replace the built in DI container with Lamar using service registrations
+        /// dependent upon the application's environment and configuration.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="instanceMapBehavior"></param>
+        /// <param name="configure"></param>
+        /// <returns></returns>
+        public static IHostBuilder UseLamar(this IHostBuilder builder, InstanceMapBehavior instanceMapBehavior, Action<ServiceRegistry> configure)
+        {
+            return builder.UseLamar(instanceMapBehavior, (c, s) => configure.Invoke(s));
+        }
 
         /// <summary>
         /// Overrides the internal DI container with Lamar, optionally using a Lamar ServiceRegistry
@@ -104,16 +134,27 @@ namespace Lamar.Microsoft.DependencyInjection
         /// <param name="services"></param>
         /// <param name="registry"></param>
         /// <returns></returns>
-        public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry = null)
+        public static IServiceCollection AddLamar(this IServiceCollection services, ServiceRegistry registry = null) =>
+            services.AddLamar(InstanceMapBehavior.Default, registry);
+
+        /// <summary>
+        /// Overrides the internal DI container with Lamar, optionally using a Lamar ServiceRegistry
+        /// for additional service registrations
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="instanceMapBehavior"></param>
+        /// <param name="registry"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddLamar(this IServiceCollection services, InstanceMapBehavior instanceMapBehavior, ServiceRegistry registry = null)
         {
             services.AddSingleton<ILoggerFactory, LoggerFactory>(sp =>
                 new LoggerFactory(
                     sp.GetRequiredService<IEnumerable<ILoggerProvider>>(),
                     sp.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>()
                 ));
-            services.AddSingleton<IServiceProviderFactory<ServiceRegistry>, LamarServiceProviderFactory>();
-            services.AddSingleton<IServiceProviderFactory<IServiceCollection>, LamarServiceProviderFactory>();
-            
+            services.AddSingleton<IServiceProviderFactory<ServiceRegistry>>(_ => new LamarServiceProviderFactory(instanceMapBehavior));
+            services.AddSingleton<IServiceProviderFactory<IServiceCollection>>(_ => new LamarServiceProviderFactory(instanceMapBehavior));
+
             services.AddSingleton<IServiceVariableSource>(c =>
                 c.GetRequiredService<IContainer>().CreateServiceVariableSource());
 

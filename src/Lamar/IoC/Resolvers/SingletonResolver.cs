@@ -53,7 +53,7 @@ public abstract class SingletonResolver<T> : IResolver
     }
 
     public string Name { get; set; }
-    public int Hash { get; set; }
+    public InstanceIdentifier Hash { get; set; }
 
     public abstract T Build(Scope scope);
 }

@@ -12,7 +12,7 @@ public class NullInstance : Instance
 {
     public NullInstance(Type serviceType) : base(serviceType, serviceType, ServiceLifetime.Transient)
     {
-        Hash = GetHashCode();
+        Hash = new (Name, serviceType);
     }
 
     public override Func<Scope, object> ToResolver(Scope topScope)
