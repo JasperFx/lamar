@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-        <Version>14.0.1</Version>
+        <Version>15.0.0-alpha-1</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>Lamar</AssemblyName>
         <PackageId>Lamar</PackageId>
@@ -21,6 +21,7 @@
 	<ItemGroup>
 		<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+        <PackageReference Include="JasperFx" Version="0.1.0" />
 	</ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
@@ -29,13 +30,5 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\jasperfx\src\JasperFx\JasperFx.csproj" />
   </ItemGroup>
 </Project>

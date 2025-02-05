@@ -3,7 +3,7 @@
 		<Description>Lamar Adapter for HostBuilder Integration</Description>
 		<Version>14.0.1</Version>
 		<Authors>Jeremy D. Miller</Authors>
-		<TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<DebugType>portable</DebugType>
 		<AssemblyName>Lamar.Microsoft.DependencyInjection</AssemblyName>
 		<PackageId>Lamar.Microsoft.DependencyInjection</PackageId>
@@ -19,12 +19,5 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Lamar\Lamar.csproj" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[8.0.0,10.0.0)" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="[8.0.0,10.0.0)" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="[8.0.0,10.0.0)" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="[8.0.0,10.0.0)" />
 	</ItemGroup>
 </Project>
