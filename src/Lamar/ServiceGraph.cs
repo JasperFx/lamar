@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -602,5 +603,36 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
         }
 
         return family.Default != null;
+    }
+
+    public bool CanBeServiceByNetCoreRules(Type serviceType, string name)
+    { 
+        if (_families.TryFind(serviceType, out var family))
+        {
+            return family.InstanceFor(name) != null;
+        }
+
+        lock (_familyLock)
+        {
+            if (_families.TryFind(serviceType, out family))
+            {
+                return family.InstanceFor(name) != null;
+            }
+
+            family = TryToCreateMissingFamilyWithNetCoreRules(serviceType);
+            _families = _families.AddOrUpdate(serviceType, family);
+
+            if (!_inPlanning)
+            {
+                buildOutMissingResolvers();
+
+                if (family != null)
+                {
+                    rebuildReferencedAssemblyArray();
+                }
+            }
+        }
+
+        return  family.InstanceFor(name) != null;
     }
 }
