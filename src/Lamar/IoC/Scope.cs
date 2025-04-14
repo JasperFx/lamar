@@ -22,7 +22,7 @@ namespace Lamar.IoC;
 
 #region sample_Scope-Declarations
 
-public class Scope : IServiceContext, IServiceProviderIsService
+public class Scope : IServiceContext, IServiceProviderIsKeyedService
 
     #endregion
 
@@ -370,6 +370,17 @@ public class Scope : IServiceContext, IServiceProviderIsService
     public bool IsService(Type serviceType)
     {
         return ServiceGraph.CanBeServiceByNetCoreRules(serviceType);
+    }
+
+    public bool IsKeyedService(Type serviceType, object serviceKey)
+    {
+        if (serviceKey is string serviceKeyString)
+        {
+            return ServiceGraph.CanBeServiceByNetCoreRules(serviceType, serviceKeyString);
+        }
+
+        throw new ArgumentException("Lamar only supports strings for service keys on typed services",
+            nameof(serviceKey));
     }
 
     public static Scope Empty()

@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
@@ -59,6 +59,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		.github\workflows\publish_lamar.yml = .github\workflows\publish_lamar.yml
 		.github\workflows\docs.yml = .github\workflows\docs.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithOpenApiOnNet9", "src\LamarWithOpenApiOnNet9\LamarWithOpenApiOnNet9.csproj", "{7E8A292C-9963-A66F-9362-E68B42FD8892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApiKeyedServiceIntegrationTests", "src\OpenApiKeyedServiceIntegrationTests\OpenApiKeyedServiceIntegrationTests.csproj", "{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,6 +162,14 @@ Global
 		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23D34C12-A3A0-4399-94A3-08616AE7C934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E8A292C-9963-A66F-9362-E68B42FD8892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E8A292C-9963-A66F-9362-E68B42FD8892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E8A292C-9963-A66F-9362-E68B42FD8892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E8A292C-9963-A66F-9362-E68B42FD8892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

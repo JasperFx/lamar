@@ -52,6 +52,8 @@ public abstract class Instance
         }
     }
 
+    internal bool IsKeyedService { get; set; }
+
     internal bool InlineIsLimitedToExactNameMatch { get; set; }
 
     public bool HasPlanned { get; protected internal set; }
@@ -135,6 +137,8 @@ public abstract class Instance
             {
                 instance = new ConstructorInstance(service.ServiceType, service.KeyedImplementationType, service.Lifetime);
             }
+
+            instance.IsKeyedService = true;
 
             if (name.IsNotEmpty()) instance.Name = name;
             
