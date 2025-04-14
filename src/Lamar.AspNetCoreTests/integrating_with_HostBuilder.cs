@@ -48,6 +48,9 @@ namespace Lamar.AspNetCoreTests
                 
                 container.GetInstance<IServiceProviderIsService>()
                     .ShouldBeSameAs(container);
+                
+                container.GetInstance<IServiceProviderIsKeyedService>()
+                    .ShouldBeSameAs(container);
 
                 container.GetInstance<IServiceVariableSource>()
                     .ShouldBeOfType<ServiceVariableSource>();

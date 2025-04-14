@@ -43,6 +43,13 @@ public class integration_with_host_application_builder : IDisposable
     }
 
     [Fact]
+    public void should_register_IServiceProviderIsKeyedService()
+    {
+        theHost.Services.GetRequiredService<IServiceProviderIsKeyedService>()
+            .ShouldBeOfType<Container>();
+    }
+
+    [Fact]
     public void should_register_IServiceVariableSource()
     {
         theHost.Services.GetRequiredService<IServiceVariableSource>()

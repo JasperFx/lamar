@@ -4,7 +4,7 @@
         <Description>Adds diagnostic checks to the command line of your Lamar-enabled ASP.Net Core app</Description>
         <Version>14.0.1</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>Lamar.Diagnostics</AssemblyName>
         <PackageId>Lamar.Diagnostics</PackageId>
