@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using ImTools;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
@@ -410,6 +411,12 @@ public class ConstructorInstance : GeneratedInstance, IConfiguredInstance
 
     private CtorArg determineArgument(ServiceGraph services, ParameterInfo parameter)
     {
+        if (IsKeyedService && parameter.IsDefined(typeof(ServiceKeyAttribute)))
+        {
+            // Keyed Services may have a constructor parameter with the ServiceKey attribute that expects the name of the service.
+            return new CtorArg(parameter, new ObjectInstance(parameter.ParameterType, Name));
+        }
+
         var dependencyType = parameter.ParameterType;
         var instance = findInstanceForConstructorParameter(services, parameter, dependencyType);
 
@@ -491,10 +498,19 @@ public class ConstructorInstance : GeneratedInstance, IConfiguredInstance
 
     private bool couldBuild(ConstructorInfo ctor, ServiceGraph services)
     {
-        return ctor.GetParameters().All(p =>
+        var parameters = ctor.GetParameters();
+
+        if (IsKeyedService && parameters.Count(p => p.IsDefined(typeof(ServiceKeyAttribute))) > 1)
+        {
+            // We can build a keyed service if there is a parameter with the service key attribute. But only one makes sense.
+            return false;
+        }
+
+        return parameters.All(p =>
             services.FindDefault(p.ParameterType) != null ||
             InlineDependencies.Any(x => x.ServiceType == p.ParameterType) ||
-            p.IsOptional);
+            p.IsOptional || 
+            (IsKeyedService && p.IsDefined(typeof(ServiceKeyAttribute))));
     }
 
     public ConstructorInfo DetermineConstructor(ServiceGraph services,
@@ -542,32 +558,43 @@ public class ConstructorInstance : GeneratedInstance, IConfiguredInstance
         return null;
     }
 
-    private static string explainWhyConstructorCannotBeUsed(Type implementationType, ConstructorInfo constructor,
+    private string explainWhyConstructorCannotBeUsed(Type implementationType, ConstructorInfo constructor,
         ServiceGraph services)
     {
-        var args = constructor.GetParameters().Select(x => $"{x.ParameterType.NameInCode()} {x.Name}").Join(", ");
-        var declaration = $"new {implementationType.NameInCode()}({args})";
+        var parameters = constructor.GetParameters();
 
-        foreach (var parameter in constructor.GetParameters())
+        var args = parameters.Select(x => $"{x.ParameterType.NameInCode()} {x.Name}").Join(", ");
+        StringBuilder declaration = new($"new {implementationType.NameInCode()}({args})");
+
+        if (parameters.Count(p => p.GetCustomAttribute<ServiceKeyAttribute>() != null) > 1)
         {
+            declaration.Append($"{Environment.NewLine} contains multiple parameters with the {nameof(ServiceKeyAttribute)}. Only one parameter can have that attribute");
+        }
+
+        foreach (var parameter in parameters)
+        {
+            if (!IsKeyedService && parameter.IsDefined(typeof(ServiceKeyAttribute)))
+            {
+                declaration.Append(
+                    $"{Environment.NewLine}* {parameter.ParameterType.NameInCode()} {parameter.Name} has the {nameof(ServiceKeyAttribute)} which is only valid in a Keyed Service");
+            }
             if (parameter.ParameterType.ShouldIgnore())
             {
-                declaration +=
-                    $"{Environment.NewLine}* {parameter.ParameterType.NameInCode()} {parameter.Name} is a 'simple' type that cannot be auto-filled";
-            }
+                declaration.Append(
+                    $"{Environment.NewLine}* {parameter.ParameterType.NameInCode()} {parameter.Name} is a 'simple' type that cannot be auto-filled"); }
             else
             {
                 var @default = services.FindDefault(parameter.ParameterType);
                 if (@default == null)
                 {
-                    declaration +=
-                        $"{Environment.NewLine}* {parameter.ParameterType.NameInCode()} is not registered within this container and cannot be auto discovered by any missing family policy";
+                    declaration.Append(
+                        $"{Environment.NewLine}* {parameter.ParameterType.NameInCode()} is not registered within this container and cannot be auto discovered by any missing family policy");
                 }
             }
         }
 
 
-        return declaration;
+        return declaration.ToString();
     }
 
     /// <summary>
