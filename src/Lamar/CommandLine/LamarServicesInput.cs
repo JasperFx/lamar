@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JasperFx;
 using JasperFx.CommandLine;
 using JasperFx.Core;
 using Lamar.IoC.Diagnostics;
