@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JasperFx" Version="0.5.2" />
+        <PackageReference Include="JasperFx" Version="0.6.0" />
         <PackageReference Include="System.Runtime.Loader" Version="4.3.0"/>
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0"/>
     </ItemGroup>
