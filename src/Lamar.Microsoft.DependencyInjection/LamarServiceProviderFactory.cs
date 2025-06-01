@@ -1,18 +1,10 @@
 ﻿using System;
-using Lamar.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.Microsoft.DependencyInjection
 {
     public class LamarServiceProviderFactory : IServiceProviderFactory<ServiceRegistry>, IServiceProviderFactory<IServiceCollection>
     {
-        private readonly InstanceMapBehavior _instanceMapBehavior;
-        
-        public LamarServiceProviderFactory(InstanceMapBehavior instanceMapBehavior)
-        {
-            _instanceMapBehavior  = instanceMapBehavior;
-        }
-        
         public ServiceRegistry CreateBuilder(IServiceCollection services)
         {
             var registry = new ServiceRegistry();
@@ -23,12 +15,12 @@ namespace Lamar.Microsoft.DependencyInjection
 
         public IServiceProvider CreateServiceProvider(IServiceCollection containerBuilder)
         {
-            return new Container(containerBuilder, _instanceMapBehavior);
+            return new Container(containerBuilder);
         }
 
         public IServiceProvider CreateServiceProvider(ServiceRegistry containerBuilder)
         {
-            return new Container(containerBuilder, _instanceMapBehavior);
+            return new Container(containerBuilder);
         }
 
         IServiceCollection IServiceProviderFactory<IServiceCollection>.CreateBuilder(IServiceCollection services)
