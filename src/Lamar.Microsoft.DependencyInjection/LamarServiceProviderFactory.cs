@@ -7,11 +7,6 @@ namespace Lamar.Microsoft.DependencyInjection
     public class LamarServiceProviderFactory : IServiceProviderFactory<ServiceRegistry>, IServiceProviderFactory<IServiceCollection>
     {
         private readonly InstanceMapBehavior _instanceMapBehavior;
-
-        public LamarServiceProviderFactory()
-        {
-            _instanceMapBehavior = InstanceMapBehavior.Default;
-        }
         
         public LamarServiceProviderFactory(InstanceMapBehavior instanceMapBehavior)
         {
