@@ -12,13 +12,13 @@ public class InstanceMap
     {
         if (behavior == InstanceMapBehavior.Default)
         {
-            _dictionary = null;
-            _hashMap = ImHashMap<InstanceIdentifier, object>.Empty;
+            _hashMap = null;
+            _dictionary = new ConcurrentDictionary<InstanceIdentifier, object>();
         }
         else
         {
-            _hashMap = null;
-            _dictionary = new ConcurrentDictionary<InstanceIdentifier, object>();
+            _dictionary = null;
+            _hashMap = ImHashMap<InstanceIdentifier, object>.Empty;
         }
     }
     
