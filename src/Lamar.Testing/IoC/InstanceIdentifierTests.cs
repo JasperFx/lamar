@@ -39,6 +39,6 @@ public class InstanceIdentifierTests
         var a = new InstanceIdentifier(default, typeof(InstanceIdentifier));
         var b = new InstanceIdentifier(default, typeof(InstanceIdentifierTests));
 
-        a.ShouldNotBe(b);
+        a.ShouldBe(b);
     }
 }

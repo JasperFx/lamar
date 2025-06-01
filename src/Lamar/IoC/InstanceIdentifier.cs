@@ -20,11 +20,6 @@ public readonly struct InstanceIdentifier : IEquatable<InstanceIdentifier>
 
     public override int GetHashCode()
     {
-        if (ServiceType == null)
-        {
-            return default;
-        }
-        
         return (ServiceType.GetHashCode() * 397) ^ (Name ?? "default").GetHashCode();
     }
 
