@@ -14,7 +14,7 @@ public class ErrorMessageResolver : IResolver
     {
         ServiceType = instance.ServiceType;
         Name = instance.Name;
-        Hash = new (Name, ServiceType);
+        Hash = instance.GetHashCode();
 
         var dependencyProblems = instance.Dependencies.SelectMany(dep =>
         {
@@ -32,5 +32,5 @@ public class ErrorMessageResolver : IResolver
 
     public Type ServiceType { get; }
     public string Name { get; set; }
-    public InstanceIdentifier Hash { get; set; }
+    public int Hash { get; set; }
 }
