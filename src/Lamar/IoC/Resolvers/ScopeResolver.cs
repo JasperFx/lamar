@@ -12,5 +12,5 @@ public class ScopeResolver : IResolver
 
     public Type ServiceType { get; } = typeof(Scope);
     public string Name { get; set; } = "default";
-    public InstanceIdentifier Hash { get; set; } = new ("default", typeof(Scope));
+    public int Hash { get; set; } = Instance.HashCode(typeof(Scope), "default");
 }
