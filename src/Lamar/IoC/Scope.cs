@@ -31,12 +31,10 @@ public class Scope : IServiceContext, IServiceProviderIsService
     // don't build this if you don't need it
     private Dictionary<Type, object> _injected;
 
-    internal InstanceMap Services;
+    internal ImHashMap<InstanceIdentifier, object> Services = ImHashMap<InstanceIdentifier, object>.Empty;
 
-    public Scope(IServiceCollection services, InstanceMapBehavior instanceMapBehavior = InstanceMapBehavior.Default)
+    public Scope(IServiceCollection services)
     {
-        Services = new InstanceMap(instanceMapBehavior);
-
         Root = this;
 
         ServiceGraph = new ServiceGraph(services, this);
@@ -44,14 +42,12 @@ public class Scope : IServiceContext, IServiceProviderIsService
         ServiceGraph.Initialize();
     }
 
-    protected Scope(InstanceMapBehavior instanceMapBehavior = InstanceMapBehavior.Default)
+    protected Scope()
     {
-        Services = new InstanceMap(instanceMapBehavior);
     }
 
-    public Scope(ServiceGraph serviceGraph, Scope root, InstanceMapBehavior instanceMapBehavior = InstanceMapBehavior.Default)
+    public Scope(ServiceGraph serviceGraph, Scope root)
     {
-        Services = new InstanceMap(instanceMapBehavior);
         ServiceGraph = serviceGraph;
         Root = root ?? throw new ArgumentNullException(nameof(root));
     }

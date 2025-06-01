@@ -2,9 +2,9 @@
 
 namespace Lamar.IoC;
 
-public readonly struct InstanceIdentifier : IEquatable<InstanceIdentifier>
+public readonly struct InstanceIdentifier
 {
-    public string Name { get; }
+    public string Name { get; } = null;
     public Type ServiceType { get; }
 
     public InstanceIdentifier(string name, Type serviceType)
@@ -20,21 +20,32 @@ public readonly struct InstanceIdentifier : IEquatable<InstanceIdentifier>
 
     public override int GetHashCode()
     {
-        return (ServiceType.GetHashCode() * 397) ^ (Name ?? "default").GetHashCode();
+        if (ServiceType == null)
+        {
+            return default;
+        }
+        
+        if (Name == null)
+        {
+            return ServiceType.GetHashCode();
+        }
+
+        unchecked
+        {
+            return (ServiceType.GetHashCode() * 397) ^ Name.GetHashCode();
+        }
     }
 
-    public bool Equals(InstanceIdentifier other)
+    private bool Equals(InstanceIdentifier other)
     {
         if (Name == null && other.Name == null)
         {
             return ServiceType == other.ServiceType;
         }
-
-        if (Name != null && other.Name != null)
+        else if (Name != null && other.Name != null)
         {
             return ServiceType == other.ServiceType && Name.Equals(other.Name);
         }
-
         return false;
     }
 
