@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using JasperFx.CodeGeneration.Model;
 
 namespace Lamar.Testing;
@@ -14,6 +15,13 @@ public class StubMethodVariables : IMethodVariables
     public Variable FindVariable(Type type)
     {
         return Variables[type];
+    }
+
+    public Variable FindVariable(ParameterInfo parameter)
+    {
+        if (TryFindVariableByName(parameter.ParameterType, parameter.Name, out Variable variable)) return variable;
+
+        return FindVariable(parameter.ParameterType);
     }
 
     public Variable FindVariableByName(Type dependency, string name)

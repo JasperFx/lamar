@@ -227,9 +227,13 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     internal Instance FindInstance(ParameterInfo parameter)
     {
-        if (parameter.HasAttribute<NamedAttribute>())
+        if (parameter.TryGetAttribute<FromKeyedServicesAttribute>(out var att2))
         {
-            var att = parameter.GetAttribute<NamedAttribute>();
+            return FindInstance(parameter.ParameterType, att2.Key.ToString());
+        }
+        
+        if (parameter.TryGetAttribute<NamedAttribute>(out var att))
+        {
             if (att.TypeName.IsNotEmpty())
             {
                 var family = _families.Enumerate().ToArray()

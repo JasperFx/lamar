@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
-        <Version>15.0.0-alpha-4</Version>
+        <Version>15.0.0-rc-1</Version>
         <Authors>Jeremy D. Miller</Authors>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <DebugType>portable</DebugType>
@@ -19,6 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="JasperFx" Version="0.9.2" />
         <PackageReference Include="System.Runtime.Loader" Version="4.3.0"/>
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0"/>
     </ItemGroup>
@@ -29,9 +30,5 @@
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\jasperfx\src\JasperFx\JasperFx.csproj" />
     </ItemGroup>
 </Project>
