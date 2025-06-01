@@ -20,9 +20,9 @@ public class Container : Scope, IContainer, INestedContainer, IServiceScopeFacto
 <!-- snippet: sample_Scope-Declarations -->
 <a id='snippet-sample_scope-declarations'></a>
 ```cs
-public class Scope : IServiceContext, IServiceProviderIsService
+public class Scope : IServiceContext, IServiceProviderIsKeyedService
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L22-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IoC/Scope.cs#L23-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_scope-declarations' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 [IServiceScope](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope?view=aspnetcore-2.1), [ISupportRequiredService](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.isupportrequiredservice?view=aspnetcore-2.1), [IServiceScopeFactory](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory?view=aspnetcore-2.1) are all ASP.Net Core DI abstractions.

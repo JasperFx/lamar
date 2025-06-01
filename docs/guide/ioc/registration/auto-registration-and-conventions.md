@@ -202,7 +202,7 @@ You can also ignore specific types through an attribute:
 <a id='snippet-sample_using-lamarignore'></a>
 ```cs
 // This attribute causes the type scanning to ignore this type
-[LamarIgnore]
+[JasperFxIgnore]
 public class BiHolder : IBiHolder
 {
     public BiHolder(IBiGrandparent grandparent)
@@ -210,7 +210,7 @@ public class BiHolder : IBiHolder
     }
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/do_not_blow_up_with_bi_directional_dependencies.cs#L63-L74' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamarignore' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/do_not_blow_up_with_bi_directional_dependencies.cs#L64-L75' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamarignore' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## Custom Registration Conventions

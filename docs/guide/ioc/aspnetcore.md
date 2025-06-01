@@ -1,7 +1,8 @@
 # Integration with ASP.Net Core
 
 ::: tip INFO
-As of Lamar.Microsoft.DependencyInjection 4.0, Lamar successfully support .Net Core 3 and ASP.Net Core 3.0.
+As of Lamar 15.0, you can use the ASP.Net Core [FromKeyedServiceAttribute](https://andrewlock.net/exploring-the-dotnet-8-preview-keyed-services-dependency-injection-support/) as an equivalent to Lamar's older `NamedAttribute`
+usage.
 :::
 
 To use Lamar within ASP.Net Core applications, also install the [Lamar.Microsoft.DependencyInjection](https://www.nuget.org/packages/Lamar.Microsoft.DependencyInjection/) library from NuGet to your ASP.Net Core project (and you can thank Microsoft for the clumsy naming convention, thank you).
