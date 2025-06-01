@@ -2,7 +2,10 @@
 
 Like StructureMap before it, one of Lamar's big differentiators from other IoC tools is its strong support for built in diagnostic tools.
 
-The `Lamar.Diagnostics` NuGet library can be used to expose all of Lamar's diagnostic capabilities to the command line of your .Net Core or .Net 5.0 systems. To get started, just add a NuGet dependency to `Lamar.Diagnostics` to your application. This package relies on the .Net command line integration from [Oakton](https://jasperfx.github.io), so you'll need to set up Oakton as shown in this sample `Program.Main()` method:
+::: tip
+Lamar 15.0 utilizes the [JasperFx library](https://github.com/jasperfx/jasperfx) internally that comes with its own command line execution engine, and the former
+Lamar.Diagnostics Nuget has been completely merged into Lamar itself.
+:::
 
 <!-- snippet: sample_using-lamar-diagnostics -->
 <a id='snippet-sample_using-lamar-diagnostics'></a>
@@ -27,12 +30,14 @@ static Task<int> Main(string[] args)
         })
 
         // Call this method to start your application
-        // with Oakton handling the command line parsing
+        // with JasperFx handling the command line parsing
         // and delegation
-        .RunOaktonCommands(args);
+        // This will be included with your reference to Lamar,
+        // no other Nugets are necessary!
+        .RunJasperFxCommands(args);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L15-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/LamarDiagnosticsWithNetCore3Demonstrator/Program.cs#L15-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-lamar-diagnostics' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Once the `Lamar.Diagnostics` NuGet is installed to your application and you've opted into Oakton to handle command line options, typing this command at the root of your project will show all the installed commands:

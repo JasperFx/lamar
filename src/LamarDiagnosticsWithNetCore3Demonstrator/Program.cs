@@ -33,8 +33,10 @@ namespace LamarDiagnosticsWithNetCore3Demonstrator
                 })
 
                 // Call this method to start your application
-                // with Oakton handling the command line parsing
+                // with JasperFx handling the command line parsing
                 // and delegation
+                // This will be included with your reference to Lamar,
+                // no other Nugets are necessary!
                 .RunJasperFxCommands(args);
         }
         #endregion

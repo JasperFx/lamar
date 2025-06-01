@@ -26,7 +26,7 @@ public interface IFamilyPolicy : ILamarPolicy
     ServiceFamily Build(Type type, ServiceGraph serviceGraph);
 }
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IFamilyPolicy.cs#L11-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifamilypolicy' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar/IFamilyPolicy.cs#L12-L24' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifamilypolicy' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Internally, if you make a request to `IContainer.GetInstance(type)` for a type that the active `Container` does not recognize, StructureMap will next try to apply all the registered `IFamilyPolicy` policies to create a `ServiceFamily` object for that service type that models the registrations for that service type, including the default, additional named instances, interceptors or decorators, and lifecycle rules.

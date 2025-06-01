@@ -8,11 +8,12 @@ namespace Lamar.Testing.IoC.Acceptance;
 
 public class IKeyedServiceProvider_compliance
 {
-    #if NET8_0_OR_GREATER
 
     [Fact]
     public void register_by_name_using_dot_net_core_syntax()
     {
+        #region sample_adding_keyed_services
+
         var container = Container.For(services =>
         {
             
@@ -42,7 +43,8 @@ public class IKeyedServiceProvider_compliance
         
         container.GetKeyedService<CWidget>("C2")
             .ShouldNotBeSameAs(container.GetKeyedService<CWidget>("C3"));
+
+        #endregion
     }
 
-    #endif
 }

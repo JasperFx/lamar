@@ -5,10 +5,15 @@ and usage of an IoC container within your application, see [concepts](/guide/ioc
 
 ## What is Lamar?
 
-Lamar is a .NET library that provides two pieces of functionality:
+Lamar is an alternative [Inversion of Control Container](https://www.martinfowler.com/articles/injection.html) that natively supports the [ASP.Net Core DI abstractions](https://code.msdn.microsoft.com/Dependency-injection-in-f789ceaa) 
+and a subset of the older [StructureMap library](https://structuremap.github.io). Lamar supports quite a bit more functionality than the barebones
+`ServiceProvider` model in .NET as well as conforming to the specified behavior demanded by our Microsoft overlords. People
+who choose Lamar over the vanilla `ServiceProvider` generally do so because Lamar is less fussy about usages, has more
+options for conventional and auto-registrations, decorators and interceptors, and most importantly in our book, because
+Lamar has more robust diagnostic support.
 
-1. A fast [Inversion of Control Container](https://www.martinfowler.com/articles/injection.html) that natively supports the [ASP.Net Core DI abstractions](https://code.msdn.microsoft.com/Dependency-injection-in-f789ceaa) and a subset of the older [StructureMap library](https://structuremap.github.io)
-1. The dynamic code generation and compilation features used underneath the IoC implementation
+Despite *almost* walking away from Lamar, the Lamar community is planning to continue supporting Lamar at least until `ServicdeProvider`
+becomes more capable.
 
 ## History and Motivation
 
