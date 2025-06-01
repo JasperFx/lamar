@@ -34,7 +34,7 @@ public class InjectedServiceField : InjectedField, IServiceVariable
         }
     }
 
-    public override string CtorArgDeclaration =>
+    public override string CtorArgDeclaration() =>
         IsOnlyOne
             ? $"{ArgType.FullNameInCode()} {CtorArg}"
             : $"[Lamar.Named(\"{Instance.Name}\")] {ArgType.FullNameInCode()} {CtorArg}";

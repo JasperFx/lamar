@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using JasperFx.CodeGeneration.Model;
 using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,11 @@ public class ResolverVariables : IEnumerable<Variable>, IMethodVariables
     }
 
     Variable IMethodVariables.FindVariable(Type type)
+    {
+        return null;
+    }
+
+    public Variable FindVariable(ParameterInfo parameter)
     {
         return null;
     }
