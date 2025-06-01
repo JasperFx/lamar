@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
+using Lamar.IoC.Instances;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Frames;
@@ -10,8 +11,8 @@ namespace Lamar.IoC.Frames;
 public class ServiceVariableSource : IServiceVariableSource
 {
     public const string UsingNestedContainerDirectly = @"Using the nested container service location approach
-because at least one dependency is directl using the Lamar container
-or IServiceProvider";
+because at least one dependency is directly using the Lamar container
+or IServiceProvider because of an opaque scoped or transient Lambda registration";
 
     private readonly IList<InjectedServiceField> _fields = new List<InjectedServiceField>();
 
@@ -30,6 +31,21 @@ or IServiceProvider";
         return _services.CouldResolve(type);
     }
 
+    public bool TryFindKeyedService(Type type, string key, out Variable variable)
+    {
+        variable = default;
+
+        var instance = _services.FindInstance(type, key);
+
+        if (instance == null)
+        {
+            return false;
+        }
+
+        variable = buildPlanForInstance(instance);
+        return variable != null;
+    }
+
     public Variable Create(Type type)
     {
         if (type == typeof(IContainer))
@@ -45,6 +61,11 @@ or IServiceProvider";
         }
 
         var instance = _services.FindDefault(type);
+        return buildPlanForInstance(instance);
+    }
+
+    private Variable buildPlanForInstance(Instance instance)
+    {
         if (instance.Lifetime == ServiceLifetime.Singleton)
         {
             var field = _fields.FirstOrDefault(x => x.Instance == instance);

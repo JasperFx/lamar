@@ -64,8 +64,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LamarWithOpenApiOnNet9", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApiKeyedServiceIntegrationTests", "src\OpenApiKeyedServiceIntegrationTests\OpenApiKeyedServiceIntegrationTests.csproj", "{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasperFx", "..\jasperfx\src\JasperFx\JasperFx.csproj", "{1288A450-AEF6-49DB-ADF3-16502C378487}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -172,10 +170,6 @@ Global
 		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ADFB25A-EB5A-39B3-FD56-0BBBA1AC6CE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1288A450-AEF6-49DB-ADF3-16502C378487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1288A450-AEF6-49DB-ADF3-16502C378487}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1288A450-AEF6-49DB-ADF3-16502C378487}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1288A450-AEF6-49DB-ADF3-16502C378487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
