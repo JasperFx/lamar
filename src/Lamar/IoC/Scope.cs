@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using ImTools;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
@@ -20,22 +19,21 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC;
 
-#region sample_Scope-Declarations
-
 public class Scope : IServiceContext, IServiceProviderIsKeyedService
-
-    #endregion
-
 {
     protected bool _hasDisposed;
 
     // don't build this if you don't need it
     private Dictionary<Type, object> _injected;
 
-    internal ImHashMap<int, object> Services = ImHashMap<int, object>.Empty;
+    internal InstanceMap Services;
 
-    public Scope(IServiceCollection services)
+    public Scope(IServiceCollection services) : this(services, InstanceMap.DefaultBehavior) {}
+
+    public Scope(IServiceCollection services, InstanceMap.Behavior instanceMapBehavior)
     {
+        Services = InstanceMapFactory.Get(instanceMapBehavior);
+
         Root = this;
 
         ServiceGraph = new ServiceGraph(services, this);
@@ -43,12 +41,18 @@ public class Scope : IServiceContext, IServiceProviderIsKeyedService
         ServiceGraph.Initialize();
     }
 
-    protected Scope()
+    protected Scope() : this(InstanceMap.DefaultBehavior) { }
+
+    protected Scope(InstanceMap.Behavior instanceMapBehavior)
     {
+        Services = InstanceMapFactory.Get(instanceMapBehavior);
     }
 
-    public Scope(ServiceGraph serviceGraph, Scope root)
+    public Scope(ServiceGraph serviceGraph, Scope root) : this(serviceGraph, root, InstanceMap.DefaultBehavior) { }
+    
+    public Scope(ServiceGraph serviceGraph, Scope root, InstanceMap.Behavior instanceMapBehavior)
     {
+        Services = InstanceMapFactory.Get(instanceMapBehavior);
         ServiceGraph = serviceGraph;
         Root = root ?? throw new ArgumentNullException(nameof(root));
     }
