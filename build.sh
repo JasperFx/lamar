@@ -2,4 +2,4 @@
 set -euo pipefail
 
 
-dotnet run -p build/build.csproj -c Release -- "$@"
+dotnet run --project build/build.csproj -c Release -- "$@"
