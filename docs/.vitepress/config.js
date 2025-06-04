@@ -28,7 +28,7 @@ module.exports = {
       [
         {
           text: 'Getting Started',
-          collapsible: false,
+          collapsed: false,
           items: [
             {
               text: 'What is Lamar',
@@ -37,7 +37,6 @@ module.exports = {
         },
         {
           text: 'Inversion of Control',
-          collapsible: true,
           collapsed: false,
           items: getIOCSideBar()
         }
