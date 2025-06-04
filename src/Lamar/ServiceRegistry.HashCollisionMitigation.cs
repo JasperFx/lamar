@@ -76,7 +76,7 @@ public partial class ServiceRegistry
     {
         return this.Select(x => x.ImplementationInstance)
             .OfType<Instance>()
-            .GroupBy(x => x.Hash)
+            .GroupBy(x => x.Hash.GetHashCode())
             .Where(x => x.Select(y => y.ServiceType).Distinct().Count() > 1);
     }
 }

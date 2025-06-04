@@ -57,10 +57,10 @@ namespace Lamar.Testing.AspNetCoreIntegration
             var container = Container.For(x => x.AddLamar());
 
             container.Model.DefaultTypeFor<IServiceProviderFactory<ServiceRegistry>>()
-                .ShouldBe(typeof(LamarServiceProviderFactory));
+                .ShouldBe(typeof(IServiceProviderFactory<ServiceRegistry>));
 
             container.Model.DefaultTypeFor<IServiceProviderFactory<IServiceCollection>>()
-                .ShouldBe(typeof(LamarServiceProviderFactory));
+                .ShouldBe(typeof(IServiceProviderFactory<IServiceCollection>));
         }
 
         [Fact]

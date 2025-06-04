@@ -13,7 +13,7 @@ public class ObjectInstance : Instance, IDisposable
     {
         Service = service;
         Name = service?.GetType().NameInCode() ?? serviceType.NameInCode();
-        Hash = GetHashCode();
+        Hash = new (Name, serviceType);
     }
 
     public object Service { get; }

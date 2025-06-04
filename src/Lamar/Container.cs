@@ -19,19 +19,34 @@ public class Container : Scope, IContainer, INestedContainer, IServiceScopeFacto
 {
     private bool _isDisposing;
 
-    private Container()
+    private Container() : this(InstanceMap.DefaultBehavior) { }
+
+    private Container(InstanceMap.Behavior instanceMapBehavior)
+        : base(instanceMapBehavior)
     {
     }
 
-    public Container(IServiceCollection services) : base(services)
+    public Container(IServiceCollection services) : this(services, InstanceMap.DefaultBehavior)
+    {
+        
+    }
+
+    public Container(IServiceCollection services, InstanceMap.Behavior instanceMapBehavior)
+        : base(services, instanceMapBehavior)
     {
     }
 
-    public Container(Action<ServiceRegistry> configuration) : this(ServiceRegistry.For(configuration))
+    public Container(Action<ServiceRegistry> configuration) : this(configuration, InstanceMap.DefaultBehavior) { }
+
+    public Container(Action<ServiceRegistry> configuration, InstanceMap.Behavior instanceMapBehavior)
+        : this(ServiceRegistry.For(configuration), instanceMapBehavior)
     {
     }
 
-    private Container(ServiceGraph serviceGraph, Container container) : base(serviceGraph, container)
+    private Container(ServiceGraph serviceGraph, Container container) : this(serviceGraph, container, InstanceMap.DefaultBehavior) { }
+
+    private Container(ServiceGraph serviceGraph, Container container, InstanceMap.Behavior instanceMapBehavior)
+        : base(serviceGraph, container, instanceMapBehavior)
     {
     }
 
