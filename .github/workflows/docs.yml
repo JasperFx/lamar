@@ -17,16 +17,10 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 18.x
+          node-version: 20.x
 
       - name: Build & Deploy docs
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: ./build.sh --no-color publish-docs-gh-actions
 
-      - name: Generate Algolia DocSearch index
-        uses: darrenjennings/algolia-docsearch-action@master
-        with:
-          algolia_application_id: ${{ secrets.ALGOLIA_APPLICATION_ID }}
-          algolia_api_key: ${{ secrets.ALGOLIA_API_KEY }}
-          file: 'docs/.vitepress/algolia-config.json'
