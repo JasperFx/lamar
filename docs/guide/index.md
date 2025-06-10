@@ -12,7 +12,7 @@ who choose Lamar over the vanilla `ServiceProvider` generally do so because Lama
 options for conventional and auto-registrations, decorators and interceptors, and most importantly in our book, because
 Lamar has more robust diagnostic support.
 
-Despite *almost* walking away from Lamar, the Lamar community is planning to continue supporting Lamar at least until `ServicdeProvider`
+Despite *almost* walking away from Lamar, the Lamar community is planning to continue supporting Lamar at least until `ServiceProvider`
 becomes more capable.
 
 ## History and Motivation
