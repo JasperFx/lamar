@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApiKeyedServiceIntegrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "build", "build\build.csproj", "{C6F71B0D-B75C-4933-802D-FE811C385853}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasperFx", "..\jasperfx\src\JasperFx\JasperFx.csproj", "{8BE37F93-6481-4E76-9329-3EF855E4F517}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +178,10 @@ Global
 		{C6F71B0D-B75C-4933-802D-FE811C385853}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F71B0D-B75C-4933-802D-FE811C385853}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F71B0D-B75C-4933-802D-FE811C385853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE37F93-6481-4E76-9329-3EF855E4F517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BE37F93-6481-4E76-9329-3EF855E4F517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BE37F93-6481-4E76-9329-3EF855E4F517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BE37F93-6481-4E76-9329-3EF855E4F517}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
