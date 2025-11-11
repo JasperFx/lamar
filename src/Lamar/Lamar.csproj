@@ -3,7 +3,7 @@
         <Description>Fast ASP.Net Core compatible IoC Tool, Successor to StructureMap</Description>
         <Version>15.0.1</Version>
         <Authors>Jeremy D. Miller</Authors>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <DebugType>portable</DebugType>
         <AssemblyName>Lamar</AssemblyName>
         <PackageId>Lamar</PackageId>
