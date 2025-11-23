@@ -25,9 +25,6 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-
-    - name: Install dependencies
-      run: dotnet restore
     - name: Build
       run: dotnet build Lamar.sln --configuration Release
 
