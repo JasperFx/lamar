@@ -33,6 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\jasperfx\src\JasperFx\JasperFx.csproj" />
+      <PackageReference Include="JasperFx" Version="1.10.1" />
     </ItemGroup>
 </Project>
