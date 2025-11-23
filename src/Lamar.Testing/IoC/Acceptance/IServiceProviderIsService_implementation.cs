@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+
 using Shouldly;
 using StructureMap.Testing.Widget;
 using Xunit;
@@ -42,7 +44,7 @@ public class IServiceProviderIsService_implementation
     {
         var containerWithNoRegistrations = Container.Empty();
 
-        containerWithNoRegistrations.IsService(typeof(IEnumerable<ConcreteClass>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<ConcreteClass>)).ShouldBeTrue();
         containerWithNoRegistrations.IsService(typeof(IReadOnlyCollection<ConcreteClass>)).ShouldBeFalse();
         containerWithNoRegistrations.IsService(typeof(IList<ConcreteClass>)).ShouldBeFalse();
         containerWithNoRegistrations.IsService(typeof(List<ConcreteClass>)).ShouldBeFalse();
@@ -56,6 +58,50 @@ public class IServiceProviderIsService_implementation
         containerWithRegistrations.IsService(typeof(IReadOnlyCollection<ConcreteClass>)).ShouldBeTrue();
         containerWithRegistrations.IsService(typeof(IList<ConcreteClass>)).ShouldBeTrue();
         containerWithRegistrations.IsService(typeof(List<ConcreteClass>)).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void fix_for_405_add_support_for_net9()
+    {
+        var containerWithNoRegistrations = Container.Empty();
+
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<object>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<string>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<int>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<int?>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<float>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<float?>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<double>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<double?>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<decimal>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<decimal?>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<DateTime>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<DateTime?>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<DateOnly?>)).ShouldBeTrue();
+        containerWithNoRegistrations.IsService(typeof(IEnumerable<DateOnly?>)).ShouldBeTrue();
+
+        containerWithNoRegistrations.IsService(typeof(IReadOnlyCollection<object>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(IReadOnlyList<object>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(IList<object>)).ShouldBeFalse();
+        containerWithNoRegistrations.IsService(typeof(List<object>)).ShouldBeFalse();
+
+        List<int> integerList = new List<int>();
+        
+        var containerWithRegistrations = Container.For(services =>
+                                                       {
+                                                           services.ForConcreteType<ConcreteClass>();
+                                                           services.For<IEnumerable<int>>().Use(integerList);
+                                                       });
+
+        containerWithRegistrations.IsService(typeof(IEnumerable<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(IReadOnlyCollection<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(IReadOnlyList<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(IList<ConcreteClass>)).ShouldBeTrue();
+        containerWithRegistrations.IsService(typeof(List<ConcreteClass>)).ShouldBeTrue();
+        
+        containerWithRegistrations.IsService(typeof(IEnumerable<int>)).ShouldBeTrue();
+
+        containerWithRegistrations.GetInstance<IEnumerable<int>>().ShouldBeSameAs(integerList);
     }
 
     public interface IService

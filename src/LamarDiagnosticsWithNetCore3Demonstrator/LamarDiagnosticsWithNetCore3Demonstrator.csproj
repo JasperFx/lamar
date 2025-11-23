@@ -2,11 +2,10 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net7.0;net6.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
       <ProjectReference Include="..\Lamar.Microsoft.DependencyInjection\Lamar.Microsoft.DependencyInjection.csproj" />
       <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />
       <ProjectReference Include="..\StructureMap.Testing.Widget3\StructureMap.Testing.Widget3.csproj" />
@@ -16,7 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
       <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     </ItemGroup>

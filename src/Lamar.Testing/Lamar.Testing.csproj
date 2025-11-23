@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <LangVersion>10.0</LangVersion>
     </PropertyGroup>
     <ItemGroup>
@@ -16,7 +16,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Aspect.Logger\Widget.Aspect.Logger.csproj" />
-        <ProjectReference Include="..\Lamar.Diagnostics\Lamar.Diagnostics.csproj" />
         <ProjectReference Include="..\Lamar\Lamar.csproj" />
         <ProjectReference Include="..\StructureMap.Testing.GenericWidgets\StructureMap.Testing.GenericWidgets.csproj" />
         <ProjectReference Include="..\StructureMap.Testing.Widget2\StructureMap.Testing.Widget2.csproj" />

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Lamar.CommandLine;
 using Lamar.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

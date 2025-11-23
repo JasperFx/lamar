@@ -19,10 +19,8 @@ module.exports = {
       { text: 'Discord | Join Chat', link: 'https://discord.gg/WMxrvegf8H' }
     ],
 
-    algolia: {
-      appId: 'BL3MV9D81Y',
-      apiKey: 'b9590d6ae8461868e8449d64285f57c1',
-      indexName: 'lamar_index'
+    search: {
+        provider: 'local'	
     },
 
     sidebar: {
@@ -30,7 +28,7 @@ module.exports = {
       [
         {
           text: 'Getting Started',
-          collapsible: true,
+          collapsed: false,
           items: [
             {
               text: 'What is Lamar',
@@ -39,8 +37,7 @@ module.exports = {
         },
         {
           text: 'Inversion of Control',
-          collapsible: true,
-          collapsed: true,
+          collapsed: false,
           items: getIOCSideBar()
         }
     ]

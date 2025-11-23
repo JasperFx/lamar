@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net9.0</TargetFrameworks>
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LamarWithMinimalApiOnNet6\LamarWithMinimalApiOnNet6.csproj" />
+      <ProjectReference Include="..\LamarWithOpenApiOnNet9\LamarWithOpenApiOnNet9.csproj" />
     </ItemGroup>
 
 </Project>

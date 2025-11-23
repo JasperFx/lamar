@@ -61,39 +61,35 @@ While Lamar (and StructureMap before that) has supported the idea of named servi
 <!-- snippet: sample_adding_keyed_services -->
 <a id='snippet-sample_adding_keyed_services'></a>
 ```cs
-[Fact]
-public void register_by_name_using_dot_net_core_syntax()
+var container = Container.For(services =>
 {
-    var container = Container.For(services =>
-    {
-        
-        services.AddKeyedSingleton<IWidget, AWidget>("one");
-        services.AddKeyedScoped<IWidget>("two", (_, _) => new BWidget());
-        services.AddKeyedSingleton<IWidget>("three", new CWidget());
+    
+    services.AddKeyedSingleton<IWidget, AWidget>("one");
+    services.AddKeyedScoped<IWidget>("two", (_, _) => new BWidget());
+    services.AddKeyedSingleton<IWidget>("three", new CWidget());
 
-        services.AddKeyedSingleton<CWidget>("C1");
-        services.AddKeyedSingleton<CWidget>("C2");
-        services.AddKeyedSingleton<CWidget>("C3");
-    });
+    services.AddKeyedSingleton<CWidget>("C1");
+    services.AddKeyedSingleton<CWidget>("C2");
+    services.AddKeyedSingleton<CWidget>("C3");
+});
 
-    container.GetInstance<IWidget>("one").ShouldBeOfType<AWidget>();
-    container.GetKeyedService<IWidget>("one").ShouldBeOfType<AWidget>();
-    
-    container.GetInstance<IWidget>("two").ShouldBeOfType<BWidget>();
-    container.GetKeyedService<IWidget>("two").ShouldBeOfType<BWidget>();
-    
-    container.GetInstance<IWidget>("three").ShouldBeOfType<CWidget>();
-    container.GetKeyedService<IWidget>("three").ShouldBeOfType<CWidget>();
-    
-    container.GetInstance<CWidget>("C1").ShouldBeOfType<CWidget>();
-    container.GetKeyedService<CWidget>("C2").ShouldBeOfType<CWidget>();
-    
-    container.GetKeyedService<CWidget>("C2")
-        .ShouldBeSameAs(container.GetKeyedService<CWidget>("C2"));
-    
-    container.GetKeyedService<CWidget>("C2")
-        .ShouldNotBeSameAs(container.GetKeyedService<CWidget>("C3"));
-}
+container.GetInstance<IWidget>("one").ShouldBeOfType<AWidget>();
+container.GetKeyedService<IWidget>("one").ShouldBeOfType<AWidget>();
+
+container.GetInstance<IWidget>("two").ShouldBeOfType<BWidget>();
+container.GetKeyedService<IWidget>("two").ShouldBeOfType<BWidget>();
+
+container.GetInstance<IWidget>("three").ShouldBeOfType<CWidget>();
+container.GetKeyedService<IWidget>("three").ShouldBeOfType<CWidget>();
+
+container.GetInstance<CWidget>("C1").ShouldBeOfType<CWidget>();
+container.GetKeyedService<CWidget>("C2").ShouldBeOfType<CWidget>();
+
+container.GetKeyedService<CWidget>("C2")
+    .ShouldBeSameAs(container.GetKeyedService<CWidget>("C2"));
+
+container.GetKeyedService<CWidget>("C2")
+    .ShouldNotBeSameAs(container.GetKeyedService<CWidget>("C3"));
 ```
-<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/IKeyedServiceProvider_compliance.cs#L11-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_adding_keyed_services' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/lamar/blob/master/src/Lamar.Testing/IoC/Acceptance/IKeyedServiceProvider_compliance.cs#L15-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_adding_keyed_services' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

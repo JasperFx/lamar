@@ -13,16 +13,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
+        dotnet-version: 9.0.x
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
         dotnet-version: 8.0.x
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 7.0.x
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
+
 
     - name: Install dependencies
       run: dotnet restore
@@ -39,10 +36,4 @@ jobs:
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
         PROJECT_FILE_PATH: src/Lamar.Microsoft.DependencyInjection/Lamar.Microsoft.DependencyInjection.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-
-    - name: Publish Lamar.Diagnostics
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-        PROJECT_FILE_PATH: src/Lamar.Diagnostics/Lamar.Diagnostics.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}

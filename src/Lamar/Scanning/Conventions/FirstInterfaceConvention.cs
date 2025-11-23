@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using JasperFx.Core.TypeScanning;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,7 @@ internal class FirstInterfaceConvention : IRegistrationConvention
         foreach (var type in types.FindTypes(TypeClassification.Concretes).Where(x => x.GetConstructors().Any()))
         {
             var interfaceType = type.GetInterfaces().FirstOrDefault(x => x != typeof(IDisposable));
-            if (interfaceType != null && !interfaceType.HasAttribute<LamarIgnoreAttribute>() &&
+            if (interfaceType != null && !interfaceType.HasAttribute<JasperFxIgnoreAttribute>() &&
                 !type.IsOpenGeneric())
             {
                 services.AddType(interfaceType, type, _lifetime);

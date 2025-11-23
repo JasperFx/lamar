@@ -159,7 +159,7 @@ public class GetInstanceFrame : SyncFrame, IResolverFrame
         if (Next is null)
         {
             throw new InvalidCastException(
-                $"{typeof(GetInstanceFrame).GetFullName()}.{nameof(Next)} must not be null.");
+                $"{typeof(GetInstanceFrame).FullNameInCode()}.{nameof(Next)} must not be null.");
         }
     }
 

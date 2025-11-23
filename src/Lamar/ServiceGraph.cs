@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using ImTools;
 using JasperFx.CodeGeneration;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
@@ -225,9 +227,13 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     internal Instance FindInstance(ParameterInfo parameter)
     {
-        if (parameter.HasAttribute<NamedAttribute>())
+        if (parameter.TryGetAttribute<FromKeyedServicesAttribute>(out var att2))
         {
-            var att = parameter.GetAttribute<NamedAttribute>();
+            return FindInstance(parameter.ParameterType, att2.Key.ToString());
+        }
+        
+        if (parameter.TryGetAttribute<NamedAttribute>(out var att))
+        {
             if (att.TypeName.IsNotEmpty())
             {
                 var family = _families.Enumerate().ToArray()
@@ -244,7 +250,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
     private void organizeIntoFamilies(IServiceCollection services)
     {
         var serviceFamilies = services
-            .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
+            .Where(x => !x.ServiceType.HasAttribute<JasperFxIgnoreAttribute>())
             .GroupBy(x => x.ServiceType)
             .Select(group => buildFamilyForInstanceGroup(services, group));
 
@@ -268,9 +274,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     private ServiceFamily buildClosedGenericType(Type serviceType, IServiceCollection services)
     {
-        var closed = services.Where(x => x.ServiceType == serviceType && (x.IsKeyedService
-                ? !x.KeyedImplementationType.IsOpenGeneric()
-                : !x.ImplementationType.IsOpenGeneric()))
+        var closed = services.Where(x => x.ServiceType == serviceType && isKeyedServiceSupported(x))
             .Select(Instance.For);
 
         var templated = services
@@ -295,6 +299,17 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
         var instances = templated.Concat(closed).ToArray();
 
         return new ServiceFamily(serviceType, DecoratorPolicies, instances);
+    }
+
+    private static bool isKeyedServiceSupported(ServiceDescriptor serviceDescriptor)
+    {
+        #if NET8_0_OR_GREATER
+         return serviceDescriptor.IsKeyedService
+                    ? !serviceDescriptor.KeyedImplementationType.IsOpenGeneric()
+                    : !serviceDescriptor.ImplementationType.IsOpenGeneric();
+        #endif
+
+        return !serviceDescriptor.ImplementationType.IsOpenGeneric();
     }
 
     public IEnumerable<Instance> AllInstances()
@@ -498,7 +513,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
     private Type getServiceTypeThatTakesCollectionsIntoAccount(Type serviceType)
     {
-        if (!typeof(IEnumerable).IsAssignableFrom(serviceType) || serviceType.GetGenericArguments().Length != 1) 
+        if (!typeof(IEnumerable).IsAssignableFrom(serviceType) || serviceType.GetGenericArguments().Length != 1 || serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) 
             return serviceType;
 
         Type type = serviceType.GetGenericArguments().Single();
@@ -507,7 +522,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
 
         return isTypeRegistered ? serviceType : type;
     }
-
+    
     internal void ClearPlanning()
     {
         _chain.Clear();
@@ -535,7 +550,7 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
             Scanners = Scanners.Union(scanners).ToArray();
 
             var groups = registry
-                .Where(x => !x.ServiceType.HasAttribute<LamarIgnoreAttribute>())
+                .Where(x => !x.ServiceType.HasAttribute<JasperFxIgnoreAttribute>())
                 .GroupBy(x => x.ServiceType);
 
             foreach (var group in groups)
@@ -592,5 +607,36 @@ public class ServiceGraph : IDisposable, IAsyncDisposable
         }
 
         return family.Default != null;
+    }
+
+    public bool CanBeServiceByNetCoreRules(Type serviceType, string name)
+    { 
+        if (_families.TryFind(serviceType, out var family))
+        {
+            return family.InstanceFor(name) != null;
+        }
+
+        lock (_familyLock)
+        {
+            if (_families.TryFind(serviceType, out family))
+            {
+                return family.InstanceFor(name) != null;
+            }
+
+            family = TryToCreateMissingFamilyWithNetCoreRules(serviceType);
+            _families = _families.AddOrUpdate(serviceType, family);
+
+            if (!_inPlanning)
+            {
+                buildOutMissingResolvers();
+
+                if (family != null)
+                {
+                    rebuildReferencedAssemblyArray();
+                }
+            }
+        }
+
+        return  family.InstanceFor(name) != null;
     }
 }

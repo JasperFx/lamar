@@ -34,7 +34,7 @@ public class InjectedServiceField : InjectedField, IServiceVariable
         }
     }
 
-    public override string CtorArgDeclaration =>
+    public override string CtorArgDeclaration() =>
         IsOnlyOne
             ? $"{ArgType.FullNameInCode()} {CtorArg}"
             : $"[Lamar.Named(\"{Instance.Name}\")] {ArgType.FullNameInCode()} {CtorArg}";
@@ -47,7 +47,7 @@ public class InjectedServiceField : InjectedField, IServiceVariable
         {
             var scope = definition.Context.As<Scope>();
             var @object = Instance.QuickResolve(scope);
-            return Expression.Constant(@object);
+            return Expression.Constant(@object, @object?.GetType() ?? Instance.ServiceType);
         }
 
         // This needs to be inlined singletons
