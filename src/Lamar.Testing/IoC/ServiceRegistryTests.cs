@@ -4,6 +4,7 @@ using JasperFx.CodeGeneration.Model;
 using Lamar.IoC;
 using Lamar.IoC.Frames;
 using Lamar.IoC.Instances;
+using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;
@@ -22,7 +23,7 @@ public class ServiceRegistryTests
 
         registry.For<IWidget>().Use(custom);
 
-        registry.Single().ImplementationInstance.ShouldBe(custom);
+        registry.Single().LamarInstance().ShouldBe(custom);
     }
 }
 
