@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Lamar.IoC.Instances;
+using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using StructureMap.Testing.Widget;
@@ -17,7 +18,7 @@ public class ServiceRegistryTester
 
         var descriptor = registry.Single();
 
-        var instance = descriptor.ImplementationInstance.ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
+        var instance = descriptor.LamarInstance().ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
         instance.ImplementationType.ShouldBe(typeof(AWidget));
 
         descriptor.ServiceType.ShouldBe(typeof(IWidget));
@@ -31,7 +32,7 @@ public class ServiceRegistryTester
 
         var descriptor = registry.Single();
 
-        var instance = descriptor.ImplementationInstance.ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
+        var instance = descriptor.LamarInstance().ShouldBeOfType<ConstructorInstance<AWidget, IWidget>>();
         instance.ImplementationType.ShouldBe(typeof(AWidget));
         instance.Lifetime.ShouldBe(ServiceLifetime.Singleton);
 

@@ -1,5 +1,6 @@
 ﻿using Lamar.IoC;
 using Lamar.IoC.Instances;
+using Lamar.Scanning.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,8 +75,8 @@ public partial class ServiceRegistry
 
     internal IEnumerable<IGrouping<int, Instance>> GetInstanceHashCollisions()
     {
-        return this.Select(x => x.ImplementationInstance)
-            .OfType<Instance>()
+        return this.Select(x => x.LamarInstance())
+            .Where(x => x != null)
             .GroupBy(x => x.Hash)
             .Where(x => x.Select(y => y.ServiceType).Distinct().Count() > 1);
     }

@@ -29,7 +29,7 @@ public class ServiceCollectionExtensionsTests
 
         var widgetDescriptor = services.Single(x => x.ServiceType == typeof(IWidget));
         widgetDescriptor.ServiceType.ShouldBe(typeof(IWidget));
-        widgetDescriptor.ImplementationInstance.As<Instance>().ImplementationType.ShouldBe(typeof(AWidget));
+        widgetDescriptor.LamarInstance().ImplementationType.ShouldBe(typeof(AWidget));
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class ServiceCollectionExtensionsTests
         services.AddType(typeof(IWidget), typeof(MoneyWidget));
 
         services.Where(x => x.ServiceType == typeof(IWidget))
-            .Select(x => x.ImplementationInstance).OfType<Instance>().Select(x => x.ImplementationType)
+            .Select(x => x.LamarInstance()).Where(x => x != null).Select(x => x.ImplementationType)
             .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(MoneyWidget));
     }
 
@@ -58,7 +58,7 @@ public class ServiceCollectionExtensionsTests
         services.AddType(typeof(IWidget), typeof(MoneyWidget));
 
         services.Where(x => x.ServiceType == typeof(IWidget))
-            .Select(x => x.ImplementationInstance).OfType<Instance>().Select(x => x.ImplementationType)
+            .Select(x => x.LamarInstance()).Where(x => x != null).Select(x => x.ImplementationType)
             .ShouldHaveTheSameElementsAs(typeof(AWidget), typeof(MoneyWidget));
     }
 }

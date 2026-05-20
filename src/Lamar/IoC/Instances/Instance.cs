@@ -7,6 +7,7 @@ using JasperFx.CodeGeneration.Model;
 using JasperFx.Core;
 using JasperFx.Core.Reflection;
 using Lamar.IoC.Frames;
+using Lamar.Scanning.Conventions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lamar.IoC.Instances;
@@ -34,13 +35,40 @@ public abstract class Instance
 
     public bool IsExplicitlyNamed { get; set; }
 
+    // Set when ServiceCollectionExtensions.Add wraps the Instance in a
+    // LamarServiceDescriptor. Together they let the Lifetime setter (below) keep the
+    // descriptor's surface-area Lifetime in sync with this Instance — needed because
+    // the MS-DI ServiceDescriptor is immutable, so any Lifetime change requires
+    // replacing the descriptor in the registry.
+    internal IServiceCollection ServiceCollection { get; set; }
+    internal LamarServiceDescriptor LamarDescriptor { get; set; }
+
 
     public Type ServiceType { get; }
     public Type ImplementationType { get; }
 
     public int Hash { get; set; }
 
-    public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
+    private ServiceLifetime _lifetime = ServiceLifetime.Transient;
+
+    /// <summary>
+    ///     Intended lifetime of this Instance. Mutating this value also refreshes
+    ///     the backing LamarServiceDescriptor in the registry so IServiceCollection
+    ///     consumers (Wolverine code-gen, MS-DI validation, etc.) see the current
+    ///     lifetime. All Lifetime mutations — fluent .Scoped()/.Transient()/.Singleton(),
+    ///     ReferencedInstance.createPlan's Lifetime = _inner.Lifetime, internal
+    ///     adjustments — route through this single setter.
+    /// </summary>
+    public ServiceLifetime Lifetime
+    {
+        get => _lifetime;
+        set
+        {
+            if (_lifetime == value) return;
+            _lifetime = value;
+            this.ReplaceLamarDescriptor();
+        }
+    }
 
     public string Name
     {
@@ -147,9 +175,10 @@ public abstract class Instance
         #endif
 
         
-        if (service.ImplementationInstance is Instance i)
+        var lamarInstance = service.LamarInstance();
+        if (lamarInstance != null)
         {
-            return i;
+            return lamarInstance;
         }
 
         if (service.ImplementationInstance != null)
