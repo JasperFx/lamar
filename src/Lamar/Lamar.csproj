@@ -27,6 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="JasperFx" Version="1.10.1" />
+      <PackageReference Include="JasperFx" Version="2.2.1" />
     </ItemGroup>
 </Project>
