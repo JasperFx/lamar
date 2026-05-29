@@ -56,7 +56,13 @@ public class ListInstance<T> : GeneratedInstance, IEnumerableInstance
         }
         else
         {
-            Elements = services.FindAll(typeof(T));
+            // MS DI's IServiceProvider.GetServices(T) returns only non-keyed registrations;
+            // keyed registrations are looked up explicitly via GetKeyedService(T, key). Match
+            // that here so a keyed-mirror registration of the same service type doesn't end up
+            // as an IEnumerable<T> element. Otherwise inlining the mirror's Singleton via
+            // QuickResolve invokes the mirror's factory, which calls sp.GetServices(T) again
+            // and recursively re-enters ListInstance/ArrayInstance code-gen — stack overflow.
+            Elements = services.FindAll(typeof(T)).Where(x => !x.IsKeyedService).ToArray();
         }
 
         return Elements;
