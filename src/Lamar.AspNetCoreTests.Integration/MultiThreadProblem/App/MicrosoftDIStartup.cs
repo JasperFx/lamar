@@ -16,7 +16,9 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App
 			services.AddTransient<IOtherService, OtherService>();
 			services.AddTransient<IContextFactory, ContextFactory>();
 
+			#if NET9_0_OR_GREATER && !NET11_0_OR_GREATER
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+			#endif
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

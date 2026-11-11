@@ -26,7 +26,9 @@ namespace UserApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #if NET9_0_OR_GREATER && !NET11_0_OR_GREATER
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            #endif
 
             services.AddSingleton(new UserRepository());
         }
