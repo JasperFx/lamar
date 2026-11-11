@@ -13,7 +13,9 @@ namespace Lamar.AspNetCoreTests.Integration.MultiThreadProblem.App
 			services.AddDbContext<Context>();
 			services.AddDbContext<SecondContext>();
 
+			#if NET9_0_OR_GREATER && !NET11_0_OR_GREATER
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+			#endif
 
 			services.AddTestHealthChecks();
 		}
